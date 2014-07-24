@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>LocalCIDER by Pappulab</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>LocalCIDER</h1>
+        <p>LocalCIDER is the Python backend for CIDER</p>
+
+        <p class="view"><a href="https://github.com/Pappulab/LocalCIDER">View the Project on GitHub <small>Pappulab/LocalCIDER</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/Pappulab/LocalCIDER/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Pappulab/LocalCIDER/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/Pappulab/LocalCIDER">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h3>
+<a name="localcider-lets-you-do-almost-everything-cider-does-locally" class="anchor" href="#localcider-lets-you-do-almost-everything-cider-does-locally"><span class="octicon octicon-link"></span></a>LocalCIDER lets you do [almost] everything CIDER does, locally!</h3>
+
+<p>CIDER <a href="http://pappulab.wustl.edu/CIDER">Classification of Intrinsically Disordered Ensemble Regions</a> is a webserver for calculating various properties of a disordered sequence. CIDER's computation is primarily done by a backend app, which we call LocalCIDER.</p>
+
+<p>CIDER is useful if you want to quickly calculate some parameter on the fly. HOWEVER, for doing a huge range of sequences, we recommend you instead use LocalCIDER and carry out the computation locally.</p>
+
+<h2>
+<a name="why-localcider" class="anchor" href="#why-localcider"><span class="octicon octicon-link"></span></a>Why LocalCIDER</h2>
+
+<p>LocalCIDER lets us provide an implicit distributed computing model to all of CIDER's calculations. Think of it this way - if 100 people have 100 sequences, we (the Pappu lab) have the burden of 10,000 calculations to perform. If everyone submitted these sequences at once, the website would slow for everyone, and maybe crash. This is a lot of work for us, and very annoying for you, the user. HOWEVER, by using LocalCIDER you can take advantage of</p>
+
+<ul>
+<li>Your own local infrastructure</li>
+<li>Programatically create analysis pipelines</li>
+<li>Operate independently of the CIDER webserver</li>
+</ul><h2>
+<a name="how-do-i-use-it" class="anchor" href="#how-do-i-use-it"><span class="octicon octicon-link"></span></a>How do I use it</h2>
+
+<p>LocalCIDER will (<em>VERY SOON</em>) be available as a PyPI package. That means that using <a href="https://pypi.python.org/pypi/pip">PIP</a> (and to be clear, if you're using Python and not using pip, you're doing it wrong) getting LocalCIDER is a single command</p>
+
+<pre><code>[sudo] pip install localCIDER
+</code></pre>
+
+<p>ok</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/Pappulab">Pappulab</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
