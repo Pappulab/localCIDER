@@ -5,41 +5,7 @@
    !    This file is part of localCIDER.                                      !
    !                                                                          !
    !    Version 0.1.0                                                         !
-   !                                                                          !
-   !    Copyright (C) 2014, The LocalCIDER development team (current and      !
-   !                        former contributors): Alex Holehouse, James       !
-   !                        Ahad, Rahul K. Das.                               !
-   !                                                                          !
-   !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
-   !    University in St. Louis. Please see the website for citation          !
-   !    information:                                                          !
-   !                                                                          !
-   !    http://pappulab.github.io/LocalCIDER/                                 !
-   !                                                                          !
-   !    For more information please see the Pappu lab website:                !
-   !                                                                          !
-   !    http://pappulab.wustl.edu/                                            !
-   !                                                                          !
-   !    LocalCIDER is free software: you can redistribute it and/or modify    !
-   !    it under the terms of the GNU General Public License as published by  !
-   !    the Free Software Foundation, either version 3 of the License, or     !
-   !    (at your option) any later version.                                   !
-   !                                                                          !
-   !    LocalCIDER is distributed in the hope that it will be useful,         !
-   !    but WITHOUT ANY WARRANTY; without even the implied warranty of        !
-   !    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         !
-   !    GNU General Public License for more details.                          !
-   !                                                                          !
-   !    You should have received a copy of the GNU General Public License     !
-   !    along with LocalCIDER.  If not, see <http://www.gnu.org/licenses/>.   !
    !--------------------------------------------------------------------------!
-   ! AUTHORSHIP INFO:                                                         !
-   !--------------------------------------------------------------------------!
-   !                                                                          !
-   ! MAIN AUTHOR:   Alex Holehouse                                            !
-   !                                                                          !
-   !--------------------------------------------------------------------------!
-
    
    File Description:
    ================
@@ -47,16 +13,13 @@
    This is one of the key user interface/API files from which users (AKA you!)
    should use to access localCIDER.
 
-   For a full description please see the documentation
-
-
+   For a full description please see the documentation!
 
 """
 
 from backend.sequence import Sequence
 from backend.seqfileparser import SequenceFileParser 
 from backend.backendtools import status_message
-
 from backend import plotting
 
 class SequenceParameters:
@@ -78,7 +41,7 @@ class SequenceParameters:
 
     # ============================================ #
     # ============= SETTER FUNCTIONS ============= #  
-
+    #...................................................................................#
     def set_phosphosites(self, phosphosites):
         """ 
         Set putativly phosphorylated sites on your sequence.
@@ -96,6 +59,8 @@ class SequenceParameters:
         # in the calling function
         self.SeqObj.setPhosPhoSites(phosphosites)
 
+
+    #...................................................................................#
     def clear_phosphosites(self):
         """
         Clears the putative phosphosites on the underlying'
@@ -110,7 +75,7 @@ class SequenceParameters:
 
     # ============================================ #
     # ============= GETTER FUNCTIONS ============= #  
-    
+    #...................................................................................#
     def get_sequence(self):
         """
         Get the protein's primary amino acid sequence
@@ -121,7 +86,7 @@ class SequenceParameters:
         return self.SeqObj.seq
 
 
-
+    #...................................................................................#
     def get_mean_hydropathy(self):
         """
         Get a proteins mean hydropphobiicity
@@ -132,7 +97,7 @@ class SequenceParameters:
         return self.SeqObj.meanHydropathy()
 
 
-
+    #...................................................................................#
     def get_uversky_hydrophobicity(self):
         """
         Get a proteins mean hydrophobicity as defined by Uversky,
@@ -142,15 +107,16 @@ class SequenceParameters:
         return self.SeqObj.uverskyHydropathy()
         
         
-    
+    #...................................................................................#
     def get_fraction_disorder_promoting(self):
         """
         Get a proteins D to O ratio (ratio of disorder promiting residues to order promoting residues)
         """
         
         return self.SeqObj.fraction_disorder_promoting()
+        
 
-
+    #...................................................................................#
     def get_amino_acid_fractions(self):
         """
         Returns a dictionary with the fractions of each amino acid in your sequence
@@ -159,6 +125,7 @@ class SequenceParameters:
         return self.SeqObj.amino_acid_fraction()
 
 
+    #...................................................................................#
     def get_kappa(self):
         """ 
         Get the kappa value for a sequence
@@ -169,7 +136,7 @@ class SequenceParameters:
         return self.SeqObj.kappa()
 
 
-        
+    #...................................................................................#
     def get_countPos(self):
         """ 
         Get the number of positive residues in the sequence 
@@ -180,7 +147,7 @@ class SequenceParameters:
         return self.SeqObj.countPos()
 
 
-
+    #...................................................................................#
     def get_countNeg(self):
         """ 
         Get the number of negative residues in the sequence
@@ -191,7 +158,7 @@ class SequenceParameters:
         return self.SeqObj.countNeg() 
 
 
-        
+    #...................................................................................#
     def get_countNeut(self):
         """ 
         Get the number of neutral residues in the sequence
@@ -201,7 +168,7 @@ class SequenceParameters:
         return self.SeqObj.countNeut() 
 
 
-        
+    #...................................................................................#
     def get_fraction_positive(self):
         """ 
         Get the fraction of positive residues in the sequence 
@@ -212,7 +179,7 @@ class SequenceParameters:
         return self.SeqObj.Fplus() 
 
 
-
+    #...................................................................................#
     def get_fraction_negative(self):
         """ 
         Get the fraction of negative residues in the sequence 
@@ -223,7 +190,7 @@ class SequenceParameters:
         return self.SeqObj.Fminus() 
 
 
-
+    #...................................................................................#
     def get_FCR(self):      
         """ 
         Get the fraction of charged residues in the sequence 
@@ -234,7 +201,7 @@ class SequenceParameters:
         return self.SeqObj.FCR() 
 
 
-
+    #...................................................................................#
     def get_NCPR(self):
         """ 
         Get the net charge per residue of the sequence 
@@ -244,7 +211,7 @@ class SequenceParameters:
 
         return self.SeqObj.NCPR() 
 
-
+    #...................................................................................#
     def get_mean_net_charge(self):
         """ 
         Get the absolute magnitude of the mean net charge 
@@ -255,7 +222,7 @@ class SequenceParameters:
         return self.SeqObj.mean_net_charge()
 
 
-
+    #...................................................................................#
     def get_phasePlotRegion(self):
         """ 
 
@@ -302,7 +269,7 @@ class SequenceParameters:
         return self.SeqObj.phasePlotRegion()
 
 
-        
+    #...................................................................................#
     def get_phosphosites(self):
         """
         Function which returns a list of currently assigned
@@ -321,7 +288,7 @@ class SequenceParameters:
         return self.SeqObj.get_phosphosites()
         
         
-
+    #...................................................................................#
     def get_kappa_after_phosphorylation(self):
         """
         Function which recomputes kappa after complete
@@ -337,7 +304,7 @@ class SequenceParameters:
         return self.SeqObj.kappa_at_maxPhos()
 
 
-
+    #...................................................................................#
     def get_all_phosphorylatable_sites(self):
         """
         Function which returns a list of all the positions which *could* be
@@ -351,31 +318,38 @@ class SequenceParameters:
         OUTPUT: Returns a list of integers corresponding to S/T/Y positions
         in your sequence
         """
+
         return self.SeqObj.get_STY_residues()
 
     
-
+    #...................................................................................#
     def get_full_phosphostatus_kappa_distribution(self):
         """
         This function calculates the kappa value of all possible phosphorylation
         statuses, given the defined phosphosites. 
 
         """
-    
         
         ncalcs = self.SeqObj.calculateNumberDifferentPhosphoStates()
         
-        
         status_message("This function will now make " + str(ncalcs) + " independent kappa calculations\nIf this is a big number you may want to investigate a subset of possible phosphosites or\nuse a Monte Carlo approach to subsample")
-
         
         return self.SeqObj.calculateKappaDistOfPhosphoStates()
+
+
+    #...................................................................................#
+    def get_phosphosequence(self):
+        """
+        Returns the sequence with phosphorylated sites set to E instead of S/Y/T
+        """
+
+        return self.SeqObj.get_phosphosequence()
 
         
     
     # ============================================ #
     # ======= PLOTTING DIAGRAM FUNCTIONS ========= #  
-    
+    #...................................................................................#
     def show_phaseDiagramPlot(self,label=""):
         """ 
         Generates the Pappu-Das phase diagram (diagram of states), places
@@ -388,7 +362,7 @@ class SequenceParameters:
         plotting.show_single_phasePlot(self.get_fraction_positive(), self.get_fraction_negative(),label)
 
 
-        
+    #...................................................................................#
     def save_phaseDiagramPlot(self, filename,label=""):
         """ 
         Generates the Pappu-Das phase diagram (diagram of states), places
@@ -404,7 +378,7 @@ class SequenceParameters:
         plotting.save_single_phasePlot(self.get_fraction_positive(), self.get_fraction_negative(), filename, label)
 
 
-
+    #...................................................................................#
     def show_uverskyPlot(self,label=""):
         """ 
         Generates the Uversky phase diagram (hydropathy vs NCPR), places
@@ -417,7 +391,7 @@ class SequenceParameters:
         plotting.show_single_uverskyPlot(self.get_uversky_hydrophobicity(), self.get_mean_net_charge(), label)
 
 
-        
+    #...................................................................................#
     def save_uverskyPlot(self, filename,label=""):
         """ 
         Generates the Pappu-Das phase diagram (diagram of states), places
@@ -425,7 +399,7 @@ class SequenceParameters:
 
         <<REQUIRES MATPLOTLIB>>>
 
-        INPUT: Writeable filename
+        INPUT:  Writeable filename
         OUTPUT: Nothing, but creates a .png file at the filename location
 
         """
@@ -435,8 +409,119 @@ class SequenceParameters:
 
     
 
+    #...................................................................................#
+    def save_linearNCPR(self, blobLen, filename):
+        """ 
+        Generates a plot of how the NCPR (net charge per residue) changes as we move
+        along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
+        approach and calculates the average within that window.
         
+        <<REQUIRES MATPLOTLIB>>>
+
+        INPUT:  Writeable filename
+        OUTPUT: Nothing, but creates a .png file at the filename location
+
+        """
+
+        plotting.save_linearplot(plotting.build_NCPR_plot, self.SeqObj, blobLen, filename)
+
+
+    #...................................................................................#
+    def save_linearSigma(self, blobLen, filename):
+        """ 
+        Generates a plot of how the Sigma parameter changes as we move
+        along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
+        approach and calculates the average within that window.
+
+        Recall that sigma is defined as
+
+        NCPR^2/FCR (net charge per residue squared divided by the fraction of charged residues)
+
+        <<REQUIRES MATPLOTLIB>>>
+
+        INPUT:  Writeable filename
+        OUTPUT: Nothing, but creates a .png file at the filename location
+
+        """
+
+        plotting.save_linearplot(plotting.build_sigma_plot, self.SeqObj, blobLen, filename)
+
+
+    #...................................................................................#
+    def save_linearHydropathy(self, blobLen, filename):
+        """ 
+        Generates a plot of how the mean hydropathy changes as we move
+        along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
+        approach and calculates the average within that window.
+
+        Hydropathy here is calculated using a NORMALIZED Kyte-Doolittle scale, where 1 is
+        the most hydrophobic and 0 the least.
+
+        <<REQUIRES MATPLOTLIB>>>
+
+        INPUT:  Writeable filename
+        OUTPUT: Nothing, but creates a .png file at the filename location
+
+        """
+
+        plotting.save_linearplots(plotting.build_hydropathy_plot, self.SeqObj, blobLen, filename)
+
+
+    #...................................................................................#
+    def show_linearNCPR(self, blobLen):
+        """ 
+        Generates a plot of how the NCPR (net charge per residue) changes as we move
+        along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
+        approach and calculates the average within that window.
         
+        <<REQUIRES MATPLOTLIB>>>
+
+        INPUT:  Writeable filename
+        OUTPUT: Nothing, but the plot is displayed on screen
+
+        """
+
+        plotting.show_linearplot(plotting.build_NCPR_plot, self.SeqObj, blobLen)
+
+
+    #...................................................................................#
+    def show_linearSigma(self, blobLen):
+        """ 
+        Generates a plot of how the sigma parameter changes as we move
+        along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
+        approach and calculates the average within that window.
+
+        Recall that sigma is defined as
+
+        NCPR^2/FCR (net charge per residue squared divided by the fraction of charged residues)
+
+        <<REQUIRES MATPLOTLIB>>>
+
+        INPUT:  Writeable filename
+        OUTPUT: Nothing, but the plot is displayed on screen
+
+        """
+
+        plotting.show_linearplot(plotting.build_sigma_plot, self.SeqObj, blobLen)
+
+
+    #...................................................................................#
+    def show_linearHydropathy(self, blobLen):
+        """ 
+        Generates a plot of how the mean hydropathy changes as we move
+        along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
+        approach and calculates the average within that window.
+
+        Hydropathy here is calculated using a NORMALIZED Kyte-Doolittle scale, where 1 is
+        the most hydrophobic and 0 the least.
+
+        <<REQUIRES MATPLOTLIB>>>
+
+        INPUT:  Writeable filename
+        OUTPUT: Nothing, but the plot is displayed on screen
+        """
+
+        plotting.show_linearplot(plotting.build_hydropathy_plot, self.SeqObj, blobLen)
 
 
 
@@ -444,11 +529,13 @@ class SequenceParameters:
     # ============================================ #
     # ============ IMPLICIT FUNCTIONS ============ #  
         
-        
+    #...................................................................................#
     def __unicode__(self):
         """ Returns the sequences """
         return "SequenceParameter [len="+str(len(self.SeqObj.seq)) + "]" 
 
+        
+    #...................................................................................#
     def __str__(self):
         """ Returns the sequences """
         return self.__unicode__(self)

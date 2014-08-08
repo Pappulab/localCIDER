@@ -14,24 +14,24 @@
    !    University in St. Louis. Please see the website for citation          !
    !    information:                                                          !
    !                                                                          !
-   !    http://pappulab.github.io/LocalCIDER/                                 !
+   !    http://pappulab.github.io/localCIDER/                                 !
    !                                                                          !
    !    For more information please see the Pappu lab website:                !
    !                                                                          !
    !    http://pappulab.wustl.edu/                                            !
    !                                                                          !
-   !    LocalCIDER is free software: you can redistribute it and/or modify    !
+   !    localCIDER is free software: you can redistribute it and/or modify    !
    !    it under the terms of the GNU General Public License as published by  !
    !    the Free Software Foundation, either version 3 of the License, or     !
    !    (at your option) any later version.                                   !
    !                                                                          !
-   !    LocalCIDER is distributed in the hope that it will be useful,         !
+   !    localCIDER is distributed in the hope that it will be useful,         !
    !    but WITHOUT ANY WARRANTY; without even the implied warranty of        !
    !    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         !
    !    GNU General Public License for more details.                          !
    !                                                                          !
    !    You should have received a copy of the GNU General Public License     !
-   !    along with LocalCIDER.  If not, see <http://www.gnu.org/licenses/>.   !
+   !    along with localCIDER.  If not, see <http://www.gnu.org/licenses/>.   !
    !--------------------------------------------------------------------------!
    ! AUTHORSHIP INFO:                                                         !
    !--------------------------------------------------------------------------!
@@ -40,6 +40,18 @@
    !                                                                          !
    !--------------------------------------------------------------------------!
 
+
+
+   File Description:
+   ================
+   
+   Class which carrys out all permutation and density of states calculations.
+
+   This class also implements all the Wang-Landau algorithms, both normal
+   WL, and HistogramZoom WL.
+
+   This functionality is NOT YET OPERATIONAL and will be introduced in
+   version 0.2.0
 
 """
 
@@ -51,16 +63,14 @@ import time as t
 import time
 import os
 
-
 from backendtools import running_dotdotdot
 from sequence import Sequence
 
+######################
+# Exceptions
 
 class WLException(Exception):
     pass
-
-
-
 
 
 class WangLandauMachine:
@@ -70,6 +80,7 @@ class WangLandauMachine:
     It should be interfaced through the sequencePermutants API in the main localCIDER directory, not here
     
     """
+    #...................................................................................#
     def __init__(self, seq, writedir, frozenResidues=set([]), nbins=10, binmin=0, binmax=1, flatchk=10000, flatcrit = .7,convergence=np.exp(.000001), WL_type="NORMAL"):
 
         # the self.seq must be a sequence object
@@ -175,7 +186,8 @@ class WangLandauMachine:
         print '|   WANG-LANDAU MACHINE INITIALIZED SUCCESFULLY   |'
         print "+-------------------------------------------------+"
 
-
+    
+    #...................................................................................#
     def parseFreezeFile(self,frzfile):
         """ 
         Function which parses freezefiles.
@@ -225,7 +237,8 @@ class WangLandauMachine:
 
         return frozen
 
-        
+
+    #...................................................................................#
     def run(self):
         """ Main function which launches the WL job as initialized """
         if self.WL_type == "NORMAL":
@@ -234,25 +247,31 @@ class WangLandauMachine:
             return self.run_histogramZoom_WL()
 
 
+    #...................................................................................#
     def sanity_check(self):
         """
-           These algorithms are really complicated so we have a set of sanity checks here...
+        These algorithms are really complicated so we have a set of sanity checks here...
         """
-        pass
+        pass # have to write specific types of checks for each type of WL
         #if not self.nbins_target = 
 
 
+    #...................................................................................#
     def setDotFreq(self):
-        # determine dotdotdot frequency (makes ... as the program progresses!)
+        """
+        Function which determines the dotdotdot frequency (makes ... as the program progresses!)
+        """
+
         self.dotdotfreq=int(self.nflatchk/20)
         if self.dotdotfreq < 1:
             self.dotdotfreq=1
 
 
+    #...................................................................................#
     def getBinSize(self):
         """
-           Function which returns the size of each bin in the system as defined by the
-           actual number of bins.
+        Function which returns the size of each bin in the system as defined by the
+        actual number of bins.
         """
 
         # this works because kappa space is ALWAYS divided into some number of bins between
@@ -261,6 +280,7 @@ class WangLandauMachine:
         return (1.0/float(self.nbins_actual))
 
 
+    #...................................................................................#
     def indexInsideRelevantRegion(self, idx):
         """
         Function which evaluates if some integer index (idx) is inside the relevant
@@ -273,61 +293,57 @@ class WangLandauMachine:
         else:            
             return False
 
-    
+
+    #...................................................................................#
     def getBinCenters(self):
         """
-           Function which returns the center of the actual bin vector
+        Function which returns the center of the actual bin vector
         """
         binsz = self.getBinSize()
         
         return binsz/2+binsz*np.arange(0,self.nbins_actual)
 
 
-
+    #...................................................................................#
     def run_histogramZoomWL(self, zoomcount = 1):
-        """
-        
-        This is the main WL script which is used to estimate the density of states of kappa.
+        """        
+        This is the main WL script which is used to estimate the density of states of kappa using
+        the histogramZoom algorithm
 
         It is *heavily* annotated, to try and be as transparent and easy to understand as possible.
-
 
         """
         
         restart=True
-        
+        globalStartTime = t.time()
+
         # This main while loop runs until restart is set to false
         # which only happens when we reach convergence
-        globalStartTime = t.time()
-        
         while(restart==True):
             
-            # WL histogram information
+            # Initialize WL histogram information
             bincts = self.getBinCenters()    # bincts = histogram bin centers
             g = [0]*self.nbins_actual        # g = density of state (DOS) histogram
             H = [0]*self.nbins_actual        # H = kappa histogram 
             f = np.exp(1)                    # f = convergence test
-            seqcount = 0                     # ??
+            seqcount = 0                     # freq at which sequences are written out
             nstep = 0                        # initialize number of steps
-            niter = 0                        # initialize number of iterations (with succesfull flatchecks)
-            flatcount = 0                    # initialize number of cycles past the 
-                                             # flatchk value which have failed to reach flatness
-        
-        
-            # RNG        
+            niter = 0                        # initialize number of iterations with succesfull flatchecks
+            flatcount = 0                    # initialize number of cycles past the  value which have 
+                                             # failed to reach flatness
+            
+            # (re)seed the RNG
             rand = rng.Random()
             rand.seed(t.time())
       
-            # Create output files for recording progess (this overwrites if 
-            # the file already exists, which happens on a restart)
+            # Create output files for recording progess (overwrites if 
+            # the file already exists - this happens on a restart)
             hlog = self.mklog(os.path.join(self.writeDir,"hlog.txt"))
             glog = self.mklog(os.path.join(self.writeDir,"glog.txt"))
             seqlog = self.mklog(os.path.join(self.writeDir,"seqlog.txt"))
             hblog = self.mklog(os.path.join(self.writeDir,"histogram_bins.txt"))
-            if self.WL_type == "ZOOM":
-                hlocalblog = self.mklog(os.path.join(self.writeDir,"local_histogram_bins.txt"))
+            hlocalblog = self.mklog(os.path.join(self.writeDir,"local_histogram_bins.txt"))
 
-  
             # Write initial header information to those files
             self.writeLog(hlog,"flchk #\tHistograms\n")
             self.writeLog(hlog,"iter 1:\n")
@@ -338,12 +354,11 @@ class WangLandauMachine:
             self.writeLog(hblog, self.fprintVertVector(bincts))
             self.writeLog(hblog, self.fprintVertVector(bincts[self.relevant_min:self.relevant_max+1]))
             
-
             # initial starting conditions
             oseq = self.seq
             kold = oseq.kappa()
 
-            # get histogram bin index of original (old) sequence kappa                  
+            # get histogram bin index of this sequence's kappa value                  
             idx_old = np.argmin(abs(bincts-kold))
 
             startTime = t.time()
@@ -354,9 +369,9 @@ class WangLandauMachine:
                     running_dotdotdot()                    
                 
                 # There are two possible Monte Carlo moves, which we alternate
-                # between at a 70:30 split
-                # - Random swapping of two residues which changes the kappa (70%)
-                # - Complete unbiased shuffle of sequence (30%)
+                # between at a 80:20 split
+                # - Random swapping of two residues which changes the kappa (80%)
+                # - Complete unbiased shuffle of sequence (20%)
                 
                 if rand.random() > 0.8:
                     nseq = oseq.swapRandChargeRes(self.frozen)
@@ -366,7 +381,7 @@ class WangLandauMachine:
                 # calculate the kappa of that new sequence
                 knew = nseq.kappa()
             
-                # get the histogram index of that new kapp
+                # get the histogram index of that new kappa
                 idx_new = np.argmin(abs(bincts-knew))
 
                 ###############################################################
@@ -374,23 +389,21 @@ class WangLandauMachine:
                 ###############################################################
 
                 # From http://www.pages.drexel.edu/~cfa22/msim/node53.html
-                if(idx_new < self.nbins_actual):                
-                # if the index value is less than the number of bins (how could this not be the case...?)
-                
-                    # we accept IF the 
-                    # A) there are fewer sequences in the new bin than the old bin (DOS bins)
-                    # B) with an exponential decay factor relative the difference if there are more in the
-                    #    the old bind than the new bin
-                    #
-                    # Note if we're outside the region of interest we evaluate based on the Histogram densities
-                    # instead of the densities of states
-                
-                    #print self.relevant_min, self.relevant_max, idx_new
-                    if self.indexInsideRelevantRegion(idx_new):
-                        acceptProb = min([1,np.exp(g[idx_old]-g[idx_new])])
-                    else:   
-                        acceptProb = min([1,np.exp(H[idx_old]-H[idx_new])])
 
+                
+                # we accept IF the 
+                # A) there are fewer sequences in the new bin than the old bin (DOS bins)
+                # B) with an exponential decay factor relative the difference if there are more in the
+                #    the old bind than the new bin
+                #
+                # Note if we're outside the region of interest we evaluate based on the Histogram densities
+                # instead of the densities of states
+                
+                # print self.relevant_min, self.relevant_max, idx_new
+                if self.indexInsideRelevantRegion(idx_new):
+                    acceptProb = min([1,np.exp(g[idx_old]-g[idx_new])])
+                else:   
+                    acceptProb = min([1,np.exp(H[idx_old]-H[idx_new])])
 
                 # print(acceptProb)
                 # if new sequence kappa is less visited than old sequence kappa, visit it
@@ -398,83 +411,81 @@ class WangLandauMachine:
                 # =============================================================================
                 # ACCEPTANCE REGION
                 # if we accept the move
-                    if(rand.random() < acceptProb):
+                if(rand.random() < acceptProb):
                  
-
-                    #
-                    # I think the following if/else means we write every seqlen^2
-                    # sequence to the sequence log, though its honestly not clear to me
-                    # *why* we should do this...
-                    #
-                      
-                        if(seqcount == 0):
-                            self.writeLog(seqlog,'%0.3f\t%s\n' % (oseq.kappa(),oseq))
-                            seqcount = int(oseq.len**2)
-                        else:
-                            seqcount = seqcount - 1
-
-                        # set the oldsequence to the sequence we just accepted and
-                        # simmilarly update the kappa old and bin index old
-    
-                        oseq = Sequence(nseq.seq, nseq.dmax, nseq.chargePattern)
-                    
-                        kold = oseq.kappa()
-                    
-                        idx_old = np.argmin(abs(bincts-kold))
-                    
-                        # reset the new sequence and new sequence histogram index
-                        nseq = None
-                        idx_new = 0
+                    # We write every seqlen^2  sequence 
+                    # to the sequence log
+                    if(seqcount == 0):
+                        self.writeLog(seqlog,'%0.3f\t%s\n' % (oseq.kappa(),oseq))
+                        seqcount = int(oseq.len**2)
                     else:
-                        nseq = None
-                        idx_new = 0
+                        seqcount = seqcount - 1
+
+                    # set the oldsequence to the sequence we just accepted and
+                    # simmilarly update the kappa old and bin index old    
+                    oseq = Sequence(nseq.seq, nseq.dmax, nseq.chargePattern)
+
+                        
+                    ## TO DO test if oseq.kappa() is ever not equal to knew??
+                    kold = oseq.kappa()
+                    idx_old = np.argmin(abs(bincts-kold))
+                    
+                    # reset the new sequence and new sequence histogram index
+                    nseq = None
+                    idx_new = 0
+                else:
+                    nseq = None
+                    idx_new = 0
+                        
                 # END OF ACCEPTANCE REGION
                 # =============================================================================
                 
-                    g[idx_old] = g[idx_old] + np.log(f)
-                    H[idx_old] = H[idx_old] + 1
+                g[idx_old] = g[idx_old] + np.log(f)
+                H[idx_old] = H[idx_old] + 1
 
-                    # increment the number of steps taken
-                    nstep = nstep + 1
+                # increment the number of steps taken
+                nstep = nstep + 1
 
-                
-                    if(nstep == self.nflatchk):
+                # if we're at a flatcheck
+                if(nstep == self.nflatchk):
                         
-                        print ""
-                        print "Interest indicies = " + str(self.relevant_min) + " and " + str(self.relevant_max)
+                    print ""
+                    print "Interest indicies = " + str(self.relevant_min) + " and " + str(self.relevant_max)
 
-                        Hlocal = H[self.relevant_min:self.relevant_max+1]
+                    Hlocal = H[self.relevant_min:self.relevant_max+1]
                     
-                        print "On flatcheck number:  " + str(flatcount)
-                        flatcount += 1
-                        self.writeLog(hlog,str(flatcount) +"\t" + self.fprintHVector(Hlocal)+"\n")
+                    print "On flatcheck number:  " + str(flatcount)
+                    flatcount += 1
+                    self.writeLog(hlog,str(flatcount) +"\t" + self.fprintHVector(Hlocal)+"\n")
                         
-                        (H,f,niter,nstep) = self.__run_flatcheck(H, Hlocal, niter, f, hlog, glog, g)
-                     
-                        # to timing stats for this set of cycles
-                        endTime = t.time()
-                        print("Time for this flat-check cycle: " + str(endTime-startTime))
-                        startTime = t.time()                        
+                    (H,f,niter,nstep) = self.__run_flatcheck(H, Hlocal, niter, f, hlog, glog, g)
+                        
+                    # to timing stats for this set of cycles
+                    endTime = t.time()
+                    print("Time for this flat-check cycle: " + str(endTime-startTime))
+                    startTime = t.time()                        
                                       
-                    if (flatcount >= 20 and niter == 0):
-                        break
+                # if this is the 20th flatcheck and we've not had a single succesfull iteration
+                # then time to ZOOM
+                if (flatcount >= 20 and niter == 0):
+                    break
+
+            # This is OUTSIDE the convergence while loop
             if (flatcount >= 20 and niter == 0):
 
                 # create the local kappa histogram
                 Hlocal = H[self.relevant_min:self.relevant_max+1]
 
-                # run the histogram zoom algorithm
+                # run the histogram zoom algorithm and restart
                 zoomcount = self.histogram_zoom(Hlocal,H,zoomcount)
-
                 flatcount=0        
                 
             else:
                 # if we're here we're done, so turn off the
                 # restart
-                restart=False
-        
+                restart=False        
                 
-
+        # finalize and write up
         dos = open(os.path.join(self.writeDir,"DOS.txt"),'w')
         dos.write('bincts\tlog(omega)\n')
         for i in range(len(bincts)):
@@ -491,22 +502,17 @@ class WangLandauMachine:
         print("Total Run Time in Seconds")
         print(globalEndTime-globalStartTime)
         return np.vstack((bincts,g))
-        # close while loop
+        
 
-
-
+    #...................................................................................#
     def run_normal_WL(self):
         """
-        
-        This is the main WL script which is used to estimate the density of states of kappa.
+        This is the main WL script which is used to estimate the density of states of kappa using the normal
+        Wang Landau algorithm
 
         It is *heavily* annotated, to try and be as transparent and easy to understand as possible.
-
-
         """
         
-        # This main while loop runs until restart is set to false
-        # which only happens when we reach convergence
         globalStartTime = t.time()
                     
         # WL histogram information
@@ -514,7 +520,7 @@ class WangLandauMachine:
         g = [0]*self.nbins_actual        # g = density of state (DOS) histogram
         H = [0]*self.nbins_actual        # H = kappa histogram 
         f = np.exp(1)                    # f = convergence test
-        seqcount = 0                     # ??
+        seqcount = 0                     # initialize seqcount (determines sequence writing)
         nstep = 0                        # initialize number of steps
         niter = 0                        # initialize number of iterations (with succesfull flatchecks)
         flatcount = 0                    # initialize number of cycles past the 
@@ -531,11 +537,6 @@ class WangLandauMachine:
         glog = self.mklog(os.path.join(self.writeDir,"glog.txt"))
         seqlog = self.mklog(os.path.join(self.writeDir,"seqlog.txt"))
         hblog = self.mklog(os.path.join(self.writeDir,"histogram_bins.txt"))
-
-        # print "Created histogram logfile at:     " + hlog
-        # print "Created density of states log at: " + glog
-        # print "Created sequence log at :         " + seqlog
-        # print "Vector of histogram bin centers:  " + str(bincts)
 
         # Write initial header information to those files
         self.writeLog(hlog,"flchk #\tHistograms\n")
@@ -557,11 +558,12 @@ class WangLandauMachine:
         startTime = t.time()
         reject=0
             
+        # This main while loop runs until we reach convergence. Note that depending on how long your sequence is
+        # this might run for a while...
         while(f > self.convergence):
 
             if nstep % self.dotdotfreq == 0:
                 running_dotdotdot()                    
-                
                 
             # There are two possible Monte Carlo moves, which we alternate
             # between at a 70:30 split
@@ -590,9 +592,9 @@ class WangLandauMachine:
             # B) with an exponential decay factor relative the difference if there are more in the
             #    the old bind than the new bin
             #
-            # Note if we're outside the region of interest we automatically reject, so we're confinig
+            # Note if we're outside the region of interest we automatically reject, so we're confining
             # states of interest to be inside the kappa region of interest and will NEVER accept a move
-            # outside that region
+            # outside that region. This has a relfective boundary property.
                 
             skip=False
     
@@ -655,6 +657,7 @@ class WangLandauMachine:
             nstep = nstep + 1
                 
             # if we're at a flatcheck
+            # TODO add some kind of 'this is taking WAY TOO LONG' check
             if(nstep % self.nflatchk == 0):
                 
                 print ""
@@ -675,7 +678,7 @@ class WangLandauMachine:
                 print("Time for this flat-check cycle: " + str(endTime-startTime))
                 startTime = t.time()  
                 
-
+        # Finalize and clean up
         dos = open(os.path.join(self.writeDir,"DOS.txt"),'w')
         dos.write('bincts\tlog(omega)\n')
         for i in range(len(bincts)):
@@ -695,6 +698,7 @@ class WangLandauMachine:
         # close while loop
 
 
+    #...................................................................................#
     def run_permutant_generator(self, numberOfSequences):
         """
         Modified normal WL which instead of writing density of state information and logfiles will simply generate a number of kappa permutants for some bin values
@@ -734,13 +738,13 @@ class WangLandauMachine:
 
         startTime = t.time()
         reject=0
-            
+        binsfull = False    
+        
         while(binsfull==False):
 
             if nstep % self.dotdotfreq == 0:
                 running_dotdotdot()                    
-                
-                
+                                
             # There are two possible Monte Carlo moves, which we alternate
             # between at a 70:30 split
             # - Random swapping of two residues which changes the kappa (80%)
@@ -783,8 +787,7 @@ class WangLandauMachine:
                     sequence_vector[idx_new].append(nseq.seq)
                 else:
                     # randomly replace one of the sequences in the bins
-                    sequence_vector[idx_new][rand.randint(0,numberOfSequences)] = nseq.seq
-                
+                    sequence_vector[idx_new][rand.randint(0,numberOfSequences)] = nseq.seq                
             else:              
                 reject=reject+1
                 acceptProb = 0
@@ -820,31 +823,31 @@ class WangLandauMachine:
                 g[idx_old] = g[idx_old] + np.log(f)
                 H[idx_old] = H[idx_old] + 1
 
-            
-
             # increment the number of steps taken
             nstep = nstep + 1
 
             # check bin full-ness every 1000 steps
             if nstep % 1000 == 0:
-                ans=0
+                
+                # print number rejected outside region of interest
+                print "Rejected [outside histogram] = " + str(float(reject)/float(1000)) + "%"
+                reject=0
+
+                # calculate the total number of sequences we have
+                totalNumSeq=0
                 for i in sequence_vector:
-                    ans=ans+len(i)
-                if ans == numberOfSequences*(self.relevant_max-self.relevant_min):
-                    pass
-                    #
-                    # FINISH OFF AND DEBUG/CHECK THIS WORKS!!
-                    # F
-      
-
-     
-        # close while loop
-
+                    totalNumSeq=totalNumSeq+len(i)
+                    
+                # if the total number of sequences is equal to 
+                # the target number then we're done
+                if ans == numberOfSequences*self.nbins_target:
+                    binsfull=True
     
 
+    #...................................................................................#
     def __run_flatcheck(self, H, Hlocal, niter, f, hlog, glog, g):
         """
-            Function which analyzes the local histogram region of interest to evaluate flatness.
+        Function which analyzes the local histogram region of interest to evaluate flatness.
         """
         
         print "H local     = " + str(Hlocal)
@@ -853,8 +856,8 @@ class WangLandauMachine:
         print "Full Kappa histo: " + str(H)
         print "Full DOS        : " + str(g)
 
-        # This is smart - so if everything is flat (i.e. all bins are equally
-        # full then the H (the vector of the number of sequences in each bin)
+        # If everything is flat (i.e. all bins are equally full then
+        # each bin in H (the vector of the number of sequences in each bin)
         # divided by the mean will be 1
         #  
         # As you have increasing lack of flatness you have more and more which
@@ -868,9 +871,9 @@ class WangLandauMachine:
         if flatness_number == self.nbins_target:
             # If bins are all flat!
             print ""
-            print "+=======================================================+"
-            print "|Flatcheck criterion was met - resetting the histograms |"
-            print "+=======================================================+"
+            print "+========================================================+"
+            print "| Flatcheck criterion was met - resetting the histograms |"
+            print "+========================================================+"
             print ""
             
             # update the convergence criterion
@@ -887,11 +890,10 @@ class WangLandauMachine:
             if(f > self.convergence):
                 self.writeLog(hlog,"\niter %d:\n" % (niter+1))
               
-              
-
-
         return(H,f,niter,0)
 
+
+    #...................................................................................#
     def histogram_zoom(self,Hlocal,H,zoomcount):
         """
 
@@ -938,13 +940,29 @@ class WangLandauMachine:
 
           Considering this, the algorithm has the following approach
 
-          1) After 10 iterations of an appropriate number of steps if flatness was not reached we call this
+          1) After 20 iterations of an appropriate number of steps if flatness was not reached we call this
              function, including how many times without flatness success we've had ($zoomcount)
 
           2) Scan through each of the histogram bins and identify those which are 1% * $zoomcount of the 
              most full bind. These are our designated "bad_indexes"
 
-          3) 
+          3) We then shrink the local region of interest to halfway between the bad index bins and the
+             previous bin max and bin min
+        
+          4) There are also a bunch of heuristics like extending the binds if there's a lot of density
+             just outside the max or min bin of interest
+
+
+        Essentially, this lets us slowly zoom in on the region of the full histogram where the majority
+        of the density is, importantly, where the degree of zoom is inversly proportional to the number
+        of steps before a flatcheck. This means you can essentially estimate the region of density to 
+        arbitrary precision, giving a tradeoff of computation time vs. true density.  
+
+        This is very useful to rapidly assess if your sequence's kappa and the [effective] maximum likelihood
+        kappa of that sequence composition are close, without needing to estimate the FULL density of states.
+
+        It also lets you guage where you might want to set density region boundaries for carrying out true 
+        Wang Landau
 
         """
 
@@ -968,7 +986,6 @@ class WangLandauMachine:
         new_start=0
         new_end=self.nbins_target-1
         
-
         # search for bins that had less than 1%*zoomcount of the highest bin
         # evertime we meet the flatcheck criterion we reset the zoomcount to 1  
         bad_indices=[]
@@ -1011,7 +1028,6 @@ class WangLandauMachine:
         if full_histogram_new_end > (self.nbins_actual-1):
             full_histogram_new_end = self.nbins_actual-1
             
-
         # so now we have the index value into the FULL histogram, lets translate 
         # that index value into kappa-space
         new_min_kappa   = full_histogram_new_start*self.getBinSize()
@@ -1030,7 +1046,6 @@ class WangLandauMachine:
         print "---------------------------------------"
         print ">> new start kappa  = " + str(new_start_kappa)
         print ">> new end kappa    = " + str(new_end_kappa )
-
 
         # how big is this new region of interest in kappa space?
         kappa_distance = new_end_kappa-new_start_kappa
@@ -1056,13 +1071,13 @@ class WangLandauMachine:
         while (not len(bin_centers[self.relevant_min:self.relevant_max+1]) == self.nbins_target):
 
             # this function corrects the bin size in a sensnible way
-            self.__correct_for_numerical_errors(new_start_kappa, new_end_kappa, pushing_min, pushing_max, bin_centers)
-            
+            self.__correct_for_numerical_errors(new_start_kappa, new_end_kappa, pushing_min, pushing_max, bin_centers)            
                 
         print "After bin index update bin indices are: " + str(self.relevant_min) + " and " + str(self.relevant_max)
         return zoomcount
 
-    
+
+    #...................................................................................#
     def __correct_for_numerical_errors(self, new_start_kappa, new_end_kappa, pushing_min, pushing_max,bin_centers):
         # numerica errors can be introduced when determining the number of bins and whatnot
         # So we use this loop to ensure the HLocal is always the correct number of bins
@@ -1120,11 +1135,8 @@ class WangLandauMachine:
                     self.relevant_min=self.relevant_min-1
                 else:
                     self.relevant_max=self.relevant_max+1
-
-                
-          
         
-
+    #...................................................................................#
     def __check_local_skew(self, zoomcount, H):
         """
             This function takes the full kappa histogram (H). It examines the status of the histogram bins either 
@@ -1157,6 +1169,8 @@ class WangLandauMachine:
 
         return -1
 
+
+    #...................................................................................#
     def __get_new_Hlocal_end(self, bad_indices):
 
         # if the last bad index is the end of the histogram, work out
@@ -1183,7 +1197,7 @@ class WangLandauMachine:
         return (new_end, pushing_max)
             
 
-
+    #...................................................................................#
     def __get_new_Hlocal_start(self, bad_indices):
 
         # if the first local bin was basically empty, we determine
@@ -1206,7 +1220,8 @@ class WangLandauMachine:
             pushing_min =True
         return (new_start, pushing_min)
 
-        
+
+    #...................................................................................#
     def mklog(self,logfile,initial = ''):
         """ 
         Create a logfile
@@ -1221,6 +1236,7 @@ class WangLandauMachine:
     #                        LOGGING FUNCTIONALITY
     #
     # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+    #...................................................................................#
     def writeLog(self,logfile, output):
         """
             Write to a logfile
@@ -1228,7 +1244,9 @@ class WangLandauMachine:
         log = open(logfile,'a')
         log.write(output)
         log.close()
-
+        
+    
+    #...................................................................................#
     def fprintHVector(self,vector):
         """
            Convert a vector of integers into a string
@@ -1240,6 +1258,8 @@ class WangLandauMachine:
             out += "%d\t" % num
         return out
 
+
+    #...................................................................................#
     def fprintGVector(self,vector):
         """
            Convert a vector of floats into a string
@@ -1251,6 +1271,8 @@ class WangLandauMachine:
             out += "%5.4f\t" % num
         return out
 
+        
+    #...................................................................................#
     def fprintVertVector(self,vector):
         out = ""
         for num in vector:
@@ -1259,7 +1281,10 @@ class WangLandauMachine:
 
             
 
+## The code below is going into a stand alone WL executable. Ignore for now...
 
+
+"""
 ## ===================================================================================================
 ##                              Main Script - hold onto your hat!
 ## ===================================================================================================
@@ -1319,3 +1344,4 @@ if __name__=="__main__":
     if args.test:
         testingMethod()
 
+"""

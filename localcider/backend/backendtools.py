@@ -1,32 +1,37 @@
 """ 
-   !--------------------------------------------------------------------------!
+ !--------------------------------------------------------------------------!
    ! LICENSE INFO:                                                            !
    !--------------------------------------------------------------------------!
-   !    This file is part of LocalCider.                                      !
+   !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 1.0                                                           !
+   !    Version 0.1.0                                                         !
    !                                                                          !
-   !    Copyright (C) 2014, The LocalCIDER development team (current and      !
+   !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
    !                        Ahad, Rahul K. Das.                               !
    !                                                                          !
-   !    LocalCIDER is a PappuLab tool. Please see the website for citation    !
-   !    information.                                                          !
+   !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
+   !    University in St. Louis. Please see the website for citation          !
+   !    information:                                                          !
    !                                                                          !
-   !    Website: http://pappulab.github.io/LocalCIDER   /                     !
+   !    http://pappulab.github.io/localCIDER/                                 !
    !                                                                          !
-   !    LocalCIDER is free software: you can redistribute it and/or modify    !
+   !    For more information please see the Pappu lab website:                !
+   !                                                                          !
+   !    http://pappulab.wustl.edu/                                            !
+   !                                                                          !
+   !    localCIDER is free software: you can redistribute it and/or modify    !
    !    it under the terms of the GNU General Public License as published by  !
    !    the Free Software Foundation, either version 3 of the License, or     !
    !    (at your option) any later version.                                   !
    !                                                                          !
-   !    LocalCIDER is distributed in the hope that it will be useful,         !
+   !    localCIDER is distributed in the hope that it will be useful,         !
    !    but WITHOUT ANY WARRANTY; without even the implied warranty of        !
    !    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         !
    !    GNU General Public License for more details.                          !
    !                                                                          !
    !    You should have received a copy of the GNU General Public License     !
-   !    along with LocalCIDER.  If not, see <http://www.gnu.org/licenses/>.   !
+   !    along with localCIDER.  If not, see <http://www.gnu.org/licenses/>.   !
    !--------------------------------------------------------------------------!
    ! AUTHORSHIP INFO:                                                         !
    !--------------------------------------------------------------------------!
@@ -40,25 +45,25 @@
    File Description:
    ================
    
-   backendtools contains various utilities and tools used by LocalCIDER. Especially 
+   backendtools contains various utilities and tools used by localCIDER. Especially 
    useful is the fact all STDOUT is done through the various *_message methods
-   defined here. This allows easy control over the degree of verbosity LocalCIDER
-   displays.
+   defined here. This allows easy control over the degree of verbosity localCIDER
+   displays. Verbocity is hard-coded into the config file
 
  
 
 """
 import sys
 import os
+from config import HUSH_WARNINGS, HUSH_STATUS, HUSH_ALL
 
-HUSH_WARNINGS=False
-HUSH_STATUS=False
-HUSH_ALL=False
-
+#...................................................................................#
 def warning_message(message):    
     if not HUSH_WARNINGS and not HUSH_ALL:
         print "WARNING: " + message
 
+
+#...................................................................................#
 def status_message(message):    
     """
     Unless the HUSH_STATUS variable is set to True
@@ -67,6 +72,8 @@ def status_message(message):
     if not HUSH_STATUS and not HUSH_ALL:
         print message
 
+
+#...................................................................................#
 def running_dotdotdot():
     """
     Print a single dot (period) to STDOUT without a newline.
@@ -76,14 +83,31 @@ def running_dotdotdot():
         sys.stdout.write('.')
         sys.stdout.flush()
 
+
+#...................................................................................#
+def warn_thisWillBeRemoved():
+    """
+    Prints a standard depreciation warning
+    """
+    warning_message("<> TO BE DEPRECATED IN THE NEAR FUTURE <>")
+
+
+#...................................................................................#
+def warn_notReadyYet():
+    """
+    Prints a standard 'this feature isn't ready yet' warning
+    """
+    warning_message("<> THIS FEATURE IS COMING IN THE NEXT VERSION <>")
+
+
+#...................................................................................#
 def return_absolute_datafile_path(filename):
     """ 
     Function which returns the absolute path
     of a file in the package's data directory.
 
-    Usefull as a way to easily access data
-    files.
     """
+    warn_thisWillBeRemoved()
 
     # get the absolute path of where we are now
     absolute_path= os.path.realpath('__file__')
@@ -98,6 +122,7 @@ def return_absolute_datafile_path(filename):
     return(os.path.join(splitted[0],"data",filename))
 
 
+#...................................................................................#
 def verifyType(obj,typeHere):
     """ 
     Function which takes an object and some type and ensures the
@@ -117,4 +142,3 @@ def verifyType(obj,typeHere):
             return True
         else:
             return False
-

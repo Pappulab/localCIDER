@@ -12,5 +12,6 @@ setup(
     description='Tools for calculating sequence properties of disodered proteins',
     long_description=open('README.txt').read(),
     install_requires=[
-        "NumPy >= 8.1"],
+        "numpy","matplotlib"],
+    test_suite="tests",
 )

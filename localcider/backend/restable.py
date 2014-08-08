@@ -1,3 +1,54 @@
+""" 
+   !--------------------------------------------------------------------------!
+   ! LICENSE INFO:                                                            !
+   !--------------------------------------------------------------------------!
+   !    This file is part of localCIDER.                                      !
+   !                                                                          !
+   !    Version 0.1.0                                                         !
+   !                                                                          !
+   !    Copyright (C) 2014, The localCIDER development team (current and      !
+   !                        former contributors): Alex Holehouse, James       !
+   !                        Ahad, Rahul K. Das.                               !
+   !                                                                          !
+   !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
+   !    University in St. Louis. Please see the website for citation          !
+   !    information:                                                          !
+   !                                                                          !
+   !    http://pappulab.github.io/localCIDER/                                 !
+   !                                                                          !
+   !    For more information please see the Pappu lab website:                !
+   !                                                                          !
+   !    http://pappulab.wustl.edu/                                            !
+   !                                                                          !
+   !    localCIDER is free software: you can redistribute it and/or modify    !
+   !    it under the terms of the GNU General Public License as published by  !
+   !    the Free Software Foundation, either version 3 of the License, or     !
+   !    (at your option) any later version.                                   !
+   !                                                                          !
+   !    localCIDER is distributed in the hope that it will be useful,         !
+   !    but WITHOUT ANY WARRANTY; without even the implied warranty of        !
+   !    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         !
+   !    GNU General Public License for more details.                          !
+   !                                                                          !
+   !    You should have received a copy of the GNU General Public License     !
+   !    along with localCIDER.  If not, see <http://www.gnu.org/licenses/>.   !
+   !--------------------------------------------------------------------------!
+   ! AUTHORSHIP INFO:                                                         !
+   !--------------------------------------------------------------------------!
+   !                                                                          !
+   ! MAIN AUTHOR:   James Ahad and Alex Holehouse                             !
+   !                                                                          !
+   !--------------------------------------------------------------------------!
+
+
+   File Description:
+   ================
+   
+   Class constructs a querayable ResTable object which provides rapid
+   for each amino acid's properties
+
+
+"""
 import csv
 import numpy as np
 
@@ -9,16 +60,11 @@ class ResTableException(Exception):
     pass
 
 class ResTable:
-    """ Class which holds data on amino acids as read from an amino acid
-        data table. Each line in such a file should be of the following format
-
-        <name>, <3 letter code>, <1 letter code>, <hydropathy>, <charge>
-
-        e.g.
-
-        Isoleucine,ILE,I,9,0
+    """ Class which holds data on amino acids as read from the data.aminoacids file
 
         """
+
+    #...................................................................................#
     def __init__(self):
         """ Takes a filename and initializes the self.residue_table list
             with the contents of a residue table file        
@@ -32,25 +78,8 @@ class ResTable:
             res = Residue(r[0],r[1],r[2],r[3],r[4])
             self.residue_table[res.letterCode3] = res
 
-        """
-        # set the filename
-        self.filename = filename
 
-        # create the empty residue_table dictionary
-        
-        
-        # read in your residue file
-        with open(self.filename, 'rb') as f:
-            reader = csv.reader(f)
-            
-            for row in reader:
-
-                # NOTE there's no validation here so make sure this file is correctly formatte
-                res = Residue(row[0],row[1],row[2],float(row[3]),int(row[4]))
-                
-                # residue_table dictionary is keyed by the 3 letter code
-                self.residue_table[res.letterCode3] = res
-        """
+    #...................................................................................#
     def lookForRes(self,resCode):
         """ Returns a Residue objected defined by the resCode (can be
             three letter or one letter - we don't care!
@@ -70,11 +99,21 @@ class ResTable:
         raise ResTableException("Invalid amino acid code provided [" + str(resCode) +"]")
             
 
+    #...................................................................................#
     def lookUpHydropathy(self,resCode):
+        """ 
+        Get an amino acid's hydropathy
+        """
+
         res = self.lookForRes(resCode)
         return res.hydropathy
         
+
+    #...................................................................................#
     def lookUpCharge(self,resCode):
+        """ 
+        Get the charge on a residue (1/-1/0)
+        """
         
         # first check for reduced residue types (aka charge +/-/0)
         if(resCode == '+'):

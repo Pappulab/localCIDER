@@ -2,36 +2,41 @@
    !--------------------------------------------------------------------------!
    ! LICENSE INFO:                                                            !
    !--------------------------------------------------------------------------!
-   !    This file is part of LocalCider.                                      !
+   !    This file is part of localCIDER.                                      !
    !                                                                          !
    !    Version 0.1.0                                                         !
    !                                                                          !
-   !    Copyright (C) 2014, The LocalCIDER development team (current and      !
+   !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
    !                        Ahad, Rahul K. Das.                               !
    !                                                                          !
-   !    LocalCIDER is a PappuLab tool. Please see the website for citation    !
-   !    information.                                                          !
+   !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
+   !    University in St. Louis. Please see the website for citation          !
+   !    information:                                                          !
    !                                                                          !
-   !    Website: http://pappulab.github.io/LocalCIDER/                        !
+   !    http://pappulab.github.io/localCIDER/                                 !
    !                                                                          !
-   !    LocalCIDER is free software: you can redistribute it and/or modify    !
+   !    For more information please see the Pappu lab website:                !
+   !                                                                          !
+   !    http://pappulab.wustl.edu/                                            !
+   !                                                                          !
+   !    localCIDER is free software: you can redistribute it and/or modify    !
    !    it under the terms of the GNU General Public License as published by  !
    !    the Free Software Foundation, either version 3 of the License, or     !
    !    (at your option) any later version.                                   !
    !                                                                          !
-   !    LocalCIDER is distributed in the hope that it will be useful,         !
+   !    localCIDER is distributed in the hope that it will be useful,         !
    !    but WITHOUT ANY WARRANTY; without even the implied warranty of        !
    !    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         !
    !    GNU General Public License for more details.                          !
    !                                                                          !
    !    You should have received a copy of the GNU General Public License     !
-   !    along with LocalCIDER.  If not, see <http://www.gnu.org/licenses/>.   !
+   !    along with localCIDER.  If not, see <http://www.gnu.org/licenses/>.   !
    !--------------------------------------------------------------------------!
    ! AUTHORSHIP INFO:                                                         !
    !--------------------------------------------------------------------------!
    !                                                                          !
-   ! MAIN AUTHORS: James Ahad and Alex Holehouse                              !
+   ! MAIN AUTHOR:   James Ahad and Alex Holehouse                             !
    !                                                                          !
    !--------------------------------------------------------------------------!
 
@@ -39,44 +44,31 @@
    File Description:
    ================
    
-   This is a file containing various plotting functions. Note that localCIDER
-   doesn't require these functions to work - the ability to plot things is 
-   nice but not essential.
+   Plotting is the backened for all localCIDER's plotting functionality. 
 
-   Most of these functions don't make sense as being class based as there is no 
-   need for stateful behaviour.
+   As with all functions in backend, nothing should be called directly, but
+   instead through the localcider.plots API module.
 
-   There are eight main functions which should be called from this file,
-   with the remaining functions being internal to here. Those functions are;
+   Given plots are their own stateless function the plotting module is purely
+   functional, no classes or state is maintained.
 
-   >>> Show or save a single sequence on the diagam of states plot
-   - show_single_phasePlot
-   - save_single_phasePlot
-
-   >>> Show or save multiple sequences on the diagram of states plot
-   - show_multiple_phasePlot
-   - save_multiple_phasePlot
-
-   >>> Show or save a single sequence on the Uversky plot
-   - show_single_uverskyPlot
-   - save_single_uverskyPlot
-
-   >>> Show or save multiple sequences on the Uversky plot
-   - show_multiple_uverskyPlot
-   - save_multiple_uverskyPlot
-
-Obviously the 
-   sequenceParameter class provides the expected API, but if you build 
-   functionality on top of these plotting functions the behaviour associated 
- 
+   For adding additional plotting features please see the paradigm defined with
+   the linear plots - specifically using a hierarchical approach which passes
+   functions. This makes for much cleaner code and reduces maintainance.
   
 
 """
+import os
+import matplotlib.pyplot as plt
+from matplotlib.font_manager import FontProperties
+
+from sequence import Sequence
+from backendtools import verifyType
 
 
 ######################
 # Exceptions
-
+#...................................................................................#
 class PlottingException(Exception):
     """
     Exception for the plotting functions
@@ -85,11 +77,7 @@ class PlottingException(Exception):
     pass
 
 
-import matplotlib.pyplot as plt
-from matplotlib.font_manager import FontProperties
-import os
-
-
+#...................................................................................#
 def show_single_phasePlot(fp, fn, label="",title="Diagram of states",legendOn=True):
     """
     Display a single-sequence Das-Pappu phase diagram plot on the screen
@@ -105,6 +93,7 @@ def show_single_phasePlot(fp, fn, label="",title="Diagram of states",legendOn=Tr
     plt.show()
 
 
+#...................................................................................#
 def save_single_phasePlot(fp, fn, filename, label="", title="Diagram of states",legendOn=True):
     """
     Save a single-sequence Das-Pappu phase diagram to file
@@ -126,7 +115,7 @@ def save_single_phasePlot(fp, fn, filename, label="", title="Diagram of states",
     plt.close()
 
 
-
+#...................................................................................#
 def show_multiple_phasePlot(fp_list, fn_list, label=[], title="Diagram of states",legendOn=True):
     """
     Display multiple-sequences on a Das-Pappu phase diagram plot on the screen
@@ -144,7 +133,7 @@ def show_multiple_phasePlot(fp_list, fn_list, label=[], title="Diagram of states
     finalized_plottingObject.show()
 
 
-
+#...................................................................................#
 def save_multiple_phasePlot(fp_list, fn_list, filename, label=[], title="Diagram of states",legendOn=True):
     """
     Save multiple-sequences on a Das-Pappu phase diagram to file
@@ -169,7 +158,7 @@ def save_multiple_phasePlot(fp_list, fn_list, filename, label=[], title="Diagram
 ###   UVERSKY PLOT FUNCTIONS
 ###
 ### =========================
-
+#...................................................................................#
 def show_single_uverskyPlot(hydropathy, mean_net_charge, label="",title="Uversky plot",legendOn=True):
              
     #uverskyPlot_validate(hyd,fn)
@@ -182,7 +171,7 @@ def show_single_uverskyPlot(hydropathy, mean_net_charge, label="",title="Uversky
     plt.show()
 
 
-
+#...................................................................................#
 def save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label="", title="Uversky plot",legendOn=True):
 
     #uverskyPlot_validate(fp,fn)
@@ -201,7 +190,7 @@ def save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label="", tit
     plt.close()
 
 
-
+#...................................................................................#
 def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label=[], title="Uversky plot",legendOn=True):
     
     # validate the various points
@@ -216,7 +205,7 @@ def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label=[], t
     plt.show()
 
 
-
+#...................................................................................#
 def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label=[], title="Uversky plot",legendOn=True):
     
     # validate the various points
@@ -234,13 +223,13 @@ def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, l
 
         
 
-## <><><><><><><><><><><><><><><><><><><><> ##
-##                                          ##
-##   INTERNAL FUNCTIONS FOR DOING STUFF     ##
-##                                          ##
-## <><><><><><><><><><><><><><><><><><><><> ##
+## <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><> ##
+##                                                              ##
+##   INTERNAL FUNCTIONS FOR Uversky/Phase diagram plots         ##
+##                                                              ##
+## <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><> ##
 
-
+#...................................................................................#
 def single_plot(x,y,label=""):
     """
     Internal function for creating a single sequence MATPLOTLIB object which can
@@ -273,7 +262,7 @@ def single_plot(x,y,label=""):
     return plt
 
 
-
+#...................................................................................#
 def multiple_plot(x_list,y_list,label_list=[],legendOn=True,title="Diagram of states"):
     """
     Internal function for creating a single sequence MATPLOTLIB object which can
@@ -317,7 +306,7 @@ def multiple_plot(x_list,y_list,label_list=[],legendOn=True,title="Diagram of st
     return plt
     
 
-
+#...................................................................................#
 def finalize_DasPappu(plt, legendOn, title):
     """
     Common function which finalizes up a plot by drawing on the regions 1-5, adding
@@ -364,7 +353,7 @@ def finalize_DasPappu(plt, legendOn, title):
     return plt
     
 
-
+#...................................................................................#
 def phaseplot_validate(fp,fn):
     """
     Validate if the fp and fn are resonable for making the diagram of states
@@ -392,6 +381,7 @@ def phaseplot_validate(fp,fn):
     # if we get here everything looks OK!
 
 
+#...................................................................................#
 def finalize_uversky(plt, legendOn, title):
     """
     Common function which finalizes up a plot by drawing on the regions 1-5, adding
@@ -438,73 +428,148 @@ def finalize_uversky(plt, legendOn, title):
 
     return plt
 
+
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+#                           Linear sequence plots 
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+#...................................................................................#
+def save_linearNCPR(SeqObj, blobLen, filename):
+    save_linearplot(build_NCPR_plot, SeqObj, blobLen, filename)
+
+
+#...................................................................................#
+def save_linearSigma(SeqObj, blobLen, filename):
+    save_linearplot(build_sigma_plot, SeqObj, blobLen, filename)
+
+
+#...................................................................................#
+def save_linearHydropathy(SeqObj, blobLen, filename):
+    save_linearplots(build_hydropathy_plot, SeqObj, blobLen, filename)
+
+
+#...................................................................................#
+def show_linearNCPR(SeqObj, blobLen):
+    show_linearplot(build_NCPR_plot, SeqObj, blobLen)
+
+
+#...................................................................................#
+def show_linearSigma(SeqObj, blobLen):
+    show_linearplot(build_sigma_plot, SeqObj, blobLen)
+
+
+#...................................................................................#
+def show_linearHydropathy(SeqObj, blobLen):
+    show_linearplot(build_hydropathy_plot, SeqObj, blobLen)
+
+##
+## Functions below allow construction of the various Linear Sequence Plots #DRY
+##
+
+
+def __build_linear_plot(data, title="", xlabel="Blob index", ylabel="", ylimits=[-0.1, 1.1]):
+    """
+    Internal plot which expects data to be a Nx2 matrix (np.vstack) where column 1
+    is the x values and column 2 is the y values. It also assumes the Y values
+    are scaled to between 0 and 1 (so Y-axis limits are -0.1 and +1.1)
+    """
     
+    # plot the data
+    plt.plot(data[0,:], data[1,:])
 
+    # set Y lims
+    plt.ylim( ylimits)
 
-        
-def testPhasePlot():
-    graph = phasePlot([.65,.32,.15],[.34,.21,.42],['derp1','harro','nyan'],'C:\\Users\\James Ahad\\Documents\\GitHub\\idpserver\\mysite\\output\\test.png')
+    axes_pro = FontProperties()
+    axes_pro.set_size('large')
+    axes_pro.set_weight('bold')
+  
 
+    # label
+    plt.xlabel(xlabel,fontproperties = axes_pro)
+    plt.ylabel(ylabel,fontproperties = axes_pro)
 
-def testPhasePlotNull():
-    graph = phasePlot([],[],[],'/work/jahad/IDP_patterning/idpserver/mysite/output/test.png')
+    axes_pro.set_size('x-large')
+    plt.title(title, fontproperties = axes_pro)
 
-"""
-import computation as comp
-def NCPRPlot(sequence, bloblen, filename):
-    if(not sequence is None):
-        data = sequence.NCPRdist(bloblen)
-        plt.plot(data[0,:], data[1,:])
-    else:
-        plt.plot([],[])
-        plt.xlim([0,50])
-    plt.title('NCPR Distribution')
-    plt.xlabel('Blob Index')
-    plt.ylabel('NCPR')
-    plt.ylim([-1.1,1.1])
-    plt.savefig(filename, dpi=200)
-    plt.close()
+    # return plot object
     return plt
 
-def testNCPRPlot():
-    graph = NCPRPlot(comp.Sequence('EEEEEEKKKKEKEKEKEKEKEEEEEEEKKKKKKEKEKEKEKEKEKEKGGGGGGKEKEKE'),5, 'C:\\Users\\James Ahad\\Documents\\GitHub\\idpserver\\mysite\\output\\testNCPR.png')
 
-def SigmaPlot(sequence, bloblen, filename):
-    if(not sequence is None):
-        data = sequence.Sigmadist(bloblen)
-        plt.plot(data[0,:], data[1,:])
-    else:
-        plt.plot([],[])
-        plt.xlim([0,50])
-    plt.title('Sigma Distribution')
-    plt.xlabel('Blob Index')
-    plt.ylabel('Sigma')
-    plt.ylim([-.1,1.1])
-    plt.savefig(filename, dpi=200)
-    plt.close()
+#...................................................................................#
+def build_NCPR_plot(SeqObj, blobLen):
+    """
+    Function which returns a matplotlib.plt object ready for saving/plotting
+    of the NCPR along your sequence divided into blobs of some size
+    """
+
+    try:
+        plt = __build_linear_plot(SeqObj.linearDistOfNCPR(blobLen), 
+                                  title='NCPR distribution (blob ' + str(int(blobLen))+')',
+                                  ylabel='NCPR',ylimits=[-1.1,1.1])                              
+    except PlottingException:
+        raise PlottingException("NCPR plot construction requires Sequence object")
+    
     return plt
 
-def testSigmaPlot():
-    graph = SigmaPlot(comp.Sequence('EEEEEEKKKKEKEKEKEKEKEEEEEEEKKKKKKEKEKEKEKEKEKEKGGGGGGKEKEKE'),5, 'C:\\Users\\James Ahad\\Documents\\GitHub\\idpserver\\mysite\\output\\testSigma.png')
 
-def HydroPlot(sequence, bloblen, filename):
-    if(not sequence is None):
-        data = sequence.Hydrodist(bloblen)
-        plt.plot(data[0,:], data[1,:])
-    else:
-        plt.plot([],[])
-        plt.xlim([0,50])
-    plt.title('Hydropathy Distribution')
-    plt.xlabel('Blob Index')
-    plt.ylabel('Hydropathy')
-    plt.savefig(filename, dpi=200)
-    plt.close()
+#...................................................................................#
+def build_sigma_plot(SeqObj, blobLen):
+    """
+    Function which returns a matplotlib.plt object ready for saving/plotting
+    of the sigma along your sequence divided into blobs of some size
+    """
+
+    try:
+        plt = __build_linear_plot(SeqObj.linearDistOfSigma(blobLen), 
+                                  title='Sigma distribution (blob ' + str(int(blobLen))+')',
+                                  ylabel='Sigma' )                              
+
+    except AttributeError as e:
+        raise PlottingException("Sigma plot construction requires Sequence object")
+
     return plt
 
-def testHydroPlot():
-    graph = HydroPlot(comp.Sequence('EEEEEEKKKKEKEKEKEKEKEEEEEEEKKKKKKEKEKEKEKEKEKEKGGGGGGKEKEKE'),5, 'C:\\Users\\James Ahad\\Documents\\GitHub\\idpserver\\mysite\\output\\testHydro.png')
+#...................................................................................#
+def build_hydropathy_plot(SeqObj, blobLen):
+    """
+    Function which returns a matplotlib.plt object ready for saving/plotting
+    of the Uversky-hydropathy along your sequence divided into blobs of some size
+    """
 
-#testNCPRPlot()
-#testSigmaPlot()
-#testHydroPlot()
-"""
+
+    try:
+        plt = __build_linear_plot(SeqObj.linearDistOfHydropathy(blobLen),
+                                  title='Hydropathy distribution (blob ' + str(int(blobLen))+')',
+                                  ylabel='Hydropathy')
+
+    except AttributeError as e:
+        raise PlottingException("Hydropathy plot construction requires Sequence object")
+
+    return plt
+
+
+#...................................................................................#
+def save_linearplot(build_fun, SeqObj, blobLen, filename):
+    """
+    Internal function which builds and saves a linear sequence plot 
+
+    build_fun is the linear sequence building function we're using
+    """
+
+    plt = build_fun(SeqObj, blobLen)
+    plt.savefig(filename,dpi=200)
+    plt.close()
+
+
+#...................................................................................#
+def show_linearplot(build_fun, SeqObj, blobLen):
+    """
+    Internal function which builds and shows a linear sequence plot 
+
+    build_fun is the linear sequence building function we're using
+    """
+
+    plt = build_fun(SeqObj, blobLen)
+    plt.show()
+

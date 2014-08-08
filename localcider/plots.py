@@ -5,39 +5,6 @@
    !    This file is part of localCIDER.                                      !
    !                                                                          !
    !    Version 0.1.0                                                         !
-   !                                                                          !
-   !    Copyright (C) 2014, The LocalCIDER development team (current and      !
-   !                        former contributors): Alex Holehouse, James       !
-   !                        Ahad, Rahul K. Das.                               !
-   !                                                                          !
-   !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
-   !    University in St. Louis. Please see the website for citation          !
-   !    information:                                                          !
-   !                                                                          !
-   !    http://pappulab.github.io/LocalCIDER/                                 !
-   !                                                                          !
-   !    For more information please see the Pappu lab website:                !
-   !                                                                          !
-   !    http://pappulab.wustl.edu/                                            !
-   !                                                                          !
-   !    LocalCIDER is free software: you can redistribute it and/or modify    !
-   !    it under the terms of the GNU General Public License as published by  !
-   !    the Free Software Foundation, either version 3 of the License, or     !
-   !    (at your option) any later version.                                   !
-   !                                                                          !
-   !    LocalCIDER is distributed in the hope that it will be useful,         !
-   !    but WITHOUT ANY WARRANTY; without even the implied warranty of        !
-   !    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         !
-   !    GNU General Public License for more details.                          !
-   !                                                                          !
-   !    You should have received a copy of the GNU General Public License     !
-   !    along with LocalCIDER.  If not, see <http://www.gnu.org/licenses/>.   !
-   !--------------------------------------------------------------------------!
-   ! AUTHORSHIP INFO:                                                         !
-   !--------------------------------------------------------------------------!
-   !                                                                          !
-   ! MAIN AUTHOR:   Alex Holehouse                                            !
-   !                                                                          !
    !--------------------------------------------------------------------------!
    
    File Description:
@@ -57,6 +24,8 @@
    >>> Show or save multiple sequences on the diagram of states plot
    - show_multiple_phasePlot
    - save_multiple_phasePlot
+   - show_multiple_phasePlot2
+   - save_multiple_phasePlot2
 
    >>> Show or save a single sequence on the Uversky plot
    - show_single_uverskyPlot
@@ -65,15 +34,23 @@
    >>> Show or save multiple sequences on the Uversky plot
    - show_multiple_uverskyPlot
    - save_multiple_uverskyPlot
+   - show_multiple_uverskyPlot2
+   - save_multiple_uverskyPlot2
 
 
    These functions can be called independently of other localCIDER
    functionality, or you could calculate the fraction of positive and 
-   negative residues for a bunch of 
+   negative residues for a bunch of sequences and use these functions 
+   independent of the localCIDER SequenceParameter objects.
+
+   Note that for plotting linear sequence data (e.g. linear hydropathy,
+   linear NCPR etc) you must use a SequenceParameter object.
 
 """
 from backend import plotting
 
+
+#...................................................................................#
 def show_single_phasePlot(fp, fn, label="", title="Diagram of states", legendOn=True):
     """
     Plot a single sequence on the Pappu-Das phase plot (diagram of states).
@@ -94,7 +71,7 @@ def show_single_phasePlot(fp, fn, label="", title="Diagram of states", legendOn=
     plotting.show_single_phasePlot(fp, fn, label, title, legendOn)
 
 
-
+#...................................................................................#
 def save_single_phasePlot(fp, fn, filemae, label="", title="Diagram of states", legendOn=True):
     """
     Plot a single sequence on the Pappu-Das phase plot (diagram of states).
@@ -117,7 +94,7 @@ def save_single_phasePlot(fp, fn, filemae, label="", title="Diagram of states", 
     plotting.save_single_phasePlot(fp, fn, filename, label, title, legendOn)
 
 
-
+#...................................................................................#
 def show_multiple_phasePlot(fp_list, fn_list, label=[""], title="Diagram of states", legendOn=True):
     """
     Plot multiple sequences on the same Pappu-Das phase plot (diagram of states).
@@ -139,6 +116,7 @@ def show_multiple_phasePlot(fp_list, fn_list, label=[""], title="Diagram of stat
     plotting.show_multiple_phasePlot(fp_list, fn_list, label, title, legendOn)
 
 
+#...................................................................................#
 def show_multiple_phasePlot2(SeqParam_list, lablelist=[], title="Diagram of states", legendOn=True):
     """
     Plot a single sequence on the Pappu-Das phase plot (diagram of states). This function takes
@@ -167,8 +145,7 @@ def show_multiple_phasePlot2(SeqParam_list, lablelist=[], title="Diagram of stat
     plotting.show_multiple_phasePlot(fp_list, fn_list, label, title, legendOn)
     
 
-
-
+#...................................................................................#
 def save_multiple_phasePlot(fp_list, fn_list, filename, label="", title="Diagram of states", legendOn=True):
     """
     Plot multiple sequences on the same Pappu-Das phase plot (diagram of states) and save that file
@@ -190,6 +167,8 @@ def save_multiple_phasePlot(fp_list, fn_list, filename, label="", title="Diagram
 
     plotting.save_multiple_phasePlot(fp_list, fn_list, filename, label, title, legendOn)
 
+
+#...................................................................................#
 def save_multiple_phasePlot2(SeqParam_list, filename, label="", title="Diagram of states", legendOn=True):
     """
     Plot multiple sequences on the same Pappu-Das phase plot (diagram of states) and save that file. 
@@ -216,8 +195,6 @@ def save_multiple_phasePlot2(SeqParam_list, filename, label="", title="Diagram o
         fp_list.append(seq.get_fraction_positive())
         fn_list.append(seq.get_fraction_negative())
 
-
-
     plotting.save_multiple_phasePlot(fp_list, fn_list, filename, label, title, legendOn)
 
 
@@ -227,6 +204,7 @@ def save_multiple_phasePlot2(SeqParam_list, filename, label="", title="Diagram o
 ##
 ####################################################
 
+#...................................................................................#
 def show_single_uverskyPlot(hydropathy, mean_net_charge, label="", title="Uversky plot", legendOn=True):
     """
     Plots a single sequence on the Uversky plot (hydropathy vs. mean net charge)
@@ -249,7 +227,7 @@ def show_single_uverskyPlot(hydropathy, mean_net_charge, label="", title="Uversk
     plotting.show_single_uverskyPlot(hydropathy, mean_net_charge, label, title, legendOn)
 
 
-
+#...................................................................................#
 def save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label="", title="Uversky plot", legendOn=True):
     """
     Plots a single sequence on the Uversky plot (hydropathy vs. mean net charge) and save it to 'filename' (.png is
@@ -273,7 +251,7 @@ def save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label="", tit
     plotting.save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label, title, legendOn)
 
 
-
+#...................................................................................#
 def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label="", title="Uversky plot", legendOn=True):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and shows the plot on the screen.
@@ -295,7 +273,7 @@ def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label="", t
     plotting.show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label, title, legendOn)
 
 
-
+#...................................................................................#
 def show_multiple_uverskyPlot2(SeqParam_list, label="", title="Uversky plot", legendOn=True):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and shows the plot on the screen.
@@ -325,7 +303,7 @@ def show_multiple_uverskyPlot2(SeqParam_list, label="", title="Uversky plot", le
     plotting.show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label, title, legendOn)
 
 
-
+#...................................................................................#
 def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label="", title="Uversky plot", legendOn=True):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and saves that plot to 'filename' (.png
@@ -351,7 +329,7 @@ def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, l
     plotting.save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label, title, legendOn)
 
 
-
+#...................................................................................#
 def save_multiple_uverskyPlot2(SeqParam_list, filename, label="", title="Uversky plot", legendOn=True):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and saves that plot to 'filename' (.png

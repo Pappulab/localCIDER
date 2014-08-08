@@ -1,8 +1,8 @@
-""" 
-   !--------------------------------------------------------------------------!
+"""
+!--------------------------------------------------------------------------!
    ! LICENSE INFO:                                                            !
    !--------------------------------------------------------------------------!
-   !    This file is part of LocalCider.                                      !
+   !    This file is part of localCIDER.                                      !
    !                                                                          !
    !    Version 0.1.0                                                         !
    !                                                                          !
@@ -10,10 +10,15 @@
    !                        former contributors): Alex Holehouse, James       !
    !                        Ahad, Rahul K. Das.                               !
    !                                                                          !
-   !    LocalCIDER is a PappuLab tool. Please see the website for citation    !
-   !    information.                                                          !
+   !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
+   !    University in St. Louis. Please see the website for citation          !
+   !    information:                                                          !
    !                                                                          !
-   !    Website: http://pappulab.github.io/LocalCIDER/                        !
+   !    http://pappulab.github.io/LocalCIDER/                                 !
+   !                                                                          !
+   !    For more information please see the Pappu lab website:                !
+   !                                                                          !
+   !    http://pappulab.wustl.edu/                                            !
    !                                                                          !
    !    LocalCIDER is free software: you can redistribute it and/or modify    !
    !    it under the terms of the GNU General Public License as published by  !
@@ -34,17 +39,17 @@
    ! MAIN AUTHOR:   Alex Holehouse                                            !
    !                                                                          !
    !--------------------------------------------------------------------------!
-
+ 
    
    File Description:
    ================
    
    This is the main package index for the backend package. backend holds all the
    inner guts of localCIDER, and represents functions that users should never
-   call directly. Instead, users should import sequenceParameters or WL and
-   call methods from there
+   call directly. Instead, users should import sequenceParameters or other modules
+   from within localCIDER
 
 
 """
  
-import sequence
+

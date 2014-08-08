@@ -70,6 +70,7 @@ import os
 import itertools
 from backendtools import return_absolute_datafile_path, warning_message, verifyType, status_message
 from restable import ResTable
+from data import aminoacids
 import data  
 
 
@@ -90,15 +91,10 @@ class SequenceException(Exception):
 
 # lookuptable is a global table of AA properties
 #
-# This file is loaded by first determining the absolute path of the
-# resodieData.csv file and then having the ResTable object parse
-# the file.
-#
-# In the future we plan to introduce various hydrophobcity tables 
-# rather than rely soely on the one currently being used (KD? - should
-# check this!)
+# Hydrophobicity of amino acids is determined by the KD table
 #
 lkupTab = ResTable()
+
 
 
 class Sequence:
@@ -107,7 +103,7 @@ class Sequence:
     and carries out sequence parameter logic operations
     """
         
-    
+    #...................................................................................#
     def __init__(self, seq, dmax = -1, chargePattern=[]):
         """
         seq = amino acid sequence as a string
@@ -136,186 +132,26 @@ class Sequence:
         self.phosphosites=[]
 
 
-        
+    #...................................................................................#
     def __unicode__(self):
         """ Returns the sequences """
         return self.seq
 
 
-
+    #...................................................................................#
     def __str__(self):
         """ Returns the sequences """
         return self.seq
-
-
-
-    def setPhosPhoSites(self, listofPsites):
-        """
-        Set one or more sites on your sequence which can be phosphorylated. Note that
-        this indexes from 1 (like all of bioinformatics) and not from 0 (like all of 
-        computer science).
-
-        i.e. "KKKYKKK" the Y here is at position 4
-        
-        Internally we do translate to indexing from 0, but this is not something you
-        should have to worry about
-        
-        Note that all data validation for the phosphosite list is done in this function.
-        
-        """
-
-        # evaluate proposed phosphosites
-        for site in listofPsites:
-            
-            # check we can convert to an integer!
-            site = int(site)
-            
-            # python indexes from 0 but humans from 1
-            idx=site-1 
-
-            # if we're outside our sequence
-            if idx >= len(self.seq) or idx < 0:                
-                warning_message("Proposed phosphosite (" + str(idx+1) + " is outside sequence range. Skipping...")
-                pass
-
-            # grab the residue letter from the sequence
-            res=self.seq[idx]
-
-            status_message("Setting " + res  + str(idx+1))
-            
-            if res not in ["S","T","Y"]:
-                # we skip it if it seems like an unphosphorylatable residue
-                warning_message('Position ' + str(site) + ' in sequence is a non phosphorylatable residue [' + str(res) +']')
-            else:
-                if idx in self.phosphosites:
-                    # don't add the same residue twice, but no need to warn about it
-                    pass
-                else:
-                    # let's add that bad-boy!
-                    self.phosphosites.append(idx)
-
-
-
-    def calculateNumberDifferentPhosphoStates(self):
-        """ Function which returns the number of different phosphorylation
-            states assuming each phosphosite can be phosphorylated independently
-            of each other.
-
-            This can be useful if you want to estimate how long a complete 
-            phoshostate distribution calculation might take (each calc is about
-            0.2-1 second, depending on your CPU)
-        """ 
-        return np.power(2,len(self.phosphosites))
         
 
-
-    def clear_phosphosites(self):
-        """ Function which zeros out all the stored phosphosite data """
-        self.phosphosites = []
-
-
-    
-    def calculateKappaDistOfPhosphoStates(self):
-        """ Function which, using the previously defined possible phosphosites, calculates the cloud
-            of possible kappa values for all combination of phosphorylation. This is a relativly long
-            operation due to the fact that the FULL kappa must be recalculated everytime (i.e. delta max
-            must be recomputed each time, unlike with sequence permutants where DMAX remains constant).
-
-            To aid with this, every 50 calculations the progress is printed
-
-        """
-        #------------------------------------------------------------------------------
-        ## local function
-        def print_progress(count,total):
-            if (count % 50) == 0:            
-                status_message("Done " + str(count) + " of " + str(total))
-
-        num_calcs = self.calculateNumberDifferentPhosphoStates()
-        #------------------------------------------------------------------------------
-
-        
-        # itertools.product("01"..) produces all variants of a list where each
-        # element is either 0 or 1 using an iterator 
-        phosphokappa = []
-        count=0
-        for phosphostatus in itertools.product("01", repeat=len(self.phosphosites)):
-            newseq = list(self.seq)
-            
-            
-            indx=0
-
-            # look over each element in our phosphosite on/off list
-            for i in phosphostatus:                            
-                # if that element is ON
-                if int(i) == 1:
-                    # set the AA at that position to a negative residue (we use E but
-                    # could be D)
-                    newseq[self.phosphosites[indx]] = "E"
-                indx=indx+1
-            # now we've replaced some number of T/Y/R with E representing a different
-            # phosphostate
-            newseq = "".join(newseq)
-            newseqObj = Sequence(newseq)
-
-            # now add that new kappa to the list, update, and repeat!
-            phosphokappa.append((newseqObj.kappa(), newseqObj.Fplus(), newseqObj.Fminus(), newseqObj.FCR(), newseqObj.NCPR(), newseqObj.meanHydropathy()))
-
-            print_progress(count, num_calcs)
-            count=count+1
-                
-        return phosphokappa
+    # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+    #
+    #                           GENERAL SEQUENCE PROPERTIES
+    #
+    # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
 
-        
-    def get_phosphosites(self):
-        """ Returns the list of phosphosites (indexed from 1 
-            not zero)
-        """
-        newSites=[]
-        for i in self.phosphosites:
-            newSites.append(i+1)
-        return newSites
-
-
-
-    def kappa_at_maxPhos(self):
-        """ 
-        Returns the kappa if all the phosphosites
-        were phosphorylated
-        """
-
-        # no phosphosites defined
-        if len(self.phosphosites) == 0:
-            return self.kappa()
-        else:
-            newseq = list(self.seq)
-            for pos in self.phosphosites:
-                newseq[pos] = "E"
-            newseq = "".join(newseq)
-            newseqObj = Sequence(newseq)
-
-            return newseqObj.kappa()
-
-
-
-    def get_STY_residues(self):
-        """ 
-        Where are all the Ser/Thr/Tyr residues in your
-        sequence.
-
-        Note we return positions which index from 1 not from 0
-
-        """
-        
-
-        sites=[]
-        idx=1
-        for i in self.seq:
-            if i in ["Y","S","T"]:
-                sites.append(idx)
-            idx=idx+1
-        return sites
-
+    #...................................................................................#
     def fraction_disorder_promoting(self):
         """ 
         Get the fraction of 'disorder promoting residues' in a
@@ -364,55 +200,68 @@ class Sequence:
         return AADICT
 
 
-                
+    #...................................................................................#
     def countPos(self):
         """ Get the number of positive residues in the sequence """
         return len(np.where(self.chargePattern>0)[0])
 
 
-
+    #...................................................................................#
     def countNeg(self):
         """ Get the number of negative residues in the sequence """
         return len(np.where(self.chargePattern<0)[0])
 
 
-
+    #...................................................................................#
     def countNeut(self):
         """ Get the number of neutral residues in the sequence """
         return len(np.where(self.chargePattern==0)[0])
 
 
-
+    #...................................................................................#
     def Fplus(self):
         """ Get the fraction of positive residues in the sequence """
         return self.countPos()/(self.len+0.0)
 
-
-
+        
+    #...................................................................................#
     def Fminus(self):
         """ Get the fraction of negative residues in the sequence """
         return self.countNeg()/(self.len+0.0)
 
 
-
+    #...................................................................................#
     def FCR(self):      
         """ Get the fraction of charged residues in the sequence """
         return (self.countPos() + self.countNeg())/(self.len+0.0)
 
 
-
+    #...................................................................................#
     def NCPR(self):
         """ Get the net charge per residue of the sequence """
         return (self.countPos() - self.countNeg())/(self.len+0.0)
 
 
-
+    #...................................................................................#
     def mean_net_charge(self):
         """ Get the absolute magnitude of the mean net charge """
         return abs(self.NCPR())
 
 
 
+    #...................................................................................#
+    def kappa(self):
+        """ 
+        Return the kappa value, as defined in REF 1 \
+        """
+        
+        if self.deltaMax() == 0:
+            return -1
+        else:
+            return self.delta()/self.deltaMax()
+
+
+    #...................................................................................#
     def phasePlotRegion(self):
         """ Returns the IDP diagram of states [REF 1] region based on the FCR/NCPR 
             rules. Possible return values are;
@@ -474,7 +323,7 @@ class Sequence:
                 raise SequenceException("Found inaccessible region of phase diagram. Numerical error")
                         
             
-            
+    #...................................................................................#
     def phasePlotAnnotation(self):
         """ Return the string annotation for the diagram of states region
             which this sequence falls into
@@ -494,7 +343,7 @@ class Sequence:
             return 'ERROR, NOT A REAL REGION'
 
 
-
+    #...................................................................................#
     def meanHydropathy(self):
         """ Return the mean hydropathy value for the sequence
         """
@@ -504,7 +353,7 @@ class Sequence:
         return ans
 
 
-
+    #...................................................................................#
     def uverskyHydropathy(self):
         """ 
         Return the mean hydropathy as calculated by Uversky (window size of
@@ -524,7 +373,7 @@ class Sequence:
         return ans
 
 
-
+    #...................................................................................#
     def cumMeanHydropathy(self):
         """ Return a vector of the average cumulative hydropathy. i.e.
             
@@ -538,8 +387,116 @@ class Sequence:
         ans /= (np.arange(0,self.len)+1)
         return ans
 
+       #...................................................................................#
+    def linearDistOfNCPR(self, bloblen):
+        """
+        Returns a np vertical stack object showing the NCPR over
+        blob-sized regions along the sequence
+        """
+
+        nblobs = self.len-bloblen+1
+
+        blobncpr = [0]*nblobs
+
+        # for each overlapping blob in the sequence calculate the NCPR
+        for i in np.arange(0,nblobs):
+            blob = self.chargePattern[i:(i+bloblen)]
+            bpos = len(np.where(blob>0)[0])
+            bneg = len(np.where(blob<0)[0])
+            blobncpr[i] = (bpos-bneg)/(bloblen+0.0)
+            
+        return np.vstack((np.arange(1,nblobs+1), blobncpr))
 
 
+    #...................................................................................#
+    def linearDistOfSigma(self, bloblen):
+        """
+        Returns a np vertical stackobject showing how the "sigma" parameter 
+        varies over blob-sized regions along the sequence
+        """
+
+        nblobs = self.len-bloblen+1
+
+        blobsig = [0]*nblobs
+
+        # for each overlapping blob in the sequence calculate the sigma parameter
+        for i in np.arange(0,nblobs):
+            blob = self.chargePattern[i:(i+bloblen)]
+            bpos = len(np.where(blob>0)[0])
+            bneg = len(np.where(blob<0)[0])
+
+            bncpr = (bpos-bneg)/(bloblen+0.0)
+            bfcr = (bpos+bneg)/(bloblen+0.0)
+
+            if(bfcr == 0):
+                bsig = 0
+            else:
+                bsig = bncpr**2/bfcr
+            blobsig[i] = bsig
+        
+        return np.vstack((np.arange(1,nblobs+1), blobsig))
+
+        
+
+    #...................................................................................#
+    def linearDistOfHydropathy(self, bloblen):
+
+        nblobs = self.len-bloblen+1
+
+        blobhydro = [0]*nblobs
+
+        # construct a vector of the hydropathy values of each residue in
+        # in the sequence (using the re-set KD scale which runs from 0 to 9
+        # with 9 being the most hydrophobic. This scaling may be changed
+        # in future versions...
+        #hydrochain = [lkupTab.lookUpHydropathy(res) for res in self.seq]
+
+        # get Uversky hydrophobicity lookup table
+        KDU = aminoacids.get_KD_uversky()
+
+        hydrochain = []
+        for i in self.seq:
+            hydrochain.append(KDU[aminoacids.ONE_TO_THREE[i]])
+
+        # for each overlapping blob in the sequence calculate the hydropathy
+        for i in np.arange(0,nblobs):
+            blob = hydrochain[i:(i+bloblen)]
+            blobhydro[i] = sum(blob)/float(bloblen)
+        return np.vstack((np.arange(1,nblobs+1), blobhydro))
+
+
+    #...................................................................................#
+    def linearDistOfHydropathy_2(self, bloblen):
+
+        nblobs = self.len-bloblen+1
+
+        blobhydro = [0]*nblobs
+
+        # construct a vector of the hydropathy values of each residue in
+        # in the sequence (using the re-set KD scale which runs from 0 to 9
+        # with 9 being the most hydrophobic. This scaling may be changed
+        # in future versions...
+        hydrochain = [lkupTab.lookUpHydropathy(res) for res in self.seq]
+
+        # for each overlapping blob in the sequence calculate the hydropathy
+        for i in np.arange(0,nblobs):
+            blob = hydrochain[i:(i+bloblen)]
+            blobhydro[i] = sum(blob)
+        return np.vstack((np.arange(1,nblobs+1), blobhydro))
+
+
+
+
+    # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+    #
+    #                         KAPPA CALCULATING FUNCTIONS
+    #
+    # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+    #
+    # The functions in the following section focus on parameters involved in the kappa
+    # calculation.
+    #
+    #...................................................................................#
     def sigma(self):
         """ Returns the sigma value for a sequence
 
@@ -557,7 +514,7 @@ class Sequence:
             return self.NCPR()**2/self.FCR()
 
 
-
+    #...................................................................................#
     def deltaForm(self,bloblen):
         """ Calculate the delta value as defined in REF 1
         """ 
@@ -568,10 +525,7 @@ class Sequence:
         
         for i in xrange(0,nblobs):
             
-
-            
-            # get the blob charge pattern list
-            
+            # get the blob charge pattern list            
             blob = self.chargePattern[i:(i+bloblen)]
 
             # calculate a bunch of parameters for the blob
@@ -589,33 +543,39 @@ class Sequence:
             else:
                 bsig = bncpr**2/bfcr
 
-
             # calculate the square deviation of the
             # blob sigma from the sequence sigma and
             # weight by the number of blobs in the sequence
             ans += (sigma - bsig)**2/nblobs
 
         return ans
+        
 
+    #...................................................................................#
     def delta(self):
-        """ Return the average delta value from blobs of size 5 and 6, as
-            arrived upon as being optimal in REF 1
+        """ 
+        Return the average delta value from blobs of size 5 and 6, as
+        arrived upon as being optimal in REF 1
         """
+        
         return (self.deltaForm(5)+self.deltaForm(6))/2
 
+
+    #...................................................................................#
     def deltaMax(self):
-        """ Return the maximum possible delta value for the sequence"""
+        """ 
+        Return the maximum possible delta value for the sequence
+        """
+
         # If this has been computed already, then return it       
         if(self.dmax != -1):
             return self.dmax
         elif(self.FCR() == 0):
             self.dmax = 0
 
-
         # First computational trick (Maximum Charge Separation)
         # If we have no neutral residues this is easy
         elif(self.countNeut() == 0):
-
             setupSequence = ''
             for i in xrange(0,self.countPos()):
                 setupSequence += '+'
@@ -626,9 +586,7 @@ class Sequence:
 
         #second computational trick (Maximization of # of Charged Blobs)
         # relevant if we have 18 or more neutral residues
-        elif(self.countNeut() >= 18):
-            #DEBUG
-            #maxSeq = ''
+        elif(self.countNeut() >= 18):            
             nneuts = self.countNeut()
             posBlock = ''
             negBlock = ''
@@ -710,18 +668,14 @@ class Sequence:
 
         return self.dmax
 
-    def kappa(self):
-        """ Return the kappa value, as defined in REF 1 \
-        """
-        if self.deltaMax() == 0:
-            return -1
-        else:
-            return self.delta()/self.deltaMax()
 
+    #...................................................................................#
     def swapRes(self,index1,index2):
-        """ Causes the two residues indexed by index1 and index2 in the sequence
-            to be swapped. This returns a new sequence object (? is that desireable?)
+        """ 
+        Causes the two residues indexed by index1 and index2 in the sequence
+        to be swapped. This returns a new sequence object with pre-calculated dmax
         """
+        
         if(index1 == index2):
             return Sequence(self.seq)
 
@@ -749,6 +703,8 @@ class Sequence:
         # generated
         return Sequence(''.join(tempseq),self.dmax,tempChargeSeq)
 
+
+    #...................................................................................#
     def swapRandChargeRes(self, frozen = set()):
         """ Function which randomly selects two residues and swaps them if that
             swap would change the kappa value
@@ -804,6 +760,7 @@ class Sequence:
         return self.swapRes(swapPair1[0],swapPair2[0])
 
 
+    #...................................................................................#
     def full_shuffle(self, frozen = set()):
         """
            Function which totally shuffles a sequences, but keeps the positions
@@ -813,7 +770,6 @@ class Sequence:
         
         moveable_indicies = set(np.arange(0,self.len)) - set(frozen)
         
-
         lookup={}
         index=0
         for i in self.seq:
@@ -840,10 +796,234 @@ class Sequence:
 
         return Sequence("".join(new_seq), self.dmax)
 
+
+    # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+    #
+    #                         PHOSPHORYLATION RELATED FUNCTIONS
+    #
+    # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+    #
+    # The functions below focus on phosphorylation and the like
+    #
+
+    #...................................................................................#
+    def setPhosPhoSites(self, listofPsites):
+        """
+        Set one or more sites on your sequence which can be phosphorylated. Note that
+        this indexes from 1 (like all of bioinformatics) and not from 0 (like all of 
+        computer science).
+
+        i.e. "KKKYKKK" the Y here is at position 4
+        
+        Internally we do translate to indexing from 0, but this is not something you
+        should have to worry about
+        
+        Note that all data validation for the phosphosite list is done in this function.
+        
+        """
+
+        # evaluate proposed phosphosites
+        for site in listofPsites:
+            
+            # check we can convert to an integer!
+            site = int(site)
+            
+            # python indexes from 0 but humans from 1
+            idx=site-1 
+
+            # if we're outside our sequence
+            if idx >= len(self.seq) or idx < 0:                
+                warning_message("Proposed phosphosite (" + str(idx+1) + " is outside sequence range. Skipping...")
+                pass
+
+            # grab the residue letter from the sequence
+            res=self.seq[idx]
+
+            status_message("Setting " + res  + str(idx+1))
+            
+            if res not in ["S","T","Y"]:
+                # we skip it if it seems like an unphosphorylatable residue
+                warning_message('Position ' + str(site) + ' in sequence is a non phosphorylatable residue [' + str(res) +']')
+            else:
+                if idx in self.phosphosites:
+                    # don't add the same residue twice, but no need to warn about it
+                    pass
+                else:
+                    # let's add that bad-boy!
+                    self.phosphosites.append(idx)
+
+
+    #...................................................................................#
+    def calculateNumberDifferentPhosphoStates(self):
+        """ Function which returns the number of different phosphorylation
+            states assuming each phosphosite can be phosphorylated independently
+            of each other.
+
+            This can be useful if you want to estimate how long a complete 
+            phoshostate distribution calculation might take (each calc is about
+            0.2-1 second, depending on your CPU)
+        """ 
+        return np.power(2,len(self.phosphosites))
+        
+
+    #...................................................................................#
+    def clear_phosphosites(self):
+        """ Function which zeros out all the stored phosphosite data """
+        self.phosphosites = []
+
+
+    #...................................................................................#
+    def calculateKappaDistOfPhosphoStates(self):
+        """ Function which, using the previously defined possible phosphosites, calculates the cloud
+            of possible kappa values for all combination of phosphorylation. This is a relativly long
+            operation due to the fact that the FULL kappa must be recalculated everytime (i.e. delta max
+            must be recomputed each time, unlike with sequence permutants where DMAX remains constant).
+
+            To aid with this, every 50 calculations the progress is printed
+
+        """
+        ##
+        #------------------------------------------------------------------------------
+        ## local function
+        def print_progress(count,total):
+            if (count % 50) == 0:            
+                status_message("Done " + str(count) + " of " + str(total))
+
+        num_calcs = self.calculateNumberDifferentPhosphoStates()
+        #------------------------------------------------------------------------------
+
+        
+        # itertools.product("01"..) produces all variants of a list where each
+        # element is either 0 or 1 using an iterator 
+        phosphokappa = []
+        count=0
+        for phosphostatus in itertools.product("01", repeat=len(self.phosphosites)):
+            newseq = list(self.seq)
+            
+            
+            indx=0
+
+            # look over each element in our phosphosite on/off list
+            for i in phosphostatus:                            
+                # if that element is ON
+                if int(i) == 1:
+                    # set the AA at that position to a negative residue (we use E but
+                    # could be D)
+                    newseq[self.phosphosites[indx]] = "E"
+                indx=indx+1
+            # now we've replaced some number of T/Y/R with E representing a different
+            # phosphostate
+            newseq = "".join(newseq)
+            newseqObj = Sequence(newseq)
+
+            # now add that new kappa to the list, update, and repeat!
+            phosphokappa.append((newseqObj.kappa(), newseqObj.Fplus(), newseqObj.Fminus(), newseqObj.FCR(), newseqObj.NCPR(), newseqObj.meanHydropathy()))
+
+            print_progress(count, num_calcs)
+            count=count+1
+                
+        return phosphokappa
+
+        
+    #...................................................................................#
+    def get_phosphosites(self):
+        """ Returns the list of phosphosites (indexed from 1 
+            not zero)
+        """
+        newSites=[]
+        for i in self.phosphosites:
+            newSites.append(i+1)
+        return newSites
+
+
+    #...................................................................................#
+    def get_phosphosequence(self):
+        """ 
+        Returns a sequence with all phosphorylated residues converted to E.
+
+        Phosphorylated residues defined by the phosphosites object variable
+        
+        """
+
+        if len(self.phosphosite) == 0:
+            warning_message("No phosphosites defined - phosphosequence will be equivalent to the unphosphorylated sequence")
+
+        
+        # first defined the empty sequence
+        pseq=""
+        idx=0
+        
+        # for each position if that residue is phosphorylatable set it to 'E' instead
+        # of the actual Y/S/T
+        for i in self.seq:
+            if idx in self.phosphosites:
+
+                # extra level of checking!
+                if i not in ["S","Y","T"]:
+                    raise SequenceException("In get_phosphosequence - trying to replace non-phsophrylatable residue with GLU")
+
+                pseq=pseq+"E"
+            else:
+                pseq=pseq+self.seq[idx]
+
+            idx=idx+1
+        return pseq
+
+
+    #...................................................................................#
+    def kappa_at_maxPhos(self):
+        """ 
+        Returns the kappa if all the phosphosites
+        were phosphorylated
+        """
+
+        # no phosphosites defined
+        if len(self.phosphosites) == 0:
+            return self.kappa()
+        else:
+            newseq = list(self.seq)
+            for pos in self.phosphosites:
+                newseq[pos] = "E"
+            newseq = "".join(newseq)
+            newseqObj = Sequence(newseq)
+
+            return newseqObj.kappa()
+
+
+    #...................................................................................#
+    def get_STY_residues(self):
+        """ 
+        Where are all the Ser/Thr/Tyr residues in your
+        sequence.
+
+        Note we return positions which index from 1 not from 0
+
+        """
+        
+
+        sites=[]
+        idx=1
+        for i in self.seq:
+            if i in ["Y","S","T"]:
+                sites.append(idx)
+            idx=idx+1
+        return sites
+
+    # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+    #
+    #                               FORMATTING FUNCTION
+    #
+    # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+    
+
+
+    #...................................................................................#
     def toString(self):
         s = "%i\t%3.5f\t%3.5f\t%3.5f\t%3.5f\t%3.5f\t%3.5f\t%3.5f\t%3.5f\t%3.5f" % (self.len,self.Fminus(),self.Fplus(),self.FCR(),self.NCPR(),self.sigma(),self.delta(),self.deltaMax(),self.kappa(),self.meanHydropathy())
         return s
 
+
+    #...................................................................................#
     def toFileString(self):        
         s = "Sequence    :\t%s\n\n" % (self.seq)
         s += "N          :\t%i\n" % (self.len)        
@@ -859,3 +1039,6 @@ class Sequence:
         s += "Phase Plot Region: %i\n" % (self.phasePlotRegion())
         s += "Phase Plot Annotation: %s\n" % (self.phasePlotAnnotation())
         return s
+
+
+ 

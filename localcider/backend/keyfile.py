@@ -1,4 +1,4 @@
-""" 
+"""
    !--------------------------------------------------------------------------!
    ! LICENSE INFO:                                                            !
    !--------------------------------------------------------------------------!
@@ -14,24 +14,24 @@
    !    University in St. Louis. Please see the website for citation          !
    !    information:                                                          !
    !                                                                          !
-   !    http://pappulab.github.io/LocalCIDER/                                 !
+   !    http://pappulab.github.io/localCIDER/                                 !
    !                                                                          !
    !    For more information please see the Pappu lab website:                !
    !                                                                          !
    !    http://pappulab.wustl.edu/                                            !
    !                                                                          !
-   !    LocalCIDER is free software: you can redistribute it and/or modify    !
+   !    localCIDER is free software: you can redistribute it and/or modify    !
    !    it under the terms of the GNU General Public License as published by  !
    !    the Free Software Foundation, either version 3 of the License, or     !
    !    (at your option) any later version.                                   !
    !                                                                          !
-   !    LocalCIDER is distributed in the hope that it will be useful,         !
+   !    localCIDER is distributed in the hope that it will be useful,         !
    !    but WITHOUT ANY WARRANTY; without even the implied warranty of        !
    !    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         !
    !    GNU General Public License for more details.                          !
    !                                                                          !
    !    You should have received a copy of the GNU General Public License     !
-   !    along with LocalCIDER.  If not, see <http://www.gnu.org/licenses/>.   !
+   !    along with localCIDER.  If not, see <http://www.gnu.org/licenses/>.   !
    !--------------------------------------------------------------------------!
    ! AUTHORSHIP INFO:                                                         !
    !--------------------------------------------------------------------------!
@@ -39,28 +39,25 @@
    ! MAIN AUTHOR:   Alex Holehouse                                            !
    !                                                                          !
    !--------------------------------------------------------------------------!
-
    
    File Description:
    ================
    
-   keyfile parses a LocalCIDER keyfile for the more complex calculations. Right
+   keyfile parses a localCIDER keyfile for the more complex calculations. Right
    now this is just Wang-Landau based density of kappa state calculations, but
    there's no reason why more advanced analytical techniques can't be added in
    the future.
 
    With version 0.1.0 the keyfile functionality is redundant, as we don't provide
-   stand-alone binaries. However, that is the main priority of version 0.2.0, and
-   as you can see all the keyfile functionality is written and working!
+   stand-alone binaries. However, that is a main priority of version 0.3.0
 
 """
 
 
 import os
-
+import numpy as np
 from backendtools import warning_message, status_message
 from seqfileparser import SequenceFileParser
-import numpy as np
 
 
 #=======================================================
@@ -91,8 +88,8 @@ class KeyFile():
     # NUMBER_OF BINS - number of bins
     # OUTDIR         - directory for output to be written to
     # WL             - 
-
-
+    
+    #...................................................................................#
     def __init__(self,filename):
         """ 
            Initializer defines the keywords we expect to see, and takes a filename and parses it
@@ -107,7 +104,14 @@ class KeyFile():
         # parse the keyfile
         self.parse_keyfile(filename)
 
+
+    #...................................................................................#
     def parse_keyfile(self, filename):
+        """
+        Function which takes a filename and parses it into the keyfile object for easy
+        interaction with the file's content
+        """
+        
         
         status_message("Parsing keyfile...")
         status_message("---------------------------------------")
@@ -124,7 +128,6 @@ class KeyFile():
         ## PARSE THE KEYFILE
         for line in content:
             line=line.strip()
-
 
             # if empty line
             if len(line) == 0:
@@ -278,7 +281,9 @@ class KeyFile():
 
             else:
                 raise KeyFileException("SHOULD NOT BE GETTING HERE...")
-                    
+
+
+    #...................................................................................#
     def __set_numeric(self, keyword, value):
         """
            Function which sets the KEYWORDS dictionary $keyword value to $value if $value can be treated
@@ -298,51 +303,51 @@ class KeyFile():
                 raise KeyFileException("\n\nERROR: Invalid value for " + keyword + " - unable to convert [" +value +"] into a number\n") 
 
 
-    
+    #...................................................................................#
     def get_bin_min(self):
         return self.KEYWORDS["BIN_MIN"]
 
 
-
+    #...................................................................................#
     def get_bin_max(self):
         return self.KEYWORDS["BIN_MAX"]
 
 
-
+    #...................................................................................#
     def get_num_bins(self):
         return self.KEYWORDS["NUMBER_OF_BINS"]
 
 
-
+    #...................................................................................#
     def get_flatcheck_freq(self):
         return self.KEYWORDS["FLATCHECK_FREQ"]
 
 
-
+    #...................................................................................#
     def get_convergence(self):
         return self.KEYWORDS["CONVERGENCE"]
 
 
-
+    #...................................................................................#
     def get_sequence(self):
         return self.KEYWORDS["SEQUENCE"]
 
 
-
+    #...................................................................................#
     def get_freezefile(self):
         return self.KEYWORDS["FREEZE_FILE"]
 
 
-
+    #...................................................................................#
     def get_outdir(self):
         return self.KEYWORDS["OUTDIR"]
 
 
-
+    #...................................................................................#
     def get_flatness_criterion(self):
         return self.KEYWORDS["FLATNESS_CRITERION"]
 
 
-
+    #...................................................................................#
     def get_WL_type(self):
         return self.KEYWORDS["WL_TYPE"]

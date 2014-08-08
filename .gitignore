@@ -1,6 +1,8 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*~
+*#
 
 # C extensions
 *.so
@@ -52,5 +54,7 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
-# 
+# local stuff
 wang_landau/
+*.fasta 
+tmpfiles/*
