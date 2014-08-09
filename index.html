@@ -28,17 +28,19 @@
         </ul>
       </header>
       <section>
-        <h3>
-<a name="localcider-lets-you-do-almost-everything-cider-does-locally" class="anchor" href="#localcider-lets-you-do-almost-everything-cider-does-locally"><span class="octicon octicon-link"></span></a>LocalCIDER lets you do [almost] everything CIDER does, locally!</h3>
+        <h1>
+<a name="localcider" class="anchor" href="#localcider"><span class="octicon octicon-link"></span></a>localCIDER</h1>
 
-<p>CIDER <a href="http://pappulab.wustl.edu/CIDER">Classification of Intrinsically Disordered Ensemble Regions</a> is a webserver for calculating various properties of a disordered sequence. CIDER's computation is primarily done by a backend app, which we call LocalCIDER.</p>
+<p><code>v 0.1.0 - August 8th 2014</code></p>
 
-<p>CIDER is useful if you want to quickly calculate some parameter on the fly. HOWEVER, for doing a huge range of sequences, we recommend you instead use LocalCIDER and carry out the computation locally.</p>
+<p><code>DOCUMENTATION IN PROGRESS....</code></p>
 
 <h2>
-<a name="when-localcider" class="anchor" href="#when-localcider"><span class="octicon octicon-link"></span></a>When LocalCIDER</h2>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
-<p>Soon! In fact, expect it on Monday 27th of July, with CIDER to follow shortly thereafter</p>
+<p><strong>CIDER</strong> <a href="http://pappulab.wustl.edu/CIDER">Classification of Intrinsically Disordered Ensemble Regions</a> is a webserver for calculating various properties of a disordered sequence. CIDER's calculations are carried out done by a backend app, which we call localCIDER.</p>
+
+<p><strong>CIDER</strong> is useful if you want to quickly calculate some parameter on the fly. HOWEVER, for doing a huge range of sequences, we recommend you instead use <strong>localCIDER</strong> and carry out the computation locally.</p>
 
 <h2>
 <a name="why-localcider" class="anchor" href="#why-localcider"><span class="octicon octicon-link"></span></a>Why LocalCIDER</h2>
@@ -50,12 +52,172 @@
 <li>Programatically create analysis pipelines</li>
 <li>Operate independently of the CIDER webserver</li>
 </ul><h2>
-<a name="how-do-i-use-it" class="anchor" href="#how-do-i-use-it"><span class="octicon octicon-link"></span></a>How do I use it</h2>
+<a name="how-can-i-use-localcider" class="anchor" href="#how-can-i-use-localcider"><span class="octicon octicon-link"></span></a>How can I use localcider</h2>
 
-<p>LocalCIDER will (<em>VERY SOON</em>) be available as a PyPI package. That means that using <a href="https://pypi.python.org/pypi/pip">PIP</a> (and to be clear, if you're using Python and not using pip, you're doing it wrong) getting LocalCIDER is a single command</p>
+<p><strong>localCIDER</strong> version 0.1.0 was submitted to <code>pip</code> (the Python Package Index) on the 8th of August. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to <a href="mailto:alex.holehouse@wustl.edu">alex.holehouse@wustl.edu</a>. However, many of the features are ready to go!</p>
 
-<pre><code>[sudo] pip install localCIDER
+<h4>
+<a name="installing-on-osx-or-linux" class="anchor" href="#installing-on-osx-or-linux"><span class="octicon octicon-link"></span></a>Installing on OSX or linux</h4>
+
+<p>Install using <code>pip</code>. <code>pip</code> is a command line interface for installing packages in PyPI. If you don't yet have pip installed <a href="http://pip.readthedocs.org/en/latest/installing.html">see the documentation here</a>.</p>
+
+<p>We also recommend <code>virtualenv</code> although this is not at all required, it's just generally a good route to go if you use Python!</p>
+
+<p>Once <code>pip</code> is installed <strong>localCIDER</strong> can be installed by running</p>
+
+<pre><code>[sudo] pip install localcider
 </code></pre>
+
+<p>Very simple! <strong>localCIDER</strong> depends on both <code>numpy</code> and <code>matplotlib</code>, both of which will be installed via <code>pip</code> if you haven't already installed them.</p>
+
+<h4>
+<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h4>
+
+<p>Once you have localcider installed via pip, fire up Python and <code>import</code> the localcider package;</p>
+
+<pre><code>import localcider
+</code></pre>
+
+<p>You'll be greeted with a message detailing the current version.</p>
+
+<p>There are two main localcider modules right now;</p>
+
+<ul>
+<li>
+<code>sequenceParameter</code> which lets you calculate many different parameters, as well as show or save plots relating to a specific sequence - <strong><em>this is the main module of interest</em></strong>
+</li>
+<li>
+<code>plots</code> which lets you plot certain parameters independent of sequenceParameter</li>
+</ul><p>In the next release we'll also introduce the <code>sequencePermutant</code> code, which employs a variety of approaches to generate permutants.</p>
+
+<h5>
+<a name="using-sequenceparameter" class="anchor" href="#using-sequenceparameter"><span class="octicon octicon-link"></span></a>Using sequenceParameter</h5>
+
+<p>The approach we recommend for accessing SequenceParameter objects is to use the following Python code;</p>
+
+<pre><code>from localcider.sequenceParameter import SequenceParameter
+</code></pre>
+
+<p>By opening your code with this line you now have direct access to the <code>SequenceParameter</code> class, which takes either a <strong>string</strong> of an amino acid sequence or the filename of a file containing an amino acid sequence, which is then read and parsed. As an example;</p>
+
+<pre><code># as before we import the SequenceParameter class directly
+from localcider.sequenceParameter import SequenceParameter
+
+# the sequence below is the first 30 residues from alpha-synuclein
+sequenceObject = SequenceParameter("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAA")     
+</code></pre>
+
+<p>Or alternativly</p>
+
+<pre><code># as before we import the SequenceParameter class directly
+from localcider.sequenceParameter import SequenceParameter
+
+# the sequence below is the first 30 residues from alpha-synuclein
+sequenceObject = SequenceParameter(sequenceFile="syn.fasta")
+</code></pre>
+
+<p>Both these code snippets create a <code>SequenceParameter</code> object, on which we carry out a huge range of operations. The complete function list is shown below for reference.</p>
+
+<p>Most of these functions don't take arguments. Optional arguments are prefixed with a question mark (?).</p>
+
+<h4>
+<a name="sequence-parameter-functions" class="anchor" href="#sequence-parameter-functions"><span class="octicon octicon-link"></span></a>Sequence parameter functions</h4>
+
+<pre><code>get_FCR()  | Get the fraction of charged residues
+</code></pre>
+
+<h2></h2>
+
+<pre><code>get_NCPR() | Get the net charge per residue
+</code></pre>
+
+<p>OR</p>
+
+<pre><code>get_FCR()  | Get the fraction of charged residues
+
+
+get_NCPR() | Get the net charge per residue
+</code></pre>
+
+<p><strong><code>get_FCR()</code></strong> - Get the fraction of charged residues</p>
+
+<p><strong><code>get_NCPR()</code></strong> - Get the net charge per residue</p>
+
+<p><strong><code>get_countNeg()</code></strong> - Get the number of negatively charged amino acids</p>
+
+<p><strong><code>get_countPos()</code></strong> - Get the number of positily charged amino acids</p>
+
+<p><strong><code>get_fraction_negative()</code></strong> - Get the fraction of residues which are negativly charged</p>
+
+<p><strong><code>get_fraction_positive()</code></strong> - Get the fraction of residues which are positivly charged</p>
+
+<p><strong><code>get_countNeut()</code></strong> - Get the number of neutral amino acids</p>
+
+<p><strong><code>get_amino_acid_fractions()</code></strong> - Get a dictionary of the fractions of each amino acid in the sequence</p>
+
+<p><strong><code>get_fraction_disorder_promoting()</code></strong> - Get the fraction of residues predicted to be 'disorder promiting' [REF 1]</p>
+
+<p><strong><code>get_kappa()</code></strong> - Get the kappa value of the sequence [REF 2]</p>
+
+<p><strong><code>get_mean_net_charge()</code></strong> - Get the absolute mean net charge of your sequence</p>
+
+<p><strong><code>get_phase_plot_region()</code></strong> - Get the region on the Pappu-Das diagram of states where your sequence falls </p>
+
+<p><strong><code>get_mean_hydropathy()</code></strong> - Get the mean hydrophobicity as caluclated from a skewed Kyte-Doolittle hydrophobicity scale [REF 3]</p>
+
+<p><strong><code>get_uversky_hydropathy()</code></strong> - Get the mean hydropathy as calculated from a normalized Kyte-Doolittle hydrophobicity scale [REF 3 REF 4]</p>
+
+<h4>
+<a name="phosphorylation-functions" class="anchor" href="#phosphorylation-functions"><span class="octicon octicon-link"></span></a>Phosphorylation functions</h4>
+
+<p><strong><code>get_all_phosphorylatable_sites()</code></strong> - Get a list of the positions of all S/Y/T - note this function DOES NOT make any inference about accesibility, binding motifs, it's literally just a list of sites which canonically are able to be phosphorylated.</p>
+
+<p><strong><code>set_phosphosites(list_of_positions)</code></strong> - Sets a residues which may be phosphorylatable (must be T/Y/S)</p>
+
+<p><strong><code>clear_phosphosites()</code></strong> - Clears any previously defined phosphosites</p>
+
+<p><strong><code>get_kappa_after_phosphorylation()</code></strong> - Get the kappa value assuming full phosphorylation (with PO4(-1)).</p>
+
+<p><strong><code>get_phosphosequence()</code></strong> - Returns the fully phosphorylated sequence, with "phosphorylated residues" replaced with glutamate (E)</p>
+
+<p><strong><code>get_phosphosites()</code></strong> - Get the list of sites designated as phosphosites previously</p>
+
+<p><strong><code>get_full_phosphostatus_kappa_distribution()</code></strong> - ** UNDER DEVELOPMENT ** For each phospho-permutant, given the available phosphosites, calculate the kappa, fraction positive, fraction negative, FCR, NCP and meanHydropathy. This returns a list of tuples. We're still determining if all this information is necessary. Also note that as the number of phosphosites increases the number of calulations here scales as n^2. Be warned!</p>
+
+<h4>
+<a name="plotting-functions" class="anchor" href="#plotting-functions"><span class="octicon octicon-link"></span></a>Plotting functions</h4>
+
+<p><strong><code>show_phaseDiagram(?label)</code></strong> - Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram. <code>Label</code> can be a string which labels your sequence on the plot.</p>
+
+<p><strong><code>show_uverskyDiagram(?label)</code></strong> - Renders a <code>matplotlib</code> Uversky plot with your sequence on the diagram. <code>Label</code> can be a string which labels your sequence on the plot.</p>
+
+<p><strong><code>show_linearHydropathy(blobLen)</code></strong> - Renders a <code>matplotlib</code> plot of the moving average hydropathy along the sequence, where the hydropathy is calcualted in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>)</p>
+
+<p><strong><code>show_linearNCPR(blobLen)</code></strong> - Renders a <code>matplotlib</code> plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calcualted in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>)</p>
+
+<p><strong><code>show_linearSigma(blobLen)</code></strong> - Renders a <code>matplotlib</code> plot of the moving average sigma parameter along the sequence, where sigma is calcualted in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). Recall that sigma is calculated as the NCPR^2 / FCR. </p>
+
+<p><strong><code>save_phaseDiagram(filename, ?label)</code></strong> - Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram. <code>Label</code> can be a string which labels your sequence on the plot. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</p>
+
+<p><strong><code>save_uverskyDiagram(filename, ?label)</code></strong> - Renders a <code>matplotlib</code> Uversky plot with your sequence on the diagram. <code>Label</code> can be a string which labels your sequence on the plot. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</p>
+
+<p><strong><code>save_linearHydropathy(blobLen, filename)</code></strong> - Renders a <code>matplotlib</code> plot of the moving average hydropathy along the sequence, where the hydropathy is calcualted in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</p>
+
+<p><strong><code>save_linearNCPR(blobLen, filename)</code></strong> - Renders a <code>matplotlib</code> plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calcualted in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</p>
+
+<p><strong><code>save_linearSigma(blobLen, filename)</code></strong> - Saves a <code>matplotlib</code> generated plot of the moving average sigma parameter along the sequence, where sigma is calcualted in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). Recall that sigma is calculated as the NCPR^2 / FCR.</p>
+
+<p>The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</p>
+
+<h4>
+<a name="interactive-help" class="anchor" href="#interactive-help"><span class="octicon octicon-link"></span></a>Interactive help</h4>
+
+<p><strong>localCIDER</strong> contains highly complete interactive help - for any object or function simply type <code>help(&lt;item&gt;)</code> for a complete description.     </p>
+
+<h2>
+<a name="tutorials" class="anchor" href="#tutorials"><span class="octicon octicon-link"></span></a>Tutorials</h2>
+
+<p>Coming tomorrow</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/Pappulab">Pappulab</a></p>
