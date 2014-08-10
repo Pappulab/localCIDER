@@ -38,28 +38,33 @@
 <h2>
 <a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
-<p><strong>CIDER</strong> <a href="http://pappulab.wustl.edu/CIDER">Classification of Intrinsically Disordered Ensemble Regions</a> is a webserver for calculating various properties of a disordered sequence. CIDER's calculations are carried out done by a backend app, which we call localCIDER.</p>
+<p><strong>CIDER</strong> <a href="http://pappulab.wustl.edu/CIDER">Classification of Intrinsically Disordered Ensemble Regions</a> is a [currently under construction] webserver for calculating various properties of a disordered sequence. CIDER's calculations are carried out by a backend app, called localCIDER.</p>
 
 <p><strong>CIDER</strong> is useful if you want to quickly calculate some parameter on the fly. HOWEVER, for doing a huge range of sequences, we recommend you instead use <strong>localCIDER</strong> and carry out the computation locally.</p>
 
-<h2>
-<a name="why-localcider" class="anchor" href="#why-localcider"><span class="octicon octicon-link"></span></a>Why LocalCIDER</h2>
+<h3>
+<a name="why-localcider-vs-cider" class="anchor" href="#why-localcider-vs-cider"><span class="octicon octicon-link"></span></a>Why LocalCIDER vs. CIDER?</h3>
 
 <p>LocalCIDER lets us provide an implicit distributed computing model to all of CIDER's calculations. Think of it this way - if 100 people have 100 sequences, we (the Pappu lab) have the burden of 10,000 calculations to perform. If everyone submitted these sequences at once, the website would slow for everyone, and maybe crash. This is a lot of work for us, and very annoying for you, the user. HOWEVER, by using LocalCIDER you can take advantage of</p>
 
 <ul>
 <li>Your own local infrastructure</li>
-<li>Programatically create analysis pipelines</li>
-<li>Operate independently of the CIDER webserver</li>
-</ul><h2>
-<a name="how-can-i-use-localcider" class="anchor" href="#how-can-i-use-localcider"><span class="octicon octicon-link"></span></a>How can I use localcider</h2>
+<li>The ability to programatically create analysis pipelines</li>
+<li>The fact you can operate independently of the CIDER webserver</li>
+</ul><p>Moreoever, if therese a type of anlysis you use frequently, we can build this into localCIDER relativly easy. Adding new functionality is typically much more involved for a web-app.</p>
+
+<h2>
+<a name="usage-and-installation" class="anchor" href="#usage-and-installation"><span class="octicon octicon-link"></span></a>Usage and installation</h2>
+
+<h4>
+<a name="introduction-1" class="anchor" href="#introduction-1"><span class="octicon octicon-link"></span></a>Introduction</h4>
 
 <p><strong>localCIDER</strong> version 0.1.0 was submitted to <code>pip</code> (the Python Package Index) on the 8th of August. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to <a href="mailto:alex.holehouse@wustl.edu">alex.holehouse@wustl.edu</a>. However, many of the features are ready to go!</p>
 
 <h4>
 <a name="installing-on-osx-or-linux" class="anchor" href="#installing-on-osx-or-linux"><span class="octicon octicon-link"></span></a>Installing on OSX or linux</h4>
 
-<p>Install using <code>pip</code>. <code>pip</code> is a command line interface for installing packages in PyPI. If you don't yet have pip installed <a href="http://pip.readthedocs.org/en/latest/installing.html">see the documentation here</a>.</p>
+<p>We recommend installing using <code>pip</code>. <code>pip</code> is a command line interface for downloading and installing packages from the Python package index (PyPI). If you don't yet have pip installed <a href="http://pip.readthedocs.org/en/latest/installing.html">see the documentation here</a>.</p>
 
 <p>We also recommend <code>virtualenv</code> although this is not at all required, it's just generally a good route to go if you use Python!</p>
 
@@ -131,27 +136,30 @@ sequenceObject = SequenceParameter(sequenceFile="syn.fasta")
 <pre><code>get_NCPR() | Get the net charge per residue
 </code></pre>
 
-<p>OR</p>
+<h2></h2>
 
-<pre><code>get_FCR()  | Get the fraction of charged residues
-
-
-get_NCPR() | Get the net charge per residue
+<pre><code>get_countNeg() | Get the number of negatively charged amino acids
 </code></pre>
 
-<p><strong><code>get_FCR()</code></strong> - Get the fraction of charged residues</p>
+<h2></h2>
 
-<p><strong><code>get_NCPR()</code></strong> - Get the net charge per residue</p>
+<pre><code>get_countPos() | Get the number of positily charged amino acids
+</code></pre>
 
-<p><strong><code>get_countNeg()</code></strong> - Get the number of negatively charged amino acids</p>
+<h2></h2>
 
-<p><strong><code>get_countPos()</code></strong> - Get the number of positily charged amino acids</p>
+<pre><code>get_fraction_negative() | Get the fraction of residues which are negativly charged
+</code></pre>
 
-<p><strong><code>get_fraction_negative()</code></strong> - Get the fraction of residues which are negativly charged</p>
+<h2></h2>
 
-<p><strong><code>get_fraction_positive()</code></strong> - Get the fraction of residues which are positivly charged</p>
+<pre><code>get_fraction_positive() | Get the fraction of residues which are positivly charged
+</code></pre>
 
-<p><strong><code>get_countNeut()</code></strong> - Get the number of neutral amino acids</p>
+<h2></h2>
+
+<pre><code>get_countNeut() | Get the number of neutral amino acids
+</code></pre>
 
 <p><strong><code>get_amino_acid_fractions()</code></strong> - Get a dictionary of the fractions of each amino acid in the sequence</p>
 
@@ -218,6 +226,24 @@ get_NCPR() | Get the net charge per residue
 <a name="tutorials" class="anchor" href="#tutorials"><span class="octicon octicon-link"></span></a>Tutorials</h2>
 
 <p>Coming tomorrow</p>
+
+<h2>
+<a name="localcider-roadmap" class="anchor" href="#localcider-roadmap"><span class="octicon octicon-link"></span></a>localCIDER roadmap</h2>
+
+<p>We have a fairly well defined roadmap for the next few sets of minor release for localCIDER, with the first major release coming sometime thereafter</p>
+
+<h5>
+<a name="v-020" class="anchor" href="#v-020"><span class="octicon octicon-link"></span></a>V 0.2.0</h5>
+
+<ul>
+<li>Turn on the sequence permuatant and Wang-Landau density of kappa states analysis </li>
+</ul><h5>
+<a name="v-030" class="anchor" href="#v-030"><span class="octicon octicon-link"></span></a>V 0.3.0</h5>
+
+<ul>
+<li>Provide stand alone, command line tools for the more computationally intensive operations (to make deploying on HPC infrastructure </li>
+</ul><h2>
+<a name="references" class="anchor" href="#references"><span class="octicon octicon-link"></span></a>References</h2>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/Pappulab">Pappulab</a></p>
