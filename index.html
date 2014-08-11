@@ -31,38 +31,36 @@
         <h1>
 <a name="localcider" class="anchor" href="#localcider"><span class="octicon octicon-link"></span></a>localCIDER</h1>
 
-<p><code>v 0.1.0 - August 8th 2014</code></p>
+<p><code>v 0.1.0 - August 11th 2014</code></p>
 
-<p><code>DOCUMENTATION IN PROGRESS....</code></p>
+<h1>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
 
-<h2>
-<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
-
-<p><strong>CIDER</strong> <a href="http://pappulab.wustl.edu/CIDER">Classification of Intrinsically Disordered Ensemble Regions</a> is a [currently under construction] webserver for calculating various properties of a disordered sequence. CIDER's calculations are carried out by a backend app, called localCIDER.</p>
+<p><strong>CIDER</strong> <a href="http://pappulab.wustl.edu/CIDER">Classification of Intrinsically Disordered Ensemble Regions</a> is a [currently under construction] web-server for calculating various properties of a disordered sequence. CIDER's calculations are carried out by a backend app, called localCIDER.</p>
 
 <p><strong>CIDER</strong> is useful if you want to quickly calculate some parameter on the fly. HOWEVER, for doing a huge range of sequences, we recommend you instead use <strong>localCIDER</strong> and carry out the computation locally.</p>
 
-<h3>
-<a name="why-localcider-vs-cider" class="anchor" href="#why-localcider-vs-cider"><span class="octicon octicon-link"></span></a>Why LocalCIDER vs. CIDER?</h3>
+<h2>
+<a name="localcider-vs-cider" class="anchor" href="#localcider-vs-cider"><span class="octicon octicon-link"></span></a>localCIDER vs. CIDER?</h2>
 
-<p>LocalCIDER lets us provide an implicit distributed computing model to all of CIDER's calculations. Think of it this way - if 100 people have 100 sequences, we (the Pappu lab) have the burden of 10,000 calculations to perform. If everyone submitted these sequences at once, the website would slow for everyone, and maybe crash. This is a lot of work for us, and very annoying for you, the user. HOWEVER, by using LocalCIDER you can take advantage of</p>
+<p><strong>localCIDER</strong> lets us provide an implicit distributed computing model to all of CIDER's calculations. Think of it this way - if 100 people have 100 sequences, we (the Pappu lab) have the burden of 10,000 calculations to perform. If everyone submitted these sequences at once, the website would slow for everyone, and maybe crash. This is a lot of work for us, and very annoying for you, the user. HOWEVER, by using <strong>localCIDER</strong> you can take advantage of</p>
 
 <ul>
 <li>Your own local infrastructure</li>
-<li>The ability to programatically create analysis pipelines</li>
-<li>The fact you can operate independently of the CIDER webserver</li>
-</ul><p>Moreoever, if therese a type of anlysis you use frequently, we can build this into localCIDER relativly easy. Adding new functionality is typically much more involved for a web-app.</p>
+<li>The ability to programmatically create analysis pipelines</li>
+<li>The fact you can operate independently of the CIDER web-server</li>
+</ul><p>Moreover, if there's a type of analysis you use frequently and you think other users would appreciate, we'd be happy to build this in to <strong>localCIDER</strong>. Adding new functionality is typically much more involved for a web-app.</p>
 
-<h2>
-<a name="usage-and-installation" class="anchor" href="#usage-and-installation"><span class="octicon octicon-link"></span></a>Usage and installation</h2>
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
 
-<h4>
-<a name="introduction-1" class="anchor" href="#introduction-1"><span class="octicon octicon-link"></span></a>Introduction</h4>
+<h3>
+<a name="introduction-1" class="anchor" href="#introduction-1"><span class="octicon octicon-link"></span></a>Introduction</h3>
 
 <p><strong>localCIDER</strong> version 0.1.0 was submitted to <code>pip</code> (the Python Package Index) on the 8th of August. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to <a href="mailto:alex.holehouse@wustl.edu">alex.holehouse@wustl.edu</a>. However, many of the features are ready to go!</p>
 
-<h4>
-<a name="installing-on-osx-or-linux" class="anchor" href="#installing-on-osx-or-linux"><span class="octicon octicon-link"></span></a>Installing on OSX or linux</h4>
+<h3>
+<a name="installing-on-osx-or-linux" class="anchor" href="#installing-on-osx-or-linux"><span class="octicon octicon-link"></span></a>Installing on OSX or linux</h3>
 
 <p>We recommend installing using <code>pip</code>. <code>pip</code> is a command line interface for downloading and installing packages from the Python package index (PyPI). If you don't yet have pip installed <a href="http://pip.readthedocs.org/en/latest/installing.html">see the documentation here</a>.</p>
 
@@ -75,8 +73,38 @@
 
 <p>Very simple! <strong>localCIDER</strong> depends on both <code>numpy</code> and <code>matplotlib</code>, both of which will be installed via <code>pip</code> if you haven't already installed them.</p>
 
+<p>If you encounter issues installing please let me know. That said, any issues <em>should</em> be due to problems with Numpy or <code>matplotlib</code> and not <strong>localCIDER</strong>, so investigate the documentation associated with installing those packages first.</p>
+
 <h4>
-<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h4>
+<a name="known-installation-issues" class="anchor" href="#known-installation-issues"><span class="octicon octicon-link"></span></a>Known installation issues</h4>
+
+<h5>
+<a name="opensuse" class="anchor" href="#opensuse"><span class="octicon octicon-link"></span></a>OpenSuse</h5>
+
+<p><code>pip</code> will not install system level dependencies, so you may need to install additional packages to get matplotlib working with vanilla <code>OpenSuse</code>. Specifically</p>
+
+<pre><code>[sudo] zypper install freetype2-devel
+[sudo] zypper install gcc-c++
+[sudo] zypper install libpng16-devel
+[sudo] zypper install python-numpy-devel
+</code></pre>
+
+<p>Of course, one or more of these may well already be installed, so your best bet is to try installing <strong>localcider</strong> and if it fails check these guys are installed by using</p>
+
+<pre><code>zypper search &lt;package-name&gt; # an 'i' next to the package indicates it's installed
+</code></pre>
+
+<h5>
+<a name="ubuntu" class="anchor" href="#ubuntu"><span class="octicon octicon-link"></span></a>Ubuntu</h5>
+
+<p>The issues for OpenSuse are also true for Ubuntu - specifically <code>Ubuntu</code> seems to need the <code>python-dev</code> package to install <code>numpy</code>, and the <code>libfreetype6-dev</code> package for to get Freetype working in <code>matplotlib</code></p>
+
+<pre><code>[sudo] apt-get install python-dev
+[sudo] apt-get install libfreetype6-dev 
+</code></pre>
+
+<h1>
+<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h1>
 
 <p>Once you have localcider installed via pip, fire up Python and <code>import</code> the localcider package;</p>
 
@@ -93,157 +121,536 @@
 </li>
 <li>
 <code>plots</code> which lets you plot certain parameters independent of sequenceParameter</li>
-</ul><p>In the next release we'll also introduce the <code>sequencePermutant</code> code, which employs a variety of approaches to generate permutants.</p>
+</ul><p>In the next release (V 0.2.0) we'll also introduce the <code>sequencePermutant</code> code, which employs a variety of approaches to generate permutants.</p>
 
-<h5>
-<a name="using-sequenceparameter" class="anchor" href="#using-sequenceparameter"><span class="octicon octicon-link"></span></a>Using sequenceParameter</h5>
+<h4>
+<a name="quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-pappu-das-diagram-of-states" class="anchor" href="#quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-pappu-das-diagram-of-states"><span class="octicon octicon-link"></span></a>Quick-start - calculate kappa of my sequence and plot it on the Pappu-Das diagram of states</h4>
+
+<p>The following code will print the kappa value of your sequence to the terminal prompt, and then plot your sequence on a Pappu-Das phase plot, saving it in the current directory as <code>my_snazzy_plot.png</code></p>
+
+<pre><code># import the relevant code
+from localcider.sequenceParameter import SequenceParameter
+
+# create a SequenceParameter object with your amino acid sequence
+SeqOb = SequenceParameter("MY AMINO ACID SEQUENCE")
+
+# carry out analysis
+SeqOb.get_kappa()
+SeqOb.save_phaseDiagram('my_snazzy_plot')
+</code></pre>
+
+<h4>
+<a name="interactive-help" class="anchor" href="#interactive-help"><span class="octicon octicon-link"></span></a>Interactive help</h4>
+
+<p><strong>localCIDER</strong> contains highly complete interactive help - for any object or function simply type <code>help(&lt;item&gt;)</code> for a complete description. For example;</p>
+
+<pre><code># import the relevant code
+from localcider.sequenceParameter import SequenceParameter
+
+# create a SequenceParameter object with your amino acid sequence
+SeqOb = SequenceParameter("MY AMINO ACID SEQUENCE")
+
+help(SeqOb)
+
+help(SeqOb.get_kappa())
+</code></pre>
+
+<h1>
+<a name="general-sequence-analysis-with-sequenceparameter" class="anchor" href="#general-sequence-analysis-with-sequenceparameter"><span class="octicon octicon-link"></span></a>General sequence analysis with SequenceParameter</h1>
 
 <p>The approach we recommend for accessing SequenceParameter objects is to use the following Python code;</p>
 
 <pre><code>from localcider.sequenceParameter import SequenceParameter
 </code></pre>
 
-<p>By opening your code with this line you now have direct access to the <code>SequenceParameter</code> class, which takes either a <strong>string</strong> of an amino acid sequence or the filename of a file containing an amino acid sequence, which is then read and parsed. As an example;</p>
+<p>By opening your code with this line you now have direct access to the <code>SequenceParameter</code> class, which takes either a string of an amino acid sequence or the filename of a file containing an amino acid sequence, which is then read and parsed. As an example;</p>
 
 <pre><code># as before we import the SequenceParameter class directly
 from localcider.sequenceParameter import SequenceParameter
 
 # the sequence below is the first 30 residues from alpha-synuclein
-sequenceObject = SequenceParameter("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAA")     
+seqOb = SequenceParameter("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAA")     
 </code></pre>
 
-<p>Or alternativly</p>
+<p>Or alternatively</p>
 
 <pre><code># as before we import the SequenceParameter class directly
 from localcider.sequenceParameter import SequenceParameter
 
 # the sequence below is the first 30 residues from alpha-synuclein
-sequenceObject = SequenceParameter(sequenceFile="syn.fasta")
+seqOb = SequenceParameter(sequenceFile="syn.fasta")
 </code></pre>
 
-<p>Both these code snippets create a <code>SequenceParameter</code> object, on which we carry out a huge range of operations. The complete function list is shown below for reference.</p>
+<p>Both these code snippets create a <code>SequenceParameter</code> object (here called <code>seqOb</code>, but obviously this variable could be named anything), on which we can carry out a huge range of operations. The complete function list is shown below for reference.</p>
 
-<p>Most of these functions don't take arguments. Optional arguments are prefixed with a question mark (?).</p>
+<p>Most of these functions don't take arguments. Optional arguments are prefixed with a question mark (?). For each function we use the <code>seqOb.&lt;function&gt;</code> syntax - e.g.</p>
+
+<pre><code>seqOb.get_FCR()
+</code></pre>
+
+<h3>
+<a name="sequence-parameter-functions" class="anchor" href="#sequence-parameter-functions"><span class="octicon octicon-link"></span></a>Sequence parameter functions</h3>
+
+<table>
+<thead><tr>
+<th align="center">Function name</th>
+<th align="center">Operation</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="center"><code>get_FCR()</code></td>
+<td align="center">Get the fraction of charged residues</td>
+</tr>
+<tr>
+<td align="center"><code>get_NCPR()</code></td>
+<td align="center">Get the net charge per residue</td>
+</tr>
+<tr>
+<td align="center"><code>get_countNeg()</code></td>
+<td align="center">Get the number of negatively charged amino acids</td>
+</tr>
+<tr>
+<td align="center"><code>get_countPos()</code></td>
+<td align="center">Get the number of positivly charged amino acids</td>
+</tr>
+<tr>
+<td align="center"><code>get_fraction_negative()</code></td>
+<td align="center">Get the fraction of residues which are negatively charged</td>
+</tr>
+<tr>
+<td align="center"><code>get_fraction_positive()</code></td>
+<td align="center">Get the fraction of residues which are positivly charged</td>
+</tr>
+<tr>
+<td align="center"><code>get_countNeut()</code></td>
+<td align="center">Get the number of neutral amino acids</td>
+</tr>
+<tr>
+<td align="center"><code>get_amino_acid_fractions()</code></td>
+<td align="center">Get a dictionary of the fractions of each amino acid in the sequence</td>
+</tr>
+<tr>
+<td align="center"><code>get_fraction_disorder_promoting()</code></td>
+<td align="center">Get the fraction of residues predicted to be 'disorder promoting' [REF 1]</td>
+</tr>
+<tr>
+<td align="center"><code>get_kappa()</code></td>
+<td align="center">Get the kappa value of the sequence [REF 2]</td>
+</tr>
+<tr>
+<td align="center"><code>get_mean_net_charge()</code></td>
+<td align="center">Get the absolute mean net charge of your sequence</td>
+</tr>
+<tr>
+<td align="center"><code>get_phase_plot_region()</code></td>
+<td align="center">Get the region on the Pappu-Das diagram of states where your sequence falls [2]</td>
+</tr>
+<tr>
+<td align="center"><code>get_mean_hydropathy()</code></td>
+<td align="center">Get the mean hydrophobicity as calculated from a skewed Kyte-Doolittle hydrophobicity scale* [REF 3]</td>
+</tr>
+<tr>
+<td align="center"><code>get_uversky_hydropathy()</code></td>
+<td align="center">Get the mean hydropathy as calculated from a normalized Kyte-Doolittle hydrophobicity scale** [REF 3 REF 4]</td>
+</tr>
+</tbody>
+</table><p>* The skewed hydrophobicity scale shifts the normal KD scale such that the lowest value is 0 (instead of -4.5) and the highest value is 9 (instead of 4.5)</p>
+
+<p>** The normalized Kyte-Doolittle scale converts all values on the scale to fall between 0 and 1</p>
+
+<h3>
+<a name="phosphorylation-functions" class="anchor" href="#phosphorylation-functions"><span class="octicon octicon-link"></span></a>Phosphorylation functions</h3>
+
+<p>The following functions augment your sequence to consider the impact of phosphorylation on the electrostatic properties. Note this makes the highly simplifying assumption that the phosphorylation of a Ser/Thr/Tyr residue simply adds a negative charge to your protein chain. In reality, many other properties of the chain are impacted by phosphorylation than simply the linear charge patterning.</p>
+
+<table>
+<thead><tr>
+<th align="center">Function name</th>
+<th align="center">Operation</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="center"><code>get_all_phosphorylatable_sites()</code></td>
+<td align="center">Get a list of the positions of all Ser/Thr/Tyr residues. Note this function DOES NOT make any inference about accessibility or binding/recognition motifs, it's literally just a list of sites which canonically are able to be phosphorylated.</td>
+</tr>
+<tr>
+<td align="center"><code>set_phosphosites(list_of_positions)</code></td>
+<td align="center">Sets a residues which may be phosphorylatable (must be T/Y/S). Note this can be called multiple times, and will only set sites which are T/Y/S)</td>
+</tr>
+<tr>
+<td align="center"><code>get_phosphosites()</code></td>
+<td align="center">Get the list of sites currently designated as phosphosites by set_phosphosites</td>
+</tr>
+<tr>
+<td align="center"><code>clear_phosphosites()</code></td>
+<td align="center">Clears any previously defined phosphosites</td>
+</tr>
+<tr>
+<td align="center"><code>get_kappa_after_phosphorylation()</code></td>
+<td align="center">Get the kappa value assuming full phosphorylation (with H<sub>2</sub>PO<sub>4</sub><sup>-1</sup>).</td>
+</tr>
+<tr>
+<td align="center"><code>get_phosphosequence()</code></td>
+<td align="center">Returns the fully phosphorylated sequence, with "phosphorylated residues" replaced with glutamate (E)</td>
+</tr>
+<tr>
+<td align="center"><code>get_full_phosphostatus_kappa_distribution()</code></td>
+<td align="center">** UNDER DEVELOPMENT ** For each phospho-permutant, given the available phosphosites, calculate the kappa, fraction positive, fraction negative, FCR, NCP and meanHydropathy. This returns a list of tuples. We're still determining if all this information is necessary. Also note that as the number of phosphosites increases the number of calculations here scales as n^2. Be warned!</td>
+</tr>
+</tbody>
+</table><h3>
+<a name="plotting-functions" class="anchor" href="#plotting-functions"><span class="octicon octicon-link"></span></a>Plotting functions</h3>
+
+<p>The following functions let you plot parameters from your sequence in a set of defined plots.</p>
+
+<table>
+<thead><tr>
+<th align="center">Function name</th>
+<th align="center">Operation</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="center"><code>show_phaseDiagram(?label)</code></td>
+<td align="center">Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. <code>label</code> can be a string which labels your sequence on the plot.</td>
+</tr>
+<tr>
+<td align="center"><code>show_uverskyDiagram(?label)</code></td>
+<td align="center">Renders a <code>matplotlib</code> Uversky plot with your sequence on the diagram<sup>[4]</sup>. <code>label</code> can be a string which labels your sequence on the plot.</td>
+</tr>
+<tr>
+<td align="center"><code>show_linearHydropathy(blobLen)</code></td>
+<td align="center">Renders a <code>matplotlib</code> plot of the moving average hydropathy along the sequence, where the hydropathy is calculated in overlapping windows of size <code>blobLen</code>. Typically a blob length of 5-7 is used (<strong>This made be changed to the default value in future releases</strong>)</td>
+</tr>
+<tr>
+<td align="center"><code>show_linearNCPR(blobLen)</code></td>
+<td align="center">Renders a <code>matplotlib</code> plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calculated in overlapping windows of size <code>blobLen</code>. Typically a blob length of 5-7 is used (<strong>This made be changed to the default value in future releases</strong>)</td>
+</tr>
+<tr>
+<td align="center"><code>show_linearSigma(blobLen)</code></td>
+<td align="center">Renders a <code>matplotlib</code> plot of the moving average sigma parameter along the sequence, where sigma is calculated in overlapping windows of size <code>blobLen</code>. Typically a blob length of 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR.</td>
+</tr>
+<tr>
+<td align="center"><code>save_phaseDiagram(filename, ?label)</code></td>
+<td align="center">Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. <code>label</code> can be a string which labels your sequence on the plot. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
+</tr>
+<tr>
+<td align="center"><code>save_uverskyDiagram(filename, ?label)</code></td>
+<td align="center">Renders a <code>matplotlib</code> Uversky plot with your sequence on the diagram<sup>[4]</sup>. <code>label</code> can be a string which labels your sequence on the plot. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
+</tr>
+<tr>
+<td align="center"><code>save_linearHydropathy(blobLen, filename)</code></td>
+<td align="center">Renders a <code>matplotlib</code> plot of the moving average hydropathy along the sequence, where the hydropathy is calculated in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
+</tr>
+<tr>
+<td align="center"><code>save_linearNCPR(blobLen, filename)</code></td>
+<td align="center">Renders a <code>matplotlib</code> plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calculated in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
+</tr>
+<tr>
+<td align="center"><code>save_linearSigma(blobLen, filename)</code></td>
+<td align="center">Saves a <code>matplotlib</code> generated plot of the moving average sigma parameter along the sequence, where sigma is calculated in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
+</tr>
+</tbody>
+</table><h1>
+<a name="plotting-with-the-plots-module" class="anchor" href="#plotting-with-the-plots-module"><span class="octicon octicon-link"></span></a>Plotting with the plots module</h1>
+
+<p>The <code>plots</code> module lets you generate or save plots without explicitly invoking SequenceParameter objects. Such plots can either be generated using the raw values, or by passing in SequenceParameter objects.</p>
+
+<p>Unlike the <code>sequenceParameter</code>, <code>plots</code> is a collection of functions, and does not allow for the creation of <code>Plots</code> objects.</p>
+
+<p>In the following discussion a <strong>single</strong> plot contains information from just one sequence, whereas a <strong>multiple</strong> plot contains sequence information from many sequences</p>
+
+<h3>
+<a name="using-plots-functions" class="anchor" href="#using-plots-functions"><span class="octicon octicon-link"></span></a>Using <code>Plots</code> functions</h3>
+
+<p>There are two modes with which you can use plots functions;</p>
 
 <h4>
-<a name="sequence-parameter-functions" class="anchor" href="#sequence-parameter-functions"><span class="octicon octicon-link"></span></a>Sequence parameter functions</h4>
+<a name="passing-raw-parameters-to-be-plotted-single-and-multiple-plots" class="anchor" href="#passing-raw-parameters-to-be-plotted-single-and-multiple-plots"><span class="octicon octicon-link"></span></a>Passing raw parameters to be plotted (single and multiple plots)</h4>
 
-<pre><code>get_FCR()  | Get the fraction of charged residues
+<p>This may be convenient if you're plotting previously calculated values, or plotting a theoretical distribution here. Either individual values or lists of values can be passed.</p>
+
+<h3>
+<a name="passing-sequenceparameter-objects-multiple-plots-only" class="anchor" href="#passing-sequenceparameter-objects-multiple-plots-only"><span class="octicon octicon-link"></span></a>Passing SequenceParameter objects (multiple plots only)</h3>
+
+<p>If you're analyzing a set of SequenceParameter objects you may wish to place them on the same plot. Note we do not offer this functionality for single sequences, because you can always plot a single sequence using the associated <code>SequenceParameter</code> function (e.g. <code>.show_uverskyPlot()</code> or <code>.save_phaseDiagram()</code>).</p>
+
+<table>
+<thead><tr>
+<th align="center">Function name</th>
+<th align="center">Input Arguments</th>
+<th align="center">Discussion</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="center"><code>show_single_phasePlot(fp, fn, label='', title='Diagram of states', legendOn=True)</code></td>
+<td align="center">
+<code>fp</code> is the fraction of positive residues in a sequence, <code>fn</code> is the fraction of negative residues in a sequence. <code>label</code>, if included, should be a string with which the sequence on the plot is labelled. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<td align="center">No programatic output is generated, but the plot is rendered on the screen.</td>
+</tr>
+<tr>
+<td align="center"><code>show_single_uverskyPlot(hydropathy, mean_net_charge, label='', title='Uversky plot', legendOn=True)</code></td>
+<td align="center">
+<code>hydropathy</code> is the sequence's 0-1 normalized hydropathy, while <code>mean_net_charge</code> is the the absolute value of the sequence's mean net charge. <code>label</code>, if included, should be a string with which the sequence on the plot is labelled. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<td align="center">No programatic output is generated, but the plot is rendered on the screen.</td>
+</tr>
+<tr>
+<td align="center"><code>save_single_phasePlot(fp, fn, filename, label='', title='Diagram of states', legendOn=True)</code></td>
+<td align="center">
+<code>fp</code> is the fraction of positive residues in a sequence, <code>fn</code> is the fraction of negative residues in a sequence. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label</code>, if included, should be a string with which the sequence on the plot is labelled. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
+</tr>
+<tr>
+<td align="center"><code>save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label='', title='Uversky plot', legendOn=True)</code></td>
+<td align="center">
+<code>hydropathy</code> is the sequence's 0-1 normalized hydropathy, while <code>mean_net_charge</code> is the the absolute value of the sequence's mean net charge. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label</code>, if included, should be a string with which the sequence on the plot is labelled. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
+</tr>
+</tbody>
+</table><p>If you wish to plot a single sequence's Pappu-Das diagram of states plot or Uversky plot from a <code>SequenceParameter</code> object we suggest using the appropriate <code>SequenceParameter</code> functions (e.g.  <code>.show_uverskyDiagram()</code>, <code>.show_phaseDiagram()</code>)</p>
+
+<h3>
+<a name="_multiple_-functions" class="anchor" href="#_multiple_-functions"><span class="octicon octicon-link"></span></a>
+<code>*_multiple*_</code> functions</h3>
+
+<p>For the <code>multiple</code> plotting functions, we pass in a list of values or objects corresponding to the multiple sequences of interest. </p>
+
+<p>There are two types of multiple plots</p>
+
+<p><strong>1)</strong> Those which you pass two lists of the actual values of interest, where the lists represent parallel lists, where the position in each list corresponds to a specific sequence.
+<strong>2)</strong> Those which you pass a list of <code>SequenceParameter</code> objects to, meaning you only pass it a single list</p>
+
+<p>The <code>show_*</code> functions render a plot on the screen in front of you through <code>matplotlib</code>. These are useful for directly interacting with sequences and examining how specific sequence might behave.</p>
+
+<p>The <code>save_*</code> functions save a plot to the designated file name.</p>
+
+<table>
+<thead><tr>
+<th align="center">Function name</th>
+<th align="center">Input Arguments</th>
+<th align="center">Discussion</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="center"><code>show_multiple_phasePlot(fp_list, fn_list, ?label_list=[], ?title="Diagram of states", ?legendOn=True)</code></td>
+<td align="center">
+<code>fp_list</code> and <code>fn_list</code> are lists of the positive fraction and negative fraction of sequences, where the list position in each of these two 'parallel' lists corresponds to the same sequence. That is to say, if you were looking at 5 sequences, <code>fp_list</code> and <code>fn_list</code> would both be of length 5, and <code>fp_list[2]</code> and <code>fn_list[2]</code> would represent the fraction position and fraction negative of your third sequence, respectively. <code>label_list</code>, if included, should be a list of strings corresponding to the length of <code>fn_list</code> and <code>fp_list</code>, and includes names for each sequence on the plot. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<td align="center">No programatic output is generated, but the plot is rendered to the screen.</td>
+</tr>
+<tr>
+<td align="center"><code>show_multiple_phasePlot2(SeqParam_list, label_list=[], title='Diagram of states', legendOn=True)</code></td>
+<td align="center">All arguments are the same as above, except now instead of explicit fraction of positive and fraction of negative lists, we have a single list containing <code>SequenceParameter</code> objects, from which these properties are derived.</td>
+<td align="center">No programatic output is generated, but the plot is rendered to the screen.</td>
+</tr>
+<tr>
+<td align="center"><code>show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list=[], title='Uversky plot', legendOn=True)</code></td>
+<td align="center">
+<code>hydropathy_list</code> and <code>mean_net_charge_list</code> are lists of the 0-1 normalized hydropathy and the absolute mean net charge, where the list position in each of these two 'parallel' lists corresponds to the same sequence. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label_list</code>, if included, should be a list of strings corresponding to the length of <code>fn_list</code> and <code>fp_list</code>, and includes names for each sequence on the plot. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<td align="center">No programatic output is generated, but the plot is rendered to the screen.</td>
+</tr>
+<tr>
+<td align="center"><code>show_multiple_uverskyPlot2(SeqParam_list, label_list=[], title='Uversky plot', legendOn=True)</code></td>
+<td align="center">All arguments are the same as above, except now instead of having an explicit hydropathy list and an explicit mean net charge list, we have a single list containing <code>SequenceParameter</code> objects, from which these properties are derived.</td>
+<td align="center">No programatic output is generated, but the plot is rendered to the screen.</td>
+</tr>
+<tr>
+<td align="center"><code>save_multiple_phasePlot(fp_list, fn_list, filename, ?label_list=[], ?title="Diagram of states", ?legendOn=True)</code></td>
+<td align="center">
+<code>fp_list</code> and <code>fn_list</code> are lists of the positive fraction and negative fraction of sequences, where the list position in each of these two 'parallel' lists corresponds to the same sequence. That is to say, if you were looking at 5 sequences, <code>fp_list</code> and <code>fn_list</code> would both be of length 5, and <code>fp_list[2]</code> and <code>fn_list[2]</code> would represent the fraction position and fraction negative of your third sequence, respectively. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label_list</code>, if included, should be a list of strings corresponding to the length of <code>fn_list</code> and <code>fp_list</code>, and includes names for each sequence on the plot. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
+</tr>
+<tr>
+<td align="center"><code>save_multiple_phasePlot2(SeqParam_list, filename, label_list=[], title='Diagram of states', legendOn=True)</code></td>
+<td align="center">All arguments are the same as above, except now instead of explicit fraction of positive and fraction of negative lists, we have a single list containing <code>SequenceParameter</code> objects, from which these properties are derived.</td>
+<td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
+</tr>
+<tr>
+<td align="center"><code>save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label_list=[], title='Uversky plot', legendOn=True)</code></td>
+<td align="center">
+<code>hydropathy_list</code> and <code>mean_net_charge_list</code> are lists of the 0-1 normalized hydropathy and the absolute mean net charge, where the list position in each of these two 'parallel' lists corresponds to the same sequence. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label_list</code>, if included, should be a list of strings corresponding to the length of <code>fn_list</code> and <code>fp_list</code>, and includes names for each sequence on the plot. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
+</tr>
+<tr>
+<td align="center"><code>save_multiple_uverskyPlot2(SeqParam_list, filename, label_list=[], title='Uversky plot', legendOn=True)</code></td>
+<td align="center">All arguments are the same as above, except now instead of having an explicit hydropathy list and an explicit mean net charge list, we have a single list containing <code>SequenceParameter</code> objects, from which these properties are derived.</td>
+<td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
+</tr>
+</tbody>
+</table><h1>
+<a name="localcider-exceptions" class="anchor" href="#localcider-exceptions"><span class="octicon octicon-link"></span></a>
+<code>localcider</code> exceptions</h1>
+
+<p>If you're into exception handling, localcider has a set of defined exceptions (all of which inhert from the <code>Exception</code> base class) which can be access by importing localcider - i.e.</p>
+
+<pre><code>import localcider
+
+localcider.SequenceFileParserException
+localcider.SequenceException
+localcider.ResTableException
+localcider.PlottingException
 </code></pre>
 
-<h2></h2>
+<p>There are a couple more but these relate to functionality not yet available in version 0.1.0</p>
 
-<pre><code>get_NCPR() | Get the net charge per residue
-</code></pre>
-
-<h2></h2>
-
-<pre><code>get_countNeg() | Get the number of negatively charged amino acids
-</code></pre>
-
-<h2></h2>
-
-<pre><code>get_countPos() | Get the number of positily charged amino acids
-</code></pre>
-
-<h2></h2>
-
-<pre><code>get_fraction_negative() | Get the fraction of residues which are negativly charged
-</code></pre>
-
-<h2></h2>
-
-<pre><code>get_fraction_positive() | Get the fraction of residues which are positivly charged
-</code></pre>
-
-<h2></h2>
-
-<pre><code>get_countNeut() | Get the number of neutral amino acids
-</code></pre>
-
-<p><strong><code>get_amino_acid_fractions()</code></strong> - Get a dictionary of the fractions of each amino acid in the sequence</p>
-
-<p><strong><code>get_fraction_disorder_promoting()</code></strong> - Get the fraction of residues predicted to be 'disorder promiting' [REF 1]</p>
-
-<p><strong><code>get_kappa()</code></strong> - Get the kappa value of the sequence [REF 2]</p>
-
-<p><strong><code>get_mean_net_charge()</code></strong> - Get the absolute mean net charge of your sequence</p>
-
-<p><strong><code>get_phase_plot_region()</code></strong> - Get the region on the Pappu-Das diagram of states where your sequence falls </p>
-
-<p><strong><code>get_mean_hydropathy()</code></strong> - Get the mean hydrophobicity as caluclated from a skewed Kyte-Doolittle hydrophobicity scale [REF 3]</p>
-
-<p><strong><code>get_uversky_hydropathy()</code></strong> - Get the mean hydropathy as calculated from a normalized Kyte-Doolittle hydrophobicity scale [REF 3 REF 4]</p>
-
-<h4>
-<a name="phosphorylation-functions" class="anchor" href="#phosphorylation-functions"><span class="octicon octicon-link"></span></a>Phosphorylation functions</h4>
-
-<p><strong><code>get_all_phosphorylatable_sites()</code></strong> - Get a list of the positions of all S/Y/T - note this function DOES NOT make any inference about accesibility, binding motifs, it's literally just a list of sites which canonically are able to be phosphorylated.</p>
-
-<p><strong><code>set_phosphosites(list_of_positions)</code></strong> - Sets a residues which may be phosphorylatable (must be T/Y/S)</p>
-
-<p><strong><code>clear_phosphosites()</code></strong> - Clears any previously defined phosphosites</p>
-
-<p><strong><code>get_kappa_after_phosphorylation()</code></strong> - Get the kappa value assuming full phosphorylation (with PO4(-1)).</p>
-
-<p><strong><code>get_phosphosequence()</code></strong> - Returns the fully phosphorylated sequence, with "phosphorylated residues" replaced with glutamate (E)</p>
-
-<p><strong><code>get_phosphosites()</code></strong> - Get the list of sites designated as phosphosites previously</p>
-
-<p><strong><code>get_full_phosphostatus_kappa_distribution()</code></strong> - ** UNDER DEVELOPMENT ** For each phospho-permutant, given the available phosphosites, calculate the kappa, fraction positive, fraction negative, FCR, NCP and meanHydropathy. This returns a list of tuples. We're still determining if all this information is necessary. Also note that as the number of phosphosites increases the number of calulations here scales as n^2. Be warned!</p>
-
-<h4>
-<a name="plotting-functions" class="anchor" href="#plotting-functions"><span class="octicon octicon-link"></span></a>Plotting functions</h4>
-
-<p><strong><code>show_phaseDiagram(?label)</code></strong> - Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram. <code>Label</code> can be a string which labels your sequence on the plot.</p>
-
-<p><strong><code>show_uverskyDiagram(?label)</code></strong> - Renders a <code>matplotlib</code> Uversky plot with your sequence on the diagram. <code>Label</code> can be a string which labels your sequence on the plot.</p>
-
-<p><strong><code>show_linearHydropathy(blobLen)</code></strong> - Renders a <code>matplotlib</code> plot of the moving average hydropathy along the sequence, where the hydropathy is calcualted in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>)</p>
-
-<p><strong><code>show_linearNCPR(blobLen)</code></strong> - Renders a <code>matplotlib</code> plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calcualted in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>)</p>
-
-<p><strong><code>show_linearSigma(blobLen)</code></strong> - Renders a <code>matplotlib</code> plot of the moving average sigma parameter along the sequence, where sigma is calcualted in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). Recall that sigma is calculated as the NCPR^2 / FCR. </p>
-
-<p><strong><code>save_phaseDiagram(filename, ?label)</code></strong> - Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram. <code>Label</code> can be a string which labels your sequence on the plot. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</p>
-
-<p><strong><code>save_uverskyDiagram(filename, ?label)</code></strong> - Renders a <code>matplotlib</code> Uversky plot with your sequence on the diagram. <code>Label</code> can be a string which labels your sequence on the plot. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</p>
-
-<p><strong><code>save_linearHydropathy(blobLen, filename)</code></strong> - Renders a <code>matplotlib</code> plot of the moving average hydropathy along the sequence, where the hydropathy is calcualted in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</p>
-
-<p><strong><code>save_linearNCPR(blobLen, filename)</code></strong> - Renders a <code>matplotlib</code> plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calcualted in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</p>
-
-<p><strong><code>save_linearSigma(blobLen, filename)</code></strong> - Saves a <code>matplotlib</code> generated plot of the moving average sigma parameter along the sequence, where sigma is calcualted in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). Recall that sigma is calculated as the NCPR^2 / FCR.</p>
-
-<p>The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</p>
-
-<h4>
-<a name="interactive-help" class="anchor" href="#interactive-help"><span class="octicon octicon-link"></span></a>Interactive help</h4>
-
-<p><strong>localCIDER</strong> contains highly complete interactive help - for any object or function simply type <code>help(&lt;item&gt;)</code> for a complete description.     </p>
+<h1>
+<a name="tutorials" class="anchor" href="#tutorials"><span class="octicon octicon-link"></span></a>Tutorials</h1>
 
 <h2>
-<a name="tutorials" class="anchor" href="#tutorials"><span class="octicon octicon-link"></span></a>Tutorials</h2>
+<a name="1-calculate-a-bunch-of-parameters-associated-with-a-sequence-i-found-on-the-internet" class="anchor" href="#1-calculate-a-bunch-of-parameters-associated-with-a-sequence-i-found-on-the-internet"><span class="octicon octicon-link"></span></a>1) Calculate a bunch of parameters associated with a sequence I found on the internet</h2>
 
-<p>Coming tomorrow</p>
+<pre><code>from localcider.sequenceParameters import SequenceParameters
+
+# define my internet sequence and create a new SequenceParameter object with itxs
+internetSequence="VAQKTVEGAGSIAAATGFVKKDQLGKNEEGAPQEGILEDMPVDP"
+object=SequenceParameter(internetSequencexs)
+
+
+# Let's get some parameters!xs
+object.get_kappa()                       # 0.1960
+
+object.get_fraction_negative()           # 0.1818
+
+object.get_fraction_positive()           # 0.0909
+
+object.get_fraction_disorder_promoting() # 0.75
+
+object.get_amino_acid_fractions()        # {'A': 0.136,
+                                         #  'C': 0.0,
+                                         #  'D': 0.0682,
+                                         #  'E': 0.1136,
+                                         #  'F': 0.0227,
+                                         #  'G': 0.1364,
+                                         #  'H': 0.0,
+                                         #  'I': 0.0455,
+                                         #  'K': 0.0909,
+                                         #  'L': 0.0455,
+                                         #  'M': 0.0227,
+                                         #  'N': 0.0227,
+                                         #  'P': 0.0682,
+                                         #  'Q': 0.0682,
+                                         #  'R': 0.0,
+                                         #  'S': 0.0227,
+                                         #  'T': 0.0455,
+                                         #  'V': 0.0909,
+                                         #  'W': 0.0,
+                                         #  'Y': 0.0}
+</code></pre>
+
+<h5>
+<a name="2-get-a-list-of-kappa-values-for-a-directory-of-fasta-files" class="anchor" href="#2-get-a-list-of-kappa-values-for-a-directory-of-fasta-files"><span class="octicon octicon-link"></span></a>2) Get a list of kappa values for a directory of <code>fasta</code> files.</h5>
+
+<p><code>fasta</code> files are defined as having the following structure</p>
+
+<pre><code>&gt; Header, preceded by a '&gt;' character
+SEQUENCESEQUENCESEQUENCESEQUENCESEQUENCESEQUENCE
+SEQUENCESEQUENCESEQUENCESEQUENCESEQUENCESEQUENCE
+SEQUENCESEQUENCESEQUENCESEQUENCESEQUENCESEQUENCE
+</code></pre>
+
+<p>Let's imagine we have a directory with 10 fasta files (<code>seq0.fasta</code>, <code>seq1.fasta</code>, ..., <code>seq9.fasta</code>). The following script will calculate the kappa of all such sequences</p>
+
+<pre><code># import a few things...
+import os
+from localcider.sequenceParameters import SequenceParameters
+
+# filelist is now a list of each file in the current directory
+filelist = os.listdir(".")
+
+# create an empty list 
+list_of_SeqObjs = []
+
+# populate that list with SequenceParameter objects, which we construct from the
+# sequence found in each file
+for file in filelist:
+   list_of_SeqObjs.append(SequenceParameter(sequenceFile=file))
+
+# for each 
+for obj in list_of_SeqObjs:
+   print obj.get_kappa()
+</code></pre>
+
+<p>Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a cannonical amino acid, so triggers a <code>SequenceFileParserException</code>. We actually just want to skip any such files, so we change the code above slightly. Specifically, let's change the for-loop that loops over each file;</p>
+
+<pre><code># import a few things...
+import os
+from localcider.sequenceParameters import SequenceParameters
+
+## NOTE - we now import the whole localcider module to give us access
+## to the exception classes
+import localcider
+
+# get a list of all files in the current directory
+filelist = os.listdir(".")
+
+# create an empty list 
+list_of_SeqObjs = []
+
+# populate that list with SequenceParameter objects, which we construct from the
+# sequence found in each file
+for file in filelist:
+   list_of_SeqObjs.append(SequenceParameter(sequenceFile=file))
+
+
+# populate that list with SequenceParameter objects, which we construct from the
+# sequence found in each file
+for file in filelist:
+   try:
+      list_of_SeqObjs.append(SequenceParameter(sequenceFile=file))
+   except localcider.SequenceFileParserException:
+      # if we encounter a file parsing error just skip that sequence
+      continue
+</code></pre>
 
 <h2>
-<a name="localcider-roadmap" class="anchor" href="#localcider-roadmap"><span class="octicon octicon-link"></span></a>localCIDER roadmap</h2>
+<a name="example-3---plotting-two-sequence-on-a-single-pappu-das-phase-diagram" class="anchor" href="#example-3---plotting-two-sequence-on-a-single-pappu-das-phase-diagram"><span class="octicon octicon-link"></span></a>Example 3 - plotting two sequence on a single Pappu-Das phase diagram</h2>
+
+<pre><code># import the plots module
+from localcider import plots
+
+# import the SequenceParameters class from the sequenceParameters class
+from localcider.sequenceParameters import SequenceParameters    
+
+# create two SequenceParameter objects
+SynWT=SequenceParameters("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAA")
+SynMut=SequenceParameters("MDVFMKGLSKAKEGEEKKAEKTKQGVAEAA")
+
+
+# showing with sequence labels
+plots.show_multiple_phasePlot2([SynWT, SynMut],label_list=['WT','MUT'])
+
+# saving without
+plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','MUT'])
+</code></pre>
+
+<h1>
+<a name="localcider-roadmap" class="anchor" href="#localcider-roadmap"><span class="octicon octicon-link"></span></a>localCIDER roadmap</h1>
 
 <p>We have a fairly well defined roadmap for the next few sets of minor release for localCIDER, with the first major release coming sometime thereafter</p>
 
-<h5>
-<a name="v-020" class="anchor" href="#v-020"><span class="octicon octicon-link"></span></a>V 0.2.0</h5>
+<h4>
+<a name="v-020" class="anchor" href="#v-020"><span class="octicon octicon-link"></span></a>V 0.2.0</h4>
 
 <ul>
-<li>Turn on the sequence permuatant and Wang-Landau density of kappa states analysis </li>
-</ul><h5>
-<a name="v-030" class="anchor" href="#v-030"><span class="octicon octicon-link"></span></a>V 0.3.0</h5>
+<li>Turn on the sequence permutant generator and Wang-Landau density of kappa states analysis </li>
+</ul><h4>
+<a name="v-030" class="anchor" href="#v-030"><span class="octicon octicon-link"></span></a>V 0.3.0</h4>
 
 <ul>
 <li>Provide stand alone, command line tools for the more computationally intensive operations (to make deploying on HPC infrastructure </li>
 </ul><h2>
+<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
+
+<p>localCIDER was developed in the Pappu lab by Alex Holehouse, with much of the original code written by James Ahad. Importantly, we believe scientific software should be held to same (or higher) software standards as general commercial and open source projects. To this end we use Git for version control, employ standard conventions for versioning, and try to ensure all code is well structured and well documented. The source code is fully open and <a href="https://github.com/Pappulab/localCIDER">can be viewed here</a>.</p>
+
+<h2>
 <a name="references" class="anchor" href="#references"><span class="octicon octicon-link"></span></a>References</h2>
+
+<p><strong>[1]</strong> <strong>A. Campen, R.M. Williams, C.J. Brown, J. Meng, V.N. Uversky, A.K. Dunker</strong>. (2008) <a href="http://www.ncbi.nlm.nih.gov/pubmed/18991772"><em>Protein Pept Lett.</em> 15(9) pp 956 - 963</a></p>
+
+<p><strong>[2]</strong> <strong>R.K. Das &amp; R.V. Pappu</strong> (2013) <a href="http://www.pnas.org/content/110/33/13392.short"><em>PNAS</em> 110, 33, pp 13392 - 13397</a></p>
+
+<p><strong>[3]</strong> <strong>J. Kyte, R. Doolittle</strong> (1982) <a href="http://www.ncbi.nlm.nih.gov/pubmed/7108955"><em>J. Mol. Biol.</em> 157 pp 105 - 132</a></p>
+
+<p><strong>[4]</strong> <strong>V. Uversky</strong> (2002) <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2373528/"><em>Protein Sci. Apr</em> 11(4) pp 739 - 756</a></p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/Pappulab">Pappulab</a></p>
