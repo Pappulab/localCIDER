@@ -1,18 +1,45 @@
+==========
 localCIDER
 ==========
 
-localCIDER is the Python backend for CIDER, and provides a set of tools for both calculating and plotting a wide range of parameters associated with disordered proteins and regions.
+`version 0.1.0 - August 2014`
 
-Specifically, this project was motivated by the need to rapidly and easily calculate the kappa parameter, as defined in the 2013 Das & Pappu PNAS paper, "Conformations of intrinsically disordered proteins are influenced by linear sequence distributions of oppositely charged residues". 
+**Introduction**
+
+**localCIDER** is a Python package developed by the lab of `Rohit Pappu at Washington University in St. Louis <pappulab.wustl.edu>`_ for calculating and plotting parameters associated with intrinsiccally disordered proteins (IDPs). **localCIDER** is the Python backend for `CIDER <http://pappulab.wustl.edu/CIDER.html>`_, ( **C**\lassification of **I**\ntrinsically **D**\isordered **E**\nsemble **R**\egions) - a webserver currently in the final stages of development by the Pappulab. Essentially, localCIDER lets you run CIDER's calculations locally, allowing you to create custom analysis pipelines which do not rely on the webserver. It also allows you to take advantage of your own local infrastructure, rather than competiting with everyone else for a single set of hardware hosted by the Pappu lab.
+
+This project was motivated by the need to rapidly and easily calculate the kappa parameter, as defined in the 2013 Das & Pappu PNAS paper, "Conformations of intrinsically disordered proteins are influenced by linear sequence distributions of oppositely charged residues", as well as plot your sequence on the Pappu-Das diagram of states;
+
+.. image :: http://pappulab.wustl.edu/img/phase_diagram.png
+   :width: 500 px
+
+
+The original method for calulating kappa involves an incredibly computationally expensive Monte Carlo step, whereas localCIDER makes use of a number of heuristics to reduce the Monte Carlo search space to an optimized and highly manageable size (most kappa calculations are carried out in seconds).
 
 Beyond kappa, localCIDER lets you calculate a range of additional parameters, as well as create the Pappu-Das phase diagram.
 
 For more information please `see the full documentation <http://pappulab.github.io/localCIDER/>`_ .
 
+**Installation**
+
 To install run
 
     [sudo] pip install localcider
 
-localCIDER was written by Alex Holehouse and James Ahad in the `Pappu Lab <http://pappulab.wustl.edu/`_ .
+Note that localcider requires `numpy` and `matplotlib` to run.
+
+**Usage**
+
+Please see the `see the full documentation <http://pappulab.github.io/localCIDER/>`_ .
+
+**Bugs and questions**
 
 Please address all questions to `Alex <http://pappulab.wustl.edu/people.html#grads>`_ and he'll do his best to get back to you. 
+
+**About**
+
+localCIDER was written by Alex Holehouse and James Ahad in the `Pappu Lab <http://pappulab.wustl.edu>`_ . A manuscript is currently under preparation for citation, but until that time please cite localCIDER as;
+
+    A.S. Holehouse, J. Ahad, R.K. Das, R.V. Pappu (2014) localCIDER, http://pappulab.wustl.edu/localCIDER/
+
+

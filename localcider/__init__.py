@@ -64,8 +64,6 @@ from backend.localciderExceptions import ResTableException
 from backend.localciderExceptions import WLException
 
 
-
-
 status_message("localCIDER version " + localCIDER_version)
 
 
