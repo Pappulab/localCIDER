@@ -16,16 +16,15 @@
     <div class="wrapper">
       <header>
         <h1>LocalCIDER</h1>
-        <p>LocalCIDER is the Python backend for CIDER</p>
+        <p>localCIDER lets you compute sequence parameters for disordered proteins</p>
 
         <p class="view"><a href="https://github.com/Pappulab/localCIDER">View the Project on GitHub <small>Pappulab/localCIDER</small></a></p>
-        
 
 
         <ul>
+          <li><a href="https://github.com/Pappulab/localCIDER/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Pappulab/localCIDER/tarball/master">Download <strong>TAR Ball</strong></a></li>
           <li><a href="https://github.com/Pappulab/localCIDER">View On <strong>GitHub</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu">Go to <strong>Pappu lab</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu/CIDER/">Go to <strong>CIDER</strong> </a></li>
         </ul>
       </header>
       <section>
@@ -94,6 +93,13 @@
 
 <pre><code>zypper search &lt;package-name&gt; # an 'i' next to the package indicates it's installed
 </code></pre>
+
+<p>An alternative issue may be that installing <code>python-numpy-devel</code> (which is required by pip to build <code>matplotlib</code>) requires numpy-1.7 and you have numpy-1.8. In <em>this</em> case we recommend using</p>
+
+<pre><code>[sudo] zypper install python-matplotlib-tk
+</code></pre>
+
+<p>To install <code>matplotlib</code> (NOTE the <code>-tk</code> at the end!)</p>
 
 <h5>
 <a name="ubuntu" class="anchor" href="#ubuntu"><span class="octicon octicon-link"></span></a>Ubuntu</h5>
@@ -652,9 +658,17 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 <p><strong>[3]</strong> <strong>J. Kyte, R. Doolittle</strong> (1982) <a href="http://www.ncbi.nlm.nih.gov/pubmed/7108955"><em>J. Mol. Biol.</em> 157 pp 105 - 132</a></p>
 
 <p><strong>[4]</strong> <strong>V. Uversky</strong> (2002) <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2373528/"><em>Protein Sci. Apr</em> 11(4) pp 739 - 756</a></p>
+
+<hr><pre><code>    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="https://github.com/Pappulab/localCIDER"&gt;View On &lt;strong&gt;GitHub&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="http://pappulab.wustl.edu"&gt;Go to &lt;strong&gt;Pappu lab&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="http://pappulab.wustl.edu/CIDER/"&gt;Go to &lt;strong&gt;CIDER&lt;/strong&gt; &lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+</code></pre>
       </section>
       <footer>
-        <p>This project is maintained by Alex Holehouse - <a href="https://github.com/Pappulab">Pappulab</a></p>
+        <p>This project is maintained by <a href="https://github.com/Pappulab">Pappulab</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
