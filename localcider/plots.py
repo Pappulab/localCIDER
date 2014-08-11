@@ -72,7 +72,7 @@ def show_single_phasePlot(fp, fn, label="", title="Diagram of states", legendOn=
 
 
 #...................................................................................#
-def save_single_phasePlot(fp, fn, filemae, label="", title="Diagram of states", legendOn=True):
+def save_single_phasePlot(fp, fn, filename, label="", title="Diagram of states", legendOn=True):
     """
     Plot a single sequence on the Pappu-Das phase plot (diagram of states).
 
@@ -117,7 +117,7 @@ def show_multiple_phasePlot(fp_list, fn_list, label=[""], title="Diagram of stat
 
 
 #...................................................................................#
-def show_multiple_phasePlot2(SeqParam_list, lablelist=[], title="Diagram of states", legendOn=True):
+def show_multiple_phasePlot2(SeqParam_list, label_list=[], title="Diagram of states", legendOn=True):
     """
     Plot a single sequence on the Pappu-Das phase plot (diagram of states). This function takes
     SequenceParameter objects rather than raw values
@@ -142,11 +142,11 @@ def show_multiple_phasePlot2(SeqParam_list, lablelist=[], title="Diagram of stat
         fp_list.append(seq.get_fraction_positive())
         fn_list.append(seq.get_fraction_negative())
 
-    plotting.show_multiple_phasePlot(fp_list, fn_list, label, title, legendOn)
+    plotting.show_multiple_phasePlot(fp_list, fn_list, label_list, title, legendOn)
     
 
 #...................................................................................#
-def save_multiple_phasePlot(fp_list, fn_list, filename, label="", title="Diagram of states", legendOn=True):
+def save_multiple_phasePlot(fp_list, fn_list, filename, label_list=[], title="Diagram of states", legendOn=True):
     """
     Plot multiple sequences on the same Pappu-Das phase plot (diagram of states) and save that file
 
@@ -165,11 +165,11 @@ def save_multiple_phasePlot(fp_list, fn_list, filename, label="", title="Diagram
     No output, but if succesful a file with filename is generated with the associated plot
     """
 
-    plotting.save_multiple_phasePlot(fp_list, fn_list, filename, label, title, legendOn)
+    plotting.save_multiple_phasePlot(fp_list, fn_list, filename, label_list, title, legendOn)
 
 
 #...................................................................................#
-def save_multiple_phasePlot2(SeqParam_list, filename, label="", title="Diagram of states", legendOn=True):
+def save_multiple_phasePlot2(SeqParam_list, filename, label_list=[], title="Diagram of states", legendOn=True):
     """
     Plot multiple sequences on the same Pappu-Das phase plot (diagram of states) and save that file. 
     This function takes SequenceParameter objects rather than raw values.
@@ -195,7 +195,7 @@ def save_multiple_phasePlot2(SeqParam_list, filename, label="", title="Diagram o
         fp_list.append(seq.get_fraction_positive())
         fn_list.append(seq.get_fraction_negative())
 
-    plotting.save_multiple_phasePlot(fp_list, fn_list, filename, label, title, legendOn)
+    plotting.save_multiple_phasePlot(fp_list, fn_list, filename, label_list, title, legendOn)
 
 
 ####################################################
@@ -252,7 +252,7 @@ def save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label="", tit
 
 
 #...................................................................................#
-def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label="", title="Uversky plot", legendOn=True):
+def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list=[], title="Uversky plot", legendOn=True):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and shows the plot on the screen.
 
@@ -260,7 +260,7 @@ def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label="", t
     hydropathy_list      | List of proteins' mean hydropathy
     mean_net_charge_list | List of the absolute magnitude of the protein's net charge divided by sequence length
     
-    label                | On-plot label of sequence (DEFAULT = no label)
+    label_list            | List of labels for each sequence (empty = no list)
     title                | Plot title (DEFAULT = "Uversky plot")
     legendOn             | Include the phase diagram region legend (DEFAULT = True)
     
@@ -270,11 +270,11 @@ def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label="", t
     Nothing, but a Uversky plot with multiple points should appear on the screen 
 
     """
-    plotting.show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label, title, legendOn)
+    plotting.show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list, title, legendOn)
 
 
 #...................................................................................#
-def show_multiple_uverskyPlot2(SeqParam_list, label="", title="Uversky plot", legendOn=True):
+def show_multiple_uverskyPlot2(SeqParam_list, label_list=[], title="Uversky plot", legendOn=True):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and shows the plot on the screen.
     This function takes a list of SequenceParameter objects instead of the actual values
@@ -282,8 +282,7 @@ def show_multiple_uverskyPlot2(SeqParam_list, label="", title="Uversky plot", le
     INPUT
     SeqParam_list        | List of sequence parameter objects
     
-    
-    label                | On-plot label of sequence (DEFAULT = no label)
+    label_list           | List of labels for each sequence (empty = no list)
     title                | Plot title (DEFAULT = "Uversky plot")
     legendOn             | Include the phase diagram region legend (DEFAULT = True)
     
@@ -300,11 +299,11 @@ def show_multiple_uverskyPlot2(SeqParam_list, label="", title="Uversky plot", le
         hydropathy_list.append(seq.get_uversky_hydrophobicity())
         mean_net_charge_list.append(seq.get_mean_net_charge())
 
-    plotting.show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label, title, legendOn)
+    plotting.show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list, title, legendOn)
 
 
 #...................................................................................#
-def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label="", title="Uversky plot", legendOn=True):
+def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label_list=[], title="Uversky plot", legendOn=True):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and saves that plot to 'filename' (.png
     is appended).
@@ -314,7 +313,7 @@ def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, l
     mean_net_charge_list | List of the absolute magnitude of the protein's net charge divided by sequence length
     filename             | Path/name of file to save plot (.png is appended)
    
-    label                | On-plot label of sequence (DEFAULT = no label)
+    label_list           | List of labels for each sequence (empty = no list)
     title                | Plot title (DEFAULT = "Uversky plot")
     legendOn             | Include the phase diagram region legend (DEFAULT = True)
     
@@ -326,11 +325,11 @@ def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, l
     defines the name of a file/path for saving
     """
 
-    plotting.save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label, title, legendOn)
+    plotting.save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label_list, title, legendOn)
 
 
 #...................................................................................#
-def save_multiple_uverskyPlot2(SeqParam_list, filename, label="", title="Uversky plot", legendOn=True):
+def save_multiple_uverskyPlot2(SeqParam_list, filename, label_list=[], title="Uversky plot", legendOn=True):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and saves that plot to 'filename' (.png
     is appended). This function takes SequenceParameter objects instead of list of hydrophobicity and mean_net_charge
@@ -360,6 +359,6 @@ def save_multiple_uverskyPlot2(SeqParam_list, filename, label="", title="Uversky
         mean_net_charge_list.append(seq.get_mean_net_charge())
 
 
-    plotting.save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label, title, legendOn)
+    plotting.save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label_list, title, legendOn)
 
     

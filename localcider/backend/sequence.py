@@ -72,19 +72,7 @@ from backendtools import return_absolute_datafile_path, warning_message, verifyT
 from restable import ResTable
 from data import aminoacids
 import data  
-
-
-
-######################
-# Exceptions
-
-class SequenceException(Exception):
-    """
-    Exception for the sequence class
-
-    """
-    pass
-
+from localciderExceptions import SequenceException
 
 
 ######################
@@ -440,16 +428,18 @@ class Sequence:
 
     #...................................................................................#
     def linearDistOfHydropathy(self, bloblen):
-
+        """
+        Returns a np vertical stackobject showing how the 0 to 1 normallized hydrophobicity 
+        varies over blob-sized regions along the sequence
+        """
+       
         nblobs = self.len-bloblen+1
 
         blobhydro = [0]*nblobs
 
         # construct a vector of the hydropathy values of each residue in
-        # in the sequence (using the re-set KD scale which runs from 0 to 9
-        # with 9 being the most hydrophobic. This scaling may be changed
-        # in future versions...
-        #hydrochain = [lkupTab.lookUpHydropathy(res) for res in self.seq]
+        # in the sequence (using the Uversky-normalized KD scale which runs from 0 to 1
+        # with 1 being the most hydrophobic. 
 
         # get Uversky hydrophobicity lookup table
         KDU = aminoacids.get_KD_uversky()
@@ -467,6 +457,11 @@ class Sequence:
 
     #...................................................................................#
     def linearDistOfHydropathy_2(self, bloblen):
+        """
+        Returns a np vertical stackobject showing how the 0 to 9 normallized hydrophobicity 
+        varies over blob-sized regions along the sequence
+        """
+
 
         nblobs = self.len-bloblen+1
 

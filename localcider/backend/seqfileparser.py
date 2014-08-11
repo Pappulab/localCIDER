@@ -55,12 +55,7 @@
 
 from backendtools import warning_message, status_message
 from data.aminoacids import ONE_TO_THREE
-
-######################
-# Exceptions
-
-class SequenceFileParserException(Exception):
-    pass
+from localciderExceptions import SequenceFileParserException
 
 
 class SequenceFileParser:

@@ -52,9 +52,20 @@ __all__ = ['sequenceParameters', 'plots']
 
 from backend.config import VERSION as localCIDER_version
 from backend.backendtools import status_message
-import sequenceParameters
+import sequenceParameters as sequenceParameters 
 import plots as plots
-#import sequencePermutants # NOT YET V 0.2.0 !!
+
+# Explicit exception importing
+from backend.localciderExceptions import KeyFileException 
+from backend.localciderExceptions import PlottingException
+from backend.localciderExceptions import SequenceException
+from backend.localciderExceptions import SequenceFileParserException
+from backend.localciderExceptions import ResTableException
+from backend.localciderExceptions import WLException
+
+
+
 
 status_message("localCIDER version " + localCIDER_version)
+
 

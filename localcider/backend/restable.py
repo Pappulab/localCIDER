@@ -56,8 +56,7 @@ from residue import Residue
 import data
 from data.aminoacids import THREE_TO_ONE, ONE_TO_THREE
 
-class ResTableException(Exception):
-    pass
+from localciderExceptions import ResTableException
 
 class ResTable:
     """ Class which holds data on amino acids as read from the data.aminoacids file

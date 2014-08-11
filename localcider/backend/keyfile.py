@@ -59,6 +59,7 @@ import numpy as np
 from backendtools import warning_message, status_message
 from seqfileparser import SequenceFileParser
 
+from localciderExceptions import KeyFileException
 
 #=======================================================
 # Default values for non-crucial keyfile parameters
@@ -72,8 +73,6 @@ WL_TYPES = ['NORMAL','ZOOM']
 
 #======================================================
 
-class KeyFileException(Exception):
-    pass
 
 class KeyFile():
     """

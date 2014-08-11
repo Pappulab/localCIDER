@@ -64,18 +64,7 @@ from matplotlib.font_manager import FontProperties
 
 from sequence import Sequence
 from backendtools import verifyType
-
-
-######################
-# Exceptions
-#...................................................................................#
-class PlottingException(Exception):
-    """
-    Exception for the plotting functions
-
-    """
-    pass
-
+from localciderExceptions import PlottingException
 
 #...................................................................................#
 def show_single_phasePlot(fp, fn, label="",title="Diagram of states",legendOn=True):
@@ -374,9 +363,9 @@ def phaseplot_validate(fp,fn):
                             
     # next check they're both between 0 and 0.5
     if (fp < 0) or (fp > 0.5):
-        raise PlottingException("Fraction of positive residues outside of appropriate range [ " + str(fp) + "]")
+        raise PlottingException("Fraction of positive residues outside of appropriate range [" + str(fp) + "]")
     if (fn < 0) or (fn > 0.5):
-        raise PlottingException("Fraction of positive residues outside of appropriate range [ " + str(f) + "]")
+        raise PlottingException("Fraction of positive residues outside of appropriate range [" + str(fn) + "]")
 
     # if we get here everything looks OK!
 
