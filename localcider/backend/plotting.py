@@ -246,7 +246,19 @@ def single_plot(x,y,label=""):
     
     # draw the actual plot, with the sequence annotated
     plt.scatter(x,y,s=50,marker='o',color='Black',zorder=5)
-    plt.annotate(label,xy=(x+.01,y+.01))
+    
+    # we scale the location of the label in the event of extreme values
+    if x > 0.8:
+        x_lab=x-(0.01*len(label)+0.03)
+    else:
+        x_lab=x+0.01
+
+    if y > 0.9:
+        y_lab=y-0.025
+    else:
+        y_lab=y+0.01
+
+    plt.annotate(label,xy=(x_lab,y_lab))
 
     return plt
 
@@ -362,9 +374,9 @@ def phaseplot_validate(fp,fn):
         raise PlottingException("Unable to convert " + str(fn) + " into a float")
                             
     # next check they're both between 0 and 0.5
-    if (fp < 0) or (fp > 0.5):
+    if (fp < 0) or (fp > 1):
         raise PlottingException("Fraction of positive residues outside of appropriate range [" + str(fp) + "]")
-    if (fn < 0) or (fn > 0.5):
+    if (fn < 0) or (fn > 1):
         raise PlottingException("Fraction of positive residues outside of appropriate range [" + str(fn) + "]")
 
     # if we get here everything looks OK!

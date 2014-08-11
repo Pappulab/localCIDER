@@ -9,7 +9,7 @@ setup(
     scripts=[],
     url='http://pappulab.github.io/localCIDER/',
     license='LICENSE.txt',
-    description='Tools for calculating sequence properties of disordered proteins [from the Pappu Lab in St. Louis]',
+    description='Tools for calculating sequence properties of disordered proteins [from the Pappu Lab in at Washington University in St. Louis]',
     long_description=open('README.txt').read(),
     install_requires=[
         "numpy","matplotlib"],

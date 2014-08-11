@@ -109,7 +109,7 @@ class SequenceFileParser:
 
                 # if the header flag had already been flicked then raise an exception (indicative of  multiple sequences in a single file)
                 if header == True:
-                    raise KeyFileException("\n\nERROR: During parsing of sequence file found a second header section. Sequence files must be a single file")
+                    raise SequenceFileParserException("\n\nERROR: During parsing of sequence file found a second header section. Sequence files must be a single file")
 
                 # if it has not, flick the header flag to on
                 header=True

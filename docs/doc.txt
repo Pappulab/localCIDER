@@ -1,1 +1,4 @@
-Documentation coming
+For all documentation please see
+http://pappulab.github.io/localCIDER/
+
+

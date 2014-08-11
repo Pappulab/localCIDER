@@ -62,8 +62,6 @@ from backend.localciderExceptions import SequenceException
 from backend.localciderExceptions import SequenceFileParserException
 from backend.localciderExceptions import ResTableException
 from backend.localciderExceptions import WLException
-
-
 status_message("localCIDER version " + localCIDER_version)
 
 
