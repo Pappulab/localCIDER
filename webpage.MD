@@ -51,6 +51,14 @@ Of course, one or more of these may well already be installed, so your best bet 
 
     zypper search <package-name> # an 'i' next to the package indicates it's installed
 
+An alternative issue may be that installing `python-numpy-devel` (which is required by pip to build `matplotlib`) requires numpy-1.7 and you have numpy-1.8. In *this* case we recommend using
+
+    [sudo] zypper install python-matplotlib-tk
+    
+To install `matplotlib` (NOTE the `-tk` at the end!)
+
+
+
 ##### Ubuntu
 The issues for OpenSuse are also true for Ubuntu - specifically `Ubuntu` seems to need the `python-dev` package to install `numpy`, and the `libfreetype6-dev` package for to get Freetype working in `matplotlib`
 
@@ -410,6 +418,12 @@ localCIDER was developed in the Pappu lab by Alex Holehouse, with much of the or
 **[4]** **V. Uversky** (2002) [*Protein Sci. Apr* 11(4) pp 739 - 756](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2373528/)
 
 
+----------
+        <ul>
+          <li><a href="https://github.com/Pappulab/localCIDER">View On <strong>GitHub</strong></a></li>
+          <li><a href="http://pappulab.wustl.edu">Go to <strong>Pappu lab</strong></a></li>
+          <li><a href="http://pappulab.wustl.edu/CIDER/">Go to <strong>CIDER</strong> </a></li>
+        </ul>
 
 
 

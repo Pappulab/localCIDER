@@ -331,8 +331,8 @@ def finalize_DasPappu(plt, legendOn, title):
     axes_pro = FontProperties()
     axes_pro.set_size('large')
     axes_pro.set_weight('bold')
-    plt.xlabel('Fraction of positivly charged residues', fontproperties = axes_pro)
-    plt.ylabel('Fraction of negativly charged residues', fontproperties = axes_pro)
+    plt.xlabel('Fraction of positively charged residues', fontproperties = axes_pro)
+    plt.ylabel('Fraction of negatively charged residues', fontproperties = axes_pro)
 
     # update the font property for the title
     axes_pro.set_size('x-large')
@@ -424,7 +424,7 @@ def finalize_uversky(plt, legendOn, title):
         # create and set set legend font options
         fontP = FontProperties()
         fontP.set_size('small')
-        plt.legend([reg1,reg2],['Folded proteins','Nativly unfolded'], prop=fontP)
+        plt.legend([reg1,reg2],['Folded proteins','Natively unfolded'], prop=fontP)
 
 
     return plt
