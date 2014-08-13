@@ -36,11 +36,72 @@
    ! AUTHORSHIP INFO:                                                         !
    !--------------------------------------------------------------------------!
    !                                                                          !
-   ! MAIN AUTHOR:    Alex Holehouse                                           !
+   ! MAIN AUTHOR:   Alex Holehouse                                            !
    !                                                                          !
    !--------------------------------------------------------------------------!
 
-   import for data...
+
+   Unit tests for functions in plots
+
 
 """
-import aminoacids
+
+import os.path, time
+import unittest
+import random
+from localcider import plots, sequenceParameters
+import testTools
+
+class TestPlotsFunctions(unittest.TestCase):
+    
+    def setUp(self):
+        self.rseq = sequenceParameters.SequenceParameters(testTools.generate_random_sequence(minLen=20,maxLen=500))
+
+        
+    def test_save_single_phasePlot(self):
+        fp = self.rseq.get_fraction_positive()
+        fn = self.rseq.get_fraction_negative()
+        
+        plots.save_single_phasePlot(fp,fn,'tmpfiles/single_PP','TEST TITLE')
+        plots.save_single_phasePlot(fp,fn,'tmpfiles/single_PP_NO_LEGEND','TEST TITLE',False)
+
+   
+        
+    def test_save_multiple_phasePlot(self):
+
+
+        rseq2 = sequenceParameters.SequenceParameters(testTools.generate_random_sequence(minLen=20,maxLen=500))
+
+        fp1 = self.rseq.get_fraction_positive()
+        fn1 = self.rseq.get_fraction_negative()
+        fp2 = rseq2.get_fraction_positive()
+        fn2 = rseq2.get_fraction_negative()        
+        
+        plots.save_multiple_phasePlot([fp1,fp2],[fn1,fn2],'tmpfiles/mult_PP', ['a','b'], 'TEST TITLE')
+        plots.save_multiple_phasePlot([fp1,fp2],[fn1,fn2],'tmpfiles/mult_PP_NO_LEGEND',['a','b'],'TEST TITLE',False)
+
+
+
+    def test_save_multiple_phasePlot2(self):
+
+        rseq2 = sequenceParameters.SequenceParameters(testTools.generate_random_sequence(minLen=20,maxLen=500))        
+
+        plots.save_multiple_phasePlot2([self.rseq,rseq2],'tmpfiles/mult_PP',['a','b'],'TEST TITLE')
+        plots.save_multiple_phasePlot2([self.rseq,rseq2],'tmpfiles/mult_PP_NO_LEGEND',['a','b'],'TEST TITLE',False)
+
+
+    def test_save_single_uverskyPlot(self):
+        hydro = self.rseq.get_uversky_hydrophobicity()
+        mnc   = self.rseq.get_mean_net_charge()
+        
+        plots.save_single_phasePlot(hydro,mnc,'tmpfiles/single_UV','TEST TITLE')
+        plots.save_single_phasePlot(hydro,mnc,'tmpfiles/single_UV_NO_LEGEND','TEST TITLE',False)
+
+
+    def test_save_multiple_uverskyPlot(self):
+        pass
+
+    def test_save_multiple_uverskyPlot2(self):
+        pass
+        
+

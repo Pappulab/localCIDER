@@ -1,0 +1,7 @@
+0.1.1
+= NEW
+- Improved parsing of whitespace for input sequence
+- Added and ran additional tests
+
+= Bug fixes
+- minor/various

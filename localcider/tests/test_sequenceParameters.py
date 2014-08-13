@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.0                                                         !
+   !    Version 0.1.1                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -45,19 +45,19 @@
 
 
 """
-
-
-
 import os.path, time
 import unittest
+import random
+
 from localcider import sequenceParameters
+import testTools
+
 
 class TestSequenceParametersFunctions(unittest.TestCase):
 
-    def setUp(self):
-
-        
+    def setUp(self):        
         self.testObj = sequenceParameters.SequenceParameters("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAAGKTKEGVLYVGSKTKEGVVHGVATVAEKTKEQVTNVGGAVVTGVTAVAQKTVEGAGSIAAATGFVKKDQLGKNEEGAPQEGILEDMPVDPDNEAYEMPSEEGYQDYEPEA")
+
 
 
 
@@ -260,8 +260,81 @@ class TestSequenceParametersFunctions(unittest.TestCase):
         self.testObj.save_phaseDiagramPlot("tmpfiles/phaseplot_test")
         
 
-    def save_uverskyPlot(self):
+    def test_save_uverskyPlot(self):
         # 
         # 
         self.testObj.save_uverskyPlot("tmpfiles/uversky_test")
 
+    
+    def test_general_coverage(self):
+
+
+        AAs = list("QWERTYIPASDFGHKLCVNM")
+        
+        # generate 5 random sequences
+        # LENGTH BETWEEN 1 AND 150
+        random.seed()
+        
+        seq_list=[]
+        for i in xrange(0,10):
+            L1= random.randrange(200,1000)
+
+            S1=""
+            for i in xrange(0,L1):
+                S1=S1+random.choice(AAs)
+
+            seq_list.append(S1)
+            
+
+        pos = 0 
+        print ""
+
+        seq_list = testTools.generate_random_sequence_list(number=10, minLen=100, maxLen=1000)
+        
+        for i in seq_list:
+            print ""
+            print "Sequence " + str(pos)
+            print i
+            iSEQ = sequenceParameters.SequenceParameters(i)
+
+            iSEQ.get_FCR()
+            iSEQ.get_NCPR()
+            iSEQ.get_countNeg()
+            iSEQ.get_countPos()
+            iSEQ.get_fraction_positive()
+            iSEQ.get_fraction_negative()
+            iSEQ.get_fraction_disorder_promoting()
+            iSEQ.get_amino_acid_fractions()
+            iSEQ.get_kappa()
+            iSEQ.get_mean_net_charge()
+            iSEQ.get_phasePlotRegion()
+            iSEQ.get_mean_hydropathy()
+            iSEQ.get_uversky_hydrophobicity()
+            psites=iSEQ.get_all_phosphorylatable_sites()
+            if psites > 0:
+
+                # grab 3 sites ranodmly
+                sites=[]
+                for i in xrange(0,2):
+                    sites.append(random.choice(psites))
+                iSEQ.set_phosphosites(sites)
+                iSEQ.get_kappa_after_phosphorylation()
+                iSEQ.get_phosphosequence()
+                iSEQ.get_full_phosphostatus_kappa_distribution()
+                iSEQ.clear_phosphosites()
+
+            iSEQ.save_phaseDiagramPlot("tmpfiles/phase_test_S"+str(pos))
+            iSEQ.save_uverskyPlot("tmpfiles/uversky_test_S"+str(pos))
+            iSEQ.save_linearNCPR(6,"tmpfiles/NCPR_test_S"+str(pos))
+            iSEQ.save_linearHydropathy(6,"tmpfiles/Hydropathy_test_S"+str(pos))
+            iSEQ.save_linearSigma(6,"tmpfiles/sigma_test_S"+str(pos))
+
+            pos=pos+1
+                
+                
+                
+                
+
+    
+
+       

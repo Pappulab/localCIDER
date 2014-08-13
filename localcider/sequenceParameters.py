@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.0                                                         !
+   !    Version 0.1.1                                                         !
    !--------------------------------------------------------------------------!
    
    File Description:
@@ -34,7 +34,10 @@ class SequenceParameters:
         # if the sequence isn't empty constuct a local 
         # sequence object using the sequence
         if not sequence == "":
-            self.SeqObj = Sequence(sequence)
+            
+            # note we set the validate flag to check the sequence is valid and deal
+            # with whitespace
+            self.SeqObj = Sequence(sequence,validateSeq=True)
         else:
             parserMachine = SequenceFileParser()
             self.SeqObj = Sequence(parserMachine.parseSeqFile(sequenceFile))
@@ -331,7 +334,7 @@ class SequenceParameters:
         """
         
         ncalcs = self.SeqObj.calculateNumberDifferentPhosphoStates()
-        
+        status_message("Running exaustive kappa distribution analysis based on phosphorylation states")
         status_message("This function will now make " + str(ncalcs) + " independent kappa calculations\nIf this is a big number you may want to investigate a subset of possible phosphosites or\nuse a Monte Carlo approach to subsample")
         
         return self.SeqObj.calculateKappaDistOfPhosphoStates()
@@ -464,7 +467,7 @@ class SequenceParameters:
 
         """
 
-        plotting.save_linearplots(plotting.build_hydropathy_plot, self.SeqObj, blobLen, filename)
+        plotting.save_linearplot(plotting.build_hydropathy_plot, self.SeqObj, blobLen, filename)
 
 
     #...................................................................................#

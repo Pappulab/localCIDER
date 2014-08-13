@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.0                                                         !
+   !    Version 0.1.1                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -446,7 +446,7 @@ def save_linearSigma(SeqObj, blobLen, filename):
 
 #...................................................................................#
 def save_linearHydropathy(SeqObj, blobLen, filename):
-    save_linearplots(build_hydropathy_plot, SeqObj, blobLen, filename)
+    save_linearplot(build_hydropathy_plot, SeqObj, blobLen, filename)
 
 
 #...................................................................................#

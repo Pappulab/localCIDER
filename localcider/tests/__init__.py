@@ -9,3 +9,4 @@ sys.path.insert(0,os.path.abspath(__file__+"/../../../"))
 
 
 import test_sequenceParameters
+import test_plots

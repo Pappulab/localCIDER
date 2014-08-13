@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.0                                                         !
+   !    Version 0.1.1                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -60,15 +60,13 @@ Proceedings of the National Academy of Sciences USA. 110: 13392-13397
 
 """
 
-
-
 import numpy as np
 import random as rng
 import time
 import copy as cp
 import os
 import itertools
-from backendtools import return_absolute_datafile_path, warning_message, verifyType, status_message
+from backendtools import return_absolute_datafile_path, warning_message, verifyType, status_message, warning_message
 from restable import ResTable
 from data import aminoacids
 import data  
@@ -92,7 +90,7 @@ class Sequence:
     """
         
     #...................................................................................#
-    def __init__(self, seq, dmax = -1, chargePattern=[]):
+    def __init__(self, seq, dmax = -1, chargePattern=[],validateSeq=False):
         """
         seq = amino acid sequence as a string
         
@@ -100,10 +98,20 @@ class Sequence:
         
         if not verifyType(seq, str):
             raise SequenceException("Must pass a string to a new Sequence object") 
-                
+
+            
+        # by default don't validate
+        if validateSeq:
+            seq=seq.upper()
+            seq = self.validateSequence(seq)
+
+        
         self.seq = seq.upper()
         self.len = len(seq)
         self.chargePattern = chargePattern
+
+
+        
 
         if(chargePattern == []):
             for i in np.arange(0,self.len):
@@ -130,6 +138,43 @@ class Sequence:
     def __str__(self):
         """ Returns the sequences """
         return self.seq
+
+    
+    #...................................................................................#
+    def validateSequence(self, seq):
+        
+        processed = ""
+
+        AAs=data.aminoacids.ONE_TO_THREE.keys()
+        pos=0
+        messageWarned=False
+
+        # for each residue in your protein sequence
+        for i in seq:
+            pos=pos+1
+            if i not in AAs:
+
+                # if we find whitespace
+                if i.isspace():
+                    if not messageWarned:
+                        # only warn once...
+                        status_message("Removing whitespace from sequence")
+                        messageWarned=True
+                    pass
+                # if unexpected residue/character bail
+                else:
+                    raise SequenceException("Invalid amino acid [" + str(i) + "] found at position " + str(pos))
+
+            # else append sequence to the processed sequence
+            else:
+                processed=processed+i
+
+        # determine proline content and warn if over 15%
+        prolineContent = float(processed.count("P"))/float(len(processed)) 
+        if prolineContent> 0.15:            
+            warning_message("This sequence has a proline content of greater than 15%.\nThis may render some analyses [notably kappa and phase diagram predictions] incorrect")
+                
+        return processed
         
 
     # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
@@ -244,6 +289,7 @@ class Sequence:
         """
         
         if self.deltaMax() == 0:
+            warning_message("The sequence has no charged residues - kappa is not a valid/relevant parameter")
             return -1
         else:
             return self.delta()/self.deltaMax()
@@ -940,7 +986,7 @@ class Sequence:
         
         """
 
-        if len(self.phosphosite) == 0:
+        if len(self.phosphosites) == 0:
             warning_message("No phosphosites defined - phosphosequence will be equivalent to the unphosphorylated sequence")
 
         
