@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>LocalCIDER by Pappulab</title>
+    <title>localCIDER by Pappulab</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -15,23 +15,23 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>LocalCIDER</h1>
+        <h1>localCIDER</h1>
         <p>localCIDER lets you compute sequence parameters for disordered proteins</p>
 
         <p class="view"><a href="https://github.com/Pappulab/localCIDER">View the Project on GitHub <small>Pappulab/localCIDER</small></a></p>
 
 
-      <ul>
+        <ul>
+          <li><a href="https://github.com/Pappulab/localCIDER/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Pappulab/localCIDER/tarball/master">Download <strong>TAR Ball</strong></a></li>
           <li><a href="https://github.com/Pappulab/localCIDER">View On <strong>GitHub</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu">Go to <strong>Pappu lab</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu/CIDER/">Go to <strong>CIDER</strong> </a></li>
         </ul>
       </header>
       <section>
         <h1>
 <a name="localcider" class="anchor" href="#localcider"><span class="octicon octicon-link"></span></a>localCIDER</h1>
 
-<p><code>v 0.1.0 - August 11th 2014</code></p>
+<p><code>v 0.1.1 - August 14th 2014</code></p>
 
 <h1>
 <a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
@@ -54,13 +54,13 @@
 <h1>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
 
-<h3>
-<a name="introduction-1" class="anchor" href="#introduction-1"><span class="octicon octicon-link"></span></a>Introduction</h3>
+<h2>
+<a name="introduction-1" class="anchor" href="#introduction-1"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
 <p><strong>localCIDER</strong> version 0.1.0 was submitted to <code>pip</code> (the Python Package Index) on the 8th of August. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to <a href="mailto:alex.holehouse@wustl.edu">alex.holehouse@wustl.edu</a>. However, many of the features are ready to go!</p>
 
-<h3>
-<a name="installing-on-osx-or-linux" class="anchor" href="#installing-on-osx-or-linux"><span class="octicon octicon-link"></span></a>Installing on OSX or linux</h3>
+<h2>
+<a name="installing-on-osx-or-linux" class="anchor" href="#installing-on-osx-or-linux"><span class="octicon octicon-link"></span></a>Installing on OSX or linux</h2>
 
 <p>We recommend installing using <code>pip</code>. <code>pip</code> is a command line interface for downloading and installing packages from the Python package index (PyPI). If you don't yet have pip installed <a href="http://pip.readthedocs.org/en/latest/installing.html">see the documentation here</a>.</p>
 
@@ -75,11 +75,11 @@
 
 <p>If you encounter issues installing please let me know. That said, any issues <em>should</em> be due to problems with Numpy or <code>matplotlib</code> and not <strong>localCIDER</strong>, so investigate the documentation associated with installing those packages first.</p>
 
-<h4>
-<a name="known-installation-issues" class="anchor" href="#known-installation-issues"><span class="octicon octicon-link"></span></a>Known installation issues</h4>
+<h3>
+<a name="known-installation-issues" class="anchor" href="#known-installation-issues"><span class="octicon octicon-link"></span></a>Known installation issues</h3>
 
-<h5>
-<a name="opensuse" class="anchor" href="#opensuse"><span class="octicon octicon-link"></span></a>OpenSuse</h5>
+<h4>
+<a name="opensuse" class="anchor" href="#opensuse"><span class="octicon octicon-link"></span></a>OpenSuse</h4>
 
 <p><code>pip</code> will not install system level dependencies, so you may need to install additional packages to get matplotlib working with vanilla <code>OpenSuse</code>. Specifically</p>
 
@@ -101,14 +101,50 @@
 
 <p>To install <code>matplotlib</code> (NOTE the <code>-tk</code> at the end!)</p>
 
-<h5>
-<a name="ubuntu" class="anchor" href="#ubuntu"><span class="octicon octicon-link"></span></a>Ubuntu</h5>
+<h4>
+<a name="ubuntu" class="anchor" href="#ubuntu"><span class="octicon octicon-link"></span></a>Ubuntu</h4>
 
 <p>The issues for OpenSuse are also true for Ubuntu - specifically <code>Ubuntu</code> seems to need the <code>python-dev</code> package to install <code>numpy</code>, and the <code>libfreetype6-dev</code> package for to get Freetype working in <code>matplotlib</code></p>
 
 <pre><code>[sudo] apt-get install python-dev
 [sudo] apt-get install libfreetype6-dev 
 </code></pre>
+
+<h3>
+<a name="upgrading-via-pip" class="anchor" href="#upgrading-via-pip"><span class="octicon octicon-link"></span></a>Upgrading via pip</h3>
+
+<p>localCIDER does not automatically update, but for the next few months expect fairly regular updates. To see the historic update schedule see the end of this file.</p>
+
+<p><code>pip</code> allows you to upgrade packages to the latest version using</p>
+
+<pre><code>[sudo] pip install --upgrade localcider
+</code></pre>
+
+<p>However, this command will upgrade all the dependencies as well, which may not be a desirable behaviour. To upgrade <em>just</em> <strong>localCIDER</strong> use</p>
+
+<pre><code>[sudo] pip install -U --no-deps lolcacider 
+</code></pre>
+
+<h2>
+<a name="installation-on-windows" class="anchor" href="#installation-on-windows"><span class="octicon octicon-link"></span></a>Installation on Windows</h2>
+
+<p>Tested on Windows 7 64 bit</p>
+
+<p>1) Download and install Anaconda package (<a href="http://continuum.io/downloads">http://continuum.io/downloads</a>)</p>
+
+<p>2) Download <code>get-pip.py</code> (<a href="https://bootstrap.pypa.io/get-pip.py">https://bootstrap.pypa.io/get-pip.py</a>)</p>
+
+<p>3) Open <code>cmd.exe</code> from start menu (this is windows command prompt)</p>
+
+<p>4) Change directory to that containing <code>get-pip.py</code> (EX: <code>cd  "D:\downloads"</code> )</p>
+
+<p>5) In <code>cmd.exe</code> run <code>python get-pip.py</code></p>
+
+<p>6) In <code>cmd.exe</code> run <code>pip install localcider</code></p>
+
+<p>7) Open IPython Notebook from the windows start menu (installed with Anaconda package, other editors can be used i.e. PyCharm)</p>
+
+<p>8) Write code to use localCIDER package</p>
 
 <h1>
 <a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h1>
@@ -124,10 +160,10 @@
 
 <ul>
 <li>
-<code>sequenceParameter</code> which lets you calculate many different parameters, as well as show or save plots relating to a specific sequence - <strong><em>this is the main module of interest</em></strong>
+<code>sequenceParameters</code> which lets you calculate many different parameters, as well as show or save plots relating to a specific sequence - <strong><em>this is the main module of interest</em></strong>
 </li>
 <li>
-<code>plots</code> which lets you plot certain parameters independent of sequenceParameter</li>
+<code>plots</code> which lets you plot certain parameters independent of sequenceParameters</li>
 </ul><p>In the next release (V 0.2.0) we'll also introduce the <code>sequencePermutant</code> code, which employs a variety of approaches to generate permutants.</p>
 
 <h4>
@@ -136,14 +172,14 @@
 <p>The following code will print the kappa value of your sequence to the terminal prompt, and then plot your sequence on a Pappu-Das phase plot, saving it in the current directory as <code>my_snazzy_plot.png</code></p>
 
 <pre><code># import the relevant code
-from localcider.sequenceParameter import SequenceParameter
+from localcider.sequenceParameters import SequenceParameters
 
-# create a SequenceParameter object with your amino acid sequence
-SeqOb = SequenceParameter("MY AMINO ACID SEQUENCE")
+# create a SequenceParameters object with your amino acid sequence
+SeqOb = SequenceParameters("MY AMINO ACID SEQUENCE")
 
 # carry out analysis
 SeqOb.get_kappa()
-SeqOb.save_phaseDiagram('my_snazzy_plot')
+SeqOb.save_phaseDiagramPlot('my_snazzy_plot')
 </code></pre>
 
 <h4>
@@ -152,10 +188,10 @@ SeqOb.save_phaseDiagram('my_snazzy_plot')
 <p><strong>localCIDER</strong> contains highly complete interactive help - for any object or function simply type <code>help(&lt;item&gt;)</code> for a complete description. For example;</p>
 
 <pre><code># import the relevant code
-from localcider.sequenceParameter import SequenceParameter
+from localcider.sequenceParameters import SequenceParameters
 
-# create a SequenceParameter object with your amino acid sequence
-SeqOb = SequenceParameter("MY AMINO ACID SEQUENCE")
+# create a SequenceParameters object with your amino acid sequence
+SeqOb = SequenceParameters("MY AMINO ACID SEQUENCE")
 
 help(SeqOb)
 
@@ -163,32 +199,32 @@ help(SeqOb.get_kappa())
 </code></pre>
 
 <h1>
-<a name="general-sequence-analysis-with-sequenceparameter" class="anchor" href="#general-sequence-analysis-with-sequenceparameter"><span class="octicon octicon-link"></span></a>General sequence analysis with SequenceParameter</h1>
+<a name="general-sequence-analysis-with-sequenceparameters" class="anchor" href="#general-sequence-analysis-with-sequenceparameters"><span class="octicon octicon-link"></span></a>General sequence analysis with SequenceParameters</h1>
 
-<p>The approach we recommend for accessing SequenceParameter objects is to use the following Python code;</p>
+<p>The approach we recommend for accessing SequenceParameters objects is to use the following Python code;</p>
 
-<pre><code>from localcider.sequenceParameter import SequenceParameter
+<pre><code>from localcider.sequenceParameters import SequenceParameters
 </code></pre>
 
-<p>By opening your code with this line you now have direct access to the <code>SequenceParameter</code> class, which takes either a string of an amino acid sequence or the filename of a file containing an amino acid sequence, which is then read and parsed. As an example;</p>
+<p>By opening your code with this line you now have direct access to the <code>SequenceParameters</code> class, which takes either a string of an amino acid sequence or the filename of a file containing an amino acid sequence, which is then read and parsed. As an example;</p>
 
-<pre><code># as before we import the SequenceParameter class directly
-from localcider.sequenceParameter import SequenceParameter
+<pre><code># as before we import the SequenceParameters class directly
+from localcider.sequenceParameters import SequenceParameters
 
 # the sequence below is the first 30 residues from alpha-synuclein
-seqOb = SequenceParameter("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAA")     
+seqOb = SequenceParameters("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAA")     
 </code></pre>
 
 <p>Or alternatively</p>
 
-<pre><code># as before we import the SequenceParameter class directly
-from localcider.sequenceParameter import SequenceParameter
+<pre><code># as before we import the SequenceParameters class directly
+from localcider.sequenceParameters import SequenceParameters
 
 # the sequence below is the first 30 residues from alpha-synuclein
-seqOb = SequenceParameter(sequenceFile="syn.fasta")
+seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </code></pre>
 
-<p>Both these code snippets create a <code>SequenceParameter</code> object (here called <code>seqOb</code>, but obviously this variable could be named anything), on which we can carry out a huge range of operations. The complete function list is shown below for reference.</p>
+<p>Both these code snippets create a <code>SequenceParameters</code> object (here called <code>seqOb</code>, but obviously this variable could be named anything), on which we can carry out a huge range of operations. The complete function list is shown below for reference.</p>
 
 <p>Most of these functions don't take arguments. Optional arguments are prefixed with a question mark (?). For each function we use the <code>seqOb.&lt;function&gt;</code> syntax - e.g.</p>
 
@@ -196,7 +232,7 @@ seqOb = SequenceParameter(sequenceFile="syn.fasta")
 </code></pre>
 
 <h3>
-<a name="sequence-parameter-functions" class="anchor" href="#sequence-parameter-functions"><span class="octicon octicon-link"></span></a>Sequence parameter functions</h3>
+<a name="sequenceparameters-functions" class="anchor" href="#sequenceparameters-functions"><span class="octicon octicon-link"></span></a>SequenceParameters functions</h3>
 
 <table>
 <thead><tr>
@@ -317,11 +353,11 @@ seqOb = SequenceParameter(sequenceFile="syn.fasta")
 </tr></thead>
 <tbody>
 <tr>
-<td align="center"><code>show_phaseDiagram(?label)</code></td>
+<td align="center"><code>show_phaseDiagramPlot(?label)</code></td>
 <td align="center">Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. <code>label</code> can be a string which labels your sequence on the plot.</td>
 </tr>
 <tr>
-<td align="center"><code>show_uverskyDiagram(?label)</code></td>
+<td align="center"><code>show_uverskyDiagramPlot(?label)</code></td>
 <td align="center">Renders a <code>matplotlib</code> Uversky plot with your sequence on the diagram<sup>[4]</sup>. <code>label</code> can be a string which labels your sequence on the plot.</td>
 </tr>
 <tr>
@@ -337,11 +373,11 @@ seqOb = SequenceParameter(sequenceFile="syn.fasta")
 <td align="center">Renders a <code>matplotlib</code> plot of the moving average sigma parameter along the sequence, where sigma is calculated in overlapping windows of size <code>blobLen</code>. Typically a blob length of 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR.</td>
 </tr>
 <tr>
-<td align="center"><code>save_phaseDiagram(filename, ?label)</code></td>
+<td align="center"><code>save_phaseDiagram_plot(filename, ?label)</code></td>
 <td align="center">Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. <code>label</code> can be a string which labels your sequence on the plot. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
 </tr>
 <tr>
-<td align="center"><code>save_uverskyDiagram(filename, ?label)</code></td>
+<td align="center"><code>save_uverskyDiagram_plot(filename, ?label)</code></td>
 <td align="center">Renders a <code>matplotlib</code> Uversky plot with your sequence on the diagram<sup>[4]</sup>. <code>label</code> can be a string which labels your sequence on the plot. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
 </tr>
 <tr>
@@ -354,15 +390,15 @@ seqOb = SequenceParameter(sequenceFile="syn.fasta")
 </tr>
 <tr>
 <td align="center"><code>save_linearSigma(blobLen, filename)</code></td>
-<td align="center">Saves a <code>matplotlib</code> generated plot of the moving average sigma parameter along the sequence, where sigma is calculated in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
+<td align="center">Saves a <code>matplotlib</code> generated plot of the moving avesequenceParametersrage sigma parameter along the sequence, where sigma is calculated in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
 </tr>
 </tbody>
 </table><h1>
 <a name="plotting-with-the-plots-module" class="anchor" href="#plotting-with-the-plots-module"><span class="octicon octicon-link"></span></a>Plotting with the plots module</h1>
 
-<p>The <code>plots</code> module lets you generate or save plots without explicitly invoking SequenceParameter objects. Such plots can either be generated using the raw values, or by passing in SequenceParameter objects.</p>
+<p>The <code>plots</code> module lets you generate or save plots without explicitly invoking sequenceParametersobjects. Such plots can either be generated using the raw values, or by passing in sequenceParametersobjects.</p>
 
-<p>Unlike the <code>sequenceParameter</code>, <code>plots</code> is a collection of functions, and does not allow for the creation of <code>Plots</code> objects.</p>
+<p>Unlike the <code>SequenceParameters</code>, <code>plots</code> is a collection of functions, and does not allow for the creation of <code>Plots</code> objects.</p>
 
 <p>In the following discussion a <strong>single</strong> plot contains information from just one sequence, whereas a <strong>multiple</strong> plot contains sequence information from many sequences</p>
 
@@ -377,9 +413,9 @@ seqOb = SequenceParameter(sequenceFile="syn.fasta")
 <p>This may be convenient if you're plotting previously calculated values, or plotting a theoretical distribution here. Either individual values or lists of values can be passed.</p>
 
 <h3>
-<a name="passing-sequenceparameter-objects-multiple-plots-only" class="anchor" href="#passing-sequenceparameter-objects-multiple-plots-only"><span class="octicon octicon-link"></span></a>Passing SequenceParameter objects (multiple plots only)</h3>
+<a name="passing-sequenceparametersobjects-multiple-plots-only" class="anchor" href="#passing-sequenceparametersobjects-multiple-plots-only"><span class="octicon octicon-link"></span></a>Passing sequenceParametersobjects (multiple plots only)</h3>
 
-<p>If you're analyzing a set of SequenceParameter objects you may wish to place them on the same plot. Note we do not offer this functionality for single sequences, because you can always plot a single sequence using the associated <code>SequenceParameter</code> function (e.g. <code>.show_uverskyPlot()</code> or <code>.save_phaseDiagram()</code>).</p>
+<p>If you're analyzing a set of sequenceParametersobjects you may wish to place them on the same plot. Note we do not offer this functionality for single sequences, because you can always plot a single sequence using the associated <code>SequenceParameters</code> function (e.g. <code>.show_uverskyPlot()</code> or <code>.save_phaseDiagramPlot()</code>).</p>
 
 <table>
 <thead><tr>
@@ -413,7 +449,7 @@ seqOb = SequenceParameter(sequenceFile="syn.fasta")
 <td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
 </tr>
 </tbody>
-</table><p>If you wish to plot a single sequence's Pappu-Das diagram of states plot or Uversky plot from a <code>SequenceParameter</code> object we suggest using the appropriate <code>SequenceParameter</code> functions (e.g.  <code>.show_uverskyDiagram()</code>, <code>.show_phaseDiagram()</code>)</p>
+</table><p>If you wish to plot a single sequence's Pappu-Das diagram of states plot or Uversky plot from a <code>SequenceParameters</code> object we suggest using the appropriate <code>SequenceParameters</code> functions (e.g.  <code>.show_uverskyDiagram()</code>, <code>.show_phaseDiagram()</code>)</p>
 
 <h3>
 <a name="_multiple_-functions" class="anchor" href="#_multiple_-functions"><span class="octicon octicon-link"></span></a>
@@ -424,7 +460,7 @@ seqOb = SequenceParameter(sequenceFile="syn.fasta")
 <p>There are two types of multiple plots</p>
 
 <p><strong>1)</strong> Those which you pass two lists of the actual values of interest, where the lists represent parallel lists, where the position in each list corresponds to a specific sequence.
-<strong>2)</strong> Those which you pass a list of <code>SequenceParameter</code> objects to, meaning you only pass it a single list</p>
+<strong>2)</strong> Those which you pass a list of <code>SequenceParameters</code> objects to, meaning you only pass it a single list</p>
 
 <p>The <code>show_*</code> functions render a plot on the screen in front of you through <code>matplotlib</code>. These are useful for directly interacting with sequences and examining how specific sequence might behave.</p>
 
@@ -445,7 +481,7 @@ seqOb = SequenceParameter(sequenceFile="syn.fasta")
 </tr>
 <tr>
 <td align="center"><code>show_multiple_phasePlot2(SeqParam_list, label_list=[], title='Diagram of states', legendOn=True)</code></td>
-<td align="center">All arguments are the same as above, except now instead of explicit fraction of positive and fraction of negative lists, we have a single list containing <code>SequenceParameter</code> objects, from which these properties are derived.</td>
+<td align="center">All arguments are the same as above, except now instead of explicit fraction of positive and fraction of negative lists, we have a single list containing <code>SequenceParameters</code> objects, from which these properties are derived.</td>
 <td align="center">No programatic output is generated, but the plot is rendered to the screen.</td>
 </tr>
 <tr>
@@ -456,7 +492,7 @@ seqOb = SequenceParameter(sequenceFile="syn.fasta")
 </tr>
 <tr>
 <td align="center"><code>show_multiple_uverskyPlot2(SeqParam_list, label_list=[], title='Uversky plot', legendOn=True)</code></td>
-<td align="center">All arguments are the same as above, except now instead of having an explicit hydropathy list and an explicit mean net charge list, we have a single list containing <code>SequenceParameter</code> objects, from which these properties are derived.</td>
+<td align="center">All arguments are the same as above, except now instead of having an explicit hydropathy list and an explicit mean net charge list, we have a single list containing <code>SequenceParameters</code> objects, from which these properties are derived.</td>
 <td align="center">No programatic output is generated, but the plot is rendered to the screen.</td>
 </tr>
 <tr>
@@ -467,7 +503,7 @@ seqOb = SequenceParameter(sequenceFile="syn.fasta")
 </tr>
 <tr>
 <td align="center"><code>save_multiple_phasePlot2(SeqParam_list, filename, label_list=[], title='Diagram of states', legendOn=True)</code></td>
-<td align="center">All arguments are the same as above, except now instead of explicit fraction of positive and fraction of negative lists, we have a single list containing <code>SequenceParameter</code> objects, from which these properties are derived.</td>
+<td align="center">All arguments are the same as above, except now instead of explicit fraction of positive and fraction of negative lists, we have a single list containing <code>SequenceParameters</code> objects, from which these properties are derived.</td>
 <td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
 </tr>
 <tr>
@@ -478,7 +514,7 @@ seqOb = SequenceParameter(sequenceFile="syn.fasta")
 </tr>
 <tr>
 <td align="center"><code>save_multiple_uverskyPlot2(SeqParam_list, filename, label_list=[], title='Uversky plot', legendOn=True)</code></td>
-<td align="center">All arguments are the same as above, except now instead of having an explicit hydropathy list and an explicit mean net charge list, we have a single list containing <code>SequenceParameter</code> objects, from which these properties are derived.</td>
+<td align="center">All arguments are the same as above, except now instead of having an explicit hydropathy list and an explicit mean net charge list, we have a single list containing <code>SequenceParameters</code> objects, from which these properties are derived.</td>
 <td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
 </tr>
 </tbody>
@@ -506,9 +542,9 @@ localcider.PlottingException
 
 <pre><code>from localcider.sequenceParameters import SequenceParameters
 
-# define my internet sequence and create a new SequenceParameter object with itxs
+# define my internet sequence and create a new sequenceParametersobject with itxs
 internetSequence="VAQKTVEGAGSIAAATGFVKKDQLGKNEEGAPQEGILEDMPVDP"
-object=SequenceParameter(internetSequencexs)
+object=SequenceParameters(internetSequencexs)
 
 
 # Let's get some parameters!xs
@@ -565,10 +601,10 @@ filelist = os.listdir(".")
 # create an empty list 
 list_of_SeqObjs = []
 
-# populate that list with SequenceParameter objects, which we construct from the
+# populate that list with sequenceParametersobjects, which we construct from the
 # sequence found in each file
 for file in filelist:
-   list_of_SeqObjs.append(SequenceParameter(sequenceFile=file))
+   list_of_SeqObjs.append(SequenceParameters(sequenceFile=file))
 
 # for each 
 for obj in list_of_SeqObjs:
@@ -591,17 +627,17 @@ filelist = os.listdir(".")
 # create an empty list 
 list_of_SeqObjs = []
 
-# populate that list with SequenceParameter objects, which we construct from the
+# populate that list with sequenceParameters objects, which we construct from the
 # sequence found in each file
 for file in filelist:
-   list_of_SeqObjs.append(SequenceParameter(sequenceFile=file))
+   list_of_SeqObjs.append(SequenceParameters(sequenceFile=file))
 
 
-# populate that list with SequenceParameter objects, which we construct from the
+# populate that list with SequenceParameters objects, which we construct from the
 # sequence found in each file
 for file in filelist:
    try:
-      list_of_SeqObjs.append(SequenceParameter(sequenceFile=file))
+      list_of_SeqObjs.append(SequenceParameters(sequenceFile=file))
    except localcider.SequenceFileParserException:
       # if we encounter a file parsing error just skip that sequence
       continue
@@ -616,7 +652,7 @@ from localcider import plots
 # import the SequenceParameters class from the sequenceParameters class
 from localcider.sequenceParameters import SequenceParameters    
 
-# create two SequenceParameter objects
+# create two SequenceParameters objects
 SynWT=SequenceParameters("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAA")
 SynMut=SequenceParameters("MDVFMKGLSKAKEGEEKKAEKTKQGVAEAA")
 
@@ -629,7 +665,10 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 </code></pre>
 
 <h1>
-<a name="localcider-roadmap" class="anchor" href="#localcider-roadmap"><span class="octicon octicon-link"></span></a>localCIDER roadmap</h1>
+<a name="epilog" class="anchor" href="#epilog"><span class="octicon octicon-link"></span></a>Epilog</h1>
+
+<h2>
+<a name="localcider-roadmap" class="anchor" href="#localcider-roadmap"><span class="octicon octicon-link"></span></a>localCIDER roadmap</h2>
 
 <p>We have a fairly well defined roadmap for the next few sets of minor release for localCIDER, with the first major release coming sometime thereafter</p>
 
@@ -646,7 +685,7 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 </ul><h2>
 <a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
 
-<p>localCIDER was developed in the Pappu lab by Alex Holehouse, with much of the original code written by James Ahad. Importantly, we believe scientific software should be held to same (or higher) software standards as general commercial and open source projects. To this end we use Git for version control, employ standard conventions for versioning, and try to ensure all code is well structured and well documented. The source code is fully open and <a href="https://github.com/Pappulab/localCIDER">can be viewed here</a>.</p>
+<p>localCIDER was developed in the Pappu lab by Alex Holehouse, with much of the original code written by James Ahad. Importantly, we believe scientific software should be held to same (or higher) software standards as general commercial and open source projects. To this end we use Git for version control, employ standard conventions for versioning, run an ever-expanding set of unit tests, and try to ensure all code is well structured and well documented. The source code is fully open and <a href="https://github.com/Pappulab/localCIDER">can be viewed here</a>.</p>
 
 <h2>
 <a name="references" class="anchor" href="#references"><span class="octicon octicon-link"></span></a>References</h2>
@@ -659,10 +698,25 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 
 <p><strong>[4]</strong> <strong>V. Uversky</strong> (2002) <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2373528/"><em>Protein Sci. Apr</em> 11(4) pp 739 - 756</a></p>
 
-<hr>
+<h2>
+<a name="thanks" class="anchor" href="#thanks"><span class="octicon octicon-link"></span></a>Thanks</h2>
+
+<p>Many people have been involved in this project. We'll try and include an up-to-date list here</p>
+
+<ul>
+<li>Paul Nobrega (Matthews lab) for bug reports and the Windows installation instructions</li>
+</ul><h2>
+<a name="update-history" class="anchor" href="#update-history"><span class="octicon octicon-link"></span></a>Update history</h2>
+
+<ul>
+<li>version 0.1.0 [August 10th 2014]</li>
+<li>version 0.1.1 <a href="minor%20bug%20fixes,%20more%20tests,%20improved%20sequence%20parsing">August 14th 2014</a>
+</li>
+</ul>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/Pappulab">Pappulab</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
