@@ -862,6 +862,13 @@ class Sequence:
         Note that all data validation for the phosphosite list is done in this function.
         
         """
+        
+        # if we passed a single value not in a list then convert to a list of length
+        # 1
+        if type(listOfPsites) == int:
+            tmp=listOfPsites
+            listOfPsites=[]
+            listOfPsites.appned(tmp)
 
         # evaluate proposed phosphosites
         for site in listofPsites:

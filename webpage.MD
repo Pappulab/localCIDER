@@ -1,6 +1,6 @@
 # localCIDER
 
-`v 0.1.0 - August 11th 2014`
+`v 0.1.1 - August 14th 2014`
 
 
 # Introduction
@@ -21,10 +21,10 @@ Moreover, if there's a type of analysis you use frequently and you think other u
 
 # Installation
 
-### Introduction
+## Introduction
 **localCIDER** version 0.1.0 was submitted to `pip` (the Python Package Index) on the 8th of August. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. However, many of the features are ready to go!
 
-### Installing on OSX or linux
+## Installing on OSX or linux
 We recommend installing using `pip`. `pip` is a command line interface for downloading and installing packages from the Python package index (PyPI). If you don't yet have pip installed [see the documentation here](http://pip.readthedocs.org/en/latest/installing.html).
 
 We also recommend `virtualenv` although this is not at all required, it's just generally a good route to go if you use Python!
@@ -37,9 +37,9 @@ Very simple! **localCIDER** depends on both `numpy` and `matplotlib`, both of wh
 
 If you encounter issues installing please let me know. That said, any issues *should* be due to problems with Numpy or `matplotlib` and not **localCIDER**, so investigate the documentation associated with installing those packages first.
 
-#### Known installation issues
+### Known installation issues
 
-##### OpenSuse
+#### OpenSuse
 `pip` will not install system level dependencies, so you may need to install additional packages to get matplotlib working with vanilla `OpenSuse`. Specifically
 
     [sudo] zypper install freetype2-devel
@@ -59,13 +59,47 @@ To install `matplotlib` (NOTE the `-tk` at the end!)
 
 
 
-##### Ubuntu
+#### Ubuntu
 The issues for OpenSuse are also true for Ubuntu - specifically `Ubuntu` seems to need the `python-dev` package to install `numpy`, and the `libfreetype6-dev` package for to get Freetype working in `matplotlib`
 
     [sudo] apt-get install python-dev
 	[sudo] apt-get install libfreetype6-dev 
 
 
+### Upgrading via pip
+localCIDER does not automatically update, but for the next few months expect fairly regular updates. To see the historic update schedule see the end of this file.
+
+
+`pip` allows you to upgrade packages to the latest version using
+
+    [sudo] pip install --upgrade localcider
+    
+However, this command will upgrade all the dependencies as well, which may not be a desirable behaviour. To upgrade *just* **localCIDER** use
+
+    [sudo] pip install -U --no-deps lolcacider 
+    
+    
+## Installation on Windows
+   
+Tested on Windows 7 64 bit
+
+1) Download and install Anaconda package (http://continuum.io/downloads)
+
+2) Download `get-pip.py` (https://bootstrap.pypa.io/get-pip.py)
+
+3) Open `cmd.exe` from start menu (this is windows command prompt)
+
+4) Change directory to that containing `get-pip.py` (EX: `cd  "D:\downloads" ` )
+
+5) In `cmd.exe` run `python get-pip.py`
+
+6) In `cmd.exe` run `pip install localcider`
+
+7) Open IPython Notebook from the windows start menu (installed with Anaconda package, other editors can be used i.e. PyCharm)
+
+8) Write code to use localCIDER package
+ 
+ 
 # How to use
 Once you have localcider installed via pip, fire up Python and `import` the localcider package;
 
@@ -75,8 +109,8 @@ You'll be greeted with a message detailing the current version.
 
 There are two main localcider modules right now;
 
-* `sequenceParameter` which lets you calculate many different parameters, as well as show or save plots relating to a specific sequence - ***this is the main module of interest***
-* `plots` which lets you plot certain parameters independent of sequenceParameter
+* `sequenceParameters` which lets you calculate many different parameters, as well as show or save plots relating to a specific sequence - ***this is the main module of interest***
+* `plots` which lets you plot certain parameters independent of sequenceParameters
 
 In the next release (V 0.2.0) we'll also introduce the `sequencePermutant` code, which employs a variety of approaches to generate permutants.
 
@@ -85,14 +119,14 @@ In the next release (V 0.2.0) we'll also introduce the `sequencePermutant` code,
 The following code will print the kappa value of your sequence to the terminal prompt, and then plot your sequence on a Pappu-Das phase plot, saving it in the current directory as `my_snazzy_plot.png`
 
     # import the relevant code
-    from localcider.sequenceParameter import SequenceParameter
+    from localcider.sequenceParameters import SequenceParameters
     
-    # create a SequenceParameter object with your amino acid sequence
-    SeqOb = SequenceParameter("MY AMINO ACID SEQUENCE")
+    # create a SequenceParameters object with your amino acid sequence
+    SeqOb = SequenceParameters("MY AMINO ACID SEQUENCE")
     
     # carry out analysis
     SeqOb.get_kappa()
-    SeqOb.save_phaseDiagram('my_snazzy_plot')
+    SeqOb.save_phaseDiagramPlot('my_snazzy_plot')
     
     
 #### Interactive help
@@ -100,51 +134,51 @@ The following code will print the kappa value of your sequence to the terminal p
 **localCIDER** contains highly complete interactive help - for any object or function simply type `help(<item>)` for a complete description. For example;
 
     # import the relevant code
-    from localcider.sequenceParameter import SequenceParameter
+    from localcider.sequenceParameters import SequenceParameters
     
-    # create a SequenceParameter object with your amino acid sequence
-    SeqOb = SequenceParameter("MY AMINO ACID SEQUENCE")
+    # create a SequenceParameters object with your amino acid sequence
+    SeqOb = SequenceParameters("MY AMINO ACID SEQUENCE")
     
     help(SeqOb)
     
     help(SeqOb.get_kappa())
 
 
-# General sequence analysis with SequenceParameter
+# General sequence analysis with SequenceParameters
 
-The approach we recommend for accessing SequenceParameter objects is to use the following Python code;
+The approach we recommend for accessing SequenceParameters objects is to use the following Python code;
 
 
-    from localcider.sequenceParameter import SequenceParameter
+    from localcider.sequenceParameters import SequenceParameters
     
     
-By opening your code with this line you now have direct access to the `SequenceParameter` class, which takes either a string of an amino acid sequence or the filename of a file containing an amino acid sequence, which is then read and parsed. As an example;
+By opening your code with this line you now have direct access to the `SequenceParameters` class, which takes either a string of an amino acid sequence or the filename of a file containing an amino acid sequence, which is then read and parsed. As an example;
 
 
-    # as before we import the SequenceParameter class directly
-    from localcider.sequenceParameter import SequenceParameter
+    # as before we import the SequenceParameters class directly
+    from localcider.sequenceParameters import SequenceParameters
 	
 	# the sequence below is the first 30 residues from alpha-synuclein
-	seqOb = SequenceParameter("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAA")     
+	seqOb = SequenceParameters("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAA")     
     
 Or alternatively
     
-    # as before we import the SequenceParameter class directly
-    from localcider.sequenceParameter import SequenceParameter
+    # as before we import the SequenceParameters class directly
+    from localcider.sequenceParameters import SequenceParameters
 	
 	# the sequence below is the first 30 residues from alpha-synuclein
-	seqOb = SequenceParameter(sequenceFile="syn.fasta")
+	seqOb = SequenceParameters(sequenceFile="syn.fasta")
 	
 	
 
-Both these code snippets create a `SequenceParameter` object (here called `seqOb`, but obviously this variable could be named anything), on which we can carry out a huge range of operations. The complete function list is shown below for reference.
+Both these code snippets create a `SequenceParameters` object (here called `seqOb`, but obviously this variable could be named anything), on which we can carry out a huge range of operations. The complete function list is shown below for reference.
 
 Most of these functions don't take arguments. Optional arguments are prefixed with a question mark (?). For each function we use the `seqOb.<function>` syntax - e.g.
 
     seqOb.get_FCR()
 
 
-### Sequence parameter functions
+### SequenceParameters functions
 
 Function name | Operation 
 :---: | :---: 
@@ -185,23 +219,23 @@ The following functions let you plot parameters from your sequence in a set of d
 
 Function name | Operation 
 :---: | :---: 
-`show_phaseDiagram(?label)`| Renders a `matplotlib` Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. `label` can be a string which labels your sequence on the plot.
-`show_uverskyDiagram(?label)`| Renders a `matplotlib` Uversky plot with your sequence on the diagram<sup>[4]</sup>. `label` can be a string which labels your sequence on the plot.
+`show_phaseDiagramPlot(?label)`| Renders a `matplotlib` Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. `label` can be a string which labels your sequence on the plot.
+`show_uverskyDiagramPlot(?label)`| Renders a `matplotlib` Uversky plot with your sequence on the diagram<sup>[4]</sup>. `label` can be a string which labels your sequence on the plot.
 `show_linearHydropathy(blobLen)`| Renders a `matplotlib` plot of the moving average hydropathy along the sequence, where the hydropathy is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used (**This made be changed to the default value in future releases**)
 `show_linearNCPR(blobLen)` | Renders a `matplotlib` plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used (**This made be changed to the default value in future releases**)
 `show_linearSigma(blobLen)` | Renders a `matplotlib` plot of the moving average sigma parameter along the sequence, where sigma is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used (**This made be changed to the default value in future releases**). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR. 
-`save_phaseDiagram(filename, ?label)` | Renders a `matplotlib` Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. `label` can be a string which labels your sequence on the plot. The plot is saved in the `filename` location (`.png` is appended).
-`save_uverskyDiagram(filename, ?label)` | Renders a `matplotlib` Uversky plot with your sequence on the diagram<sup>[4]</sup>. `label` can be a string which labels your sequence on the plot. The plot is saved in the `filename` location (`.png` is appended).
+`save_phaseDiagram_plot(filename, ?label)` | Renders a `matplotlib` Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. `label` can be a string which labels your sequence on the plot. The plot is saved in the `filename` location (`.png` is appended).
+`save_uverskyDiagram_plot(filename, ?label)` | Renders a `matplotlib` Uversky plot with your sequence on the diagram<sup>[4]</sup>. `label` can be a string which labels your sequence on the plot. The plot is saved in the `filename` location (`.png` is appended).
 `save_linearHydropathy(blobLen, filename)` | Renders a `matplotlib` plot of the moving average hydropathy along the sequence, where the hydropathy is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used (**This made be changed to the default value in future releases**). The plot is saved in the `filename` location (`.png` is appended).
 `save_linearNCPR(blobLen, filename)`| Renders a `matplotlib` plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used (**This made be changed to the default value in future releases**). The plot is saved in the `filename` location (`.png` is appended).
-`save_linearSigma(blobLen, filename)` | Saves a `matplotlib` generated plot of the moving average sigma parameter along the sequence, where sigma is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used (**This made be changed to the default value in future releases**). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR. The plot is saved in the `filename` location (`.png` is appended).
+`save_linearSigma(blobLen, filename)` | Saves a `matplotlib` generated plot of the moving avesequenceParametersrage sigma parameter along the sequence, where sigma is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used (**This made be changed to the default value in future releases**). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR. The plot is saved in the `filename` location (`.png` is appended).
 
 
 # Plotting with the plots module
 
-The `plots` module lets you generate or save plots without explicitly invoking SequenceParameter objects. Such plots can either be generated using the raw values, or by passing in SequenceParameter objects.
+The `plots` module lets you generate or save plots without explicitly invoking sequenceParametersobjects. Such plots can either be generated using the raw values, or by passing in sequenceParametersobjects.
 
-Unlike the `sequenceParameter`, `plots` is a collection of functions, and does not allow for the creation of `Plots` objects.
+Unlike the `SequenceParameters`, `plots` is a collection of functions, and does not allow for the creation of `Plots` objects.
 
 In the following discussion a **single** plot contains information from just one sequence, whereas a **multiple** plot contains sequence information from many sequences
 
@@ -212,8 +246,8 @@ There are two modes with which you can use plots functions;
 #### Passing raw parameters to be plotted (single and multiple plots)
 This may be convenient if you're plotting previously calculated values, or plotting a theoretical distribution here. Either individual values or lists of values can be passed.
 
-### Passing SequenceParameter objects (multiple plots only)
-If you're analyzing a set of SequenceParameter objects you may wish to place them on the same plot. Note we do not offer this functionality for single sequences, because you can always plot a single sequence using the associated `SequenceParameter` function (e.g. `.show_uverskyPlot()` or `.save_phaseDiagram()`).
+### Passing sequenceParametersobjects (multiple plots only)
+If you're analyzing a set of sequenceParametersobjects you may wish to place them on the same plot. Note we do not offer this functionality for single sequences, because you can always plot a single sequence using the associated `SequenceParameters` function (e.g. `.show_uverskyPlot()` or `.save_phaseDiagramPlot()`).
 
 
 
@@ -225,7 +259,7 @@ Function name | Input Arguments | Discussion
 `save_single_phasePlot(fp, fn, filename, label='', title='Diagram of states', legendOn=True)` | `fp` is the fraction of positive residues in a sequence, `fn` is the fraction of negative residues in a sequence. `filename` is the name of the file to save the plot as (`.png` is appended). `label`, if included, should be a string with which the sequence on the plot is labelled. `title`, if provided, sets the plot title. `legendOn` defines if the 5-region legend for the phase diagram plot is included.  | No programatic output is generated, but the plot is constructed and saved at the `filename` location. 
 `save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label='', title='Uversky plot', legendOn=True)` | `hydropathy` is the sequence's 0-1 normalized hydropathy, while `mean_net_charge` is the the absolute value of the sequence's mean net charge. `filename` is the name of the file to save the plot as (`.png` is appended). `label`, if included, should be a string with which the sequence on the plot is labelled. `title`, if provided, sets the plot title. `legendOn` defines if the 5-region legend for the phase diagram plot is included.  | No programatic output is generated, but the plot is constructed and saved at the `filename` location.
 
-If you wish to plot a single sequence's Pappu-Das diagram of states plot or Uversky plot from a `SequenceParameter` object we suggest using the appropriate `SequenceParameter` functions (e.g.  `.show_uverskyDiagram()`, `.show_phaseDiagram()`)
+If you wish to plot a single sequence's Pappu-Das diagram of states plot or Uversky plot from a `SequenceParameters` object we suggest using the appropriate `SequenceParameters` functions (e.g.  `.show_uverskyDiagram()`, `.show_phaseDiagram()`)
 
 ### `*_multiple*_` functions
 
@@ -234,7 +268,7 @@ For the `multiple` plotting functions, we pass in a list of values or objects co
 There are two types of multiple plots
 
 **1)** Those which you pass two lists of the actual values of interest, where the lists represent parallel lists, where the position in each list corresponds to a specific sequence.
-**2)** Those which you pass a list of `SequenceParameter` objects to, meaning you only pass it a single list
+**2)** Those which you pass a list of `SequenceParameters` objects to, meaning you only pass it a single list
 
 
 The `show_*` functions render a plot on the screen in front of you through `matplotlib`. These are useful for directly interacting with sequences and examining how specific sequence might behave.
@@ -244,13 +278,13 @@ The `save_*` functions save a plot to the designated file name.
 Function name | Input Arguments | Discussion
 :---: | :---: | :---:
 `show_multiple_phasePlot(fp_list, fn_list, ?label_list=[], ?title="Diagram of states", ?legendOn=True)`  | `fp_list` and `fn_list` are lists of the positive fraction and negative fraction of sequences, where the list position in each of these two 'parallel' lists corresponds to the same sequence. That is to say, if you were looking at 5 sequences, `fp_list` and `fn_list` would both be of length 5, and `fp_list[2]` and `fn_list[2]` would represent the fraction position and fraction negative of your third sequence, respectively. `label_list`, if included, should be a list of strings corresponding to the length of `fn_list` and `fp_list`, and includes names for each sequence on the plot. `title`, if provided, sets the plot title. `legendOn` defines if the 5-region legend for the phase diagram plot is included. | No programatic output is generated, but the plot is rendered to the screen.  
-`show_multiple_phasePlot2(SeqParam_list, label_list=[], title='Diagram of states', legendOn=True)` | All arguments are the same as above, except now instead of explicit fraction of positive and fraction of negative lists, we have a single list containing `SequenceParameter` objects, from which these properties are derived. | No programatic output is generated, but the plot is rendered to the screen.
+`show_multiple_phasePlot2(SeqParam_list, label_list=[], title='Diagram of states', legendOn=True)` | All arguments are the same as above, except now instead of explicit fraction of positive and fraction of negative lists, we have a single list containing `SequenceParameters` objects, from which these properties are derived. | No programatic output is generated, but the plot is rendered to the screen.
 `show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list=[], title='Uversky plot', legendOn=True)` | `hydropathy_list` and `mean_net_charge_list` are lists of the 0-1 normalized hydropathy and the absolute mean net charge, where the list position in each of these two 'parallel' lists corresponds to the same sequence. `filename` is the name of the file to save the plot as (`.png` is appended). `label_list`, if included, should be a list of strings corresponding to the length of `fn_list` and `fp_list`, and includes names for each sequence on the plot. `title`, if provided, sets the plot title. `legendOn` defines if the 5-region legend for the phase diagram plot is included. | No programatic output is generated, but the plot is rendered to the screen. 
-`show_multiple_uverskyPlot2(SeqParam_list, label_list=[], title='Uversky plot', legendOn=True)` | All arguments are the same as above, except now instead of having an explicit hydropathy list and an explicit mean net charge list, we have a single list containing `SequenceParameter` objects, from which these properties are derived. | No programatic output is generated, but the plot is rendered to the screen. 
+`show_multiple_uverskyPlot2(SeqParam_list, label_list=[], title='Uversky plot', legendOn=True)` | All arguments are the same as above, except now instead of having an explicit hydropathy list and an explicit mean net charge list, we have a single list containing `SequenceParameters` objects, from which these properties are derived. | No programatic output is generated, but the plot is rendered to the screen. 
 `save_multiple_phasePlot(fp_list, fn_list, filename, ?label_list=[], ?title="Diagram of states", ?legendOn=True)`  | `fp_list` and `fn_list` are lists of the positive fraction and negative fraction of sequences, where the list position in each of these two 'parallel' lists corresponds to the same sequence. That is to say, if you were looking at 5 sequences, `fp_list` and `fn_list` would both be of length 5, and `fp_list[2]` and `fn_list[2]` would represent the fraction position and fraction negative of your third sequence, respectively. `filename` is the name of the file to save the plot as (`.png` is appended). `label_list`, if included, should be a list of strings corresponding to the length of `fn_list` and `fp_list`, and includes names for each sequence on the plot. `title`, if provided, sets the plot title. `legendOn` defines if the 5-region legend for the phase diagram plot is included. | No programatic output is generated, but the plot is constructed and saved at the `filename` location. 
-`save_multiple_phasePlot2(SeqParam_list, filename, label_list=[], title='Diagram of states', legendOn=True)` | All arguments are the same as above, except now instead of explicit fraction of positive and fraction of negative lists, we have a single list containing `SequenceParameter` objects, from which these properties are derived. | No programatic output is generated, but the plot is constructed and saved at the `filename` location.
+`save_multiple_phasePlot2(SeqParam_list, filename, label_list=[], title='Diagram of states', legendOn=True)` | All arguments are the same as above, except now instead of explicit fraction of positive and fraction of negative lists, we have a single list containing `SequenceParameters` objects, from which these properties are derived. | No programatic output is generated, but the plot is constructed and saved at the `filename` location.
 `save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label_list=[], title='Uversky plot', legendOn=True)` | `hydropathy_list` and `mean_net_charge_list` are lists of the 0-1 normalized hydropathy and the absolute mean net charge, where the list position in each of these two 'parallel' lists corresponds to the same sequence. `filename` is the name of the file to save the plot as (`.png` is appended). `label_list`, if included, should be a list of strings corresponding to the length of `fn_list` and `fp_list`, and includes names for each sequence on the plot. `title`, if provided, sets the plot title. `legendOn` defines if the 5-region legend for the phase diagram plot is included. | No programatic output is generated, but the plot is constructed and saved at the `filename` location. 
-`save_multiple_uverskyPlot2(SeqParam_list, filename, label_list=[], title='Uversky plot', legendOn=True)` | All arguments are the same as above, except now instead of having an explicit hydropathy list and an explicit mean net charge list, we have a single list containing `SequenceParameter` objects, from which these properties are derived. | No programatic output is generated, but the plot is constructed and saved at the `filename` location. 
+`save_multiple_uverskyPlot2(SeqParam_list, filename, label_list=[], title='Uversky plot', legendOn=True)` | All arguments are the same as above, except now instead of having an explicit hydropathy list and an explicit mean net charge list, we have a single list containing `SequenceParameters` objects, from which these properties are derived. | No programatic output is generated, but the plot is constructed and saved at the `filename` location. 
 
 
 # `localcider` exceptions
@@ -273,9 +307,9 @@ There are a couple more but these relate to functionality not yet available in v
 
     from localcider.sequenceParameters import SequenceParameters
     
-    # define my internet sequence and create a new SequenceParameter object with itxs
+    # define my internet sequence and create a new sequenceParametersobject with itxs
     internetSequence="VAQKTVEGAGSIAAATGFVKKDQLGKNEEGAPQEGILEDMPVDP"
-    object=SequenceParameter(internetSequencexs)
+    object=SequenceParameters(internetSequencexs)
     
     
     # Let's get some parameters!xs
@@ -331,10 +365,10 @@ Let's imagine we have a directory with 10 fasta files (`seq0.fasta`, `seq1.fasta
     # create an empty list 
     list_of_SeqObjs = []
     
-    # populate that list with SequenceParameter objects, which we construct from the
+    # populate that list with sequenceParametersobjects, which we construct from the
     # sequence found in each file
     for file in filelist:
-       list_of_SeqObjs.append(SequenceParameter(sequenceFile=file))
+       list_of_SeqObjs.append(SequenceParameters(sequenceFile=file))
 
 	# for each 
 	for obj in list_of_SeqObjs:
@@ -356,17 +390,17 @@ Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a cann
     # create an empty list 
     list_of_SeqObjs = []
     
-    # populate that list with SequenceParameter objects, which we construct from the
+    # populate that list with sequenceParameters objects, which we construct from the
     # sequence found in each file
     for file in filelist:
-       list_of_SeqObjs.append(SequenceParameter(sequenceFile=file))
+       list_of_SeqObjs.append(SequenceParameters(sequenceFile=file))
        
        
-    # populate that list with SequenceParameter objects, which we construct from the
+    # populate that list with SequenceParameters objects, which we construct from the
     # sequence found in each file
     for file in filelist:
        try:
-	      list_of_SeqObjs.append(SequenceParameter(sequenceFile=file))
+	      list_of_SeqObjs.append(SequenceParameters(sequenceFile=file))
 	   except localcider.SequenceFileParserException:
 	      # if we encounter a file parsing error just skip that sequence
 	      continue
@@ -380,7 +414,7 @@ Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a cann
     # import the SequenceParameters class from the sequenceParameters class
     from localcider.sequenceParameters import SequenceParameters    
     
-    # create two SequenceParameter objects
+    # create two SequenceParameters objects
     SynWT=SequenceParameters("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAA")
     SynMut=SequenceParameters("MDVFMKGLSKAKEGEEKKAEKTKQGVAEAA")
     
@@ -392,7 +426,9 @@ Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a cann
     plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','MUT'])
 
 
-# localCIDER roadmap
+# Epilog
+
+## localCIDER roadmap
 
 We have a fairly well defined roadmap for the next few sets of minor release for localCIDER, with the first major release coming sometime thereafter
 
@@ -404,7 +440,7 @@ We have a fairly well defined roadmap for the next few sets of minor release for
 
 
 ## About
-localCIDER was developed in the Pappu lab by Alex Holehouse, with much of the original code written by James Ahad. Importantly, we believe scientific software should be held to same (or higher) software standards as general commercial and open source projects. To this end we use Git for version control, employ standard conventions for versioning, and try to ensure all code is well structured and well documented. The source code is fully open and [can be viewed here](https://github.com/Pappulab/localCIDER).
+localCIDER was developed in the Pappu lab by Alex Holehouse, with much of the original code written by James Ahad. Importantly, we believe scientific software should be held to same (or higher) software standards as general commercial and open source projects. To this end we use Git for version control, employ standard conventions for versioning, run an ever-expanding set of unit tests, and try to ensure all code is well structured and well documented. The source code is fully open and [can be viewed here](https://github.com/Pappulab/localCIDER).
 
 
 ## References
@@ -417,6 +453,16 @@ localCIDER was developed in the Pappu lab by Alex Holehouse, with much of the or
 
 **[4]** **V. Uversky** (2002) [*Protein Sci. Apr* 11(4) pp 739 - 756](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2373528/)
 
+
+## Thanks
+Many people have been involved in this project. We'll try and include an up-to-date list here
+
+* Paul Nobrega (Matthews lab) for bug reports and the Windows installation instructions
+
+## Update schedule
+
+* version 0.1.0 [August 10th 2014]
+* version 0.1.1 [August 14th 2014] (minor bug fixes, more tests, improved sequence parsing)
 
 ----------
         <ul>

@@ -40,6 +40,7 @@ class SequencePermutantException(Exception):
 
 import numpy as np
 
+from sequenceParameters import SequenceParameters
 from backend.sequence import Sequence
 from backend.seqfileparser import SequenceFileParser 
 from backend.backendtools import status_message, warn_notReadyYet
@@ -104,4 +105,20 @@ class SequencePermutants:
     def __readyCheck(self):
         if self.WL_ready == False:
             raise SequencePermutantException("Wang Landau not yet parameterized\nPLEASE RUN <initializeWangLandauParameters> BEFORE CALLING a run function")
+        
+        
+    #...................................................................................#       
+    def get_permutant(self):        
+
+        # create a permutant Sequence object
+        SO = self.SeqObj.full_shuffle([])
+        
+        # now create an 'empty' SequenceParameter object
+        SP = SequenceParameters("A")
+        
+        # manually set the underlying Sequence object 
+        # and return
+        SP.SeqObj = SO
+        return SP
+
         

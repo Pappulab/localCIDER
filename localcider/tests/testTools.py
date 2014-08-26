@@ -40,29 +40,40 @@
    !                                                                          !
    !--------------------------------------------------------------------------!
 
-   
-   File Description:
-   ================
-   
-   This is the main package import file for the localCIDER package. 
+
+   testTools contains various tools used in the test functions
+
 
 """
-
-__all__ = ['sequenceParameters', 'plots']
-
-from backend.config import VERSION as localCIDER_version
-from backend.backendtools import status_message
-import sequenceParameters as sequenceParameters 
-import sequencePermutants as sequencePermutants
-import plots as plots
-
-# Explicit exception importing
-from backend.localciderExceptions import KeyFileException 
-from backend.localciderExceptions import PlottingException
-from backend.localciderExceptions import SequenceException
-from backend.localciderExceptions import SequenceFileParserException
-from backend.localciderExceptions import ResTableException
-from backend.localciderExceptions import WLException
-status_message("localCIDER version " + localCIDER_version)
+import random
 
 
+AAs = list("QWERTYIPASDFGHKLCVNM")
+
+def generate_random_sequence(minLen=1,maxLen=100):
+
+    # generate 5 random sequences
+    # LENGTH BETWEEN 1 AND 150
+    random.seed()        
+    S1=""
+    for i in xrange(minLen,maxLen):
+        S1=S1+random.choice(AAs)
+
+    return S1
+
+
+def generate_random_sequence_list(number=10,minLen=1,maxLen=100):
+    
+    seqlist=[]
+    for i in xrange(0,number):
+        seqlist.append(generate_random_sequence(minLen,maxLen))
+
+    return seqlist
+       
+       
+
+
+
+       
+        
+       

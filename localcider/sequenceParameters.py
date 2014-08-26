@@ -138,6 +138,29 @@ class SequenceParameters:
 
         return self.SeqObj.kappa()
 
+    
+    #...................................................................................#
+    def get_deltaMax(self):
+        """
+        Get the maximum delta value for a sequence of this composition. Note kappa is 
+        delta/deltaMax.
+
+        OUTPUT: Float with the sequence's delta max (identical for all permutants)
+        """
+        
+        return self.SeqObj.deltaMax()
+
+
+    #...................................................................................#
+    def get_delta(self):
+        """
+        Get the delta value for this specific sequence. Note kappa is delta/deltaMax.
+
+        OUTPUT: Float with the sequence's delta max (will vary with permutants)
+        """
+        
+        return self.SeqObj.delta()
+        
 
     #...................................................................................#
     def get_countPos(self):
@@ -542,6 +565,10 @@ class SequenceParameters:
     def __str__(self):
         """ Returns the sequences """
         return self.__unicode__(self)
+
+    def __len__(self):
+        """ Returns the sequence length """
+        return len(self.SeqObj.seq)
 
 
     

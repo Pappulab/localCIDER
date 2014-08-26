@@ -95,7 +95,7 @@ def save_single_phasePlot(fp, fn, filename, label="", title="Diagram of states",
 
 
 #...................................................................................#
-def show_multiple_phasePlot(fp_list, fn_list, label=[""], title="Diagram of states", legendOn=True):
+def show_multiple_phasePlot(fp_list, fn_list, label=[], title="Diagram of states", legendOn=True):
     """
     Plot multiple sequences on the same Pappu-Das phase plot (diagram of states).
 

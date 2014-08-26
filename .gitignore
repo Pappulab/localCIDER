@@ -58,3 +58,4 @@ docs/_build/
 wang_landau/
 *.fasta 
 tmpfiles/*
+localcider/tests/tmpfiles/*
