@@ -14,7 +14,7 @@ update_version() {
     
     # first print everything which matches
     echo " ALL MATCHING ---> "
-    grep "!    Version 0.1.0" *.py
+    grep "!    Version 0.1.1" *.py
     echo "This will update the version of all python files in this directory to" $2
 
     echo "Enter Y to continue"
@@ -27,7 +27,7 @@ update_version() {
 	do
 	    echo $i
 	    echo $1
-	    sed -i.bak s/"!    Version 0.1.0"/"!    Version $1"/g $i
+	    sed -i.bak s/"!    Version 0.1.1"/"!    Version $1"/g $i
 	done
     else
 	echo "ABORT"

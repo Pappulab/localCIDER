@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.1                                                         !
+   !    Version 0.1.2                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -125,7 +125,11 @@ class Sequence:
         # initializing to prevent extra computational time
         self.dmax = dmax
 
+        # set phosphosites as empty
         self.phosphosites=[]
+
+        # set color pallete
+        self.set_HTMLColorResiduePalette(aminoacids.DEFAULT_COLOR_PALETTE)
 
 
     #...................................................................................#
@@ -848,7 +852,7 @@ class Sequence:
     #
 
     #...................................................................................#
-    def setPhosPhoSites(self, listofPsites):
+    def setPhosPhoSites(self, listOfPsites):
         """
         Set one or more sites on your sequence which can be phosphorylated. Note that
         this indexes from 1 (like all of bioinformatics) and not from 0 (like all of 
@@ -871,7 +875,7 @@ class Sequence:
             listOfPsites.appned(tmp)
 
         # evaluate proposed phosphosites
-        for site in listofPsites:
+        for site in listOfPsites:
             
             # check we can convert to an integer!
             site = int(site)
@@ -1067,9 +1071,68 @@ class Sequence:
 
     #...................................................................................#
     def toString(self):
+        """
+        
+
+        """
         s = "%i\t%3.5f\t%3.5f\t%3.5f\t%3.5f\t%3.5f\t%3.5f\t%3.5f\t%3.5f\t%3.5f" % (self.len,self.Fminus(),self.Fplus(),self.FCR(),self.NCPR(),self.sigma(),self.delta(),self.deltaMax(),self.kappa(),self.meanHydropathy())
         return s
 
+
+
+    def set_HTMLColorResiduePalette(self, colorDict):
+        """
+        Function which lets you userdefine the color pallete being used with a dictionary of [AA]="color" mappings where
+        color must be one of the 17 key HTML colours;
+
+        ['aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'orange', 'purple', 
+        'red', 'silver', 'teal', 'white', 'yellow']
+
+        """
+
+        valid={}
+
+        # for each one letter amino acid code
+        for i in aminoacids.ONE_TO_THREE:
+
+            # check all the amino acids were there
+            if i not in colorDict:
+                raise SequenceException("When trying to set amino acid color palette the amino acid " + str(i) + " was missing from the input dictionary") 
+
+            # check if the color is real
+            if colorDict[i] not in ['aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'orange', 'purple', 'red', 'silver', 'teal', 'white', 'yellow']:
+                raise SequenceException("When trying to set amino acid color palette the color " + str(colorDict[i]) + " was used, which is not one of the 17 standard HTML colours") 
+            
+            # if we get here update the 'valid' dictionary
+            valid[i] = colorDict[i].lower()    
+
+        # if we got here we got through the full 20 amino acids succesfully
+        self.aminoAcidColorMap = {}
+        for i in valid:
+            self.aminoAcidColorMap[i] = valid[i]
+
+            
+
+    def get_HTMLColorString(self):
+        """
+        Function which creates a <p> </p> wrapped HTML string with the sequence colored according to the defined
+        aminoAcidColorMap. 
+
+        """
+        colorString = '<p>'
+        count = 0
+        for residue in self.seq:
+            count = count + 1
+            if(np.mod(count,10) == 0):
+                colorString = colorString + " " 
+            if(np.mod(count,50) == 0):
+                colorString = colorString + "<br>" 
+
+            color = self.aminoAcidColorMap[residue]
+
+            colorString = '%s<span style="color:%s">%s</span>' % (colorString,color,residue)
+        colorString = colorString+ "</p>"
+        return colorString
 
     #...................................................................................#
     def toFileString(self):        

@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.1                                                         !
+   !    Version 0.1.2                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -80,8 +80,8 @@ class TestSequenceParametersFunctions(unittest.TestCase):
         MH = self.testObj.get_mean_hydropathy()
         self.assertEqual(MH,3.242142857142857)
 
-    def test_get_uversky_hydrophobicity(self):
-        MUH = self.testObj.get_uversky_hydrophobicity()
+    def test_get_uversky_hydropathy(self):
+        MUH = self.testObj.get_uversky_hydropathy()
         self.assertEqual(MUH, 0.4552380952380952)
         
     def test_get_fraction_disorder_promoting(self):
@@ -309,7 +309,7 @@ class TestSequenceParametersFunctions(unittest.TestCase):
             iSEQ.get_mean_net_charge()
             iSEQ.get_phasePlotRegion()
             iSEQ.get_mean_hydropathy()
-            iSEQ.get_uversky_hydrophobicity()
+            iSEQ.get_uversky_hydropathy()
             psites=iSEQ.get_all_phosphorylatable_sites()
             if psites > 0:
 
@@ -322,12 +322,21 @@ class TestSequenceParametersFunctions(unittest.TestCase):
                 iSEQ.get_phosphosequence()
                 iSEQ.get_full_phosphostatus_kappa_distribution()
                 iSEQ.clear_phosphosites()
-
+        
+            # single 
             iSEQ.save_phaseDiagramPlot("tmpfiles/phase_test_S"+str(pos))
             iSEQ.save_uverskyPlot("tmpfiles/uversky_test_S"+str(pos))
-            iSEQ.save_linearNCPR(6,"tmpfiles/NCPR_test_S"+str(pos))
-            iSEQ.save_linearHydropathy(6,"tmpfiles/Hydropathy_test_S"+str(pos))
-            iSEQ.save_linearSigma(6,"tmpfiles/sigma_test_S"+str(pos))
+
+            # try with a blobval
+            iSEQ.save_linearNCPR("tmpfiles/NCPR_test_S"+str(pos),5)
+            iSEQ.save_linearHydropathy("tmpfiles/Hydropathy_test_S"+str(pos),5)
+            iSEQ.save_linearSigma("tmpfiles/sigma_test_S"+str(pos),5)
+            
+            # try with default
+            iSEQ.save_linearNCPR("tmpfiles/NCPR_test_S"+str(pos))
+            iSEQ.save_linearHydropathy("tmpfiles/Hydropathy_test_S"+str(pos))
+            iSEQ.save_linearSigma("tmpfiles/sigma_test_S"+str(pos))
+
 
             pos=pos+1
                 

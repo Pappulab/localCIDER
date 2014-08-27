@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.1                                                         !
+   !    Version 0.1.2                                                         !
    !--------------------------------------------------------------------------!
    
    File Description:
@@ -94,17 +94,17 @@ class SequenceParameters:
         """
         Get a proteins mean hydropphobiicity
 
-        OUTPUT: Float with the sequence's mean hydrophobicity
+        OUTPUT: Float with the sequence's mean hydropathy
         """
 
         return self.SeqObj.meanHydropathy()
 
 
     #...................................................................................#
-    def get_uversky_hydrophobicity(self):
+    def get_uversky_hydropathy(self):
         """
-        Get a proteins mean hydrophobicity as defined by Uversky,
-        using a normalized Kyte-Doolittle hydrophobicity table
+        Get a protein's mean hydropathy as defined by Uversky,
+        using a normalized Kyte-Doolittle hydropathy table
         """
         
         return self.SeqObj.uverskyHydropathy()
@@ -380,8 +380,6 @@ class SequenceParameters:
         """ 
         Generates the Pappu-Das phase diagram (diagram of states), places
         this sequence on that plot, and creates it on the screen
-
-        <<REQUIRES MATPLOTLIB>>>
        
         """
 
@@ -393,8 +391,6 @@ class SequenceParameters:
         """ 
         Generates the Pappu-Das phase diagram (diagram of states), places
         this sequence on that plot, and saves it at the <filename> location
-
-        <<REQUIRES MATPLOTLIB>>>
 
         INPUT: Writeable filename
         OUTPUT: Nothing, but creates a .png file at the filename location
@@ -409,12 +405,10 @@ class SequenceParameters:
         """ 
         Generates the Uversky phase diagram (hydropathy vs NCPR), places
         this sequence on that plot, and creates it on the screen
-
-        <<REQUIRES MATPLOTLIB>>>
        
         """
 
-        plotting.show_single_uverskyPlot(self.get_uversky_hydrophobicity(), self.get_mean_net_charge(), label)
+        plotting.show_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), label)
 
 
     #...................................................................................#
@@ -423,29 +417,31 @@ class SequenceParameters:
         Generates the Pappu-Das phase diagram (diagram of states), places
         this sequence on that plot, and saves it at the <filename> location
 
-        <<REQUIRES MATPLOTLIB>>>
-
         INPUT:  Writeable filename
         OUTPUT: Nothing, but creates a .png file at the filename location
 
         """
         
-        plotting.save_single_uverskyPlot(self.get_uversky_hydrophobicity(), self.get_mean_net_charge(), filename, label)
+        plotting.save_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), filename, label)
 
 
     
 
     #...................................................................................#
-    def save_linearNCPR(self, blobLen, filename):
+    def save_linearNCPR(self, filename, blobLen=5):
         """ 
         Generates a plot of how the NCPR (net charge per residue) changes as we move
         along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
         approach and calculates the average within that window.
         
-        <<REQUIRES MATPLOTLIB>>>
+        INPUT:  
+        filename | Name of the file to write
+        bloblen  | Set the windowsize (DEFAULT = 5)
+        
 
-        INPUT:  Writeable filename
-        OUTPUT: Nothing, but creates a .png file at the filename location
+        OUTPUT: 
+        Nothing, but creates a .png file at the filename location
+
 
         """
 
@@ -453,7 +449,7 @@ class SequenceParameters:
 
 
     #...................................................................................#
-    def save_linearSigma(self, blobLen, filename):
+    def save_linearSigma(self, filename, blobLen=5):
         """ 
         Generates a plot of how the Sigma parameter changes as we move
         along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
@@ -463,10 +459,12 @@ class SequenceParameters:
 
         NCPR^2/FCR (net charge per residue squared divided by the fraction of charged residues)
 
-        <<REQUIRES MATPLOTLIB>>>
+        INPUT:  
+        filename | Name of the file to write
+        bloblen  | Set the windowsize (DEFAULT = 5)
 
-        INPUT:  Writeable filename
-        OUTPUT: Nothing, but creates a .png file at the filename location
+        OUTPUT: 
+        Nothing, but creates a .png file at the filename location
 
         """
 
@@ -474,7 +472,7 @@ class SequenceParameters:
 
 
     #...................................................................................#
-    def save_linearHydropathy(self, blobLen, filename):
+    def save_linearHydropathy(self, filename, blobLen=5):
         """ 
         Generates a plot of how the mean hydropathy changes as we move
         along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
@@ -483,10 +481,13 @@ class SequenceParameters:
         Hydropathy here is calculated using a NORMALIZED Kyte-Doolittle scale, where 1 is
         the most hydrophobic and 0 the least.
 
-        <<REQUIRES MATPLOTLIB>>>
+        INPUT:  
+        filename | Name of the file to write
+        bloblen  | Set the windowsize (DEFAULT = 5)
 
-        INPUT:  Writeable filename
-        OUTPUT: Nothing, but creates a .png file at the filename location
+
+        OUTPUT: 
+        Nothing, but creates a .png file at the filename location
 
         """
 
@@ -494,16 +495,18 @@ class SequenceParameters:
 
 
     #...................................................................................#
-    def show_linearNCPR(self, blobLen):
+    def show_linearNCPR(self, blobLen=5, getFig=False):
         """ 
         Generates a plot of how the NCPR (net charge per residue) changes as we move
         along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
         approach and calculates the average within that window.
-        
-        <<REQUIRES MATPLOTLIB>>>
 
-        INPUT:  Writeable filename
-        OUTPUT: Nothing, but the plot is displayed on screen
+        INPUT:  
+        bloblen  | Set the windowsize (DEFAULT = 5)
+        getFIG   | Do you want to get the matplotlib figure object (DEFAULY = FALSE)
+
+        OUTPUT: 
+        Nothing, but the plot is displayed on screen
 
         """
 
@@ -511,7 +514,7 @@ class SequenceParameters:
 
 
     #...................................................................................#
-    def show_linearSigma(self, blobLen):
+    def show_linearSigma(self, blobLen=5,getFig=False):
         """ 
         Generates a plot of how the sigma parameter changes as we move
         along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
@@ -521,18 +524,20 @@ class SequenceParameters:
 
         NCPR^2/FCR (net charge per residue squared divided by the fraction of charged residues)
 
-        <<REQUIRES MATPLOTLIB>>>
+        INPUT:  
+        bloblen  | Set the windowsize (DEFAULT = 5)
+        getFIG   | Do you want to get the matplotlib figure object (DEFAULY = FALSE)
 
-        INPUT:  Writeable filename
-        OUTPUT: Nothing, but the plot is displayed on screen
+        OUTPUT: 
+        Nothing, but the plot is displayed on screen
 
         """
 
-        plotting.show_linearplot(plotting.build_sigma_plot, self.SeqObj, blobLen)
+        plotting.show_linearplot(plotting.build_sigma_plot, self.SeqObj, blobLen, getFig)
 
 
     #...................................................................................#
-    def show_linearHydropathy(self, blobLen):
+    def show_linearHydropathy(self, blobLen=5, getFig=False):
         """ 
         Generates a plot of how the mean hydropathy changes as we move
         along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
@@ -541,15 +546,62 @@ class SequenceParameters:
         Hydropathy here is calculated using a NORMALIZED Kyte-Doolittle scale, where 1 is
         the most hydrophobic and 0 the least.
 
-        <<REQUIRES MATPLOTLIB>>>
+        INPUT:  
+        bloblen  | Set the windowsize (DEFAULT = 5)
+        getFIG   | Do you want to get the matplotlib figure object (DEFAULY = FALSE)
 
-        INPUT:  Writeable filename
-        OUTPUT: Nothing, but the plot is displayed on screen
+        OUTPUT: 
+        Nothing, but the plot is displayed on screen
+
         """
 
-        plotting.show_linearplot(plotting.build_hydropathy_plot, self.SeqObj, blobLen)
+        plotting.show_linearplot(plotting.build_hydropathy_plot, self.SeqObj, blobLen, getFig)
+        
+
+    # ============================================== #
+    # ============ FORMATTING FUNCTIONS ============ #  
 
 
+    #...................................................................................#
+    def set_HTMLColorResiduePalette(self, colorDict):
+        """
+        Allows the user to define the colormapping used for the get_HTMLColorString.
+
+        The input parameter is a dictionary which contains amino acid single letter codes 
+        as keys and colours as values. The colours must be one of the 17 standard HTML
+        color names. These are;
+
+        aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, orange, 
+        purple, red, silver, teal, white, and yellow.
+
+        By default, polar residues are green, negative residues red, positive blue,
+        proline fuschia and all others are black.
+
+        The function carrys out checking to ensure that
+        1) Colors are valid (case insensitive)
+        2) All 20 amino acids are accounted for
+        
+        No return value is provided, but an exception is raised if the operation
+        cannot be completed.
+        
+        """
+        self.SeqObj.set_HTMLColorResiduePalette(colorDict)
+
+
+
+    def get_HTMLColorString(self):
+        """
+        Returns a string which contains a correctly formatted HTML string of the sequence
+        defined with specific coloring.
+
+        The sequence is divided into 10 residue blocks, with a newline (<br>) every
+        50 residues.
+
+
+        """
+        return self.SeqObj.get_HTMLColorString()
+
+        
 
 
     # ============================================ #

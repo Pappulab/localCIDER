@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.1                                                         !
+   !    Version 0.1.2                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -93,6 +93,28 @@ ONE_TO_THREE = {'A':'ALA',
                 'V':'VAL',
                 'W':'TRP',
                 'Y':'TYR'}
+
+DEFAULT_COLOR_PALETTE = {'A':'black', 
+                         'C':'black',
+                         'D':'red',
+                         'E':'red',
+                         'F':'black',
+                         'G':'black',
+                         'H':'green', 
+                         'I':'black',
+                         'K':'blue',
+                         'L':'black',
+                         'M':'black',
+                         'N':'green',
+                         'P':'fuchsia',
+                         'Q':'green',
+                         'R':'blue',
+                         'S':'green',
+                         'T':'green',
+                         'V':'black',
+                         'W':'black',
+                         'Y':'black'}
+
 
 
 

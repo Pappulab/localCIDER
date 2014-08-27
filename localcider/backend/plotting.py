@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.1                                                         !
+   !    Version 0.1.0                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -46,8 +46,8 @@
    
    Plotting is the backened for all localCIDER's plotting functionality. 
 
-   As with all functions in backend, nothing should be called directly, but
-   instead through the localcider.plots API module.
+   As with all functions in backend, nothing should be called directly, but in this case
+   through the localcider.plots API module.
 
    Given plots are their own stateless function the plotting module is purely
    functional, no classes or state is maintained.
@@ -67,7 +67,7 @@ from backendtools import verifyType
 from localciderExceptions import PlottingException
 
 #...................................................................................#
-def show_single_phasePlot(fp, fn, label="",title="Diagram of states",legendOn=True):
+def show_single_phasePlot(fp, fn, label="",title="Diagram of states",legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
     """
     Display a single-sequence Das-Pappu phase diagram plot on the screen
     """
@@ -75,15 +75,18 @@ def show_single_phasePlot(fp, fn, label="",title="Diagram of states",legendOn=Tr
     phaseplot_validate(fp,fn)
     
     # Create a plotting object
-    initial_plottingObject = single_plot(fp, fn, label)
-    finalized_plottingObject = finalize_DasPappu(initial_plottingObject, legendOn, title)
+    initial_plottingObject = single_plot(fp, fn, label, fontSize)
+    finalized_plottingObject = finalize_DasPappu(initial_plottingObject, legendOn, title, xLim, yLim)
 
-    # show the plot
-    plt.show()
+    # show the plot, or return the matplotlib fig object
+    if getFig:
+        return finalized_plottingObject
+    else:
+        finalized_plottingObject.show()
 
 
 #...................................................................................#
-def save_single_phasePlot(fp, fn, filename, label="", title="Diagram of states",legendOn=True):
+def save_single_phasePlot(fp, fn, filename, label="", title="Diagram of states",legendOn=True, xLim=1, yLim=1, fontSize=10):
     """
     Save a single-sequence Das-Pappu phase diagram to file
     """
@@ -95,17 +98,16 @@ def save_single_phasePlot(fp, fn, filename, label="", title="Diagram of states",
         os.remove(filename)
         
      # Create a plotting object
-    initial_plottingObject = single_plot(fp, fn, label)
-    finalized_plottingObject = finalize_DasPappu(initial_plottingObject, legendOn, title)
-
+    initial_plottingObject = single_plot(fp, fn, label, fontSize)
+    finalized_plottingObject = finalize_DasPappu(initial_plottingObject, legendOn, title, xLim, yLim)
 
     # save the plot and then close the matloblib plotting object
-    plt.savefig(filename,dpi=200)
-    plt.close()
+    finalized_plottingObject.savefig(filename,dpi=200)
+    finalized_plottingObject.close()
 
 
 #...................................................................................#
-def show_multiple_phasePlot(fp_list, fn_list, label=[], title="Diagram of states",legendOn=True):
+def show_multiple_phasePlot(fp_list, fn_list, label=[], title="Diagram of states",legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
     """
     Display multiple-sequences on a Das-Pappu phase diagram plot on the screen
     """
@@ -115,15 +117,18 @@ def show_multiple_phasePlot(fp_list, fn_list, label=[], title="Diagram of states
         phaseplot_validate(fp,fn)
 
     # Create a plotting object
-    initial_plottingObject = multiple_plot(fp_list, fn_list, label)
-    finalized_plottingObject = finalize_DasPappu(initial_plottingObject, legendOn, title)
+    initial_plottingObject = multiple_plot(fp_list, fn_list, label, fontSize)
+    finalized_plottingObject = finalize_DasPappu(initial_plottingObject, legendOn, title, xLim, yLim)
 
-    # show the plot
-    finalized_plottingObject.show()
+    # show the plot, or return the matplotlib fig object
+    if getFig:
+        return finalized_plottingObject
+    else:
+        finalized_plottingObject.show()
 
 
 #...................................................................................#
-def save_multiple_phasePlot(fp_list, fn_list, filename, label=[], title="Diagram of states",legendOn=True):
+def save_multiple_phasePlot(fp_list, fn_list, filename, label=[], title="Diagram of states",legendOn=True, xLim=1, yLim=1, fontSize=10):
     """
     Save multiple-sequences on a Das-Pappu phase diagram to file
     """
@@ -133,12 +138,12 @@ def save_multiple_phasePlot(fp_list, fn_list, filename, label=[], title="Diagram
         phaseplot_validate(fp,fn)
     
     # Create a plotting object
-    initial_plottingObject = multiple_plot(fp_list, fn_list, label)
-    finalized_plottingObject = finalize_DasPappu(initial_plottingObject, legendOn, title)
+    initial_plottingObject = multiple_plot(fp_list, fn_list, label, fontSize)
+    finalized_plottingObject = finalize_DasPappu(initial_plottingObject, legendOn, title, xLim, yLim)
 
     # save the plot and then close the matloblib plotting object
-    plt.savefig(filename,dpi=200)
-    plt.close()
+    finalized_plottingObject.savefig(filename,dpi=200)
+    finalized_plottingObject.close()
 
 
 
@@ -148,62 +153,64 @@ def save_multiple_phasePlot(fp_list, fn_list, filename, label=[], title="Diagram
 ###
 ### =========================
 #...................................................................................#
-def show_single_uverskyPlot(hydropathy, mean_net_charge, label="",title="Uversky plot",legendOn=True):
-             
-    #uverskyPlot_validate(hyd,fn)
+def show_single_uverskyPlot(hydropathy, mean_net_charge, label="",title="Uversky plot",legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
 
     # Create a plotting object
-    initial_plottingObject = single_plot(mean_net_charge, hydropathy, label)
-    finalized_plottingObject = finalize_uversky(initial_plottingObject, legendOn, title)
+    initial_plottingObject = single_plot(mean_net_charge, hydropathy, label, fontSize)
+    finalized_plottingObject = finalize_uversky(initial_plottingObject, legendOn, title, xLim, yLim)
 
-    # show the plot
-    plt.show()
+    # show the plot, or return the matplotlib fig object
+    if getFig:
+        return finalized_plottingObject
+    else:
+        finalized_plottingObject.show()
 
 
 #...................................................................................#
-def save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label="", title="Uversky plot",legendOn=True):
+def save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label="", title="Uversky plot",legendOn=True, xLim=1, yLim=1, fontSize=10):
+    """
+    Function to save a single point on a Uversky plots
 
-    #uverskyPlot_validate(fp,fn)
+    """
      
     # Delete any file in the filename location
     if(os.path.exists(filename)):
         os.remove(filename)
         
      # Create a plotting object
-    initial_plottingObject = single_plot(mean_net_charge, hydropathy, label)
-    finalized_plottingObject = finalize_uversky(initial_plottingObject, legendOn, title)
+    initial_plottingObject = single_plot(mean_net_charge, hydropathy, label, fontSize)
+    finalized_plottingObject = finalize_uversky(initial_plottingObject, legendOn, title, xLim, yLim)
 
 
     # save the plot and then close the matloblib plotting object
-    plt.savefig(filename,dpi=200)
-    plt.close()
+    finalized_plottingObject.savefig(filename,dpi=200)
+    finalized_plottingObject.close()
 
 
 #...................................................................................#
-def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label=[], title="Uversky plot",legendOn=True):
+def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label=[], title="Uversky plot",legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
+    """
+    Function to show multiple points on a Uversky plots
+
+    """
     
-    # validate the various points
-    #for fp,fn in zip(fp_list,fn_list):
-    #    phaseplot_validate(fp,fn)
-
     # Create a plotting object
-    initial_plottingObject = multiple_plot(mean_net_charge_list, hydropathy_list, label)
-    finalized_plottingObject = finalize_uversky(initial_plottingObject, legendOn, title)
+    initial_plottingObject = multiple_plot(mean_net_charge_list, hydropathy_list, label, fontSize)
+    finalized_plottingObject = finalize_uversky(initial_plottingObject, legendOn, title, xLim, yLim)
 
-    # show the plot
-    plt.show()
+    # show the plot, or return the matplotlib fig object
+    if getFig:
+        return finalized_plottingObject
+    else:
+        finalized_plottingObject.show()
 
 
 #...................................................................................#
-def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label=[], title="Uversky plot",legendOn=True):
-    
-    # validate the various points
-    #for fp,fn in zip(fp_list,fn_list):
-    #    phaseplot_validate(fp,fn)
-    
+def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label=[], title="Uversky plot",legendOn=True, xLim=1, yLim=1, fontSize=10):
+        
     # Create a plotting object
-    initial_plottingObject = multiple_plot(mean_net_charge_list, hydropathy_list, label)
-    finalized_plottingObject = finalize_uversky(initial_plottingObject, legendOn, title)
+    initial_plottingObject = multiple_plot(mean_net_charge_list, hydropathy_list, label, fontSize)
+    finalized_plottingObject = finalize_uversky(initial_plottingObject, legendOn, title, xLim, yLim)
 
     # save the plot and then close the matloblib plotting object
     plt.savefig(filename,dpi=200)
@@ -219,34 +226,33 @@ def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, l
 ## <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><> ##
 
 #...................................................................................#
-def single_plot(x,y,label=""):
+def single_plot(x,y,label="",fontSize=10):
     """
     Internal function for creating a single sequence MATPLOTLIB object which can
     either then be saved or be displayed.
 
     INPUT:
-    fp         | Fraction of positive residues
-    fn         | Fraction of negative residues
-    label      | Lable to associated with sequence [DEFAULT = ""]
-    legendOn   | Write legend in plot [DEFAULT = True]
-    title      | Title for plot [DEFAULT = "Diagrams of states"]
+    x          | x-coordinate to be plotted
+    y          | y-coordinate to be plotted
+    label      | label associated with that point (DEFAULT = "")
+    fontSize  | size of label font (DEFAULT = 10)
 
     OUTPLOT:
     matplotlib object which can be plotted or saved
         
     """
     
-    # see if the input are SequenceParameter objects
-
-    
-    
     # set the x and y position of the mark
     x=float(x)
     y=float(y)
     
-    # draw the actual plot, with the sequence annotated
+    # draw the actual plot 
     plt.scatter(x,y,s=50,marker='o',color='Black',zorder=5)
     
+    # if no label return plt object
+    if label == "":
+        return plt
+
     # we scale the location of the label in the event of extreme values
     if x > 0.8:
         x_lab=x-(0.01*len(label)+0.03)
@@ -258,28 +264,26 @@ def single_plot(x,y,label=""):
     else:
         y_lab=y+0.01
 
-    plt.annotate(label,xy=(x_lab,y_lab))
+    # add the plot label
+    plt.annotate(label,xy=(x_lab,y_lab),fontsize=fontSize)
 
     return plt
 
 
 #...................................................................................#
-def multiple_plot(x_list,y_list,label_list=[],legendOn=True,title="Diagram of states"):
+def multiple_plot(x_list, y_list, label_list, fontSize):
     """
-    Internal function for creating a single sequence MATPLOTLIB object which can
-    either then be saved or be displayed.
+    Internal function for creating multiple induvidual points on a single set of axes.
+    This plot can then be saved or displayed
 
-    NOTE: This function ASSUMES fp_list and fn_list are lists of floats OF THE SAME
+    NOTE: This function ASSUMES x_list and y_list are lists of floats OF THE SAME
     LENGTH - this should be checked before!!
 
     INPUT:
-    fp         | List of fraction of positive residues
-    fn         | List of fraction of negative residues
-
-    
-    label      | List of lables to associated with sequence [DEFAULT = ""]
-    legendOn   | Write legend in plot [DEFAULT = True]
-    title      | Title for plot [DEFAULT = "Diagrams of states"]
+    x_list     | list of x values to plot
+    y_list     | list of y values to plot
+    label_list | list of labels to associate with the points
+    fontSize  | size of label font (DEFAULT = 10)
 
     OUTPLOT:
     matplotlib object which can be plotted or saved
@@ -295,20 +299,20 @@ def multiple_plot(x_list,y_list,label_list=[],legendOn=True,title="Diagram of st
 
     # check that the three lists are the same length
     if not (len(x_list) == len(y_list) == len(label_list)):
-        raise PlottingException("Unequal length of positive fraction list, negative fraction list, and table list")
+        raise PlottingException("Unequal length of positive fraction list, negative fraction list, and label list")
 
                     
     # plot all the points
     for x,y,label in zip(x_list,y_list,label_list):
-        plt.scatter(x,y,s=20,marker='o',color='Black',zorder=2)
-        plt.annotate(label,xy=(x+.01,y+.01))
+        plt.scatter(x,y,s=10,marker='o',color='Black',zorder=2)
+        plt.annotate(label,xy=(x,y+0.01), fontsize=fontSize) 
 
     # annotate, set it all up, and return the plot object
     return plt
     
 
 #...................................................................................#
-def finalize_DasPappu(plt, legendOn, title):
+def finalize_DasPappu(plt, legendOn, title, xLim, yLim):
     """
     Common function which finalizes up a plot by drawing on the regions 1-5, adding
     the legend and title. Used by both single and multiple phasePlot function
@@ -324,8 +328,8 @@ def finalize_DasPappu(plt, legendOn, title):
     reg5, = plt.fill([.35,.65,1],[0,.35,0],color = 'Blue',alpha=alphaval,zorder=1)
         
     # set the plot limits
-    plt.ylim([0,1])
-    plt.xlim([0,1])
+    plt.xlim([0,xLim])
+    plt.ylim([0,yLim])
     
     # label the axes and set the title
     axes_pro = FontProperties()
@@ -373,7 +377,7 @@ def phaseplot_validate(fp,fn):
     except ValueError, e:
         raise PlottingException("Unable to convert " + str(fn) + " into a float")
                             
-    # next check they're both between 0 and 0.5
+    # next check they're both between 0 and 1
     if (fp < 0) or (fp > 1):
         raise PlottingException("Fraction of positive residues outside of appropriate range [" + str(fp) + "]")
     if (fn < 0) or (fn > 1):
@@ -383,7 +387,7 @@ def phaseplot_validate(fp,fn):
 
 
 #...................................................................................#
-def finalize_uversky(plt, legendOn, title):
+def finalize_uversky(plt, legendOn, title, xLim, yLim):
     """
     Common function which finalizes up a plot by drawing on the regions 1-5, adding
     the legend and title. Used by both single and multiple phasePlot function
@@ -404,8 +408,8 @@ def finalize_uversky(plt, legendOn, title):
                      zorder=1)
         
     # set the plot limits
-    plt.ylim([0,1])
-    plt.xlim([0,1])
+    plt.xlim([0,xLim])
+    plt.ylim([0,yLim])
     
     # label the axes and set the title
     axes_pro = FontProperties()
@@ -446,22 +450,36 @@ def save_linearSigma(SeqObj, blobLen, filename):
 
 #...................................................................................#
 def save_linearHydropathy(SeqObj, blobLen, filename):
-    save_linearplot(build_hydropathy_plot, SeqObj, blobLen, filename)
+    save_linearplots(build_hydropathy_plot, SeqObj, blobLen, filename)
 
 
 #...................................................................................#
-def show_linearNCPR(SeqObj, blobLen):
-    show_linearplot(build_NCPR_plot, SeqObj, blobLen)
+def show_linearNCPR(SeqObj, blobLen, getFig=False):
+    if getFig:
+        return show_linearplot(build_NCPR_plot, SeqObj, blobLen, getFig)
+    else:
+        show_linearplot(build_NCPR_plot, SeqObj, blobLen, getFig)
 
 
 #...................................................................................#
-def show_linearSigma(SeqObj, blobLen):
-    show_linearplot(build_sigma_plot, SeqObj, blobLen)
+def show_linearSigma(SeqObj, blobLen, getFig=False):
+
+    if getFig:
+        return show_linearplot(build_sigma_plot, SeqObj, blobLen, getFig)
+    else:
+        show_linearplot(build_sigma_plot, SeqObj, blobLen, getFig)
+    
 
 
 #...................................................................................#
-def show_linearHydropathy(SeqObj, blobLen):
-    show_linearplot(build_hydropathy_plot, SeqObj, blobLen)
+def show_linearHydropathy(SeqObj, blobLen, getFig=False):
+
+    if getFig:
+        return show_linearplot(build_hydropathy_plot, SeqObj, blobLen)
+    else:
+        show_linearplot(build_hydropathy_plot, SeqObj, blobLen)
+
+        
 
 ##
 ## Functions below allow construction of the various Linear Sequence Plots #DRY
@@ -564,7 +582,7 @@ def save_linearplot(build_fun, SeqObj, blobLen, filename):
 
 
 #...................................................................................#
-def show_linearplot(build_fun, SeqObj, blobLen):
+def show_linearplot(build_fun, SeqObj, blobLen, getFig=False):
     """
     Internal function which builds and shows a linear sequence plot 
 
@@ -572,5 +590,8 @@ def show_linearplot(build_fun, SeqObj, blobLen):
     """
 
     plt = build_fun(SeqObj, blobLen)
-    plt.show()
+    if getFig:
+        return plt
+    else:
+        plt.show()
 
