@@ -629,7 +629,7 @@ class Sequence:
         elif(self.FCR() == 0):
             self.dmax = 0
 
-
+        #################################################################
         # FIRST computational trick - if only positive or negative 
         elif self.countPos() == 0 or self.countNeg() == 0:
             nneuts = self.countNeut()
@@ -722,7 +722,8 @@ class Sequence:
                 
 
 
-        # second computational trick (Maximization of # of Charged Blobs)
+        #################################################################
+        # third computational trick (Maximization of # of Charged Blobs)
         # relevant if we have 18 or more neutral residues
         elif(self.countNeut() >= 18):            
             nneuts = self.countNeut()
@@ -743,12 +744,20 @@ class Sequence:
                     setupSequence = ''
                     midBlock = ''
                     endBlock = ''
+                    
+                    setupSequence='0'*startNeuts
+                    endBlock='0'*endNeuts
+                    midBlock='0'*(nneuts-startNeuts-endNeuts)
+                    
+
+                    """
                     for i in xrange(startNeuts):
                         setupSequence += '0'
                     for i in xrange(0,endNeuts):
                         endBlock += '0'
                     for i in xrange(0,nneuts-startNeuts-endNeuts):
                         midBlock += '0'
+                    """
 
                     # now we construct *an* optimal sequence based on the start/mid/end
                     # permutation of neutral residues
@@ -1054,7 +1063,7 @@ class Sequence:
             newseqObj = Sequence(newseq)
 
             # now add that new kappa to the list, update, and repeat!
-            phosphokappa.append((newseqObj.kappa(), newseqObj.Fplus(), newseqObj.Fminus(), newseqObj.NCPR(), newseqObj.meanHydropathy(), phosphostatus))
+            phosphokappa.append((newseqObj.kappa(), newseqObj.Fplus(), newseqObj.Fminus(), newseqObj.FCR(), newseqObj.NCPR(), newseqObj.meanHydropathy(), phosphostatus))
 
             print_progress(count, num_calcs)
             count=count+1
