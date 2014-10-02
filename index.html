@@ -21,17 +21,17 @@
         <p class="view"><a href="https://github.com/Pappulab/localCIDER">View the Project on GitHub <small>Pappulab/localCIDER</small></a></p>
 
 
-         <ul>
+        <ul>
+          <li><a href="https://github.com/Pappulab/localCIDER/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Pappulab/localCIDER/tarball/master">Download <strong>TAR Ball</strong></a></li>
           <li><a href="https://github.com/Pappulab/localCIDER">View On <strong>GitHub</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu">Go to <strong>Pappu lab</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu/CIDER/">Go to <strong>CIDER</strong> </a></li>
         </ul>
       </header>
       <section>
         <h1>
 <a name="localcider" class="anchor" href="#localcider"><span class="octicon octicon-link"></span></a>localCIDER</h1>
 
-<p><code>v 0.1.1 - August 14th 2014</code></p>
+<p><code>v 0.1.2 - October 1st 2014</code></p>
 
 <h1>
 <a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
@@ -290,11 +290,35 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </tr>
 <tr>
 <td align="center"><code>get_mean_hydropathy()</code></td>
-<td align="center">Get the mean hydrophobicity as calculated from a skewed Kyte-Doolittle hydrophobicity scale* [REF 3]</td>
+<td align="center">Get the mean hydropathy as calculated from a skewed Kyte-Doolittle hydrophobicity scale* [REF 3]</td>
 </tr>
 <tr>
 <td align="center"><code>get_uversky_hydropathy()</code></td>
 <td align="center">Get the mean hydropathy as calculated from a normalized Kyte-Doolittle hydrophobicity scale** [REF 3 REF 4]</td>
+</tr>
+<tr>
+<td align="center">
+<code>get_delta()</code> <br><em>New in 0.1.2</em>
+</td>
+<td align="center">Returns the delta value of the sequence, as defined in the Pappu-Das paper [2]</td>
+</tr>
+<tr>
+<td align="center">
+<code>get_deltaMax()</code> <br><em>New in 0.1.2</em>
+</td>
+<td align="center">Returns the maximum possible delta value for a sequence of this composition</td>
+</tr>
+<tr>
+<td align="center">
+<code>get_HTMLColorString()</code> <br><em>New in 0.1.2</em>
+</td>
+<td align="center">Returns a fully formated HTML string which can be used to represent your sequence. The coloring used has a default, but can be defined using the <code>set_HTMLColorResiduePalette</code> function</td>
+</tr>
+<tr>
+<td align="center">
+<code>set_HTMLColorResiduePalette(colorDictionary)</code> <br><em>New in 0.1.2</em>
+</td>
+<td align="center">Allows you to custom define a colour pallete. The colorDictionary must be a dictionary object that maps each of the 20 amino acids to a color. Currently 17 possible colors can be assigned to the 20 amino acids. These are;<br> aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, orange, purple, red, silver, teal, white, and yellow. This set of 17 colors represents the HTML browser compatible set of colors.</td>
 </tr>
 </tbody>
 </table><p>* The skewed hydrophobicity scale shifts the normal KD scale such that the lowest value is 0 (instead of -4.5) and the highest value is 9 (instead of 4.5)</p>
@@ -338,7 +362,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </tr>
 <tr>
 <td align="center"><code>get_full_phosphostatus_kappa_distribution()</code></td>
-<td align="center">** UNDER DEVELOPMENT ** For each phospho-permutant, given the available phosphosites, calculate the kappa, fraction positive, fraction negative, FCR, NCP and meanHydropathy. This returns a list of tuples. We're still determining if all this information is necessary. Also note that as the number of phosphosites increases the number of calculations here scales as n^2. Be warned!</td>
+<td align="center">** UNDER DEVELOPMENT ** For each phospho-permutant, given the available phosphosites, calculate the kappa, fraction positive, fraction negative, FCR, NCPR, mean hydropathy and the phosphostatus. Phosphostatus is itself a tuple, where each position defines the phosphorylation status of each consecutive phosphosite in the sequence; 0 indicates unphosphorylated and 1 indicates phosphorylated. The function call returns a list of tuples, where each tuple contains the information described for each unique phospho-permutant. We're still determining if all this information is necessary. The assumption currently being made is that phosphorylation introduces a -1 charge only. While this may not be fully accurate, it provides a good and simple first approximation for the effect of phosphorylation.  Also note that as the number of phosphosites increases the number of calculations here scales as n^2. Be warned!</td>
 </tr>
 </tbody>
 </table><h3>
@@ -353,31 +377,31 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </tr></thead>
 <tbody>
 <tr>
-<td align="center"><code>show_phaseDiagramPlot(?label)</code></td>
-<td align="center">Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. <code>label</code> can be a string which labels your sequence on the plot.</td>
+<td align="center"><code>show_phaseDiagramPlot(label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
+<td align="center">Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. <code>label</code> can be a string which labels your sequence on the plot. <code>legendOn</code> defines if the regions labels are included as a legend. <code>xLim</code> and <code>yLim</code> define the max values for the X and Y axes. <code>fontSize</code> defines the size of the label font. <code>getFig</code> defines if a matplotlib object is returned instead of being rendered.</td>
 </tr>
 <tr>
-<td align="center"><code>show_uverskyDiagramPlot(?label)</code></td>
-<td align="center">Renders a <code>matplotlib</code> Uversky plot with your sequence on the diagram<sup>[4]</sup>. <code>label</code> can be a string which labels your sequence on the plot.</td>
+<td align="center"><code>show_uverskyDiagramPlot(label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
+<td align="center">Renders a <code>matplotlib</code> Uversky plot with your sequence on the diagram<sup>[4]</sup>. <code>label</code> can be a string which labels your sequence on the plot. <code>legendOn</code> defines if the regions labels are included as a legend. <code>xLim</code> and <code>yLim</code> define the max values for the X and Y axes. <code>fontSize</code> defines the size of the label font. <code>getFig</code> defines if a matplotlib object is returned instead of being rendered.</td>
 </tr>
 <tr>
-<td align="center"><code>show_linearHydropathy(blobLen)</code></td>
-<td align="center">Renders a <code>matplotlib</code> plot of the moving average hydropathy along the sequence, where the hydropathy is calculated in overlapping windows of size <code>blobLen</code>. Typically a blob length of 5-7 is used (<strong>This made be changed to the default value in future releases</strong>)</td>
+<td align="center"><code>show_linearHydropathy(blobLen=5, getFig=False)</code></td>
+<td align="center">Renders a <code>matplotlib</code> plot of the moving average hydropathy along the sequence, where the hydropathy is calculated in overlapping windows of size <code>blobLen</code>. Typically a blob length of 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). <code>getFig</code> defines if a matplotlib object is returned instead of being rendered.</td>
 </tr>
 <tr>
-<td align="center"><code>show_linearNCPR(blobLen)</code></td>
-<td align="center">Renders a <code>matplotlib</code> plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calculated in overlapping windows of size <code>blobLen</code>. Typically a blob length of 5-7 is used (<strong>This made be changed to the default value in future releases</strong>)</td>
+<td align="center"><code>show_linearNCPR(blobLen=5, getFig=False)</code></td>
+<td align="center">Renders a <code>matplotlib</code> plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calculated in overlapping windows of size <code>blobLen</code>. Typically a blob length of 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). <code>getFig</code> defines if a matplotlib object is returned instead of being rendered.</td>
 </tr>
 <tr>
-<td align="center"><code>show_linearSigma(blobLen)</code></td>
-<td align="center">Renders a <code>matplotlib</code> plot of the moving average sigma parameter along the sequence, where sigma is calculated in overlapping windows of size <code>blobLen</code>. Typically a blob length of 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR.</td>
+<td align="center"><code>show_linearSigma(blobLen=5, getFig=False)</code></td>
+<td align="center">Renders a <code>matplotlib</code> plot of the moving average sigma parameter along the sequence, where sigma is calculated in overlapping windows of size <code>blobLen</code>. Typically a blob length of 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR. <code>getFig</code> defines if a matplotlib object is returned instead of being rendered.</td>
 </tr>
 <tr>
-<td align="center"><code>save_phaseDiagram_plot(filename, ?label)</code></td>
+<td align="center"><code>save_phaseDiagram_plot(filename, label="")</code></td>
 <td align="center">Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. <code>label</code> can be a string which labels your sequence on the plot. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
 </tr>
 <tr>
-<td align="center"><code>save_uverskyDiagram_plot(filename, ?label)</code></td>
+<td align="center"><code>save_uverskyDiagram_plot(filename, label="")</code></td>
 <td align="center">Renders a <code>matplotlib</code> Uversky plot with your sequence on the diagram<sup>[4]</sup>. <code>label</code> can be a string which labels your sequence on the plot. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
 </tr>
 <tr>
@@ -396,7 +420,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </table><h1>
 <a name="plotting-with-the-plots-module" class="anchor" href="#plotting-with-the-plots-module"><span class="octicon octicon-link"></span></a>Plotting with the plots module</h1>
 
-<p>The <code>plots</code> module lets you generate or save plots without explicitly invoking sequenceParametersobjects. Such plots can either be generated using the raw values, or by passing in sequenceParametersobjects.</p>
+<p>The <code>plots</code> module lets you generate or save plots without explicitly invoking sequenceParameters objects. Such plots can either be generated using the raw values, or by passing in sequenceParameters objects.</p>
 
 <p>Unlike the <code>SequenceParameters</code>, <code>plots</code> is a collection of functions, and does not allow for the creation of <code>Plots</code> objects.</p>
 
@@ -413,9 +437,9 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <p>This may be convenient if you're plotting previously calculated values, or plotting a theoretical distribution here. Either individual values or lists of values can be passed.</p>
 
 <h3>
-<a name="passing-sequenceparametersobjects-multiple-plots-only" class="anchor" href="#passing-sequenceparametersobjects-multiple-plots-only"><span class="octicon octicon-link"></span></a>Passing sequenceParametersobjects (multiple plots only)</h3>
+<a name="passing-sequenceparameters-objects-multiple-plots-only" class="anchor" href="#passing-sequenceparameters-objects-multiple-plots-only"><span class="octicon octicon-link"></span></a>Passing SequenceParameters objects (multiple plots only)</h3>
 
-<p>If you're analyzing a set of sequenceParametersobjects you may wish to place them on the same plot. Note we do not offer this functionality for single sequences, because you can always plot a single sequence using the associated <code>SequenceParameters</code> function (e.g. <code>.show_uverskyPlot()</code> or <code>.save_phaseDiagramPlot()</code>).</p>
+<p>If you're analyzing a set of SequenceParameters objects you may wish to place them on the same plot. Note we do not offer this functionality for single sequences, because you can always plot a single sequence using the associated <code>SequenceParameters</code> function (e.g. <code>.show_uverskyPlot()</code> or <code>.save_phaseDiagramPlot()</code>).</p>
 
 <table>
 <thead><tr>
@@ -425,27 +449,27 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </tr></thead>
 <tbody>
 <tr>
-<td align="center"><code>show_single_phasePlot(fp, fn, label='', title='Diagram of states', legendOn=True)</code></td>
+<td align="center"><code>show_single_phasePlot(fp, fn, label='', title='Diagram of states', legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
 <td align="center">
-<code>fp</code> is the fraction of positive residues in a sequence, <code>fn</code> is the fraction of negative residues in a sequence. <code>label</code>, if included, should be a string with which the sequence on the plot is labelled. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
-<td align="center">No programatic output is generated, but the plot is rendered on the screen.</td>
+<code>fp</code> is the fraction of positive residues in a sequence, <code>fn</code> is the fraction of negative residues in a sequence. <code>label</code>, if included, should be a string with which the sequence on the plot is labelled. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included. <code>xLim</code> and <code>yLim</code> define the max values for the X and Y axes. <code>fontSize</code> defines the size of the label font. <code>getFig</code> defines if a matplotlib object is returned instead of being rendered.</td>
+<td align="center">No programatic output is generated, but the plot is rendered on the screen. If <code>getFig</code> is set to <code>True</code> then the matplotlib object is returned, rather than rendered on the screen.</td>
 </tr>
 <tr>
-<td align="center"><code>show_single_uverskyPlot(hydropathy, mean_net_charge, label='', title='Uversky plot', legendOn=True)</code></td>
+<td align="center"><code>show_single_uverskyPlot(hydropathy, mean_net_charge, label='', title='Uversky plot', legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
 <td align="center">
-<code>hydropathy</code> is the sequence's 0-1 normalized hydropathy, while <code>mean_net_charge</code> is the the absolute value of the sequence's mean net charge. <code>label</code>, if included, should be a string with which the sequence on the plot is labelled. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
-<td align="center">No programatic output is generated, but the plot is rendered on the screen.</td>
+<code>hydropathy</code> is the sequence's 0-1 normalized hydropathy, while <code>mean_net_charge</code> is the the absolute value of the sequence's mean net charge. <code>label</code>, if included, should be a string with which the sequence on the plot is labelled. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included. <code>xLim</code> and <code>yLim</code> define the max values for the X and Y axes. <code>fontSize</code> defines the size of the label font. <code>getFig</code> defines if a matplotlib object is returned instead of being rendered.</td>
+<td align="center">No programatic output is generated, but the plot is rendered on the screen. If <code>getFig</code> is set to <code>True</code> then the matplotlib object is returned, rather than rendered on the screen.</td>
 </tr>
 <tr>
-<td align="center"><code>save_single_phasePlot(fp, fn, filename, label='', title='Diagram of states', legendOn=True)</code></td>
+<td align="center"><code>save_single_phasePlot(fp, fn, filename, label='', title='Diagram of states', legendOn=True, xLim=1, yLim=1, fontSize=10)</code></td>
 <td align="center">
-<code>fp</code> is the fraction of positive residues in a sequence, <code>fn</code> is the fraction of negative residues in a sequence. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label</code>, if included, should be a string with which the sequence on the plot is labelled. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<code>fp</code> is the fraction of positive residues in a sequence, <code>fn</code> is the fraction of negative residues in a sequence. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label</code>, if included, should be a string with which the sequence on the plot is labelled. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included. <code>xLim</code> and <code>yLim</code> define the max values for the X and Y axes. <code>fontSize</code> defines the size of the label font.</td>
 <td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
 </tr>
 <tr>
-<td align="center"><code>save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label='', title='Uversky plot', legendOn=True)</code></td>
+<td align="center"><code>save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label='', title='Uversky plot', legendOn=True, xLim=1, yLim=1, fontSize=10)</code></td>
 <td align="center">
-<code>hydropathy</code> is the sequence's 0-1 normalized hydropathy, while <code>mean_net_charge</code> is the the absolute value of the sequence's mean net charge. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label</code>, if included, should be a string with which the sequence on the plot is labelled. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<code>hydropathy</code> is the sequence's 0-1 normalized hydropathy, while <code>mean_net_charge</code> is the the absolute value of the sequence's mean net charge. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label</code>, if included, should be a string with which the sequence on the plot is labelled. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included. <code>xLim</code> and <code>yLim</code> define the max values for the X and Y axes. <code>fontSize</code> defines the size of the label font.</td>
 <td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
 </tr>
 </tbody>
@@ -462,7 +486,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <p><strong>1)</strong> Those which you pass two lists of the actual values of interest, where the lists represent parallel lists, where the position in each list corresponds to a specific sequence.
 <strong>2)</strong> Those which you pass a list of <code>SequenceParameters</code> objects to, meaning you only pass it a single list</p>
 
-<p>The <code>show_*</code> functions render a plot on the screen in front of you through <code>matplotlib</code>. These are useful for directly interacting with sequences and examining how specific sequence might behave.</p>
+<p>The <code>show_*</code> functions render a plot on the screen in front of you through <code>matplotlib</code>. These are useful for directly interacting with sequences and examining how specific sequence might behave. You can also directly access the matplotlib object through the <code>getFig</code> argument.</p>
 
 <p>The <code>save_*</code> functions save a plot to the designated file name.</p>
 
@@ -474,46 +498,47 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </tr></thead>
 <tbody>
 <tr>
-<td align="center"><code>show_multiple_phasePlot(fp_list, fn_list, ?label_list=[], ?title="Diagram of states", ?legendOn=True)</code></td>
+<td align="center"><code>show_multiple_phasePlot(fp_list, fn_list, label_list=[""], title="Diagram of states", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
 <td align="center">
-<code>fp_list</code> and <code>fn_list</code> are lists of the positive fraction and negative fraction of sequences, where the list position in each of these two 'parallel' lists corresponds to the same sequence. That is to say, if you were looking at 5 sequences, <code>fp_list</code> and <code>fn_list</code> would both be of length 5, and <code>fp_list[2]</code> and <code>fn_list[2]</code> would represent the fraction position and fraction negative of your third sequence, respectively. <code>label_list</code>, if included, should be a list of strings corresponding to the length of <code>fn_list</code> and <code>fp_list</code>, and includes names for each sequence on the plot. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<code>fp_list</code> and <code>fn_list</code> are lists of the positive fraction and negative fraction of sequences, where the list position in each of these two 'parallel' lists corresponds to the same sequence. That is to say, if you were looking at 5 sequences, <code>fp_list</code> and <code>fn_list</code> would both be of length 5, and <code>fp_list[2]</code> and <code>fn_list[2]</code> would represent the fraction position and fraction negative of your third sequence, respectively. <code>label_list</code>, if included, should be a list of strings corresponding to the length of <code>fn_list</code> and <code>fp_list</code>, and includes names for each sequence on the plot. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included. <code>xLim</code> and <code>yLim</code> define the max values for the X and Y axes. <code>fontSize</code> defines the size of the label font. If <code>getFig</code> is set to <code>True</code> then the matplotlib object is returned, rather than rendered on the screen.</td>
 <td align="center">No programatic output is generated, but the plot is rendered to the screen.</td>
 </tr>
 <tr>
-<td align="center"><code>show_multiple_phasePlot2(SeqParam_list, label_list=[], title='Diagram of states', legendOn=True)</code></td>
+<td align="center"><code>show_multiple_phasePlot2(SeqParam_list, label_list=[""], title='Diagram of states', legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
 <td align="center">All arguments are the same as above, except now instead of explicit fraction of positive and fraction of negative lists, we have a single list containing <code>SequenceParameters</code> objects, from which these properties are derived.</td>
 <td align="center">No programatic output is generated, but the plot is rendered to the screen.</td>
 </tr>
 <tr>
-<td align="center"><code>show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list=[], title='Uversky plot', legendOn=True)</code></td>
+<td align="center"><code>show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list=[""], title='Uversky plot', legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
 <td align="center">
-<code>hydropathy_list</code> and <code>mean_net_charge_list</code> are lists of the 0-1 normalized hydropathy and the absolute mean net charge, where the list position in each of these two 'parallel' lists corresponds to the same sequence. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label_list</code>, if included, should be a list of strings corresponding to the length of <code>fn_list</code> and <code>fp_list</code>, and includes names for each sequence on the plot. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<code>hydropathy_list</code> and <code>mean_net_charge_list</code> are lists of the 0-1 normalized hydropathy and the absolute mean net charge, where the list position in each of these two 'parallel' lists corresponds to the same sequence. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label_list</code>, if included, should be a list of strings corresponding to the length of <code>fn_list</code> and <code>fp_list</code>, and includes names for each sequence on the plot. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included. <code>xLim</code> and <code>yLim</code> define the max values for the X and Y axes. <code>fontSize</code> defines the size of the label font. If <code>getFig</code> is set to <code>True</code> then the matplotlib object is returned, rather than rendered on the screen.</td>
 <td align="center">No programatic output is generated, but the plot is rendered to the screen.</td>
 </tr>
 <tr>
-<td align="center"><code>show_multiple_uverskyPlot2(SeqParam_list, label_list=[], title='Uversky plot', legendOn=True)</code></td>
+<td align="center"><code>show_multiple_uverskyPlot2(SeqParam_list, label_list=[""], title='Uversky plot', legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
 <td align="center">All arguments are the same as above, except now instead of having an explicit hydropathy list and an explicit mean net charge list, we have a single list containing <code>SequenceParameters</code> objects, from which these properties are derived.</td>
 <td align="center">No programatic output is generated, but the plot is rendered to the screen.</td>
 </tr>
 <tr>
-<td align="center"><code>save_multiple_phasePlot(fp_list, fn_list, filename, ?label_list=[], ?title="Diagram of states", ?legendOn=True)</code></td>
+<td align="center"><code>save_multiple_phasePlot(fp_list, fn_list, filename, ?label_list=[""], ?title="Diagram of states", ?legendOn=True, ?xLim=1, ?yLim=1,?fontSize=10)</code></td>
 <td align="center">
-<code>fp_list</code> and <code>fn_list</code> are lists of the positive fraction and negative fraction of sequences, where the list position in each of these two 'parallel' lists corresponds to the same sequence. That is to say, if you were looking at 5 sequences, <code>fp_list</code> and <code>fn_list</code> would both be of length 5, and <code>fp_list[2]</code> and <code>fn_list[2]</code> would represent the fraction position and fraction negative of your third sequence, respectively. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label_list</code>, if included, should be a list of strings corresponding to the length of <code>fn_list</code> and <code>fp_list</code>, and includes names for each sequence on the plot. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<code>fp_list</code> and <code>fn_list</code> are lists of the positive fraction and negative fraction of sequences, where the list position in each of these two 'parallel' lists corresponds to the same sequence. That is to say, if you were looking at 5 sequences, <code>fp_list</code> and <code>fn_list</code> would both be of length 5, and <code>fp_list[2]</code> and <code>fn_list[2]</code> would represent the fraction position and fraction negative of your third sequence, respectively. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label_list</code>, if included, should be a list of strings corresponding to the length of <code>fn_list</code> and <code>fp_list</code>, and includes names for each sequence on the plot. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included. <code>xLim</code> and <code>yLim</code> define the maximum values for the fraction of negative and positive residues. <code>fontSize</code> defines the size of the label font.</td>
 <td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
 </tr>
 <tr>
-<td align="center"><code>save_multiple_phasePlot2(SeqParam_list, filename, label_list=[], title='Diagram of states', legendOn=True)</code></td>
+<td align="center"><code>save_multiple_phasePlot2(SeqParam_list, filename, label_list=[""], title='Diagram of states', legendOn=True, ?xLim=1, ?yLim=1,?fontSize=10)</code></td>
 <td align="center">All arguments are the same as above, except now instead of explicit fraction of positive and fraction of negative lists, we have a single list containing <code>SequenceParameters</code> objects, from which these properties are derived.</td>
 <td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
 </tr>
 <tr>
-<td align="center"><code>save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label_list=[], title='Uversky plot', legendOn=True)</code></td>
 <td align="center">
-<code>hydropathy_list</code> and <code>mean_net_charge_list</code> are lists of the 0-1 normalized hydropathy and the absolute mean net charge, where the list position in each of these two 'parallel' lists corresponds to the same sequence. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label_list</code>, if included, should be a list of strings corresponding to the length of <code>fn_list</code> and <code>fp_list</code>, and includes names for each sequence on the plot. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included.</td>
+<code>save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label_list=[""], title='Uversky plot', legendOn=True, xLim=1, yLim=1, fontSize=10</code>)</td>
+<td align="center">
+<code>hydropathy_list</code> and <code>mean_net_charge_list</code> are lists of the 0-1 normalized hydropathy and the absolute mean net charge, where the list position in each of these two 'parallel' lists corresponds to the same sequence. <code>filename</code> is the name of the file to save the plot as (<code>.png</code> is appended). <code>label_list</code>, if included, should be a list of strings corresponding to the length of <code>fn_list</code> and <code>fp_list</code>, and includes names for each sequence on the plot. <code>title</code>, if provided, sets the plot title. <code>legendOn</code> defines if the 5-region legend for the phase diagram plot is included. <code>xLim</code> and <code>yLim</code> define the maximum values for the fraction of negative and positive residues. <code>fontSize</code> defines the size of the label font.</td>
 <td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
 </tr>
 <tr>
-<td align="center"><code>save_multiple_uverskyPlot2(SeqParam_list, filename, label_list=[], title='Uversky plot', legendOn=True)</code></td>
+<td align="center"><code>save_multiple_uverskyPlot2(SeqParam_list, filename, label_list=[""], title='Uversky plot', legendOn=True, xLim=1, yLim=1, fontSize=10)</code></td>
 <td align="center">All arguments are the same as above, except now instead of having an explicit hydropathy list and an explicit mean net charge list, we have a single list containing <code>SequenceParameters</code> objects, from which these properties are derived.</td>
 <td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
 </tr>
@@ -522,7 +547,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <a name="localcider-exceptions" class="anchor" href="#localcider-exceptions"><span class="octicon octicon-link"></span></a>
 <code>localcider</code> exceptions</h1>
 
-<p>If you're into exception handling, localcider has a set of defined exceptions (all of which inhert from the <code>Exception</code> base class) which can be access by importing localcider - i.e.</p>
+<p>If you're into exception handling, localcider has a set of defined exceptions (all of which inherits from the <code>Exception</code> base class) which can be access by importing localcider - i.e.</p>
 
 <pre><code>import localcider
 
@@ -542,12 +567,12 @@ localcider.PlottingException
 
 <pre><code>from localcider.sequenceParameters import SequenceParameters
 
-# define my internet sequence and create a new sequenceParametersobject with itxs
+# define my internet sequence and create a new SequenceParameters object with it
 internetSequence="VAQKTVEGAGSIAAATGFVKKDQLGKNEEGAPQEGILEDMPVDP"
 object=SequenceParameters(internetSequencexs)
 
 
-# Let's get some parameters!xs
+# Let's get some parameters!
 object.get_kappa()                       # 0.1960
 
 object.get_fraction_negative()           # 0.1818
@@ -601,7 +626,7 @@ filelist = os.listdir(".")
 # create an empty list 
 list_of_SeqObjs = []
 
-# populate that list with sequenceParametersobjects, which we construct from the
+# populate that list with SequenceParameters objects, which we construct from the
 # sequence found in each file
 for file in filelist:
    list_of_SeqObjs.append(SequenceParameters(sequenceFile=file))
@@ -611,7 +636,7 @@ for obj in list_of_SeqObjs:
    print obj.get_kappa()
 </code></pre>
 
-<p>Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a cannonical amino acid, so triggers a <code>SequenceFileParserException</code>. We actually just want to skip any such files, so we change the code above slightly. Specifically, let's change the for-loop that loops over each file;</p>
+<p>Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a canonical amino acid, so triggers a <code>SequenceFileParserException</code>. We actually just want to skip any such files, so we change the code above slightly. Specifically, let's change the for-loop that loops over each file;</p>
 
 <pre><code># import a few things...
 import os
@@ -664,6 +689,25 @@ plots.show_multiple_phasePlot2([SynWT, SynMut],label_list=['WT','MUT'])
 plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','MUT'])
 </code></pre>
 
+<h2>
+<a name="faq" class="anchor" href="#faq"><span class="octicon octicon-link"></span></a>FAQ</h2>
+
+<ol>
+<li><strong>I get a kappa value greater than 1?!</strong></li>
+</ol><p>kappa is a ratio of your sequence's delta over the maximium possible value for a sequence of that composition. The original mechanism for computing what the maximum delta value is was using Monte Carlo simulations, but this is <em>insanely</em> expensive computationally, so for localCIDER we developed a set of heuristics which work 99% of the time. In rare cases, you may find a kappa value greater than 1, which indicates that our heuristics have failed. We try to ensure this doesn't happen, but if you do encounter a kappa greater than 1 PLEASE email the sequence to me as it represents a very rare case we haven't encountered in our testing procedures.</p>
+
+<ol>
+<li><strong>I want to run localCIDER on my cluster but it has not graphical frontend and I can't get matplotlib to work</strong></li>
+</ol><p>There is a plan to release a higher performance version of localCIDER which carries out the core functionality using C++. However, that's a way off, so for now a quick hack is to do the following;</p>
+
+<pre><code>* Download the sourcecode and unpack - this will be a local package, and means you don't have to instal localCIDER globally
+* Move your local package to where you want to carry out the analysis
+* Edit localcider/backend/plotting.py and comment out the two import lines which reference matplotlib
+* Run your analysis
+</code></pre>
+
+<p>If you call any functions which depend on <code>matplotlib</code> this will obviously fail, but if not it'll work just fine.</p>
+
 <h1>
 <a name="epilog" class="anchor" href="#epilog"><span class="octicon octicon-link"></span></a>Epilog</h1>
 
@@ -701,16 +745,20 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 <h2>
 <a name="thanks" class="anchor" href="#thanks"><span class="octicon octicon-link"></span></a>Thanks</h2>
 
-<p>Many people have been involved in this project. We'll try and include an up-to-date list here</p>
+<p>Many people have been involved in this project. We'll try and include an up-to-date list here;</p>
 
 <ul>
 <li>Paul Nobrega (Matthews lab) for bug reports and the Windows installation instructions</li>
+<li>Davide Mercadante (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization</li>
+<li>Katra Olsek (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization</li>
 </ul><h2>
-<a name="update-history" class="anchor" href="#update-history"><span class="octicon octicon-link"></span></a>Update history</h2>
+<a name="update-schedule" class="anchor" href="#update-schedule"><span class="octicon octicon-link"></span></a>Update schedule</h2>
 
 <ul>
 <li>version 0.1.0 [August 10th 2014]</li>
 <li>version 0.1.1 <a href="minor%20bug%20fixes,%20more%20tests,%20improved%20sequence%20parsing">August 14th 2014</a>
+</li>
+<li>version 0.1.2 <a href="more%20tests,%20fixed%20heuristic%20bugs%20in%20extreme%20kappa%20sequences,%20significant%20improvement%20on%20plotting%20customization,%20cleaned%20up%20docs%20and%20code%20documentation">October 1st 2014</a>
 </li>
 </ul>
       </section>
