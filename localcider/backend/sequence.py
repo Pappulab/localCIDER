@@ -723,7 +723,7 @@ class Sequence:
 
 
         #################################################################
-        # third computational trick (Maximization of # of Charged Blobs)
+        # Third computational trick (Maximization of # of Charged Blobs)
         # relevant if we have 18 or more neutral residues
         elif(self.countNeut() >= 18):            
             nneuts = self.countNeut()
@@ -749,16 +749,6 @@ class Sequence:
                     endBlock='0'*endNeuts
                     midBlock='0'*(nneuts-startNeuts-endNeuts)
                     
-
-                    """
-                    for i in xrange(startNeuts):
-                        setupSequence += '0'
-                    for i in xrange(0,endNeuts):
-                        endBlock += '0'
-                    for i in xrange(0,nneuts-startNeuts-endNeuts):
-                        midBlock += '0'
-                    """
-
                     # now we construct *an* optimal sequence based on the start/mid/end
                     # permutation of neutral residues
                     setupSequence += posBlock
@@ -770,7 +760,8 @@ class Sequence:
                     # update self.dmax if relevant
                     self.dmax = max([nseq.delta(), self.dmax])
 
-        #third computational trick (Search through set of sequences that fit DMAX pattern)
+        #################################################################
+        # Fourth computational trick (Search through set of sequences that fit DMAX pattern)
         else:
             posBlock = ''
             negBlock = ''
