@@ -47,15 +47,17 @@
    linear NCPR etc) you must use a SequenceParameter object.
 
 """
+
 from backend import plotting
 
 
 #...................................................................................#
-def show_single_phasePlot(fp, fn, label="", title="Diagram of states", legendOn=True, xLim=1, yLim=1, fontSize=10):
+def show_single_phasePlot(fp, fn, label="", title="Diagram of states", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
     """
     Plot a single sequence on the Pappu-Das phase plot (diagram of states).
 
-    INPUT 
+    INPUT:
+    --------------------------------------------------------------------------------
     fp         | Fraction of positive residues
     fn         | Fraction of negative residues
     
@@ -65,21 +67,25 @@ def show_single_phasePlot(fp, fn, label="", title="Diagram of states", legendOn=
     xLim       | Set upper limit for the x axis (DEFAULT = 1)
     yLim       | Set upper limit for the y axis (DEFAULT = 1)
     fontSize   | Set font size for the point labels (DEFAULT = 10)
+    getFig     | Returns a matplotlib figure object instead of simply displaying the 
+               | plot on the screen (DEFAULT = False)
 
-    OUTPUT: 
+    OUTPUT:
+    --------------------------------------------------------------------------------
 
     Nothing but a plot should be generated on screen
     """
 
-    plotting.show_single_phasePlot(fp, fn, label, title, legendOn, xLim, yLim, fontSize)
-
+    return plotting.show_single_phasePlot(fp, fn, label, title, legendOn, xLim, yLim, fontSize, getFig)
+    
 
 #...................................................................................#
 def save_single_phasePlot(fp, fn, filename, label="", title="Diagram of states", legendOn=True, xLim=1, yLim=1, fontSize=10):
     """
     Plot a single sequence on the Pappu-Das phase plot (diagram of states).
 
-    INPUT
+    INPUT:
+    --------------------------------------------------------------------------------
     fp        | Fraction of positive residues
     fn        | Fraction of negative residues
     filename  | Path/name of file to save plot (.png is appended)
@@ -90,21 +96,24 @@ def save_single_phasePlot(fp, fn, filename, label="", title="Diagram of states",
     xLim      | Set upper limit for the x axis (DEFAULT = 1)
     yLim      | Set upper limit for the x axis (DEFAULT = 1)
     fontSize  | Set font size for the point labels (DEFAULT = 10)
+
     
     OUTPUT: 
-
+    --------------------------------------------------------------------------------
     Nothing but a plot should be generated on screen
+
     """
 
     plotting.save_single_phasePlot(fp, fn, filename, label, title, legendOn, xLim, yLim, fontSize)
 
 
 #...................................................................................#
-def show_multiple_phasePlot(fp_list, fn_list, label=[""], title="Diagram of states", legendOn=True, xLim=1, yLim=1, fontSize=10):
+def show_multiple_phasePlot(fp_list, fn_list, label=[""], title="Diagram of states", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
     """
     Plot multiple sequences on the same Pappu-Das phase plot (diagram of states).
 
-    INPUT
+    INPUT:
+    --------------------------------------------------------------------------------
     fp_list    | Fraction of positive residues
     fn_list    | Fraction of negative residues
     
@@ -114,22 +123,27 @@ def show_multiple_phasePlot(fp_list, fn_list, label=[""], title="Diagram of stat
     xLim       | Set upper limit for the x axis (DEFAULT = 1)
     yLim       | Set upper limit for the x axis (DEFAULT = 1)
     fontSize   | Set font size for the point labels (DEFAULT = 10)
+    getFig     | Returns a matplotlib figure object instead of simply displaying the 
+               | plot on the screen (DEFAULT = False)
     
-    OUTPUT: 
 
+    OUTPUT: 
+    --------------------------------------------------------------------------------
     Nothing, but a plot with multiple points should appear on the screen 
+
     """
 
-    plotting.show_multiple_phasePlot(fp_list, fn_list, label, title, legendOn, xLim, yLim, fontSize)
+    return plotting.show_multiple_phasePlot(fp_list, fn_list, label, title, legendOn, xLim, yLim, fontSize, getFig)
 
 
 #...................................................................................#
-def show_multiple_phasePlot2(SeqParam_list, label_list=[], title="Diagram of states", legendOn=True, xLim=1, yLim=1, fontSize=10):
+def show_multiple_phasePlot2(SeqParam_list, label_list=[], title="Diagram of states", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
     """
     Plot a single sequence on the Pappu-Das phase plot (diagram of states). This function takes
     SequenceParameter objects rather than raw values
 
-    INPUT
+    INPUT:
+    --------------------------------------------------------------------------------
     SeqParam_list | list of sequence parameter objects
     
     label         | On-plot label of sequence (DEFAULT = no label)
@@ -138,10 +152,14 @@ def show_multiple_phasePlot2(SeqParam_list, label_list=[], title="Diagram of sta
     xLim          | Set upper limit for the x axis (DEFAULT = 1)
     yLim          | Set upper limit for the y axis (DEFAULT = 1)
     fontSize      | Set font size for the point labels (DEFAULT = 10)
-        
-    OUTPUT: 
+    getFig        | Returns a matplotlib figure object instead of simply displaying the 
+                  | plot on the screen (DEFAULT = False)
+       
 
+    OUTPUT: 
+    --------------------------------------------------------------------------------
     Nothing, but a plot with multiple points should appear on the screen 
+    
     """
 
     # construct the fraction positive and negative vectors
@@ -151,7 +169,7 @@ def show_multiple_phasePlot2(SeqParam_list, label_list=[], title="Diagram of sta
         fp_list.append(seq.get_fraction_positive())
         fn_list.append(seq.get_fraction_negative())
 
-    plotting.show_multiple_phasePlot(fp_list, fn_list, label_list, title, legendOn, xLim, yLim, fontSize)
+    return plotting.show_multiple_phasePlot(fp_list, fn_list, label_list, title, legendOn, xLim, yLim, fontSize, getFig)
     
 
 #...................................................................................#
@@ -159,7 +177,8 @@ def save_multiple_phasePlot(fp_list, fn_list, filename, label_list=[], title="Di
     """
     Plot multiple sequences on the same Pappu-Das phase plot (diagram of states) and save that file
 
-    INPUT
+    INPUT:
+    --------------------------------------------------------------------------------
     fp_list    | Fraction of positive residues
     fn_list    | Fraction of negative residues
     filename   | name of file to save (.png is appended)
@@ -170,10 +189,12 @@ def save_multiple_phasePlot(fp_list, fn_list, filename, label_list=[], title="Di
     xLim       | Set upper limit for the x axis (DEFAULT = 1)
     yLim       | Set upper limit for the y axis (DEFAULT = 1)
     fontSize   | Set font size for the point labels (DEFAULT = 10)
+
     
     OUTPUT: 
-
+    --------------------------------------------------------------------------------
     No output, but if succesful a file with filename is generated with the associated plot
+
     """
 
     plotting.save_multiple_phasePlot(fp_list, fn_list, filename, label_list, title, legendOn, xLim, yLim, fontSize)
@@ -185,7 +206,8 @@ def save_multiple_phasePlot2(SeqParam_list, filename, label_list=[], title="Diag
     Plot multiple sequences on the same Pappu-Das phase plot (diagram of states) and save that file. 
     This function takes SequenceParameter objects rather than raw values.
 
-    INPUT
+    INPUT:
+    --------------------------------------------------------------------------------
     SeqParam_list | list of sequence parameter objects
     filename      | name of file to save (.png is appended)
     
@@ -196,9 +218,11 @@ def save_multiple_phasePlot2(SeqParam_list, filename, label_list=[], title="Diag
     yLim          | Set upper limit for the y axis (DEFAULT = 1)
     fontSize      | Set font size for the point labels (DEFAULT = 10)    
     
-    OUTPUT: 
 
+    OUTPUT: 
+    --------------------------------------------------------------------------------
     No output, but if succesful a file with filename is generated with the associated plot
+
     """
 
     # construct the fraction positive and negative vectors
@@ -218,11 +242,12 @@ def save_multiple_phasePlot2(SeqParam_list, filename, label_list=[], title="Diag
 ####################################################
 
 #...................................................................................#
-def show_single_uverskyPlot(hydropathy, mean_net_charge, label="", title="Uversky plot", legendOn=True, xLim=1, yLim=1, fontSize=10):
+def show_single_uverskyPlot(hydropathy, mean_net_charge, label="", title="Uversky plot", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
     """
     Plots a single sequence on the Uversky plot (hydropathy vs. mean net charge)
 
-    INPUT
+    INPUT:
+    --------------------------------------------------------------------------------
     hydropathy      | Mean hydropathy for sequence
     mean_net_charge | Absolute magnitude of the protein's net charge divided by sequence length
     
@@ -232,13 +257,18 @@ def show_single_uverskyPlot(hydropathy, mean_net_charge, label="", title="Uversk
     xLim            | Set upper limit for the x axis (DEFAULT = 1)
     yLim            | Set upper limit for the y axis (DEFAULT = 1)
     fontSize        | Set font size for the point labels (DEFAULT = 10)    
+    getFig          | Returns a matplotlib figure object instead of simply displaying the 
+                    | plot on the screen (DEFAULT = False)
+
+
 
     OUTPUT: 
-
+    --------------------------------------------------------------------------------
     Nothing, but an annotated Uversky plot should be generated on screen
+
     """
 
-    plotting.show_single_uverskyPlot(hydropathy, mean_net_charge, label, title, legendOn, xLim, yLim, fontSize)
+    return plotting.show_single_uverskyPlot(hydropathy, mean_net_charge, label, title, legendOn, xLim, yLim, fontSize, getFig)
 
 
 #...................................................................................#
@@ -247,7 +277,8 @@ def save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label="", tit
     Plots a single sequence on the Uversky plot (hydropathy vs. mean net charge) and save it to 'filename' (.png is
     appended).
 
-    INPUT
+    INPUT:
+    --------------------------------------------------------------------------------
     hydropathy      | Mean hydropathy for sequence
     mean_net_charge | Absolute magnitude of the protein's net charge divided by sequence length
     filename        | Path/name of file to save plot (.png is appended)
@@ -259,20 +290,23 @@ def save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label="", tit
     yLim            | Set upper limit for the y axis (DEFAULT = 1)
     fontSize        | Set font size for the point labels (DEFAULT = 10)
     
-    OUTPUT: 
 
+    OUTPUT: 
+    --------------------------------------------------------------------------------
     Nothing but single uversky plot should be saved to disk
+
     """
 
     plotting.save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label, title, legendOn, xLim, yLim, fontSize)
 
 
 #...................................................................................#
-def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list=[], title="Uversky plot", legendOn=True, xLim=1, yLim=1, fontSize=10):
+def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list=[], title="Uversky plot", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and shows the plot on the screen.
 
-    INPUT
+    INPUT:
+    --------------------------------------------------------------------------------
     hydropathy_list      | List of proteins' mean hydropathy
     mean_net_charge_list | List of the absolute magnitude of the protein's net charge divided by sequence length
     
@@ -282,22 +316,26 @@ def show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list=
     xLim                 | Set upper limit for the x axis (DEFAULT = 1)
     yLim                 | Set upper limit for the y axis (DEFAULT = 1)
     fontSize             | Set font size for the point labels (DEFAULT = 10)    
+    getFig               | Returns a matplotlib figure object instead of simply displaying the 
+                         | plot on the screen (DEFAULT = False)
+
     
     OUTPUT: 
-
+    --------------------------------------------------------------------------------
     Nothing, but a Uversky plot with multiple points should appear on the screen 
 
     """
-    plotting.show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list, title, legendOn, xLim, yLim, fontSize)
+    return plotting.show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list, title, legendOn, xLim, yLim, fontSize, getFig)
 
 
 #...................................................................................#
-def show_multiple_uverskyPlot2(SeqParam_list, label_list=[], title="Uversky plot", legendOn=True, xLim=1, yLim=1, fontSize=10):
+def show_multiple_uverskyPlot2(SeqParam_list, label_list=[], title="Uversky plot", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and shows the plot on the screen.
     This function takes a list of SequenceParameter objects instead of the actual values
 
-    INPUT
+    INPUT:
+    --------------------------------------------------------------------------------
     SeqParam_list        | List of sequence parameter objects
     
     label_list           | List of labels for each sequence (empty = no list)
@@ -306,10 +344,14 @@ def show_multiple_uverskyPlot2(SeqParam_list, label_list=[], title="Uversky plot
     xLim                 | Set upper limit for the x axis (DEFAULT = 1)
     yLim                 | Set upper limit for the y axis (DEFAULT = 1)
     fontSize             | Set font size for the point labels (DEFAULT = 10)    
+    getFig               | Returns a matplotlib figure object instead of simply displaying the 
+                         | plot on the screen (DEFAULT = False)
+
     
     OUTPUT: 
-
+    --------------------------------------------------------------------------------
     Nothing, but a Uversky plot with multiple points should appear on the screen 
+
     """
 
     # construct the fraction positive and negative vectors
@@ -319,7 +361,7 @@ def show_multiple_uverskyPlot2(SeqParam_list, label_list=[], title="Uversky plot
         hydropathy_list.append(seq.get_uversky_hydrophobicity())
         mean_net_charge_list.append(seq.get_mean_net_charge())
 
-    plotting.show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list, title, legendOn, xLim, yLim, fontSize)
+    return plotting.show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list, title, legendOn, xLim, yLim, fontSize, getFig)
 
 
 #...................................................................................#
@@ -328,7 +370,8 @@ def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, l
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and saves that plot to 'filename' (.png
     is appended).
 
-    INPUT
+    INPUT:
+    --------------------------------------------------------------------------------
     hydropathy           | List of mean hydropathies for sequences
     mean_net_charge_list | List of the absolute magnitude of the protein's net charge divided by sequence length
     filename             | Path/name of file to save plot (.png is appended)
@@ -340,11 +383,12 @@ def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, l
     yLim                 | Set upper limit for the y axis (DEFAULT = 1)
     fontSize             | Set font size for the point labels (DEFAULT = 10)    
     
+
     OUTPUT: 
-
-
+    --------------------------------------------------------------------------------
     Nothing, but a Uversky plot with multiple points should be saved to the 'filename', where filename
     defines the name of a file/path for saving
+
     """
 
     plotting.save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label_list, title, legendOn, xLim, yLim, fontSize)
@@ -357,9 +401,8 @@ def save_multiple_uverskyPlot2(SeqParam_list, filename, label_list=[], title="Uv
     is appended). This function takes SequenceParameter objects instead of list of hydrophobicity and mean_net_charge
     values
     
-
-
-    INPUT
+    INPUT:
+    --------------------------------------------------------------------------------
     SeqParam_list   | List of sequence parameter objects
     filename        | Path/name of file to save plot (.png is appended)
    
@@ -368,10 +411,13 @@ def save_multiple_uverskyPlot2(SeqParam_list, filename, label_list=[], title="Uv
     legendOn        | Include the phase diagram region legend (DEFAULT = True)
     xLim            | Set upper limit for the x axis (DEFAULT = 1)
     yLim            | Set upper limit for the y axis (DEFAULT = 1)
-    fontSiz e       | Set font size for the point labels (DEFAULT = 10)     
+    fontSize        | Set font size for the point labels (DEFAULT = 10)     
     
-    OUTPUT: 
 
+    OUTPUT: 
+    --------------------------------------------------------------------------------
+    Nothing, but a Uversky plot with multiple points should be saved to the 'filename', where filename
+    defines the name of a file/path for saving
     
     """
 
@@ -385,4 +431,3 @@ def save_multiple_uverskyPlot2(SeqParam_list, filename, label_list=[], title="Uv
 
     plotting.save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, label_list, title, legendOn, xLim, yLim, fontSize)
 
-    
