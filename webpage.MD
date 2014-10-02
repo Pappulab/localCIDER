@@ -238,7 +238,7 @@ Function name | Operation
 
 # Plotting with the plots module
 
-The `plots` module lets you generate or save plots without explicitly invoking sequenceParametersobjects. Such plots can either be generated using the raw values, or by passing in sequenceParametersobjects.
+The `plots` module lets you generate or save plots without explicitly invoking sequenceParameters objects. Such plots can either be generated using the raw values, or by passing in sequenceParameters objects.
 
 Unlike the `SequenceParameters`, `plots` is a collection of functions, and does not allow for the creation of `Plots` objects.
 
@@ -251,8 +251,8 @@ There are two modes with which you can use plots functions;
 #### Passing raw parameters to be plotted (single and multiple plots)
 This may be convenient if you're plotting previously calculated values, or plotting a theoretical distribution here. Either individual values or lists of values can be passed.
 
-### Passing sequenceParametersobjects (multiple plots only)
-If you're analyzing a set of sequenceParametersobjects you may wish to place them on the same plot. Note we do not offer this functionality for single sequences, because you can always plot a single sequence using the associated `SequenceParameters` function (e.g. `.show_uverskyPlot()` or `.save_phaseDiagramPlot()`).
+### Passing SequenceParameters objects (multiple plots only)
+If you're analyzing a set of SequenceParameters objects you may wish to place them on the same plot. Note we do not offer this functionality for single sequences, because you can always plot a single sequence using the associated `SequenceParameters` function (e.g. `.show_uverskyPlot()` or `.save_phaseDiagramPlot()`).
 
 
 Function name | Input Arguments | Discussion
@@ -292,7 +292,7 @@ Function name | Input Arguments | Discussion
 
 # `localcider` exceptions
 
-If you're into exception handling, localcider has a set of defined exceptions (all of which inhert from the `Exception` base class) which can be access by importing localcider - i.e.
+If you're into exception handling, localcider has a set of defined exceptions (all of which inherits from the `Exception` base class) which can be access by importing localcider - i.e.
 
     import localcider
     
@@ -310,12 +310,12 @@ There are a couple more but these relate to functionality not yet available in v
 
     from localcider.sequenceParameters import SequenceParameters
     
-    # define my internet sequence and create a new sequenceParametersobject with itxs
+    # define my internet sequence and create a new SequenceParameters object with it
     internetSequence="VAQKTVEGAGSIAAATGFVKKDQLGKNEEGAPQEGILEDMPVDP"
     object=SequenceParameters(internetSequencexs)
     
     
-    # Let's get some parameters!xs
+    # Let's get some parameters!
     object.get_kappa()                       # 0.1960
     
     object.get_fraction_negative()           # 0.1818
@@ -368,7 +368,7 @@ Let's imagine we have a directory with 10 fasta files (`seq0.fasta`, `seq1.fasta
     # create an empty list 
     list_of_SeqObjs = []
     
-    # populate that list with sequenceParametersobjects, which we construct from the
+    # populate that list with SequenceParameters objects, which we construct from the
     # sequence found in each file
     for file in filelist:
        list_of_SeqObjs.append(SequenceParameters(sequenceFile=file))
@@ -377,7 +377,7 @@ Let's imagine we have a directory with 10 fasta files (`seq0.fasta`, `seq1.fasta
 	for obj in list_of_SeqObjs:
 	   print obj.get_kappa()
 	   
-Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a cannonical amino acid, so triggers a `SequenceFileParserException`. We actually just want to skip any such files, so we change the code above slightly. Specifically, let's change the for-loop that loops over each file;
+Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a canonical amino acid, so triggers a `SequenceFileParserException`. We actually just want to skip any such files, so we change the code above slightly. Specifically, let's change the for-loop that loops over each file;
 
     # import a few things...
     import os
@@ -429,6 +429,23 @@ Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a cann
     plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','MUT'])
 
 
+## FAQ
+
+1. **I get a kappa value greater than 1?!**
+
+kappa is a ratio of your sequence's delta over the maximium possible value for a sequence of that composition. The original mechanism for computing what the maximum delta value is was using Monte Carlo simulations, but this is *insanely* expensive computationally, so for localCIDER we developed a set of heuristics which work 99% of the time. In rare cases, you may find a kappa value greater than 1, which indicates that our heuristics have failed. We try to ensure this doesn't happen, but if you do encounter a kappa greater than 1 PLEASE email the sequence to me as it represents a very rare case we haven't encountered in our testing procedures.
+
+2. **I want to run localCIDER on my cluster but it has not graphical frontend and I can't get matplotlib to work**
+
+There is a plan to release a higher performance version of localCIDER which carries out the core functionality using C++. However, that's a way off, so for now a quick hack is to do the following;
+
+    * Download the sourcecode and unpack - this will be a local package, and means you don't have to instal localCIDER globally
+    * Move your local package to where you want to carry out the analysis
+    * Edit localcider/backend/plotting.py and comment out the two import lines which reference matplotlib
+    * Run your analysis
+
+If you call any functions which depend on `matplotlib` this will obviously fail, but if not it'll work just fine.
+
 # Epilog
 
 ## localCIDER roadmap
@@ -468,7 +485,8 @@ Many people have been involved in this project. We'll try and include an up-to-d
 
 * version 0.1.0 [August 10th 2014]
 * version 0.1.1 [August 14th 2014] (minor bug fixes, more tests, improved sequence parsing)
-* version 0.1.2 [October 1st 2014] (more tests, fixed heuristic bugs in extreme kappa, sugnificant improvement on plotting customization, cleaned up docs and code documentation)
+* version 0.1.2 [October 1st 2014] (more tests, fixed heuristic bugs in extreme kappa sequences, significant improvement on plotting customization, cleaned up docs and code documentation)
+
 
 ----------
         <ul>
