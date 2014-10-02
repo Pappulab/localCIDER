@@ -21,15 +21,16 @@ from backend.sequence import Sequence
 from backend.seqfileparser import SequenceFileParser 
 from backend.backendtools import status_message
 from backend import plotting
+from backend.localciderExceptions import SequenceException
 
 class SequenceParameters:
 
     def __init__(self, sequence="", sequenceFile=""):
 
         # provide the flexibility to submit either a sequence
-        # file or an actual sequence as a string
+        # file or an actual sequence as a string        
         if sequence=="" and sequenceFile=="":
-            return None
+            raise SequenceException("Empty sequence/sequence file")
 
         # if the sequence isn't empty constuct a local 
         # sequence object using the sequence
@@ -52,10 +53,15 @@ class SequenceParameters:
         will only ever add sites to the list. To clear sites
         use the clear_phosphosites() method.
             
-        INPUT: list of site positions, indexed from 1
+        INPUT: 
+        --------------------------------------------------------------------------------
+        phosphosites    |  list of site positions, indexed from 1
 
-        OUTPUT: None, but the underlying Sequence object
-        has its properties updated
+
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        None, but the underlying Sequence object has its properties
+        updated
         """
         
         # note that we do all the relevant data validation
@@ -66,11 +72,13 @@ class SequenceParameters:
     #...................................................................................#
     def clear_phosphosites(self):
         """
-        Clears the putative phosphosites on the underlying'
+        Clears the putative phosphosites on the underlying
         sequence object. Useful if you want to reset the phosphostatus.
         
-        OUTPUT: None, but the underlying Sequence object
-        has its properties updated
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        None, but the underlying Sequence object has its properties updated
+
         """
 
         self.SeqObj.clear_phosphosites()
@@ -83,18 +91,37 @@ class SequenceParameters:
         """
         Get the protein's primary amino acid sequence
 
-        OUTPUT: Single string with the protein sequence
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Single string with the protein sequence
         """
         
         return self.SeqObj.seq
 
 
     #...................................................................................#
+    def get_length(self):
+        """
+        Get the protein's amino acid sequence length
+
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Integer equal to the sequence length
+        """
+        
+        return len(self.SeqObj.seq)
+
+
+    #...................................................................................#
     def get_mean_hydropathy(self):
         """
-        Get a proteins mean hydropphobiicity
+        Get a protein's mean hydropathy (a value between 0 and 9, where 0 is the least 
+        hydrophobic and 9 is the most). This is simply a re-based Kyte-Doolittle scale,
+        which runs from 0 to 9 instead of from -4.5 to 4.5, as in the original paper.
 
-        OUTPUT: Float with the sequence's mean hydropathy
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Float with the sequence's mean hydropathy
         """
 
         return self.SeqObj.meanHydropathy()
@@ -104,7 +131,12 @@ class SequenceParameters:
     def get_uversky_hydropathy(self):
         """
         Get a protein's mean hydropathy as defined by Uversky,
-        using a normalized Kyte-Doolittle hydropathy table
+        using a normalized Kyte-Doolittle hydropathy table. Here, values range between
+        0 and 1, with 0 being the least hydrophobic and 1 the most hydrophobic.
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Float with the normalized Kyte-Doolittle hydropathy (between 0 and 1)
         """
         
         return self.SeqObj.uverskyHydropathy()
@@ -113,7 +145,22 @@ class SequenceParameters:
     #...................................................................................#
     def get_fraction_disorder_promoting(self):
         """
-        Get a proteins D to O ratio (ratio of disorder promiting residues to order promoting residues)
+        Get a protein's fraction of residues which are considered '[D]isorder promoting'.
+        
+        For more details see the reference below;
+        
+        ********************************************************************************
+        Reference:
+        TOP-IDP-scale: a new amino acid scale measuring propensity for intrinsic disorder.
+        Protein Pept Lett. 2008;15(9):956-63.
+        Campen A, Williams RM, Brown CJ, Meng J, Uversky VN, Dunker AK.
+        ********************************************************************************
+        
+        
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Float with the fraction of disorder promoting residues
+        
         """
         
         return self.SeqObj.fraction_disorder_promoting()
@@ -123,6 +170,12 @@ class SequenceParameters:
     def get_amino_acid_fractions(self):
         """
         Returns a dictionary with the fractions of each amino acid in your sequence
+        
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Dictionary of amino acids, where the keys are each of the 20 amino acids and the
+        values represents the fraction of that amino acid
+        
         """
 
         return self.SeqObj.amino_acid_fraction()
@@ -131,9 +184,11 @@ class SequenceParameters:
     #...................................................................................#
     def get_kappa(self):
         """ 
-        Get the kappa value for a sequence
+        Get the kappa value for a sequence.  
 
-        OUTPUT: Float with the sequence's kappa
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Float with the sequence's kappa value
         """
 
         return self.SeqObj.kappa()
@@ -145,7 +200,9 @@ class SequenceParameters:
         Get the maximum delta value for a sequence of this composition. Note kappa is 
         delta/deltaMax.
 
-        OUTPUT: Float with the sequence's delta max (identical for all permutants)
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Float with the sequence's delta max (identical for all permutants)
         """
         
         return self.SeqObj.deltaMax()
@@ -156,7 +213,9 @@ class SequenceParameters:
         """
         Get the delta value for this specific sequence. Note kappa is delta/deltaMax.
 
-        OUTPUT: Float with the sequence's delta max (will vary with permutants)
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Float with the sequence's delta max (will vary with permutants)
         """
         
         return self.SeqObj.delta()
@@ -167,7 +226,9 @@ class SequenceParameters:
         """ 
         Get the number of positive residues in the sequence 
         
-        OUTPUT: Integer with number of positive residues in your sequence
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Integer with number of positive residues in your sequence
         """
 
         return self.SeqObj.countPos()
@@ -178,7 +239,9 @@ class SequenceParameters:
         """ 
         Get the number of negative residues in the sequence
 
-        OUTPUT: Integer with number of negative residues in your sequence
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Integer with number of negative residues in your sequence
         """
 
         return self.SeqObj.countNeg() 
@@ -189,7 +252,9 @@ class SequenceParameters:
         """ 
         Get the number of neutral residues in the sequence
 
-        OUTPUT: Integer with number of neutral residues in your sequence
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Integer with number of neutral residues in your sequence
         """
         return self.SeqObj.countNeut() 
 
@@ -199,7 +264,9 @@ class SequenceParameters:
         """ 
         Get the fraction of positive residues in the sequence 
 
-        OUTPUT: Float with the sequence's fraction of positive residues (F+)
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Float with the sequence's fraction of positive residues (F+)
         """
 
         return self.SeqObj.Fplus() 
@@ -210,7 +277,9 @@ class SequenceParameters:
         """ 
         Get the fraction of negative residues in the sequence 
 
-        OUTPUT: Float with the sequence's fraction of positive residues (F+)
+        OUTPUT
+        --------------------------------------------------------------------------------: 
+        Float with the sequence's fraction of positive residues (F+)
         """
 
         return self.SeqObj.Fminus() 
@@ -221,7 +290,9 @@ class SequenceParameters:
         """ 
         Get the fraction of charged residues in the sequence 
 
-        OUTPUT: Float with the sequence's fraction of charged residues
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Float with the sequence's fraction of charged residues
         """
 
         return self.SeqObj.FCR() 
@@ -232,7 +303,9 @@ class SequenceParameters:
         """ 
         Get the net charge per residue of the sequence 
 
-        OUTPUT: Float with the sequence's net charge per residue
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Float with the sequence's net charge per residue
         """
 
         return self.SeqObj.NCPR() 
@@ -242,8 +315,9 @@ class SequenceParameters:
         """ 
         Get the absolute magnitude of the mean net charge 
 
-
-        OUTOUT: Float equal to the [absolute magnitude] of the mean net charge of the sequence
+        OUTOUT:
+        --------------------------------------------------------------------------------
+        Float equal to the [absolute magnitude] of the mean net charge of the sequence
         """
         return self.SeqObj.mean_net_charge()
 
@@ -287,8 +361,10 @@ class SequenceParameters:
         3) Strong polyampholytes
         4 and 5) Strong polyelectrolytes
 
-        OUTPUT: Returns an integer describing the region on the density 
-        of states diagmra (above)
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Returns an integer describing the region on the density of states 
+        diagram (above)
 
         """
 
@@ -306,7 +382,9 @@ class SequenceParameters:
         phosphorylatable. Such sites *must*, by definition
         by T/Y/S.
 
-        OUTPUT: returns a list of integers corresponding to the sites
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Returns a list of integers corresponding to the sites
         which are currently defined as being phosphorylatable based on
         user input
         """
@@ -321,8 +399,10 @@ class SequenceParameters:
         phosphorylation based on the currently defined
         phosphosites.
 
-        OUTPUT: returns a float corresponding to the sequence's kappa
-        value if all the currently defined phosphosites were phosphorylated
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        returns a float corresponding to the sequence's kappa value if 
+        all the currently defined phosphosites were phosphorylated
         """
         
         if len(self.get_phosphosites()) == 0:
@@ -341,8 +421,9 @@ class SequenceParameters:
         Note positions are returned as indexed from 1 (so you can feed these positions
         directly into the set_phosphosites function.
         
-        OUTPUT: Returns a list of integers corresponding to S/T/Y positions
-        in your sequence
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Returns a list of integers corresponding to S/T/Y positions in your sequence
         """
 
         return self.SeqObj.get_STY_residues()
@@ -353,6 +434,11 @@ class SequenceParameters:
         """
         This function calculates the kappa value of all possible phosphorylation
         statuses, given the defined phosphosites. 
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        
+        
 
         """
         
@@ -376,53 +462,119 @@ class SequenceParameters:
     # ============================================ #
     # ======= PLOTTING DIAGRAM FUNCTIONS ========= #  
     #...................................................................................#
-    def show_phaseDiagramPlot(self,label=""):
+    def show_phaseDiagramPlot(self,label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
         """ 
         Generates the Pappu-Das phase diagram (diagram of states), places
         this sequence on that plot, and creates it on the screen
-       
+
+        INPUT: 
+        --------------------------------------------------------------------------------
+        label     | A label for the point on the phase diagram
+        legendOn  | Boolean for if the figure legend should be displayed or not
+        xLim      | Max value for the x axis (fract. positive charge) (DEFAULT = 1)
+        yLim      | Max value for the y axis (fract. negative charge) (DEFAULT = 1)
+        fontSize  | Size of font for label (DEFAULT = 10)
+        getFig    | Returns a matplotlib figure object instead of simply displaying the 
+                  | plot on the screen (DEFAULT = False)
+
+
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        If the argument getFig is False (which it is by default) then the Uversky plot appears on
+        the screen. If getFig is set to True then the function returns a matplotlib plt object, which
+        can be further manipulated.
+        
         """
 
-        plotting.show_single_phasePlot(self.get_fraction_positive(), self.get_fraction_negative(),label)
+        if getFig:
+            return plotting.show_single_phasePlot(self.get_fraction_positive(), self.get_fraction_negative(),label, legendOn, xLim, yLim, fontSize, getFig)
+        else:
+            plotting.show_single_phasePlot(self.get_fraction_positive(), self.get_fraction_negative(),label, legendOn, xLim, yLim, fontSize, getFig)
 
 
     #...................................................................................#
-    def save_phaseDiagramPlot(self, filename,label=""):
+    def save_phaseDiagramPlot(self, filename,label="", legendOn=True, xLim=1, yLim=1, fontSize=10):
         """ 
         Generates the Pappu-Das phase diagram (diagram of states), places
         this sequence on that plot, and saves it at the <filename> location
 
-        INPUT: Writeable filename
-        OUTPUT: Nothing, but creates a .png file at the filename location
+        INPUT: 
+        --------------------------------------------------------------------------------
+        filename  | Writeable filename  
+        
+        label     | A label for the point on the phase diagram
+        legendOn  | Boolean for if the figure legend should be displayed or not
+        xLim      | Max value for the x axis (fract. positive charge) (DEFAULT = 1)
+        yLim      | Max value for the y axis (fract. negative charge) (DEFAULT = 1)
+        fontSize  | Size of font for label (DEFAULT = 10)
+
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Nothing, but creates a .png file at the filename location
 
         """
         
-        plotting.save_single_phasePlot(self.get_fraction_positive(), self.get_fraction_negative(), filename, label)
+        plotting.save_single_phasePlot(self.get_fraction_positive(), self.get_fraction_negative(), filename, label, legendOn, xLim, yLim, fontSize)
 
 
     #...................................................................................#
-    def show_uverskyPlot(self,label=""):
+    def show_uverskyPlot(self, label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
         """ 
         Generates the Uversky phase diagram (hydropathy vs NCPR), places
         this sequence on that plot, and creates it on the screen
+
+        INPUT:
+        --------------------------------------------------------------------------------
+        label     | A label for the point on the phase diagram
+        legendOn  | Boolean for if the figure legend should be displayed or not
+        xLim      | Max value for the x axis (mean net charge) (DEFAULT = 1)
+        yLim      | Max value for the y axis (hydropathy) (DEFAULT = 1)
+        fontSize  | Size of font for label (DEFAULT = 10)
+        getFig    | Returns a matplotlib figure object instead of simply displaying the 
+                    plot on the screen (DEFAULT = False)
+        
+        
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        If the argument getFig is False (which it is by default) then the Uversky plot appears on
+        the screen. If getFig is set to True then the function returns a matplotlib plt object, which
+        can be further manipulated.
+        
        
         """
-
-        plotting.show_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), label)
+        if getFig:
+            return plotting.show_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), label, legendOn, xLim, yLim, fontSize, getFig)
+        else:
+            plotting.show_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), label, legendOn, xLim, yLim, fontSize, getFig)
 
 
     #...................................................................................#
-    def save_uverskyPlot(self, filename,label=""):
+    def save_uverskyPlot(self, filename, label="", legendOn=True, xLim=1, yLim=1, fontSize=10):
         """ 
         Generates the Pappu-Das phase diagram (diagram of states), places
         this sequence on that plot, and saves it at the <filename> location
 
-        INPUT:  Writeable filename
-        OUTPUT: Nothing, but creates a .png file at the filename location
+        INPUT:   
+        --------------------------------------------------------------------------------
+        filename  | A writeable filename
 
+        label     | A label for the point on the phase diagram
+        legendOn  | Boolean for if the figure legend should be displayed or not
+        xLim      | Max value for the x axis (mean net charge) (DEFAULT = 1)
+        yLim      | Max value for the y axis (hydropathy) (DEFAULT = 1)
+        fontSize  | Size of font for label (DEFAULT = 10)
+        
+        
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        If the argument getFig is False (which it is by default) then the Uversky plot appears on
+        the screen. If getFig is set to True then the function returns a matplotlib plt object, which
+        can be further manipulated.
+        
         """
         
-        plotting.save_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), filename, label)
+        plotting.save_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), filename, label, legendOn, xLim, yLim, fontSize)
 
 
     
@@ -435,11 +587,13 @@ class SequenceParameters:
         approach and calculates the average within that window.
         
         INPUT:  
+        --------------------------------------------------------------------------------
         filename | Name of the file to write
         bloblen  | Set the windowsize (DEFAULT = 5)
         
 
         OUTPUT: 
+        --------------------------------------------------------------------------------
         Nothing, but creates a .png file at the filename location
 
 
@@ -460,10 +614,13 @@ class SequenceParameters:
         NCPR^2/FCR (net charge per residue squared divided by the fraction of charged residues)
 
         INPUT:  
+        --------------------------------------------------------------------------------
         filename | Name of the file to write
         bloblen  | Set the windowsize (DEFAULT = 5)
 
+
         OUTPUT: 
+        --------------------------------------------------------------------------------
         Nothing, but creates a .png file at the filename location
 
         """
@@ -482,11 +639,13 @@ class SequenceParameters:
         the most hydrophobic and 0 the least.
 
         INPUT:  
+        --------------------------------------------------------------------------------
         filename | Name of the file to write
         bloblen  | Set the windowsize (DEFAULT = 5)
 
 
         OUTPUT: 
+        --------------------------------------------------------------------------------
         Nothing, but creates a .png file at the filename location
 
         """
@@ -502,19 +661,22 @@ class SequenceParameters:
         approach and calculates the average within that window.
 
         INPUT:  
+        --------------------------------------------------------------------------------
         bloblen  | Set the windowsize (DEFAULT = 5)
-        getFIG   | Do you want to get the matplotlib figure object (DEFAULY = FALSE)
+        getFig   | Do you want to get the matplotlib figure object (DEFAULY = FALSE)
+
 
         OUTPUT: 
+        --------------------------------------------------------------------------------
         Nothing, but the plot is displayed on screen
 
         """
 
-        plotting.show_linearplot(plotting.build_NCPR_plot, self.SeqObj, blobLen)
+        return plotting.show_linearplot(plotting.build_NCPR_plot, self.SeqObj, blobLen, getFig)
 
 
     #...................................................................................#
-    def show_linearSigma(self, blobLen=5,getFig=False):
+    def show_linearSigma(self, blobLen=5, getFig=False):
         """ 
         Generates a plot of how the sigma parameter changes as we move
         along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
@@ -525,15 +687,18 @@ class SequenceParameters:
         NCPR^2/FCR (net charge per residue squared divided by the fraction of charged residues)
 
         INPUT:  
+        --------------------------------------------------------------------------------
         bloblen  | Set the windowsize (DEFAULT = 5)
-        getFIG   | Do you want to get the matplotlib figure object (DEFAULY = FALSE)
+        getFig   | Do you want to get the matplotlib figure object (DEFAULY = FALSE)
+
 
         OUTPUT: 
+        --------------------------------------------------------------------------------
         Nothing, but the plot is displayed on screen
 
         """
 
-        plotting.show_linearplot(plotting.build_sigma_plot, self.SeqObj, blobLen, getFig)
+        return plotting.show_linearplot(plotting.build_sigma_plot, self.SeqObj, blobLen, getFig)
 
 
     #...................................................................................#
@@ -547,15 +712,18 @@ class SequenceParameters:
         the most hydrophobic and 0 the least.
 
         INPUT:  
+        --------------------------------------------------------------------------------
         bloblen  | Set the windowsize (DEFAULT = 5)
-        getFIG   | Do you want to get the matplotlib figure object (DEFAULY = FALSE)
+        getFig   | Do you want to get the matplotlib figure object (DEFAULY = FALSE)
+
 
         OUTPUT: 
+        --------------------------------------------------------------------------------
         Nothing, but the plot is displayed on screen
 
         """
 
-        plotting.show_linearplot(plotting.build_hydropathy_plot, self.SeqObj, blobLen, getFig)
+        return plotting.show_linearplot(plotting.build_hydropathy_plot, self.SeqObj, blobLen, getFig)
         
 
     # ============================================== #
@@ -597,7 +765,6 @@ class SequenceParameters:
         The sequence is divided into 10 residue blocks, with a newline (<br>) every
         50 residues.
 
-
         """
         return self.SeqObj.get_HTMLColorString()
 
@@ -610,13 +777,13 @@ class SequenceParameters:
     #...................................................................................#
     def __unicode__(self):
         """ Returns the sequences """
-        return "SequenceParameter [len="+str(len(self.SeqObj.seq)) + "]" 
+        return "SequenceParameter [len="+str(len(self.SeqObj.seq)) + "], [seq='" + self.SeqObj.seq +"']" 
 
         
     #...................................................................................#
     def __str__(self):
         """ Returns the sequences """
-        return self.__unicode__(self)
+        return self.__unicode__()
 
     def __len__(self):
         """ Returns the sequence length """

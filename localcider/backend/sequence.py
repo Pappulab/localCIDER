@@ -296,7 +296,18 @@ class Sequence:
             warning_message("The sequence has no charged residues - kappa is not a valid/relevant parameter")
             return -1
         else:
-            return self.delta()/self.deltaMax()
+            kappaVal = self.delta()/self.deltaMax()
+
+            # so the heuristics for kappa are good BUT may under estimate
+            # deltaMax is some cases. If this is a small deviation then we 
+            # just set it to 0 because the sequence with the highest delta is probably
+            # an sequence-Isomer of the sequence we have. If this deviation is larger,
+            # however, it may be indicative of a bug in the code which we should address
+            if kappaVal > 1.0 and kappaVal < 1.1:
+                return 1.0
+            else:
+                return kappaVal
+            
 
 
     #...................................................................................#
@@ -618,29 +629,108 @@ class Sequence:
         elif(self.FCR() == 0):
             self.dmax = 0
 
-        # First computational trick (Maximum Charge Separation)
+
+        # FIRST computational trick - if only positive or negative 
+        elif self.countPos() == 0 or self.countNeg() == 0:
+            nneuts = self.countNeut()
+            
+            # construct a neutral  block
+            neutralBlock='0'*nneuts
+
+            # construct a charged block
+            if self.countPos() == 0:
+                # make a negative charge block
+                chargedBlock='-'*self.countNeg()
+                chargeV="-"
+                ncharge=self.countNeg()
+                
+            else:
+                # make a positive charge block
+                chargedBlock='+'*self.countPos()
+                chargeV="+"
+                ncharge=self.countPos()
+
+            # if the charge block is shorter than the neutral block
+            if len(neutralBlock) > len(chargedBlock):
+                
+                for position in xrange(0,(self.len-ncharge)+1):
+
+                    setupSequence = position*"0"+chargedBlock+"0"*(nneuts-position)
+
+                    if not len(setupSequence) == self.len:
+                        raise SequenceException("Error in DeltaMax calculation")            
+
+                    nseq = Sequence(setupSequence)
+
+                    # update self.dmax if relevant
+                    self.dmax = max([nseq.delta(), self.dmax])
+            # if the neutral block is shorter
+            else:
+                
+                for position in xrange(0,(self.len-nneuts)+1):
+
+                    setupSequence = position*chargeV+neutralBlock+chargeV*(ncharge-position)
+
+                    if not len(setupSequence) == self.len:
+                        raise SequenceException("Error in DeltaMax calculation")            
+
+                    
+                    nseq = Sequence(setupSequence)
+
+                    # update self.dmax if relevant
+                    self.dmax = max([nseq.delta(), self.dmax])
+
+
+
+        #################################################################
+        # Second computational trick (Maximum Charge Separation)
         # If we have no neutral residues this is easy
         elif(self.countNeut() == 0):
-            setupSequence = ''
-            for i in xrange(0,self.countPos()):
-                setupSequence += '+'
-            for i in xrange(0,self.countNeg()):
-                setupSequence += '-'
-            assert(self.len == len(setupSequence))
-            self.dmax = Sequence(setupSequence).delta()
 
-        #second computational trick (Maximization of # of Charged Blobs)
+            nNeg = self.countNeg()
+            nPos = self.countPos()
+
+            
+            posBlock = "+"*nPos
+            negBlock = "+"*nNeg
+            
+            if len(posBlock) > len(negBlock):
+                for position in xrange(0,(self.len-nNeg)+1):                    
+                    setupSequence = position*"+"+negBlock+"+"*(nPos-position)
+                    
+                    if not len(setupSequence) == self.len:
+                        raise SequenceException("Error in DeltaMax calculation")            
+
+                    
+                    nseq = Sequence(setupSequence)
+
+                    # update self.dmax if relevant
+                    self.dmax = max([nseq.delta(), self.dmax])
+            else:
+                for position in xrange(0,(self.len-nPos)+1):                    
+                    setupSequence = position*"-"+posBlock+"-"*(nNeg-position)
+
+                    
+                    if not len(setupSequence) == self.len:
+                        raise SequenceException("Error in DeltaMax calculation")            
+
+                    
+                    nseq = Sequence(setupSequence)
+
+                    # update self.dmax if relevant
+                    self.dmax = max([nseq.delta(), self.dmax])
+                
+
+
+        # second computational trick (Maximization of # of Charged Blobs)
         # relevant if we have 18 or more neutral residues
         elif(self.countNeut() >= 18):            
             nneuts = self.countNeut()
-            posBlock = ''
-            negBlock = ''
 
             # construct positive and negative blocks
-            for i in xrange(0,self.countPos()):
-                posBlock += '+'
-            for i in xrange(0,self.countNeg()):
-                negBlock += '-'
+            
+            posBlock = '+'*self.countPos()
+            negBlock = '-'*self.countNeg()
 
             # There are three regions where you can have neutral residues
             # to maximize delta: start/middle/end
@@ -678,35 +768,30 @@ class Sequence:
             nneuts = self.countNeut()
 
             # construct positive and negative blocks
-            for i in xrange(0,self.countPos()):
-                posBlock += '+'
-
-            for i in xrange(0,self.countNeg()):
-                negBlock += '-'
+            posBlock = '+'*self.countPos()
+            negBlock = '-'*self.countNeg()
 
             # iterate through different permutations where
             #  the size of the middle number of neutral residues varies
             for midNeuts in xrange(0,nneuts+1):
-                midBlock = ''
+                midBlock = '0'*midNeuts
 
-                for i in xrange(0,midNeuts):
-                    midBlock += '0'
 
                 for startNeuts in xrange(0,nneuts-midNeuts+1):
                     setupSequence = ''
 
                     # construct some permutation of the sequence
-                    for i in xrange(0,startNeuts):
-                        setupSequence += '0'
+                    
+                    setupSequence = '0'*startNeuts
 
                     setupSequence += posBlock
                     setupSequence += midBlock
                     setupSequence += negBlock
 
-                    for i in xrange(0,nneuts-startNeuts-midNeuts):
-                        setupSequence += '0'
 
-                    nseq = Sequence(setupSequence)
+                    setupSequence = setupSequence + '0'*(nneuts-startNeuts-midNeuts)
+
+                    nseq = Sequence(setupSequence)                    
 
                     # update self.dmax if relevant
                     self.dmax = max([nseq.delta(), self.dmax])
@@ -969,7 +1054,7 @@ class Sequence:
             newseqObj = Sequence(newseq)
 
             # now add that new kappa to the list, update, and repeat!
-            phosphokappa.append((newseqObj.kappa(), newseqObj.Fplus(), newseqObj.Fminus(), newseqObj.FCR(), newseqObj.NCPR(), newseqObj.meanHydropathy()))
+            phosphokappa.append((newseqObj.kappa(), newseqObj.Fplus(), newseqObj.Fminus(), newseqObj.NCPR(), newseqObj.meanHydropathy(), phosphostatus))
 
             print_progress(count, num_calcs)
             count=count+1
@@ -1119,8 +1204,8 @@ class Sequence:
         aminoAcidColorMap. 
 
         """
-        colorString = '<p>'
-        count = 0
+        colorString = '<p style="font-family:Courier;">'
+        count = -1
         for residue in self.seq:
             count = count + 1
             if(np.mod(count,10) == 0):
@@ -1136,16 +1221,16 @@ class Sequence:
 
     #...................................................................................#
     def toFileString(self):        
-        s = "Sequence    :\t%s\n\n" % (self.seq)
+        s = "Sequence   :\t%s\n\n" % (self.seq)
         s += "N          :\t%i\n" % (self.len)        
         s += "f-         :\t%3.5f\n" % (self.Fminus())
         s += "f+         :\t%3.5f\n" % (self.Fplus())
         s += "FCR        :\t%3.5f\n" % (self.FCR())
         s += "NCPR       :\t%3.5f\n" % (self.NCPR())
+        s += "Kappa      :\t%3.5f\n" % (self.kappa())
         s += "Sigma      :\t%3.5f\n" % (self.sigma())
         s += "Delta      :\t%3.5f\n" % (self.delta())
         s += "Max Delta  :\t%3.5f\n" % (self.deltaMax())        
-        s += "Kappa      :\t%3.5f\n" % (self.kappa())
         s += "Hydropathy :\t%3.5f\n\n" % (self.meanHydropathy())
         s += "Phase Plot Region: %i\n" % (self.phasePlotRegion())
         s += "Phase Plot Annotation: %s\n" % (self.phasePlotAnnotation())
