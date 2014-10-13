@@ -2,7 +2,7 @@
 localCIDER
 ==========
 
-`version 0.1.2 - October 2014`
+`version 0.1.3 - October 2014`
 
 **Introduction**
 

@@ -1,13 +1,13 @@
 # localCIDER
 
-`v 0.1.2 - October 1st 2014`
+`v 0.1.3 - October 13th 2014`
 
 
 # Introduction
 
-**CIDER** [Classification of Intrinsically Disordered Ensemble Regions](http://pappulab.wustl.edu/CIDER) is a [currently under construction] web-server for calculating various properties of a disordered sequence. CIDER's calculations are carried out by a backend app, called localCIDER.
+**CIDER** [Classification of Intrinsically Disordered Ensemble Regions](http://pappulab.wustl.edu/CIDER) is a web-server for calculating various properties of a disordered sequence. CIDER's calculations are carried out by a backend app, called localCIDER.
 
-**CIDER** is useful if you want to quickly calculate some parameter on the fly. HOWEVER, for doing a huge range of sequences, we recommend you instead use **localCIDER** and carry out the computation locally.
+**CIDER** is useful if you want to quickly calculate some parameter on the fly. HOWEVER, for doing a large number of sequences, we recommend you instead use **localCIDER** and carry out the computation locally.
 
 ## localCIDER vs. CIDER?
 **localCIDER** lets us provide an implicit distributed computing model to all of CIDER's calculations. Think of it this way - if 100 people have 100 sequences, we (the Pappu lab) have the burden of 10,000 calculations to perform. If everyone submitted these sequences at once, the website would slow for everyone, and maybe crash. This is a lot of work for us, and very annoying for you, the user. HOWEVER, by using **localCIDER** you can take advantage of
@@ -22,7 +22,7 @@ Moreover, if there's a type of analysis you use frequently and you think other u
 # Installation
 
 ## Introduction
-**localCIDER** version 0.1.0 was submitted to `pip` (the Python Package Index) on the 8th of August. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. However, many of the features are ready to go!
+**localCIDER** version 0.1.3 was submitted to `pip` (the Python Package Index) on the 13th of October. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. However, many of the features are ready to go!
 
 ## Installing on OSX or linux
 We recommend installing using `pip`. `pip` is a command line interface for downloading and installing packages from the Python package index (PyPI). If you don't yet have pip installed [see the documentation here](http://pip.readthedocs.org/en/latest/installing.html).
@@ -56,8 +56,6 @@ An alternative issue may be that installing `python-numpy-devel` (which is requi
     [sudo] zypper install python-matplotlib-tk
     
 To install `matplotlib` (NOTE the `-tk` at the end!)
-
-
 
 #### Ubuntu
 The issues for OpenSuse are also true for Ubuntu - specifically `Ubuntu` seems to need the `python-dev` package to install `numpy`, and the `libfreetype6-dev` package for to get Freetype working in `matplotlib`
@@ -480,12 +478,14 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * Paul Nobrega (Matthews lab) for bug reports and the Windows installation instructions
 * Davide Mercadante (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization
 * Katra Olsek (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization
+* Alex Chin (Johns Hopkins University) for a crucial bug report
 
 ## Update schedule
 
 * version 0.1.0 [August 10th 2014]
 * version 0.1.1 [August 14th 2014] (minor bug fixes, more tests, improved sequence parsing)
 * version 0.1.2 [October 1st 2014] (more tests, fixed heuristic bugs in extreme kappa sequences, significant improvement on plotting customization, cleaned up docs and code documentation)
+* version 0.1.3 [October 13th 2014] (more tests, corrected a bug introduced in 0.1.2 for sequences with no neutral residues, corrected a bug in how titles/labels were assigned by default, improved how classification into the 5 regions is done, and explicitly allow for regions 4 (positive electrolytes) and 5 (negative electrolytes) rather than general polyelectrolytes)
 
 
 ----------
