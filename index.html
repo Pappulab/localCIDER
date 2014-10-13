@@ -1,47 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="localCIDER : localCIDER lets you compute sequence parameters for disordered proteins">
+    <title>localCIDER by Pappulab</title>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>localCIDER</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
-
   <body>
+    <div class="wrapper">
+      <header>
+        <h1>localCIDER</h1>
+        <p>localCIDER lets you compute sequence parameters for disordered proteins</p>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/Pappulab/localCIDER">View on GitHub</a>
+        <p class="view"><a href="https://github.com/Pappulab/localCIDER">View the Project on GitHub <small>Pappulab/localCIDER</small></a></p>
 
-          <h1 id="project_title">localCIDER</h1>
-          <h2 id="project_tagline">localCIDER lets you compute sequence parameters for disordered proteins</h2>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/Pappulab/localCIDER/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/Pappulab/localCIDER/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+        <ul>
+          <li><a href="https://github.com/Pappulab/localCIDER/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Pappulab/localCIDER/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/Pappulab/localCIDER">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
         <h1>
 <a name="localcider" class="anchor" href="#localcider"><span class="octicon octicon-link"></span></a>localCIDER</h1>
 
-<p><code>v 0.1.2 - October 1st 2014</code></p>
+<p><code>v 0.1.3 - October 13th 2014</code></p>
 
 <h1>
 <a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
 
-<p><strong>CIDER</strong> <a href="http://pappulab.wustl.edu/CIDER">Classification of Intrinsically Disordered Ensemble Regions</a> is a [currently under construction] web-server for calculating various properties of a disordered sequence. CIDER's calculations are carried out by a backend app, called localCIDER.</p>
+<p><strong>CIDER</strong> <a href="http://pappulab.wustl.edu/CIDER">Classification of Intrinsically Disordered Ensemble Regions</a> is a web-server for calculating various properties of a disordered sequence. CIDER's calculations are carried out by a backend app, called localCIDER.</p>
 
-<p><strong>CIDER</strong> is useful if you want to quickly calculate some parameter on the fly. HOWEVER, for doing a huge range of sequences, we recommend you instead use <strong>localCIDER</strong> and carry out the computation locally.</p>
+<p><strong>CIDER</strong> is useful if you want to quickly calculate some parameter on the fly. HOWEVER, for doing a large number of sequences, we recommend you instead use <strong>localCIDER</strong> and carry out the computation locally.</p>
 
 <h2>
 <a name="localcider-vs-cider" class="anchor" href="#localcider-vs-cider"><span class="octicon octicon-link"></span></a>localCIDER vs. CIDER?</h2>
@@ -62,7 +59,7 @@
 <h2>
 <a name="introduction-1" class="anchor" href="#introduction-1"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
-<p><strong>localCIDER</strong> version 0.1.0 was submitted to <code>pip</code> (the Python Package Index) on the 8th of August. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to <a href="mailto:alex.holehouse@wustl.edu">alex.holehouse@wustl.edu</a>. However, many of the features are ready to go!</p>
+<p><strong>localCIDER</strong> version 0.1.3 was submitted to <code>pip</code> (the Python Package Index) on the 13th of October. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to <a href="mailto:alex.holehouse@wustl.edu">alex.holehouse@wustl.edu</a>. However, many of the features are ready to go!</p>
 
 <h2>
 <a name="installing-on-osx-or-linux" class="anchor" href="#installing-on-osx-or-linux"><span class="octicon octicon-link"></span></a>Installing on OSX or linux</h2>
@@ -786,6 +783,7 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 <li>Paul Nobrega (Matthews lab) for bug reports and the Windows installation instructions</li>
 <li>Davide Mercadante (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization</li>
 <li>Katra Olsek (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization</li>
+<li>Alex Chin (Johns Hopkins University) for a crucial bug report</li>
 </ul>
 
 <h2>
@@ -797,18 +795,16 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 </li>
 <li>version 0.1.2 <a href="more%20tests,%20fixed%20heuristic%20bugs%20in%20extreme%20kappa%20sequences,%20significant%20improvement%20on%20plotting%20customization,%20cleaned%20up%20docs%20and%20code%20documentation">October 1st 2014</a>
 </li>
+<li>version 0.1.3 <a href="more%20tests,%20corrected%20a%20bug%20introduced%20in%200.1.2%20for%20sequences%20with%20no%20neutral%20residues,%20corrected%20a%20bug%20in%20how%20titles/labels%20were%20assigned%20by%20default,%20improved%20how%20classification%20into%20the%205%20regions%20is%20done,%20and%20explicitly%20allow%20for%20regions%204%20(positive%20electrolytes)%20and%205%20(negative%20electrolytes)%20rather%20than%20general%20polyelectrolytes">October 13th 2014</a>
+</li>
 </ul>
       </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">localCIDER maintained by <a href="https://github.com/Pappulab">Pappulab</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/Pappulab">Pappulab</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
-
+    <script src="javascripts/scale.fix.js"></script>
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -819,7 +815,6 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
-
 
   </body>
 </html>
