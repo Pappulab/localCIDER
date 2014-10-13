@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.2                                                         !
+   !    Version 0.1.3                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -288,11 +288,8 @@ def build_amino_acids_skeleton():
 
 def update_hydrophobicity(aalist, scale):
     
-    
     index=0
     for i in aalist:
         i[3] = scale[i[1]]
 
     return aalist
-        
-        

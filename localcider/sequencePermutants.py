@@ -4,9 +4,8 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.2                                                         !
+   !    Version 0.1.3                                                         !
    !--------------------------------------------------------------------------!
-
    
    File Description:
    ================
@@ -22,11 +21,9 @@
    the Wang-Landau algrorithm. There are two seperate operations which can
    be carried out here;
 
-
    1) Estimate the Kappa density of states over some region
 
    2) Create permutants of your sequence with various kappa values
-
   
    The general approach taken is that you create a sequencePermutant
    object with some sequence, and then call an operation on that object.

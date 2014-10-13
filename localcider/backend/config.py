@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.2                                                         !
+   !    Version 0.1.3                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -50,9 +50,9 @@
 ## CONFIGURATION STUFF YOU MIGHT WANT TO CHANGE
 HUSH_WARNINGS = False
 HUSH_STATUS   = False
-HUSH_ALL      = True
+HUSH_ALL      = False
 
 
 # DO NOT CHANGE ANYTHING BELOW THIS LINE
-VERSION="0.1.2"
+VERSION="0.1.3"
 

@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.2                                                         !
+   !    Version 0.1.3                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -296,6 +296,7 @@ class Sequence:
             warning_message("The sequence has no charged residues - kappa is not a valid/relevant parameter")
             return -1
         else:
+                        
             kappaVal = self.delta()/self.deltaMax()
 
             # so the heuristics for kappa are good BUT may under estimate
@@ -331,7 +332,7 @@ class Sequence:
         E     +                           +           |
         G     | +                       +             |
               + 2 +                   +               |
-        R     | +   +               +       5         |
+        R     | +   +               +       4         |
         E     |   + 2 +           +                   |
         S     |     +   +       +                     |
               | 1     + 2 +   +                       |
@@ -344,32 +345,37 @@ class Sequence:
         1) Weak polyampholytes and polyelectrolyte
         2) Janus sequences
         3) Strong polyampholytes
-        4 and 5) Strong polyelectrolytes
+        4) Strong polyelectrolytes
         
         """
         fcr = self.FCR()
         ncpr = self.NCPR()
 
+        print self.Fplus()
+
         # if we're in region 1
-        if(fcr < .25 and ncpr<.25):
+        if(fcr < .25):
             return 1
+
         # if we're in region 2
-        elif(fcr >= .25 and fcr <= .35 and ncpr <= .35):
+        elif(fcr >= .25 and fcr <= .35):
             return 2
+
         # if we're in region 3
-        elif(fcr > .35 and ncpr <= .35):
+        elif(fcr > .35 and abs(ncpr) < 0.35):
             return 3
         
         # if we're in region 4 or 5
-        elif(fcr > .35 and ncpr > .35):
-            if(self.Fplus>.35):
-                return 4
-            elif(self.Fminus>.35):
-                return 5
-            else: #This case is impossible but here for completeness
-                raise SequenceException("Found inaccessible region of phase diagram. Numerical error")            
+        elif(self.Fplus() > 0.35):
+            if self.Fminus() > 0.35:
+                raise SequenceException("Algorithm bug when coping with phase plot regions")
+            return 5
+        
+        elif(self.Fminus() > 0.35):            
+            return 4
+            
         else: #This case is impossible but here for completeness\
-                raise SequenceException("Found inaccessible region of phase diagram. Numerical error")
+            raise SequenceException("Found inaccessible region of phase diagram. Numerical error")
                         
             
     #...................................................................................#
@@ -692,7 +698,7 @@ class Sequence:
 
             
             posBlock = "+"*nPos
-            negBlock = "+"*nNeg
+            negBlock = "-"*nNeg
             
             if len(posBlock) > len(negBlock):
                 for position in xrange(0,(self.len-nNeg)+1):                    
@@ -700,7 +706,6 @@ class Sequence:
                     
                     if not len(setupSequence) == self.len:
                         raise SequenceException("Error in DeltaMax calculation")            
-
                     
                     nseq = Sequence(setupSequence)
 

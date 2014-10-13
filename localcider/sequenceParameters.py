@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.2                                                         !
+   !    Version 0.1.3                                                         !
    !--------------------------------------------------------------------------!
    
    File Description:
@@ -346,7 +346,7 @@ class SequenceParameters:
         E     +                           +           |
         G     | +                       +             |
               + 2 +                   +               |
-        R     | +   +               +       5         |
+        R     | +   +               +       4         |
         E     |   + 2 +           +                   |
         S     |     +   +       +                     |
               | 1     + 2 +   +                       |
@@ -462,7 +462,7 @@ class SequenceParameters:
     # ============================================ #
     # ======= PLOTTING DIAGRAM FUNCTIONS ========= #  
     #...................................................................................#
-    def show_phaseDiagramPlot(self,label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
+    def show_phaseDiagramPlot(self,label="", title="Diagram of states",legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
         """ 
         Generates the Pappu-Das phase diagram (diagram of states), places
         this sequence on that plot, and creates it on the screen
@@ -470,6 +470,7 @@ class SequenceParameters:
         INPUT: 
         --------------------------------------------------------------------------------
         label     | A label for the point on the phase diagram
+        title     | Plot title (DEFAULT = 'Diagram of states')
         legendOn  | Boolean for if the figure legend should be displayed or not
         xLim      | Max value for the x axis (fract. positive charge) (DEFAULT = 1)
         yLim      | Max value for the y axis (fract. negative charge) (DEFAULT = 1)
@@ -489,11 +490,11 @@ class SequenceParameters:
         if getFig:
             return plotting.show_single_phasePlot(self.get_fraction_positive(), self.get_fraction_negative(),label, legendOn, xLim, yLim, fontSize, getFig)
         else:
-            plotting.show_single_phasePlot(self.get_fraction_positive(), self.get_fraction_negative(),label, legendOn, xLim, yLim, fontSize, getFig)
+            plotting.show_single_phasePlot(self.get_fraction_positive(), self.get_fraction_negative(),label, title, legendOn, xLim, yLim, fontSize, getFig)
 
 
     #...................................................................................#
-    def save_phaseDiagramPlot(self, filename,label="", legendOn=True, xLim=1, yLim=1, fontSize=10):
+    def save_phaseDiagramPlot(self, filename,label="", title="Diagram of states", legendOn=True, xLim=1, yLim=1, fontSize=10):
         """ 
         Generates the Pappu-Das phase diagram (diagram of states), places
         this sequence on that plot, and saves it at the <filename> location
@@ -503,6 +504,7 @@ class SequenceParameters:
         filename  | Writeable filename  
         
         label     | A label for the point on the phase diagram
+        title     | Plot title (DEFAULT = 'Diagram of states')
         legendOn  | Boolean for if the figure legend should be displayed or not
         xLim      | Max value for the x axis (fract. positive charge) (DEFAULT = 1)
         yLim      | Max value for the y axis (fract. negative charge) (DEFAULT = 1)
@@ -515,11 +517,11 @@ class SequenceParameters:
 
         """
         
-        plotting.save_single_phasePlot(self.get_fraction_positive(), self.get_fraction_negative(), filename, label, legendOn, xLim, yLim, fontSize)
+        plotting.save_single_phasePlot(self.get_fraction_positive(), self.get_fraction_negative(), filename, label, title, legendOn, xLim, yLim, fontSize)
 
 
     #...................................................................................#
-    def show_uverskyPlot(self, label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
+    def show_uverskyPlot(self, label="", title="Uversky plot", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False):
         """ 
         Generates the Uversky phase diagram (hydropathy vs NCPR), places
         this sequence on that plot, and creates it on the screen
@@ -527,6 +529,7 @@ class SequenceParameters:
         INPUT:
         --------------------------------------------------------------------------------
         label     | A label for the point on the phase diagram
+        title     | Plot title (DEFAULT = 'Uversky plot')
         legendOn  | Boolean for if the figure legend should be displayed or not
         xLim      | Max value for the x axis (mean net charge) (DEFAULT = 1)
         yLim      | Max value for the y axis (hydropathy) (DEFAULT = 1)
@@ -544,13 +547,13 @@ class SequenceParameters:
        
         """
         if getFig:
-            return plotting.show_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), label, legendOn, xLim, yLim, fontSize, getFig)
+            return plotting.show_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), label, title, legendOn, xLim, yLim, fontSize, getFig)
         else:
-            plotting.show_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), label, legendOn, xLim, yLim, fontSize, getFig)
+            plotting.show_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), label, title, legendOn, xLim, yLim, fontSize, getFig)
 
 
     #...................................................................................#
-    def save_uverskyPlot(self, filename, label="", legendOn=True, xLim=1, yLim=1, fontSize=10):
+    def save_uverskyPlot(self, filename, label="", title="Uversky plot", legendOn=True, xLim=1, yLim=1, fontSize=10):
         """ 
         Generates the Pappu-Das phase diagram (diagram of states), places
         this sequence on that plot, and saves it at the <filename> location
@@ -560,6 +563,7 @@ class SequenceParameters:
         filename  | A writeable filename
 
         label     | A label for the point on the phase diagram
+        title     | Plot title (DEFAULT = 'Uversky plot')
         legendOn  | Boolean for if the figure legend should be displayed or not
         xLim      | Max value for the x axis (mean net charge) (DEFAULT = 1)
         yLim      | Max value for the y axis (hydropathy) (DEFAULT = 1)
@@ -574,7 +578,7 @@ class SequenceParameters:
         
         """
         
-        plotting.save_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), filename, label, legendOn, xLim, yLim, fontSize)
+        plotting.save_single_uverskyPlot(self.get_uversky_hydropathy(), self.get_mean_net_charge(), filename, label, title, legendOn, xLim, yLim, fontSize)
 
 
     

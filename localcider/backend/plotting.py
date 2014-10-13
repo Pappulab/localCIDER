@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.2                                                         !
+   !    Version 0.1.3                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -321,11 +321,13 @@ def finalize_DasPappu(plt, legendOn, title, xLim, yLim):
     
     # define the five regions by filling the plot
     alphaval=1
-    reg1, = plt.fill([0,0,.25],[0,.25,0],color = 'Chartreuse',alpha=alphaval, zorder=1)
-    reg2, = plt.fill([0,0,.35,.25],[.25,.35,0,0],color = 'MediumSeaGreen',alpha=alphaval,zorder=1)
-    reg3, = plt.fill([0,.35,.65,.35],[.35,.65,.35,0],color = 'DarkGreen',alpha=alphaval,zorder=1)
-    reg4, = plt.fill([0,0,.35],[.35,1,.65],color = 'Red',alpha=alphaval,zorder=1)
-    reg5, = plt.fill([.35,.65,1],[0,.35,0],color = 'Blue',alpha=alphaval,zorder=1)
+    reg1, = plt.fill([0,       0, 0.25], [0, 0.25, 0], color = 'Chartreuse',alpha=alphaval, zorder=1)
+    reg2, = plt.fill([0,       0, 0.35, 0.25],[0.25, 0.35, 0, 0], color = 'MediumSeaGreen',alpha=alphaval,zorder=1)
+    reg3, = plt.fill([0,    0.325, 0.675, 0.35],[0.35, 0.675, 0.325, 0], color = 'DarkGreen',alpha=alphaval,zorder=1)
+
+    reg4, = plt.fill([0,       0, 0.325],[0.35, 1, 0.675], color = 'Red',alpha=alphaval,zorder=1)
+
+    reg5, = plt.fill([0.35, 0.675, 1],[0, 0.325, 0], color = 'Blue',alpha=alphaval,zorder=1)
         
     # set the plot limits
     plt.xlim([0,xLim])
