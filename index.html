@@ -1,34 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>localCIDER by Pappulab</title>
+    <meta name="description" content="localCIDER : localCIDER lets you compute sequence parameters for disordered proteins">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>localCIDER</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>localCIDER</h1>
-        <p>localCIDER lets you compute sequence parameters for disordered proteins</p>
 
-        <p class="view"><a href="https://github.com/Pappulab/localCIDER">View the Project on GitHub <small>Pappulab/localCIDER</small></a></p>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Pappulab/localCIDER">View on GitHub</a>
 
+          <h1 id="project_title">localCIDER</h1>
+          <h2 id="project_tagline">localCIDER lets you compute sequence parameters for disordered proteins</h2>
 
-         <ul>
-          <li><a href="https://github.com/Pappulab/localCIDER">View On <strong>GitHub</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu">Go to <strong>Pappu lab</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu/CIDER/">Go to <strong>CIDER</strong> </a></li>
-        </ul>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Pappulab/localCIDER/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Pappulab/localCIDER/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
 
-      </header>
-      <section>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
 <a name="localcider" class="anchor" href="#localcider"><span class="octicon octicon-link"></span></a>localCIDER</h1>
 
@@ -50,7 +52,9 @@
 <li>Your own local infrastructure</li>
 <li>The ability to programmatically create analysis pipelines</li>
 <li>The fact you can operate independently of the CIDER web-server</li>
-</ul><p>Moreover, if there's a type of analysis you use frequently and you think other users would appreciate, we'd be happy to build this in to <strong>localCIDER</strong>. Adding new functionality is typically much more involved for a web-app.</p>
+</ul>
+
+<p>Moreover, if there's a type of analysis you use frequently and you think other users would appreciate, we'd be happy to build this in to <strong>localCIDER</strong>. Adding new functionality is typically much more involved for a web-app.</p>
 
 <h1>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
@@ -165,7 +169,9 @@
 </li>
 <li>
 <code>plots</code> which lets you plot certain parameters independent of sequenceParameters</li>
-</ul><p>In the next release (V 0.2.0) we'll also introduce the <code>sequencePermutant</code> code, which employs a variety of approaches to generate permutants.</p>
+</ul>
+
+<p>In the next release (V 0.2.0) we'll also introduce the <code>sequencePermutant</code> code, which employs a variety of approaches to generate permutants.</p>
 
 <h4>
 <a name="quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-pappu-das-diagram-of-states" class="anchor" href="#quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-pappu-das-diagram-of-states"><span class="octicon octicon-link"></span></a>Quick-start - calculate kappa of my sequence and plot it on the Pappu-Das diagram of states</h4>
@@ -236,10 +242,12 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <a name="sequenceparameters-functions" class="anchor" href="#sequenceparameters-functions"><span class="octicon octicon-link"></span></a>SequenceParameters functions</h3>
 
 <table>
-<thead><tr>
+<thead>
+<tr>
 <th align="center">Function name</th>
 <th align="center">Operation</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr>
 <td align="center"><code>get_FCR()</code></td>
@@ -305,24 +313,26 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </tr>
 <tr>
 <td align="center">
-<code>get_deltaMax()</code> <br><em>New in 0.1.2</em>
+<code>get_deltaMax()</code> <br> <em>New in 0.1.2</em>
 </td>
 <td align="center">Returns the maximum possible delta value for a sequence of this composition</td>
 </tr>
 <tr>
 <td align="center">
-<code>get_HTMLColorString()</code> <br><em>New in 0.1.2</em>
+<code>get_HTMLColorString()</code> <br> <em>New in 0.1.2</em>
 </td>
 <td align="center">Returns a fully formated HTML string which can be used to represent your sequence. The coloring used has a default, but can be defined using the <code>set_HTMLColorResiduePalette</code> function</td>
 </tr>
 <tr>
 <td align="center">
-<code>set_HTMLColorResiduePalette(colorDictionary)</code> <br><em>New in 0.1.2</em>
+<code>set_HTMLColorResiduePalette(colorDictionary)</code> <br> <em>New in 0.1.2</em>
 </td>
 <td align="center">Allows you to custom define a colour pallete. The colorDictionary must be a dictionary object that maps each of the 20 amino acids to a color. Currently 17 possible colors can be assigned to the 20 amino acids. These are;<br> aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, orange, purple, red, silver, teal, white, and yellow. This set of 17 colors represents the HTML browser compatible set of colors.</td>
 </tr>
 </tbody>
-</table><p>* The skewed hydrophobicity scale shifts the normal KD scale such that the lowest value is 0 (instead of -4.5) and the highest value is 9 (instead of 4.5)</p>
+</table>
+
+<p>* The skewed hydrophobicity scale shifts the normal KD scale such that the lowest value is 0 (instead of -4.5) and the highest value is 9 (instead of 4.5)</p>
 
 <p>** The normalized Kyte-Doolittle scale converts all values on the scale to fall between 0 and 1</p>
 
@@ -332,10 +342,12 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <p>The following functions augment your sequence to consider the impact of phosphorylation on the electrostatic properties. Note this makes the highly simplifying assumption that the phosphorylation of a Ser/Thr/Tyr residue simply adds a negative charge to your protein chain. In reality, many other properties of the chain are impacted by phosphorylation than simply the linear charge patterning.</p>
 
 <table>
-<thead><tr>
+<thead>
+<tr>
 <th align="center">Function name</th>
 <th align="center">Operation</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr>
 <td align="center"><code>get_all_phosphorylatable_sites()</code></td>
@@ -366,16 +378,20 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <td align="center">** UNDER DEVELOPMENT ** For each phospho-permutant, given the available phosphosites, calculate the kappa, fraction positive, fraction negative, FCR, NCPR, mean hydropathy and the phosphostatus. Phosphostatus is itself a tuple, where each position defines the phosphorylation status of each consecutive phosphosite in the sequence; 0 indicates unphosphorylated and 1 indicates phosphorylated. The function call returns a list of tuples, where each tuple contains the information described for each unique phospho-permutant. We're still determining if all this information is necessary. The assumption currently being made is that phosphorylation introduces a -1 charge only. While this may not be fully accurate, it provides a good and simple first approximation for the effect of phosphorylation.  Also note that as the number of phosphosites increases the number of calculations here scales as n^2. Be warned!</td>
 </tr>
 </tbody>
-</table><h3>
+</table>
+
+<h3>
 <a name="plotting-functions" class="anchor" href="#plotting-functions"><span class="octicon octicon-link"></span></a>Plotting functions</h3>
 
 <p>The following functions let you plot parameters from your sequence in a set of defined plots.</p>
 
 <table>
-<thead><tr>
+<thead>
+<tr>
 <th align="center">Function name</th>
 <th align="center">Operation</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr>
 <td align="center"><code>show_phaseDiagramPlot(label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
@@ -418,7 +434,9 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <td align="center">Saves a <code>matplotlib</code> generated plot of the moving avesequenceParametersrage sigma parameter along the sequence, where sigma is calculated in overlapping windows of size <code>blobLen</code>. Typically 5-7 is used (<strong>This made be changed to the default value in future releases</strong>). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
 </tr>
 </tbody>
-</table><h1>
+</table>
+
+<h1>
 <a name="plotting-with-the-plots-module" class="anchor" href="#plotting-with-the-plots-module"><span class="octicon octicon-link"></span></a>Plotting with the plots module</h1>
 
 <p>The <code>plots</code> module lets you generate or save plots without explicitly invoking sequenceParameters objects. Such plots can either be generated using the raw values, or by passing in sequenceParameters objects.</p>
@@ -443,11 +461,13 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <p>If you're analyzing a set of SequenceParameters objects you may wish to place them on the same plot. Note we do not offer this functionality for single sequences, because you can always plot a single sequence using the associated <code>SequenceParameters</code> function (e.g. <code>.show_uverskyPlot()</code> or <code>.save_phaseDiagramPlot()</code>).</p>
 
 <table>
-<thead><tr>
+<thead>
+<tr>
 <th align="center">Function name</th>
 <th align="center">Input Arguments</th>
 <th align="center">Discussion</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr>
 <td align="center"><code>show_single_phasePlot(fp, fn, label='', title='Diagram of states', legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
@@ -474,7 +494,9 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
 </tr>
 </tbody>
-</table><p>If you wish to plot a single sequence's Pappu-Das diagram of states plot or Uversky plot from a <code>SequenceParameters</code> object we suggest using the appropriate <code>SequenceParameters</code> functions (e.g.  <code>.show_uverskyDiagram()</code>, <code>.show_phaseDiagram()</code>)</p>
+</table>
+
+<p>If you wish to plot a single sequence's Pappu-Das diagram of states plot or Uversky plot from a <code>SequenceParameters</code> object we suggest using the appropriate <code>SequenceParameters</code> functions (e.g.  <code>.show_uverskyDiagram()</code>, <code>.show_phaseDiagram()</code>)</p>
 
 <h3>
 <a name="_multiple_-functions" class="anchor" href="#_multiple_-functions"><span class="octicon octicon-link"></span></a>
@@ -492,11 +514,13 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <p>The <code>save_*</code> functions save a plot to the designated file name.</p>
 
 <table>
-<thead><tr>
+<thead>
+<tr>
 <th align="center">Function name</th>
 <th align="center">Input Arguments</th>
 <th align="center">Discussion</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr>
 <td align="center"><code>show_multiple_phasePlot(fp_list, fn_list, label_list=[""], title="Diagram of states", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
@@ -544,7 +568,9 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <td align="center">No programatic output is generated, but the plot is constructed and saved at the <code>filename</code> location.</td>
 </tr>
 </tbody>
-</table><h1>
+</table>
+
+<h1>
 <a name="localcider-exceptions" class="anchor" href="#localcider-exceptions"><span class="octicon octicon-link"></span></a>
 <code>localcider</code> exceptions</h1>
 
@@ -695,11 +721,15 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 
 <ol>
 <li><strong>I get a kappa value greater than 1?!</strong></li>
-</ol><p>kappa is a ratio of your sequence's delta over the maximium possible value for a sequence of that composition. The original mechanism for computing what the maximum delta value is was using Monte Carlo simulations, but this is <em>insanely</em> expensive computationally, so for localCIDER we developed a set of heuristics which work 99% of the time. In rare cases, you may find a kappa value greater than 1, which indicates that our heuristics have failed. We try to ensure this doesn't happen, but if you do encounter a kappa greater than 1 PLEASE email the sequence to me as it represents a very rare case we haven't encountered in our testing procedures.</p>
+</ol>
+
+<p>kappa is a ratio of your sequence's delta over the maximium possible value for a sequence of that composition. The original mechanism for computing what the maximum delta value is was using Monte Carlo simulations, but this is <em>insanely</em> expensive computationally, so for localCIDER we developed a set of heuristics which work 99% of the time. In rare cases, you may find a kappa value greater than 1, which indicates that our heuristics have failed. We try to ensure this doesn't happen, but if you do encounter a kappa greater than 1 PLEASE email the sequence to me as it represents a very rare case we haven't encountered in our testing procedures.</p>
 
 <ol>
 <li><strong>I want to run localCIDER on my cluster but it has not graphical frontend and I can't get matplotlib to work</strong></li>
-</ol><p>There is a plan to release a higher performance version of localCIDER which carries out the core functionality using C++. However, that's a way off, so for now a quick hack is to do the following;</p>
+</ol>
+
+<p>There is a plan to release a higher performance version of localCIDER which carries out the core functionality using C++. However, that's a way off, so for now a quick hack is to do the following;</p>
 
 <pre><code>* Download the sourcecode and unpack - this will be a local package, and means you don't have to instal localCIDER globally
 * Move your local package to where you want to carry out the analysis
@@ -722,12 +752,16 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 
 <ul>
 <li>Turn on the sequence permutant generator and Wang-Landau density of kappa states analysis </li>
-</ul><h4>
+</ul>
+
+<h4>
 <a name="v-030" class="anchor" href="#v-030"><span class="octicon octicon-link"></span></a>V 0.3.0</h4>
 
 <ul>
 <li>Provide stand alone, command line tools for the more computationally intensive operations (to make deploying on HPC infrastructure </li>
-</ul><h2>
+</ul>
+
+<h2>
 <a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
 
 <p>localCIDER was developed in the Pappu lab by Alex Holehouse, with much of the original code written by James Ahad. Importantly, we believe scientific software should be held to same (or higher) software standards as general commercial and open source projects. To this end we use Git for version control, employ standard conventions for versioning, run an ever-expanding set of unit tests, and try to ensure all code is well structured and well documented. The source code is fully open and <a href="https://github.com/Pappulab/localCIDER">can be viewed here</a>.</p>
@@ -752,7 +786,9 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 <li>Paul Nobrega (Matthews lab) for bug reports and the Windows installation instructions</li>
 <li>Davide Mercadante (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization</li>
 <li>Katra Olsek (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization</li>
-</ul><h2>
+</ul>
+
+<h2>
 <a name="update-schedule" class="anchor" href="#update-schedule"><span class="octicon octicon-link"></span></a>Update schedule</h2>
 
 <ul>
@@ -763,12 +799,16 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 </li>
 </ul>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/Pappulab">Pappulab</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">localCIDER maintained by <a href="https://github.com/Pappulab">Pappulab</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -779,6 +819,7 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
+
 
   </body>
 </html>
