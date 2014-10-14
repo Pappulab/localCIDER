@@ -351,8 +351,6 @@ class Sequence:
         fcr = self.FCR()
         ncpr = self.NCPR()
 
-        print self.Fplus()
-
         # if we're in region 1
         if(fcr < .25):
             return 1
