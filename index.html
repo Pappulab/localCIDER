@@ -21,28 +21,27 @@
         <p class="view"><a href="https://github.com/Pappulab/localCIDER">View the Project on GitHub <small>Pappulab/localCIDER</small></a></p>
 
 
-          <ul>
+        <ul>
+          <li><a href="https://github.com/Pappulab/localCIDER/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Pappulab/localCIDER/tarball/master">Download <strong>TAR Ball</strong></a></li>
           <li><a href="https://github.com/Pappulab/localCIDER">View On <strong>GitHub</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu">Go to <strong>Pappu lab</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu/CIDER/">Go to <strong>CIDER</strong> </a></li>
         </ul>
-
       </header>
       <section>
         <h1>
-<a name="localcider" class="anchor" href="#localcider"><span class="octicon octicon-link"></span></a>localCIDER</h1>
+<a id="localcider" class="anchor" href="#localcider" aria-hidden="true"><span class="octicon octicon-link"></span></a>localCIDER</h1>
 
-<p><code>v 0.1.3 - October 13th 2014</code></p>
+<p><code>v 0.1.4 - January 16th 2015</code></p>
 
 <h1>
-<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
 
 <p><strong>CIDER</strong> <a href="http://pappulab.wustl.edu/CIDER">Classification of Intrinsically Disordered Ensemble Regions</a> is a web-server for calculating various properties of a disordered sequence. CIDER's calculations are carried out by a backend app, called localCIDER.</p>
 
 <p><strong>CIDER</strong> is useful if you want to quickly calculate some parameter on the fly. HOWEVER, for doing a large number of sequences, we recommend you instead use <strong>localCIDER</strong> and carry out the computation locally.</p>
 
 <h2>
-<a name="localcider-vs-cider" class="anchor" href="#localcider-vs-cider"><span class="octicon octicon-link"></span></a>localCIDER vs. CIDER?</h2>
+<a id="localcider-vs-cider" class="anchor" href="#localcider-vs-cider" aria-hidden="true"><span class="octicon octicon-link"></span></a>localCIDER vs. CIDER?</h2>
 
 <p><strong>localCIDER</strong> lets us provide an implicit distributed computing model to all of CIDER's calculations. Think of it this way - if 100 people have 100 sequences, we (the Pappu lab) have the burden of 10,000 calculations to perform. If everyone submitted these sequences at once, the website would slow for everyone, and maybe crash. This is a lot of work for us, and very annoying for you, the user. HOWEVER, by using <strong>localCIDER</strong> you can take advantage of</p>
 
@@ -55,15 +54,15 @@
 <p>Moreover, if there's a type of analysis you use frequently and you think other users would appreciate, we'd be happy to build this in to <strong>localCIDER</strong>. Adding new functionality is typically much more involved for a web-app.</p>
 
 <h1>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
 
 <h2>
-<a name="introduction-1" class="anchor" href="#introduction-1"><span class="octicon octicon-link"></span></a>Introduction</h2>
+<a id="introduction-1" class="anchor" href="#introduction-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
 <p><strong>localCIDER</strong> version 0.1.3 was submitted to <code>pip</code> (the Python Package Index) on the 13th of October. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to <a href="mailto:alex.holehouse@wustl.edu">alex.holehouse@wustl.edu</a>. However, many of the features are ready to go!</p>
 
 <h2>
-<a name="installing-on-osx-or-linux" class="anchor" href="#installing-on-osx-or-linux"><span class="octicon octicon-link"></span></a>Installing on OSX or linux</h2>
+<a id="installing-on-osx-or-linux" class="anchor" href="#installing-on-osx-or-linux" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing on OSX or linux</h2>
 
 <p>We recommend installing using <code>pip</code>. <code>pip</code> is a command line interface for downloading and installing packages from the Python package index (PyPI). If you don't yet have pip installed <a href="http://pip.readthedocs.org/en/latest/installing.html">see the documentation here</a>.</p>
 
@@ -79,10 +78,10 @@
 <p>If you encounter issues installing please let me know. That said, any issues <em>should</em> be due to problems with Numpy or <code>matplotlib</code> and not <strong>localCIDER</strong>, so investigate the documentation associated with installing those packages first.</p>
 
 <h3>
-<a name="known-installation-issues" class="anchor" href="#known-installation-issues"><span class="octicon octicon-link"></span></a>Known installation issues</h3>
+<a id="known-installation-issues" class="anchor" href="#known-installation-issues" aria-hidden="true"><span class="octicon octicon-link"></span></a>Known installation issues</h3>
 
 <h4>
-<a name="opensuse" class="anchor" href="#opensuse"><span class="octicon octicon-link"></span></a>OpenSuse</h4>
+<a id="opensuse" class="anchor" href="#opensuse" aria-hidden="true"><span class="octicon octicon-link"></span></a>OpenSuse</h4>
 
 <p><code>pip</code> will not install system level dependencies, so you may need to install additional packages to get matplotlib working with vanilla <code>OpenSuse</code>. Specifically</p>
 
@@ -105,7 +104,7 @@
 <p>To install <code>matplotlib</code> (NOTE the <code>-tk</code> at the end!)</p>
 
 <h4>
-<a name="ubuntu" class="anchor" href="#ubuntu"><span class="octicon octicon-link"></span></a>Ubuntu</h4>
+<a id="ubuntu" class="anchor" href="#ubuntu" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ubuntu</h4>
 
 <p>The issues for OpenSuse are also true for Ubuntu - specifically <code>Ubuntu</code> seems to need the <code>python-dev</code> package to install <code>numpy</code>, and the <code>libfreetype6-dev</code> package for to get Freetype working in <code>matplotlib</code></p>
 
@@ -114,7 +113,7 @@
 </code></pre>
 
 <h3>
-<a name="upgrading-via-pip" class="anchor" href="#upgrading-via-pip"><span class="octicon octicon-link"></span></a>Upgrading via pip</h3>
+<a id="upgrading-via-pip" class="anchor" href="#upgrading-via-pip" aria-hidden="true"><span class="octicon octicon-link"></span></a>Upgrading via pip</h3>
 
 <p>localCIDER does not automatically update, but for the next few months expect fairly regular updates. To see the historic update schedule see the end of this file.</p>
 
@@ -129,7 +128,7 @@
 </code></pre>
 
 <h2>
-<a name="installation-on-windows" class="anchor" href="#installation-on-windows"><span class="octicon octicon-link"></span></a>Installation on Windows</h2>
+<a id="installation-on-windows" class="anchor" href="#installation-on-windows" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation on Windows</h2>
 
 <p>Tested on Windows 7 64 bit</p>
 
@@ -150,7 +149,7 @@
 <p>8) Write code to use localCIDER package</p>
 
 <h1>
-<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h1>
+<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use</h1>
 
 <p>Once you have localcider installed via pip, fire up Python and <code>import</code> the localcider package;</p>
 
@@ -172,7 +171,7 @@
 <p>In the next release (V 0.2.0) we'll also introduce the <code>sequencePermutant</code> code, which employs a variety of approaches to generate permutants.</p>
 
 <h4>
-<a name="quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-pappu-das-diagram-of-states" class="anchor" href="#quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-pappu-das-diagram-of-states"><span class="octicon octicon-link"></span></a>Quick-start - calculate kappa of my sequence and plot it on the Pappu-Das diagram of states</h4>
+<a id="quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-pappu-das-diagram-of-states" class="anchor" href="#quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-pappu-das-diagram-of-states" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick-start - calculate kappa of my sequence and plot it on the Pappu-Das diagram of states</h4>
 
 <p>The following code will print the kappa value of your sequence to the terminal prompt, and then plot your sequence on a Pappu-Das phase plot, saving it in the current directory as <code>my_snazzy_plot.png</code></p>
 
@@ -188,7 +187,7 @@ SeqOb.save_phaseDiagramPlot('my_snazzy_plot')
 </code></pre>
 
 <h4>
-<a name="interactive-help" class="anchor" href="#interactive-help"><span class="octicon octicon-link"></span></a>Interactive help</h4>
+<a id="interactive-help" class="anchor" href="#interactive-help" aria-hidden="true"><span class="octicon octicon-link"></span></a>Interactive help</h4>
 
 <p><strong>localCIDER</strong> contains highly complete interactive help - for any object or function simply type <code>help(&lt;item&gt;)</code> for a complete description. For example;</p>
 
@@ -204,7 +203,7 @@ help(SeqOb.get_kappa())
 </code></pre>
 
 <h1>
-<a name="general-sequence-analysis-with-sequenceparameters" class="anchor" href="#general-sequence-analysis-with-sequenceparameters"><span class="octicon octicon-link"></span></a>General sequence analysis with SequenceParameters</h1>
+<a id="general-sequence-analysis-with-sequenceparameters" class="anchor" href="#general-sequence-analysis-with-sequenceparameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>General sequence analysis with SequenceParameters</h1>
 
 <p>The approach we recommend for accessing SequenceParameters objects is to use the following Python code;</p>
 
@@ -237,7 +236,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </code></pre>
 
 <h3>
-<a name="sequenceparameters-functions" class="anchor" href="#sequenceparameters-functions"><span class="octicon octicon-link"></span></a>SequenceParameters functions</h3>
+<a id="sequenceparameters-functions" class="anchor" href="#sequenceparameters-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>SequenceParameters functions</h3>
 
 <table>
 <thead>
@@ -335,7 +334,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <p>** The normalized Kyte-Doolittle scale converts all values on the scale to fall between 0 and 1</p>
 
 <h3>
-<a name="phosphorylation-functions" class="anchor" href="#phosphorylation-functions"><span class="octicon octicon-link"></span></a>Phosphorylation functions</h3>
+<a id="phosphorylation-functions" class="anchor" href="#phosphorylation-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Phosphorylation functions</h3>
 
 <p>The following functions augment your sequence to consider the impact of phosphorylation on the electrostatic properties. Note this makes the highly simplifying assumption that the phosphorylation of a Ser/Thr/Tyr residue simply adds a negative charge to your protein chain. In reality, many other properties of the chain are impacted by phosphorylation than simply the linear charge patterning.</p>
 
@@ -379,7 +378,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </table>
 
 <h3>
-<a name="plotting-functions" class="anchor" href="#plotting-functions"><span class="octicon octicon-link"></span></a>Plotting functions</h3>
+<a id="plotting-functions" class="anchor" href="#plotting-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Plotting functions</h3>
 
 <p>The following functions let you plot parameters from your sequence in a set of defined plots.</p>
 
@@ -435,7 +434,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </table>
 
 <h1>
-<a name="plotting-with-the-plots-module" class="anchor" href="#plotting-with-the-plots-module"><span class="octicon octicon-link"></span></a>Plotting with the plots module</h1>
+<a id="plotting-with-the-plots-module" class="anchor" href="#plotting-with-the-plots-module" aria-hidden="true"><span class="octicon octicon-link"></span></a>Plotting with the plots module</h1>
 
 <p>The <code>plots</code> module lets you generate or save plots without explicitly invoking sequenceParameters objects. Such plots can either be generated using the raw values, or by passing in sequenceParameters objects.</p>
 
@@ -444,17 +443,17 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <p>In the following discussion a <strong>single</strong> plot contains information from just one sequence, whereas a <strong>multiple</strong> plot contains sequence information from many sequences</p>
 
 <h3>
-<a name="using-plots-functions" class="anchor" href="#using-plots-functions"><span class="octicon octicon-link"></span></a>Using <code>Plots</code> functions</h3>
+<a id="using-plots-functions" class="anchor" href="#using-plots-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using <code>Plots</code> functions</h3>
 
 <p>There are two modes with which you can use plots functions;</p>
 
 <h4>
-<a name="passing-raw-parameters-to-be-plotted-single-and-multiple-plots" class="anchor" href="#passing-raw-parameters-to-be-plotted-single-and-multiple-plots"><span class="octicon octicon-link"></span></a>Passing raw parameters to be plotted (single and multiple plots)</h4>
+<a id="passing-raw-parameters-to-be-plotted-single-and-multiple-plots" class="anchor" href="#passing-raw-parameters-to-be-plotted-single-and-multiple-plots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Passing raw parameters to be plotted (single and multiple plots)</h4>
 
 <p>This may be convenient if you're plotting previously calculated values, or plotting a theoretical distribution here. Either individual values or lists of values can be passed.</p>
 
 <h3>
-<a name="passing-sequenceparameters-objects-multiple-plots-only" class="anchor" href="#passing-sequenceparameters-objects-multiple-plots-only"><span class="octicon octicon-link"></span></a>Passing SequenceParameters objects (multiple plots only)</h3>
+<a id="passing-sequenceparameters-objects-multiple-plots-only" class="anchor" href="#passing-sequenceparameters-objects-multiple-plots-only" aria-hidden="true"><span class="octicon octicon-link"></span></a>Passing SequenceParameters objects (multiple plots only)</h3>
 
 <p>If you're analyzing a set of SequenceParameters objects you may wish to place them on the same plot. Note we do not offer this functionality for single sequences, because you can always plot a single sequence using the associated <code>SequenceParameters</code> function (e.g. <code>.show_uverskyPlot()</code> or <code>.save_phaseDiagramPlot()</code>).</p>
 
@@ -497,7 +496,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <p>If you wish to plot a single sequence's Pappu-Das diagram of states plot or Uversky plot from a <code>SequenceParameters</code> object we suggest using the appropriate <code>SequenceParameters</code> functions (e.g.  <code>.show_uverskyDiagram()</code>, <code>.show_phaseDiagram()</code>)</p>
 
 <h3>
-<a name="_multiple_-functions" class="anchor" href="#_multiple_-functions"><span class="octicon octicon-link"></span></a>
+<a id="_multiple_-functions" class="anchor" href="#_multiple_-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 <code>*_multiple*_</code> functions</h3>
 
 <p>For the <code>multiple</code> plotting functions, we pass in a list of values or objects corresponding to the multiple sequences of interest. </p>
@@ -569,7 +568,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </table>
 
 <h1>
-<a name="localcider-exceptions" class="anchor" href="#localcider-exceptions"><span class="octicon octicon-link"></span></a>
+<a id="localcider-exceptions" class="anchor" href="#localcider-exceptions" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 <code>localcider</code> exceptions</h1>
 
 <p>If you're into exception handling, localcider has a set of defined exceptions (all of which inherits from the <code>Exception</code> base class) which can be access by importing localcider - i.e.</p>
@@ -585,10 +584,10 @@ localcider.PlottingException
 <p>There are a couple more but these relate to functionality not yet available in version 0.1.0</p>
 
 <h1>
-<a name="tutorials" class="anchor" href="#tutorials"><span class="octicon octicon-link"></span></a>Tutorials</h1>
+<a id="tutorials" class="anchor" href="#tutorials" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tutorials</h1>
 
 <h2>
-<a name="1-calculate-a-bunch-of-parameters-associated-with-a-sequence-i-found-on-the-internet" class="anchor" href="#1-calculate-a-bunch-of-parameters-associated-with-a-sequence-i-found-on-the-internet"><span class="octicon octicon-link"></span></a>1) Calculate a bunch of parameters associated with a sequence I found on the internet</h2>
+<a id="1-calculate-a-bunch-of-parameters-associated-with-a-sequence-i-found-on-the-internet" class="anchor" href="#1-calculate-a-bunch-of-parameters-associated-with-a-sequence-i-found-on-the-internet" aria-hidden="true"><span class="octicon octicon-link"></span></a>1) Calculate a bunch of parameters associated with a sequence I found on the internet</h2>
 
 <pre><code>from localcider.sequenceParameters import SequenceParameters
 
@@ -629,7 +628,7 @@ object.get_amino_acid_fractions()        # {'A': 0.136,
 </code></pre>
 
 <h5>
-<a name="2-get-a-list-of-kappa-values-for-a-directory-of-fasta-files" class="anchor" href="#2-get-a-list-of-kappa-values-for-a-directory-of-fasta-files"><span class="octicon octicon-link"></span></a>2) Get a list of kappa values for a directory of <code>fasta</code> files.</h5>
+<a id="2-get-a-list-of-kappa-values-for-a-directory-of-fasta-files" class="anchor" href="#2-get-a-list-of-kappa-values-for-a-directory-of-fasta-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>2) Get a list of kappa values for a directory of <code>fasta</code> files.</h5>
 
 <p><code>fasta</code> files are defined as having the following structure</p>
 
@@ -694,7 +693,7 @@ for file in filelist:
 </code></pre>
 
 <h2>
-<a name="example-3---plotting-two-sequence-on-a-single-pappu-das-phase-diagram" class="anchor" href="#example-3---plotting-two-sequence-on-a-single-pappu-das-phase-diagram"><span class="octicon octicon-link"></span></a>Example 3 - plotting two sequence on a single Pappu-Das phase diagram</h2>
+<a id="example-3---plotting-two-sequence-on-a-single-pappu-das-phase-diagram" class="anchor" href="#example-3---plotting-two-sequence-on-a-single-pappu-das-phase-diagram" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example 3 - plotting two sequence on a single Pappu-Das phase diagram</h2>
 
 <pre><code># import the plots module
 from localcider import plots
@@ -715,13 +714,13 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 </code></pre>
 
 <h2>
-<a name="faq" class="anchor" href="#faq"><span class="octicon octicon-link"></span></a>FAQ</h2>
+<a id="faq" class="anchor" href="#faq" aria-hidden="true"><span class="octicon octicon-link"></span></a>FAQ</h2>
 
 <ol>
 <li><strong>I get a kappa value greater than 1?!</strong></li>
 </ol>
 
-<p>kappa is a ratio of your sequence's delta over the maximium possible value for a sequence of that composition. The original mechanism for computing what the maximum delta value is was using Monte Carlo simulations, but this is <em>insanely</em> expensive computationally, so for localCIDER we developed a set of heuristics which work 99% of the time. In rare cases, you may find a kappa value greater than 1, which indicates that our heuristics have failed. We try to ensure this doesn't happen, but if you do encounter a kappa greater than 1 PLEASE email the sequence to me as it represents a very rare case we haven't encountered in our testing procedures.</p>
+<p>kappa is a ratio of your sequence's delta over the maximium possible value for a sequence of that composition. The original mechanism for computing what the maximum delta value is was using Monte Carlo simulations, but this is <em>insanely</em> expensive computationally, so for localCIDER we developed a set of heuristics which work 99% of the time. In rare cases, you may find a kappa value greater than 1, which indicates that our heuristics have failed. We try to ensure this doesn't happen, but if you do encounter a kappa greater than 1 PLEASE email the sequence to me as it represents a very rare case we haven't encountered in our testing procedures!</p>
 
 <ol>
 <li><strong>I want to run localCIDER on my cluster but it has not graphical frontend and I can't get matplotlib to work</strong></li>
@@ -738,34 +737,34 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 <p>If you call any functions which depend on <code>matplotlib</code> this will obviously fail, but if not it'll work just fine.</p>
 
 <h1>
-<a name="epilog" class="anchor" href="#epilog"><span class="octicon octicon-link"></span></a>Epilog</h1>
+<a id="epilog" class="anchor" href="#epilog" aria-hidden="true"><span class="octicon octicon-link"></span></a>Epilog</h1>
 
 <h2>
-<a name="localcider-roadmap" class="anchor" href="#localcider-roadmap"><span class="octicon octicon-link"></span></a>localCIDER roadmap</h2>
+<a id="localcider-roadmap" class="anchor" href="#localcider-roadmap" aria-hidden="true"><span class="octicon octicon-link"></span></a>localCIDER roadmap</h2>
 
 <p>We have a fairly well defined roadmap for the next few sets of minor release for localCIDER, with the first major release coming sometime thereafter</p>
 
 <h4>
-<a name="v-020" class="anchor" href="#v-020"><span class="octicon octicon-link"></span></a>V 0.2.0</h4>
+<a id="v-020" class="anchor" href="#v-020" aria-hidden="true"><span class="octicon octicon-link"></span></a>V 0.2.0</h4>
 
 <ul>
 <li>Turn on the sequence permutant generator and Wang-Landau density of kappa states analysis </li>
 </ul>
 
 <h4>
-<a name="v-030" class="anchor" href="#v-030"><span class="octicon octicon-link"></span></a>V 0.3.0</h4>
+<a id="v-030" class="anchor" href="#v-030" aria-hidden="true"><span class="octicon octicon-link"></span></a>V 0.3.0</h4>
 
 <ul>
 <li>Provide stand alone, command line tools for the more computationally intensive operations (to make deploying on HPC infrastructure </li>
 </ul>
 
 <h2>
-<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
+<a id="about" class="anchor" href="#about" aria-hidden="true"><span class="octicon octicon-link"></span></a>About</h2>
 
 <p>localCIDER was developed in the Pappu lab by Alex Holehouse, with much of the original code written by James Ahad. Importantly, we believe scientific software should be held to same (or higher) software standards as general commercial and open source projects. To this end we use Git for version control, employ standard conventions for versioning, run an ever-expanding set of unit tests, and try to ensure all code is well structured and well documented. The source code is fully open and <a href="https://github.com/Pappulab/localCIDER">can be viewed here</a>.</p>
 
 <h2>
-<a name="references" class="anchor" href="#references"><span class="octicon octicon-link"></span></a>References</h2>
+<a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h2>
 
 <p><strong>[1]</strong> <strong>A. Campen, R.M. Williams, C.J. Brown, J. Meng, V.N. Uversky, A.K. Dunker</strong>. (2008) <a href="http://www.ncbi.nlm.nih.gov/pubmed/18991772"><em>Protein Pept Lett.</em> 15(9) pp 956 - 963</a></p>
 
@@ -776,19 +775,20 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 <p><strong>[4]</strong> <strong>V. Uversky</strong> (2002) <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2373528/"><em>Protein Sci. Apr</em> 11(4) pp 739 - 756</a></p>
 
 <h2>
-<a name="thanks" class="anchor" href="#thanks"><span class="octicon octicon-link"></span></a>Thanks</h2>
+<a id="thanks" class="anchor" href="#thanks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Thanks</h2>
 
 <p>Many people have been involved in this project. We'll try and include an up-to-date list here;</p>
 
 <ul>
-<li>Paul Nobrega (Matthews lab) for bug reports and the Windows installation instructions</li>
+<li>Paul Nobrega (University of Massachusetts) for bug reports and the Windows installation instructions</li>
 <li>Davide Mercadante (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization</li>
 <li>Katra Olsek (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization</li>
 <li>Alex Chin (Johns Hopkins University) for a crucial bug report</li>
+<li>Thomas Pranzatelli (Washington University in St. Louis) for testing and bug reports</li>
 </ul>
 
 <h2>
-<a name="update-schedule" class="anchor" href="#update-schedule"><span class="octicon octicon-link"></span></a>Update schedule</h2>
+<a id="update-schedule" class="anchor" href="#update-schedule" aria-hidden="true"><span class="octicon octicon-link"></span></a>Update schedule</h2>
 
 <ul>
 <li>version 0.1.0 [August 10th 2014]</li>
@@ -797,6 +797,8 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 <li>version 0.1.2 <a href="more%20tests,%20fixed%20heuristic%20bugs%20in%20extreme%20kappa%20sequences,%20significant%20improvement%20on%20plotting%20customization,%20cleaned%20up%20docs%20and%20code%20documentation">October 1st 2014</a>
 </li>
 <li>version 0.1.3 <a href="more%20tests,%20corrected%20a%20bug%20introduced%20in%200.1.2%20for%20sequences%20with%20no%20neutral%20residues,%20corrected%20a%20bug%20in%20how%20titles/labels%20were%20assigned%20by%20default,%20improved%20how%20classification%20into%20the%205%20regions%20is%20done,%20and%20explicitly%20allow%20for%20regions%204%20(positive%20electrolytes)%20and%205%20(negative%20electrolytes)%20rather%20than%20general%20polyelectrolytes">October 13th 2014</a>
+</li>
+<li>version 0.1.4 <a href="corrected%20bug%20in%20the%20way%20KD%20hydrophobicity%20was%20calculated%20-%20alanine%20incorrectly%20set%20to%200">January 16th 2014</a>
 </li>
 </ul>
       </section>
