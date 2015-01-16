@@ -1,6 +1,6 @@
 # localCIDER
 
-`v 0.1.3 - October 13th 2014`
+`v 0.1.4 - January 16th 2015`
 
 
 # Introduction
@@ -431,7 +431,7 @@ Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a cano
 
 1. **I get a kappa value greater than 1?!**
 
-kappa is a ratio of your sequence's delta over the maximium possible value for a sequence of that composition. The original mechanism for computing what the maximum delta value is was using Monte Carlo simulations, but this is *insanely* expensive computationally, so for localCIDER we developed a set of heuristics which work 99% of the time. In rare cases, you may find a kappa value greater than 1, which indicates that our heuristics have failed. We try to ensure this doesn't happen, but if you do encounter a kappa greater than 1 PLEASE email the sequence to me as it represents a very rare case we haven't encountered in our testing procedures.
+kappa is a ratio of your sequence's delta over the maximium possible value for a sequence of that composition. The original mechanism for computing what the maximum delta value is was using Monte Carlo simulations, but this is *insanely* expensive computationally, so for localCIDER we developed a set of heuristics which work 99% of the time. In rare cases, you may find a kappa value greater than 1, which indicates that our heuristics have failed. We try to ensure this doesn't happen, but if you do encounter a kappa greater than 1 PLEASE email the sequence to me as it represents a very rare case we haven't encountered in our testing procedures!
 
 2. **I want to run localCIDER on my cluster but it has not graphical frontend and I can't get matplotlib to work**
 
@@ -475,10 +475,12 @@ localCIDER was developed in the Pappu lab by Alex Holehouse, with much of the or
 ## Thanks
 Many people have been involved in this project. We'll try and include an up-to-date list here;
 
-* Paul Nobrega (Matthews lab) for bug reports and the Windows installation instructions
+* Paul Nobrega (University of Massachusetts) for bug reports and the Windows installation instructions
 * Davide Mercadante (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization
 * Katra Olsek (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization
 * Alex Chin (Johns Hopkins University) for a crucial bug report
+* Thomas Pranzatelli (Washington University in St. Louis) for testing and bug reports
+ 
 
 ## Update schedule
 
@@ -486,6 +488,7 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * version 0.1.1 [August 14th 2014] (minor bug fixes, more tests, improved sequence parsing)
 * version 0.1.2 [October 1st 2014] (more tests, fixed heuristic bugs in extreme kappa sequences, significant improvement on plotting customization, cleaned up docs and code documentation)
 * version 0.1.3 [October 13th 2014] (more tests, corrected a bug introduced in 0.1.2 for sequences with no neutral residues, corrected a bug in how titles/labels were assigned by default, improved how classification into the 5 regions is done, and explicitly allow for regions 4 (positive electrolytes) and 5 (negative electrolytes) rather than general polyelectrolytes)
+* version 0.1.4 [January 16th 2014] (corrected bug in the way KD hydrophobicity was calculated - alanine incorrectly set to 0)
 
 
 ----------

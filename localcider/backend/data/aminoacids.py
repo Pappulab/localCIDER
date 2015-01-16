@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.3                                                         !
+   !    Version 0.1.4                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -173,6 +173,33 @@ def get_KD_original():
              'LYS': -3.9,
              'ARG': -4.5}
 
+def get_residue_charge():
+    """ Function which returns the original KD hydropathy lookup table
+    """    
+    
+    return  {'ILE': 0,                
+             'VAL': 0,
+             'LEU': 0,
+             'PHE': 0,
+             'CYS': 0,
+             'MET': 0,
+             'ALA': 0,
+             'GLY': 0,
+             'THR': 0,
+             'SER': 0,
+             'TRP': 0,
+             'TYR': 0,
+             'PRO': 0,
+             'HIS': 0,
+             'GLU': -1,
+             'GLN': 0,
+             'ASP': -1,
+             'ASN': 0,
+             'LYS': 1,
+             'ARG': 1}
+
+
+
 def get_KD_shifted():
     """ 
     Function which returns the shifted KD hydropathy lookup table (such that
@@ -261,32 +288,63 @@ def build_amino_acids_skeleton():
     The default hydrophobicity is an augmented Kyte-Doolitle where
     0 = most hydrophilic and 9 is most hydrophobic
 
+    This is a weird way of doing this but essentially it means we define
+    the charge and hydrophobicity in one place (in separate functions)
+    and then construct the skeleton before appending those values to the
+    amino acid skeleton.
+
+    The advantage of this is we can add further information to induvidual 
+    amino acids. 
+
     """
     
-    return [["Alanine",        "ALA", "A", 0,  0],
-            ["Cysteine",       "CYS", "C", 7.0,  0],
-            ["Aspartic_Acid",  "ASP", "D", 1.0, -1],
-            ["Glutamic_Acid",  "GLU", "E", 1.0, -1],
-            ["Phenylalanine",  "PHE", "F", 7.3,  0],
-            ["Glycine",        "GLY", "G", 4.1,  0],
-            ["Histidine",      "HIS", "H", 1.3,  0],
-            ["Isoleucine",     "ILE", "I", 9.0,  0],
-            ["Lysine",         "LYS", "K", 0.6,  1],
-            ["Leucine",        "LEU", "L", 8.3,  0],
-            ["Methionine",     "MET", "M", 6.4,  0],
-            ["Asparagine",     "ASN", "N", 1.0,  0],
-            ["Proline",        "PRO", "P", 2.9,  0],
-            ["Glutamine",      "GLN", "Q", 1.0,  0],
-            ["Arginine",       "ARG", "R", 0.0,  1],
-            ["Serine",         "SER", "S", 3.7,  0],
-            ["Threonine",      "THR", "T", 3.8,  0],
-            ["Valine",         "VAL", "V", 8.7,  0],
-            ["Tryptophan",     "TRP", "W", 3.6,  0],
-            ["Tyrosine",       "TYR", "Y", 3.2,  0]]
+    # get a dictionary of 3 letter to charge
+    charge_Dict = get_residue_charge()
+
+    # get a dictionary of 3 letter to KD hydrophobicity
+    KD_Dict     = get_KD_shifted()
     
+    # build the initial skeleton of amnino acids 
+    skeleton=[["Alanine",        "ALA", "A"],
+            ["Cysteine",       "CYS", "C"],
+            ["Aspartic_Acid",  "ASP", "D"],
+            ["Glutamic_Acid",  "GLU", "E"],
+            ["Phenylalanine",  "PHE", "F"],
+            ["Glycine",        "GLY", "G"],
+            ["Histidine",      "HIS", "H"],
+            ["Isoleucine",     "ILE", "I"],
+            ["Lysine",         "LYS", "K"],
+            ["Leucine",        "LEU", "L"],
+            ["Methionine",     "MET", "M"],
+            ["Asparagine",     "ASN", "N"],
+            ["Proline",        "PRO", "P"],
+            ["Glutamine",      "GLN", "Q"],
+            ["Arginine",       "ARG", "R"],
+            ["Serine",         "SER", "S"],
+            ["Threonine",      "THR", "T"],
+            ["Valine",         "VAL", "V"],
+            ["Tryptophan",     "TRP", "W"],
+            ["Tyrosine",       "TYR", "Y"]]
+
+
+    # for each residue update with further information
+    for res in skeleton:
+
+        # update this residue with the charge value
+        res.append(KD_Dict[res[1]])
+
+        # update this residue with the KD hydrophobicity
+        res.append(charge_Dict[res[1]])
+    
+    return skeleton
     
 
 def update_hydrophobicity(aalist, scale):
+    """
+    Function which lets you update the hydrophobicity of an amino
+    acid to your own scale.
+
+    """
     
     index=0
     for i in aalist:
