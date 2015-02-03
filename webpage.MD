@@ -112,9 +112,9 @@ There are two main localcider modules right now;
 
 In the next release (V 0.2.0) we'll also introduce the `sequencePermutant` code, which employs a variety of approaches to generate permutants.
 
-#### Quick-start - calculate kappa of my sequence and plot it on the Pappu-Das diagram of states 
+#### Quick-start - calculate kappa of my sequence and plot it on the Das-Pappu diagram of states 
 
-The following code will print the kappa value of your sequence to the terminal prompt, and then plot your sequence on a Pappu-Das phase plot, saving it in the current directory as `my_snazzy_plot.png`
+The following code will print the kappa value of your sequence to the terminal prompt, and then plot your sequence on a Das-Pappu phase plot, saving it in the current directory as `my_snazzy_plot.png`
 
     # import the relevant code
     from localcider.sequenceParameters import SequenceParameters
@@ -191,10 +191,10 @@ Function name | Operation
 `get_fraction_disorder_promoting()` | Get the fraction of residues predicted to be 'disorder promoting' [REF 1]
 `get_kappa()` | Get the kappa value of the sequence [REF 2]
 `get_mean_net_charge()` | Get the absolute mean net charge of your sequence
-`get_phase_plot_region()` | Get the region on the Pappu-Das diagram of states where your sequence falls [2]
+`get_phase_plot_region()` | Get the region on the Das-Pappu diagram of states where your sequence falls [2]
 `get_mean_hydropathy()` | Get the mean hydropathy as calculated from a skewed Kyte-Doolittle hydrophobicity scale* [REF 3]
 `get_uversky_hydropathy()` | Get the mean hydropathy as calculated from a normalized Kyte-Doolittle hydrophobicity scale\*\* [REF 3 REF 4]
-`get_delta()` <br>*New in 0.1.2* | Returns the delta value of the sequence, as defined in the Pappu-Das paper [2]
+`get_delta()` <br>*New in 0.1.2* | Returns the delta value of the sequence, as defined in the Das-Pappu paper [2]
 `get_deltaMax()` <br> *New in 0.1.2* | Returns the maximum possible delta value for a sequence of this composition
 `get_HTMLColorString()` <br> *New in 0.1.2*| Returns a fully formated HTML string which can be used to represent your sequence. The coloring used has a default, but can be defined using the `set_HTMLColorResiduePalette` function
 `set_HTMLColorResiduePalette(colorDictionary)` <br> *New in 0.1.2*| Allows you to custom define a colour pallete. The colorDictionary must be a dictionary object that maps each of the 20 amino acids to a color. Currently 17 possible colors can be assigned to the 20 amino acids. These are;<br> aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, orange, purple, red, silver, teal, white, and yellow. This set of 17 colors represents the HTML browser compatible set of colors.
@@ -222,12 +222,12 @@ The following functions let you plot parameters from your sequence in a set of d
 
 Function name | Operation 
 :---: | :---: 
-`show_phaseDiagramPlot(label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)`| Renders a `matplotlib` Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. `label` can be a string which labels your sequence on the plot. `legendOn` defines if the regions labels are included as a legend. `xLim` and `yLim` define the max values for the X and Y axes. `fontSize` defines the size of the label font. `getFig` defines if a matplotlib object is returned instead of being rendered. 
+`show_phaseDiagramPlot(label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)`| Renders a `matplotlib` Das-Pappu diagram of states plot with your sequence on the diagram<sup>[2]</sup>. `label` can be a string which labels your sequence on the plot. `legendOn` defines if the regions labels are included as a legend. `xLim` and `yLim` define the max values for the X and Y axes. `fontSize` defines the size of the label font. `getFig` defines if a matplotlib object is returned instead of being rendered. 
 `show_uverskyDiagramPlot(label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)`| Renders a `matplotlib` Uversky plot with your sequence on the diagram<sup>[4]</sup>. `label` can be a string which labels your sequence on the plot. `legendOn` defines if the regions labels are included as a legend. `xLim` and `yLim` define the max values for the X and Y axes. `fontSize` defines the size of the label font. `getFig` defines if a matplotlib object is returned instead of being rendered.
 `show_linearHydropathy(blobLen=5, getFig=False)`| Renders a `matplotlib` plot of the moving average hydropathy along the sequence, where the hydropathy is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used (**This made be changed to the default value in future releases**). `getFig` defines if a matplotlib object is returned instead of being rendered.
 `show_linearNCPR(blobLen=5, getFig=False)` | Renders a `matplotlib` plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used (**This made be changed to the default value in future releases**). `getFig` defines if a matplotlib object is returned instead of being rendered.
 `show_linearSigma(blobLen=5, getFig=False)` | Renders a `matplotlib` plot of the moving average sigma parameter along the sequence, where sigma is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used (**This made be changed to the default value in future releases**). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR. `getFig` defines if a matplotlib object is returned instead of being rendered.
-`save_phaseDiagram_plot(filename, label="")` | Renders a `matplotlib` Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. `label` can be a string which labels your sequence on the plot. The plot is saved in the `filename` location (`.png` is appended).
+`save_phaseDiagram_plot(filename, label="")` | Renders a `matplotlib` Das-Pappu diagram of states plot with your sequence on the diagram<sup>[2]</sup>. `label` can be a string which labels your sequence on the plot. The plot is saved in the `filename` location (`.png` is appended).
 `save_uverskyDiagram_plot(filename, label="")` | Renders a `matplotlib` Uversky plot with your sequence on the diagram<sup>[4]</sup>. `label` can be a string which labels your sequence on the plot. The plot is saved in the `filename` location (`.png` is appended).
 `save_linearHydropathy(blobLen, filename)` | Renders a `matplotlib` plot of the moving average hydropathy along the sequence, where the hydropathy is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used (**This made be changed to the default value in future releases**). The plot is saved in the `filename` location (`.png` is appended).
 `save_linearNCPR(blobLen, filename)`| Renders a `matplotlib` plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used (**This made be changed to the default value in future releases**). The plot is saved in the `filename` location (`.png` is appended).
@@ -260,7 +260,7 @@ Function name | Input Arguments | Discussion
 `save_single_phasePlot(fp, fn, filename, label='', title='Diagram of states', legendOn=True, xLim=1, yLim=1, fontSize=10)` | `fp` is the fraction of positive residues in a sequence, `fn` is the fraction of negative residues in a sequence. `filename` is the name of the file to save the plot as (`.png` is appended). `label`, if included, should be a string with which the sequence on the plot is labelled. `title`, if provided, sets the plot title. `legendOn` defines if the 5-region legend for the phase diagram plot is included. `xLim` and `yLim` define the max values for the X and Y axes. `fontSize` defines the size of the label font. | No programatic output is generated, but the plot is constructed and saved at the `filename` location. 
 `save_single_uverskyPlot(hydropathy, mean_net_charge, filename, label='', title='Uversky plot', legendOn=True, xLim=1, yLim=1, fontSize=10)` | `hydropathy` is the sequence's 0-1 normalized hydropathy, while `mean_net_charge` is the the absolute value of the sequence's mean net charge. `filename` is the name of the file to save the plot as (`.png` is appended). `label`, if included, should be a string with which the sequence on the plot is labelled. `title`, if provided, sets the plot title. `legendOn` defines if the 5-region legend for the phase diagram plot is included. `xLim` and `yLim` define the max values for the X and Y axes. `fontSize` defines the size of the label font. | No programatic output is generated, but the plot is constructed and saved at the `filename` location.
 
-If you wish to plot a single sequence's Pappu-Das diagram of states plot or Uversky plot from a `SequenceParameters` object we suggest using the appropriate `SequenceParameters` functions (e.g.  `.show_uverskyDiagram()`, `.show_phaseDiagram()`)
+If you wish to plot a single sequence's Das-Pappu diagram of states plot or Uversky plot from a `SequenceParameters` object we suggest using the appropriate `SequenceParameters` functions (e.g.  `.show_uverskyDiagram()`, `.show_phaseDiagram()`)
 
 ### `*_multiple*_` functions
 
@@ -407,7 +407,7 @@ Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a cano
 	      continue
 
 
-## Example 3 - plotting two sequence on a single Pappu-Das phase diagram
+## Example 3 - plotting two sequence on a single Das-Pappu phase diagram
 
 	# import the plots module
     from localcider import plots
