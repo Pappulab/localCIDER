@@ -37,10 +37,6 @@
 <p><code>v 0.1.4 - January 16th 2015</code></p>
 
 <h1>
-<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
-
-<p><strong>CIDER</strong> <a href="http://pappulab.wustl.edu/CIDER">Classification of Intrinsically Disordered Ensemble Regions</a> is a web-server for calculating various properties of a disordered sequence. CIDER's calculations are carried out by a backend app, called localCIDER.</p>
-
 <p><strong>CIDER</strong> is useful if you want to quickly calculate some parameter on the fly. HOWEVER, for doing a large number of sequences, we recommend you instead use <strong>localCIDER</strong> and carry out the computation locally.</p>
 
 <h2>
@@ -174,9 +170,9 @@
 <p>In the next release (V 0.2.0) we'll also introduce the <code>sequencePermutant</code> code, which employs a variety of approaches to generate permutants.</p>
 
 <h4>
-<a id="quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-pappu-das-diagram-of-states" class="anchor" href="#quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-pappu-das-diagram-of-states" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick-start - calculate kappa of my sequence and plot it on the Pappu-Das diagram of states</h4>
+<a id="quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-das-pappu-diagram-of-states" class="anchor" href="#quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-das-pappu-diagram-of-states" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick-start - calculate kappa of my sequence and plot it on the Das-Pappu diagram of states</h4>
 
-<p>The following code will print the kappa value of your sequence to the terminal prompt, and then plot your sequence on a Pappu-Das phase plot, saving it in the current directory as <code>my_snazzy_plot.png</code></p>
+<p>The following code will print the kappa value of your sequence to the terminal prompt, and then plot your sequence on a Das-Pappu phase plot, saving it in the current directory as <code>my_snazzy_plot.png</code></p>
 
 <pre><code># import the relevant code
 from localcider.sequenceParameters import SequenceParameters
@@ -295,7 +291,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </tr>
 <tr>
 <td align="center"><code>get_phase_plot_region()</code></td>
-<td align="center">Get the region on the Pappu-Das diagram of states where your sequence falls [2]</td>
+<td align="center">Get the region on the Das-Pappu diagram of states where your sequence falls [2]</td>
 </tr>
 <tr>
 <td align="center"><code>get_mean_hydropathy()</code></td>
@@ -309,7 +305,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <td align="center">
 <code>get_delta()</code> <br><em>New in 0.1.2</em>
 </td>
-<td align="center">Returns the delta value of the sequence, as defined in the Pappu-Das paper [2]</td>
+<td align="center">Returns the delta value of the sequence, as defined in the Das-Pappu paper [2]</td>
 </tr>
 <tr>
 <td align="center">
@@ -395,7 +391,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 <tbody>
 <tr>
 <td align="center"><code>show_phaseDiagramPlot(label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
-<td align="center">Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. <code>label</code> can be a string which labels your sequence on the plot. <code>legendOn</code> defines if the regions labels are included as a legend. <code>xLim</code> and <code>yLim</code> define the max values for the X and Y axes. <code>fontSize</code> defines the size of the label font. <code>getFig</code> defines if a matplotlib object is returned instead of being rendered.</td>
+<td align="center">Renders a <code>matplotlib</code> Das-Pappu diagram of states plot with your sequence on the diagram<sup>[2]</sup>. <code>label</code> can be a string which labels your sequence on the plot. <code>legendOn</code> defines if the regions labels are included as a legend. <code>xLim</code> and <code>yLim</code> define the max values for the X and Y axes. <code>fontSize</code> defines the size of the label font. <code>getFig</code> defines if a matplotlib object is returned instead of being rendered.</td>
 </tr>
 <tr>
 <td align="center"><code>show_uverskyDiagramPlot(label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)</code></td>
@@ -415,7 +411,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </tr>
 <tr>
 <td align="center"><code>save_phaseDiagram_plot(filename, label="")</code></td>
-<td align="center">Renders a <code>matplotlib</code> Pappu-Das diagram of states plot with your sequence on the diagram<sup>[2]</sup>. <code>label</code> can be a string which labels your sequence on the plot. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
+<td align="center">Renders a <code>matplotlib</code> Das-Pappu diagram of states plot with your sequence on the diagram<sup>[2]</sup>. <code>label</code> can be a string which labels your sequence on the plot. The plot is saved in the <code>filename</code> location (<code>.png</code> is appended).</td>
 </tr>
 <tr>
 <td align="center"><code>save_uverskyDiagram_plot(filename, label="")</code></td>
@@ -496,7 +492,7 @@ seqOb = SequenceParameters(sequenceFile="syn.fasta")
 </tbody>
 </table>
 
-<p>If you wish to plot a single sequence's Pappu-Das diagram of states plot or Uversky plot from a <code>SequenceParameters</code> object we suggest using the appropriate <code>SequenceParameters</code> functions (e.g.  <code>.show_uverskyDiagram()</code>, <code>.show_phaseDiagram()</code>)</p>
+<p>If you wish to plot a single sequence's Das-Pappu diagram of states plot or Uversky plot from a <code>SequenceParameters</code> object we suggest using the appropriate <code>SequenceParameters</code> functions (e.g.  <code>.show_uverskyDiagram()</code>, <code>.show_phaseDiagram()</code>)</p>
 
 <h3>
 <a id="_multiple_-functions" class="anchor" href="#_multiple_-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>
@@ -696,7 +692,7 @@ for file in filelist:
 </code></pre>
 
 <h2>
-<a id="example-3---plotting-two-sequence-on-a-single-pappu-das-phase-diagram" class="anchor" href="#example-3---plotting-two-sequence-on-a-single-pappu-das-phase-diagram" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example 3 - plotting two sequence on a single Pappu-Das phase diagram</h2>
+<a id="example-3---plotting-two-sequence-on-a-single-das-pappu-phase-diagram" class="anchor" href="#example-3---plotting-two-sequence-on-a-single-das-pappu-phase-diagram" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example 3 - plotting two sequence on a single Das-Pappu phase diagram</h2>
 
 <pre><code># import the plots module
 from localcider import plots
