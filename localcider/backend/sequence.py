@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.4                                                         !
+   !    Version 0.1.5                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -69,8 +69,10 @@ import itertools
 from backendtools import return_absolute_datafile_path, warning_message, verifyType, status_message, warning_message
 from restable import ResTable
 from data import aminoacids
+from data.highComplexitySequences import maxComplexity
 import data  
 from localciderExceptions import SequenceException
+import zlib
 
 
 ######################
@@ -235,6 +237,21 @@ class Sequence:
             AADICT[i] = float(AADICT[i])/float(len(self.seq))
         
         return AADICT
+
+
+    #...................................................................................#
+    def raw_sequence_complexity(self):
+        """ Return the normalized sequence complexity, where normalization
+            occurs relative to a random string of the same length.
+
+            Note that we are explicitly defining sequence complexity based on the ability
+            to minimally encode that specific sequence.
+        """
+        
+        if self.len > 1000:
+            raise SequenceException("Currently only sequences less than 1000 residues are subject to sequence complexity analysis - also, this feature is actually not officially out yet!")
+            
+        return float(len(zlib.compress(self.seq)))/maxComplexity[self.len]
 
 
     #...................................................................................#

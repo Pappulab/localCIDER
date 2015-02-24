@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.4                                                         !
+   !    Version 0.1.5                                                         !
    !--------------------------------------------------------------------------!
    
    File Description:
@@ -358,7 +358,8 @@ def show_multiple_uverskyPlot2(SeqParam_list, label_list=[], title="Uversky plot
     hydropathy_list = []
     mean_net_charge_list = []
     for seq in SeqParam_list:
-        hydropathy_list.append(seq.get_uversky_hydrophobicity())
+
+        hydropathy_list.append(seq.get_uversky_hydropathy())
         mean_net_charge_list.append(seq.get_mean_net_charge())
 
     return plotting.show_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, label_list, title, legendOn, xLim, yLim, fontSize, getFig)
@@ -425,7 +426,7 @@ def save_multiple_uverskyPlot2(SeqParam_list, filename, label_list=[], title="Uv
     hydropathy_list = []
     mean_net_charge_list = []
     for seq in SeqParam_list:
-        hydropathy_list.append(seq.get_uversky_hydrophobicity())
+        hydropathy_list.append(seq.get_uversky_hydropathy())
         mean_net_charge_list.append(seq.get_mean_net_charge())
 
 

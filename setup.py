@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='localcider',
-    version='0.1.4',
+    version='0.1.5',
     author='Alex Holehouse',
     author_email='alex.holehouse@wustl.edu',
     packages=['localcider', 'localcider.tests', 'localcider.backend', 'localcider.backend.data'],
