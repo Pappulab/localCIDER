@@ -6,16 +6,18 @@
 
 update_version() {
     
-    if [ ! "$#" == "1" ]
+    if [ ! "$#" == "2" ]
     then
-	echo "FAIL - PASS A VERSION"
+	echo "FAIL - PASS PREVIOUS AND NEW VERSION"
 	return
     fi
     
+    PREV=$1
+    NEW=$2
     # first print everything which matches
     echo " ALL MATCHING ---> "
-    grep "!    Version 0.1.1" *.py
-    echo "This will update the version of all python files in this directory to" $2
+    grep "!    Version ${PREV}" *.py
+    echo "This will update the version of all python files in this directory to" $NEW
 
     echo "Enter Y to continue"
     read ok
@@ -27,7 +29,7 @@ update_version() {
 	do
 	    echo $i
 	    echo $1
-	    sed -i.bak s/"!    Version 0.1.1"/"!    Version $1"/g $i
+	    sed -i.bak s/"!    Version ${PREV}"/"!    Version ${NEW}"/g $i
 	done
     else
 	echo "ABORT"
