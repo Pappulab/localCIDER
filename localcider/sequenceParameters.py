@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.6                                                         !
+   !    Version 0.1.7                                                         !
    !--------------------------------------------------------------------------!
    
    File Description:
@@ -605,6 +605,28 @@ class SequenceParameters:
 
         plotting.save_linearplot(plotting.build_NCPR_plot, self.SeqObj, blobLen, filename)
 
+    #...................................................................................#
+    def save_linearFCR(self, filename, blobLen=5):
+        """ 
+        Generates a plot of how the FCR (fraction of charged residues) changes as we move
+        along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
+        approach and calculates the average within that window.
+        
+        INPUT:  
+        --------------------------------------------------------------------------------
+        filename | Name of the file to write
+        bloblen  | Set the windowsize (DEFAULT = 5)
+        
+
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Nothing, but creates a .png file at the filename location
+
+
+        """
+
+        plotting.save_linearplot(plotting.build_FCR_plot, self.SeqObj, blobLen, filename)
+
 
     #...................................................................................#
     def save_linearSigma(self, filename, blobLen=5):
@@ -677,6 +699,27 @@ class SequenceParameters:
         """
 
         return plotting.show_linearplot(plotting.build_NCPR_plot, self.SeqObj, blobLen, getFig)
+
+    #...................................................................................#
+    def show_linearFCR(self, blobLen=5, getFig=False):
+        """ 
+        Generates a plot of how the FCR (fraction of charged residues) changes as we move
+        along the linear amino acid sequence in blobLen size steps. This uses a sliding window 
+        approach and calculates the average within that window.
+
+        INPUT:  
+        --------------------------------------------------------------------------------
+        bloblen  | Set the windowsize (DEFAULT = 5)
+        getFig   | Do you want to get the matplotlib figure object (DEFAULY = FALSE)
+
+
+        OUTPUT: 
+        --------------------------------------------------------------------------------
+        Nothing, but the plot is displayed on screen
+
+        """
+
+        return plotting.show_linearplot(plotting.build_FCR_plot, self.SeqObj, blobLen, getFig)
 
 
     #...................................................................................#

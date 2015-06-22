@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.6                                                         !
+   !    Version 0.1.7                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -446,6 +446,11 @@ def save_linearNCPR(SeqObj, blobLen, filename):
 
 
 #...................................................................................#
+def save_linearFCR(SeqObj, blobLen, filename):
+    save_linearplot(build_FCR_plot, SeqObj, blobLen, filename)
+
+
+#...................................................................................#
 def save_linearSigma(SeqObj, blobLen, filename):
     save_linearplot(build_sigma_plot, SeqObj, blobLen, filename)
 
@@ -454,7 +459,8 @@ def save_linearSigma(SeqObj, blobLen, filename):
 def save_linearHydropathy(SeqObj, blobLen, filename):
     save_linearplots(build_hydropathy_plot, SeqObj, blobLen, filename)
 
-
+#
+#
 #...................................................................................#
 def show_linearNCPR(SeqObj, blobLen, getFig=False):
     if getFig:
@@ -462,6 +468,13 @@ def show_linearNCPR(SeqObj, blobLen, getFig=False):
     else:
         show_linearplot(build_NCPR_plot, SeqObj, blobLen, getFig)
 
+
+#...................................................................................#
+def show_linearFCR(SeqObj, blobLen, getFig=False):
+    if getFig:
+        return show_linearplot(build_FCR_plot, SeqObj, blobLen, getFig)
+    else:
+        show_linearplot(build_FCR_plot, SeqObj, blobLen, getFig)
 
 #...................................................................................#
 def show_linearSigma(SeqObj, blobLen, getFig=False):
@@ -488,18 +501,39 @@ def show_linearHydropathy(SeqObj, blobLen, getFig=False):
 ##
 
 
-def __build_linear_plot(data, title="", xlabel="Blob index", ylabel="", ylimits=[-0.1, 1.1]):
+def __build_linear_plot(data, title="", xlabel="Blob index", ylabel="", ylimits=[0, 1], hline=None, setPositiveNegativeBars=False):
     """
-    Internal plot which expects data to be a Nx2 matrix (np.vstack) where column 1
+    Internal function which expects data to be a Nx2 matrix (np.vstack) where column 1
     is the x values and column 2 is the y values. It also assumes the Y values
-    are scaled to between 0 and 1 (so Y-axis limits are -0.1 and +1.1)
+    are scaled to between 0 and 1 (so Y-axis limits are 0 and 1)
+
+    hline defines a list of horizontal lines = so [0.2,-0.2] would draw horizontal lines
+    
+
     """
     
     # plot the data
-    plt.plot(data[0,:], data[1,:])
+    barlist = plt.bar(data[0,:], data[1,:],width=1,linewidth=1.1,edgecolor='k',color='#A8A8A8')
+
+    # this is really inefficient but means we have a consistent
+    #
+    if setPositiveNegativeBars:
+        for bar in xrange(0, len(barlist)):
+            if data[1,bar] < 0:
+                barlist[bar].set_color('r')
+                barlist[bar].set_edgecolor('k')
+            else:
+                barlist[bar].set_color('b')
+                barlist[bar].set_edgecolor('k')
+
+        # draw mao lines
+        plt.plot([0,len(barlist)],[0.26,0.26],color='k',linewidth=1.5,linestyle="--")
+        plt.plot([0,len(barlist)],[-0.26,-0.26],color='k',linewidth=1.5,linestyle="--")
+        
 
     # set Y lims
-    plt.ylim( ylimits)
+    plt.ylim(ylimits)
+    plt.xlim([1,len(data[0,:])])
 
     axes_pro = FontProperties()
     axes_pro.set_size('large')
@@ -527,9 +561,25 @@ def build_NCPR_plot(SeqObj, blobLen):
     try:
         plt = __build_linear_plot(SeqObj.linearDistOfNCPR(blobLen), 
                                   title='NCPR distribution (blob ' + str(int(blobLen))+')',
-                                  ylabel='NCPR',ylimits=[-1.1,1.1])                              
+                                  ylabel='NCPR',ylimits=[-1,1],setPositiveNegativeBars=True)                              
     except PlottingException:
         raise PlottingException("NCPR plot construction requires Sequence object")
+    
+    return plt
+
+#...................................................................................#
+def build_FCR_plot(SeqObj, blobLen):
+    """
+    Function which returns a matplotlib.plt object ready for saving/plotting
+    of the FCR along your sequence divided into blobs of some size
+    """
+
+    try:
+        plt = __build_linear_plot(SeqObj.linearDistOfFCR(blobLen), 
+                                  title='FCR distribution (blob ' + str(int(blobLen))+')',
+                                  ylabel='FCR')                              
+    except PlottingException:
+        raise PlottingException("FCR plot construction requires Sequence object")
     
     return plt
 

@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.6                                                         !
+   !    Version 0.1.7                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -116,7 +116,6 @@ class TestPlotsFunctions(unittest.TestCase):
         hy2 = rseq2.get_uversky_hydropathy()
         mnc2 = rseq2.get_mean_net_charge()        
         
-
         plots.save_multiple_uverskyPlot([hy1,hy2],[mnc1,mnc2],'tmpfiles/mult_UV', ['a','b'], 'TEST TITLE')
         plots.save_multiple_uverskyPlot([hy1,hy2],[mnc1,mnc2],'tmpfiles/mult_UV_NO_LEGEND',['a','b'],title='TEST TITLE',legendOn=False)
         plots.save_multiple_uverskyPlot([hy1,hy2],[mnc1,mnc2],'tmpfiles/mult_UV_NO_LEGEND_xLim1',['a','b'],title='TEST TITLE',legendOn=False, xLim=1)
@@ -127,6 +126,22 @@ class TestPlotsFunctions(unittest.TestCase):
         
 
     def test_save_multiple_uverskyPlot2(self):
-        pass
+
+        rseq2 = sequenceParameters.SequenceParameters(testTools.generate_random_sequence(minLen=20,maxLen=500))
+                
+        hy1 = self.rseq.get_uversky_hydropathy()
+        mnc1 = self.rseq.get_mean_net_charge()
+        hy2 = rseq2.get_uversky_hydropathy()
+        mnc2 = rseq2.get_mean_net_charge()        
+        
+
+        plots.save_multiple_uverskyPlot2([self.rseq, rseq2],'tmpfiles/mult_UV', ['a','b'], 'TEST TITLE')
+        plots.save_multiple_uverskyPlot2([self.rseq, rseq2],'tmpfiles/mult_UV2_NO_LEGEND',['a','b'],title='TEST TITLE',legendOn=False)
+        plots.save_multiple_uverskyPlot2([self.rseq, rseq2],'tmpfiles/mult_UV2_NO_LEGEND_xLim1',['a','b'],title='TEST TITLE',legendOn=False, xLim=1)
+        plots.save_multiple_uverskyPlot2([self.rseq, rseq2],'tmpfiles/mult_UV2_NO_LEGEND_xlim2',['a','b'],title='TEST TITLE',legendOn=False, xLim=2)
+        plots.save_multiple_uverskyPlot2([self.rseq, rseq2],'tmpfiles/mult_UV2_NO_LEGEND_xlim2_ylim2',['a','b'],title='TEST TITLE',legendOn=False, xLim=2,yLim=2)
+        plots.save_multiple_uverskyPlot2([self.rseq, rseq2],'tmpfiles/mult_UV2_NO_LEGEND_xlim2_ylim2_fs_20',['a','b'],title='TEST TITLE',legendOn=False, xLim=2,yLim=2, fontSize=20)
+
+
         
 

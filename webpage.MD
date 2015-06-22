@@ -1,6 +1,6 @@
 # localCIDER
 
-`v 0.1.4 - January 16th 2015`
+`v 0.1.7 - February 2015`
 
 
 # Introduction
@@ -22,7 +22,7 @@ Moreover, if there's a type of analysis you use frequently and you think other u
 # Installation
 
 ## Introduction
-**localCIDER** version 0.1.3 was submitted to `pip` (the Python Package Index) on the 13th of October. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. However, many of the features are ready to go!
+**localCIDER** version 0.1.7 was submitted to `pip` (the Python Package Index) on in February 2015. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. However, many (most, actually) of the features are ready to go!
 
 ## Installing on OSX or linux
 We recommend installing using `pip`. `pip` is a command line interface for downloading and installing packages from the Python package index (PyPI). If you don't yet have pip installed [see the documentation here](http://pip.readthedocs.org/en/latest/installing.html).
@@ -477,7 +477,7 @@ Many people have been involved in this project. We'll try and include an up-to-d
 
 * Paul Nobrega (University of Massachusetts) for bug reports and the Windows installation instructions
 * Davide Mercadante (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization
-* Katra Olsek (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization
+* Katra Kolsek (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization
 * Alex Chin (Johns Hopkins University) for a crucial bug report
 * Thomas Pranzatelli (Washington University in St. Louis) for testing and bug reports
  
@@ -489,6 +489,7 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * version 0.1.2 [October 1st 2014] (more tests, fixed heuristic bugs in extreme kappa sequences, significant improvement on plotting customization, cleaned up docs and code documentation)
 * version 0.1.3 [October 13th 2014] (more tests, corrected a bug introduced in 0.1.2 for sequences with no neutral residues, corrected a bug in how titles/labels were assigned by default, improved how classification into the 5 regions is done, and explicitly allow for regions 4 (positive electrolytes) and 5 (negative electrolytes) rather than general polyelectrolytes)
 * version 0.1.4 [January 16th 2014] (corrected bug in the way KD hydrophobicity was calculated - alanine incorrectly set to 0)
+* version 0.1.7 [February 25th 2014] (bunch of additional updates and code readability improvements, as well as changing how NCPR/FCR plots are made (bar instead of line)).
 
 
 ----------

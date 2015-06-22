@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.6                                                         !
+   !    Version 0.1.7                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -337,11 +337,13 @@ class TestSequenceParametersFunctions(unittest.TestCase):
 
             # try with a blobval
             iSEQ.save_linearNCPR("tmpfiles/NCPR_test_S"+str(pos),5)
+            iSEQ.save_linearFCR("tmpfiles/FCR_test_S"+str(pos),5)
             iSEQ.save_linearHydropathy("tmpfiles/Hydropathy_test_S"+str(pos),5)
             iSEQ.save_linearSigma("tmpfiles/sigma_test_S"+str(pos),5)
             
             # try with default
             iSEQ.save_linearNCPR("tmpfiles/NCPR_test_S"+str(pos))
+            iSEQ.save_linearFCR("tmpfiles/FCR_test_S"+str(pos))
             iSEQ.save_linearHydropathy("tmpfiles/Hydropathy_test_S"+str(pos))
             iSEQ.save_linearSigma("tmpfiles/sigma_test_S"+str(pos))
 

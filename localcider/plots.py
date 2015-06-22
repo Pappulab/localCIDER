@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.6                                                         !
+   !    Version 0.1.7                                                         !
    !--------------------------------------------------------------------------!
    
    File Description:
@@ -399,7 +399,7 @@ def save_multiple_uverskyPlot(hydropathy_list, mean_net_charge_list, filename, l
 def save_multiple_uverskyPlot2(SeqParam_list, filename, label_list=[], title="Uversky plot", legendOn=True, xLim=1, yLim=1, fontSize=10):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and saves that plot to 'filename' (.png
-    is appended). This function takes SequenceParameter objects instead of list of hydrophobicity and mean_net_charge
+    is appended). This function takes SequenceParameter objects instead of list of hydropathy and mean_net_charge
     values
     
     INPUT:

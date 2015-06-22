@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.6                                                         !
+   !    Version 0.1.7                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -457,7 +457,7 @@ class Sequence:
         ans /= (np.arange(0,self.len)+1)
         return ans
 
-       #...................................................................................#
+    #...................................................................................#
     def linearDistOfNCPR(self, bloblen):
         """
         Returns a np vertical stack object showing the NCPR over
@@ -474,6 +474,27 @@ class Sequence:
             bpos = len(np.where(blob>0)[0])
             bneg = len(np.where(blob<0)[0])
             blobncpr[i] = (bpos-bneg)/(bloblen+0.0)
+            
+        return np.vstack((np.arange(1,nblobs+1), blobncpr))
+
+
+        #...................................................................................#
+    def linearDistOfFCR(self, bloblen):
+        """
+        Returns a np vertical stack object showing the FCR over
+        blob-sized regions along the sequence
+        """
+
+        nblobs = self.len-bloblen+1
+
+        blobncpr = [0]*nblobs
+
+        # for each overlapping blob in the sequence calculate the FCR
+        for i in np.arange(0,nblobs):
+            blob = self.chargePattern[i:(i+bloblen)]
+            bpos = len(np.where(blob>0)[0])
+            bneg = len(np.where(blob<0)[0])
+            blobncpr[i] = (bpos+bneg)/(bloblen+0.0)
             
         return np.vstack((np.arange(1,nblobs+1), blobncpr))
 
