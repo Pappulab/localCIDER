@@ -62,6 +62,7 @@ class SequenceParameters:
         --------------------------------------------------------------------------------
         None, but the underlying Sequence object has its properties
         updated
+
         """
         
         # note that we do all the relevant data validation
@@ -94,6 +95,7 @@ class SequenceParameters:
         OUTPUT: 
         --------------------------------------------------------------------------------
         Single string with the protein sequence
+
         """
         
         return self.SeqObj.seq
@@ -107,6 +109,7 @@ class SequenceParameters:
         OUTPUT: 
         --------------------------------------------------------------------------------
         Integer equal to the sequence length
+
         """
         
         return len(self.SeqObj.seq)
@@ -118,10 +121,17 @@ class SequenceParameters:
         Get a protein's mean hydropathy (a value between 0 and 9, where 0 is the least 
         hydrophobic and 9 is the most). This is simply a re-based Kyte-Doolittle scale,
         which runs from 0 to 9 instead of from -4.5 to 4.5, as in the original paper.
+        
+        ********************************************************************************
+        Ref: Kyte, J., & Doolittle, R. F. (1982). A simple method for displaying the 
+        hydropathic character of a protein. Journal of Molecular Biology, 157(1), 
+        105–132.
+        ********************************************************************************
 
         OUTPUT: 
         --------------------------------------------------------------------------------
         Float with the sequence's mean hydropathy
+
         """
 
         return self.SeqObj.meanHydropathy()
@@ -137,6 +147,7 @@ class SequenceParameters:
         OUTPUT:
         --------------------------------------------------------------------------------
         Float with the normalized Kyte-Doolittle hydropathy (between 0 and 1)
+
         """
         
         return self.SeqObj.uverskyHydropathy()
@@ -150,10 +161,10 @@ class SequenceParameters:
         For more details see the reference below;
         
         ********************************************************************************
-        Reference:
+        Ref: Campen A, Williams RM, Brown CJ, Meng J, Uversky VN, Dunker AK. (2008). 
         TOP-IDP-scale: a new amino acid scale measuring propensity for intrinsic disorder.
-        Protein Pept Lett. 2008;15(9):956-63.
-        Campen A, Williams RM, Brown CJ, Meng J, Uversky VN, Dunker AK.
+        Protein Pept Lett. 15(9), 956-63.
+        
         ********************************************************************************
         
         
@@ -184,11 +195,18 @@ class SequenceParameters:
     #...................................................................................#
     def get_kappa(self):
         """ 
-        Get the kappa value for a sequence.  
-
+        Get the kappa value associated with a sequence.
+        
+        ********************************************************************************
+        Ref: Das, R. K., & Pappu, R. V. (2013). Conformations of intrinsically disordered 
+        proteins are influenced by linear sequence distributions of oppositely 
+        charged residues. PNAS, 110(33), 13392–13397.
+        ********************************************************************************
+        
         OUTPUT: 
         --------------------------------------------------------------------------------
         Float with the sequence's kappa value
+
         """
 
         return self.SeqObj.kappa()
@@ -203,6 +221,7 @@ class SequenceParameters:
         OUTPUT: 
         --------------------------------------------------------------------------------
         Float with the sequence's delta max (identical for all permutants)
+
         """
         
         return self.SeqObj.deltaMax()
@@ -229,6 +248,7 @@ class SequenceParameters:
         OUTPUT:
         --------------------------------------------------------------------------------
         Integer with number of positive residues in your sequence
+
         """
 
         return self.SeqObj.countPos()
@@ -242,6 +262,7 @@ class SequenceParameters:
         OUTPUT:
         --------------------------------------------------------------------------------
         Integer with number of negative residues in your sequence
+
         """
 
         return self.SeqObj.countNeg() 
@@ -255,7 +276,9 @@ class SequenceParameters:
         OUTPUT: 
         --------------------------------------------------------------------------------
         Integer with number of neutral residues in your sequence
+
         """
+
         return self.SeqObj.countNeut() 
 
 
@@ -280,6 +303,7 @@ class SequenceParameters:
         OUTPUT
         --------------------------------------------------------------------------------: 
         Float with the sequence's fraction of positive residues (F+)
+
         """
 
         return self.SeqObj.Fminus() 
@@ -293,6 +317,7 @@ class SequenceParameters:
         OUTPUT: 
         --------------------------------------------------------------------------------
         Float with the sequence's fraction of charged residues
+
         """
 
         return self.SeqObj.FCR() 
@@ -306,6 +331,7 @@ class SequenceParameters:
         OUTPUT: 
         --------------------------------------------------------------------------------
         Float with the sequence's net charge per residue
+
         """
 
         return self.SeqObj.NCPR() 
@@ -318,7 +344,9 @@ class SequenceParameters:
         OUTOUT:
         --------------------------------------------------------------------------------
         Float equal to the [absolute magnitude] of the mean net charge of the sequence
+
         """
+
         return self.SeqObj.mean_net_charge()
 
 
@@ -346,7 +374,7 @@ class SequenceParameters:
         E     +                           +           |
         G     | +                       +             |
               + 2 +                   +               |
-        R     | +   +               +       4         |
+        R     | +   +               +       5         |
         E     |   + 2 +           +                   |
         S     |     +   +       +                     |
               | 1     + 2 +   +                       |
@@ -357,7 +385,7 @@ class SequenceParameters:
                     
                     
         1) Weak polyampholytes and polyelectrolytes
-        2) Janus sequences
+        2) Intermediate (Janus) sequences
         3) Strong polyampholytes
         4 and 5) Strong polyelectrolytes
 
@@ -387,6 +415,7 @@ class SequenceParameters:
         Returns a list of integers corresponding to the sites
         which are currently defined as being phosphorylatable based on
         user input
+
         """
         
         return self.SeqObj.get_phosphosites()
@@ -403,6 +432,7 @@ class SequenceParameters:
         --------------------------------------------------------------------------------
         returns a float corresponding to the sequence's kappa value if 
         all the currently defined phosphosites were phosphorylated
+
         """
         
         if len(self.get_phosphosites()) == 0:
@@ -424,6 +454,7 @@ class SequenceParameters:
         OUTPUT: 
         --------------------------------------------------------------------------------
         Returns a list of integers corresponding to S/T/Y positions in your sequence
+
         """
 
         return self.SeqObj.get_STY_residues()
@@ -433,16 +464,37 @@ class SequenceParameters:
     def get_full_phosphostatus_kappa_distribution(self):
         """
         This function calculates the kappa value of all possible phosphorylation
-        statuses, given the defined phosphosites. 
+        states, given the defined phosphosites. 
 
+        This is computationally tractable for small numbers of phosphosites, but can
+        rapidly become extremely expensive. 
+
+        
         OUTPUT:
         --------------------------------------------------------------------------------
-        
-        
+        Returns a list of tuples, where each tuple corresponds to a unique phosphostate 
+        of the protein of interest. Each position within the tuple is defined as follows;
+
+        0 - kappa of sequence
+        1 - Fraction of positive residues (F+) (does not change)
+        2 - Fraction of negative residues (F-)
+        3 - Fraction of charged residues  (FCR)
+        4 - Net Charge Per Residue        (NCRP)
+        5 - Mean hydropathy
+        6 - phosphostatus
+
+        These are all self explanatory, with the exception of phosphostatus, which defines 
+        a tuple with a position for each phosphorylatable site, set to 0 if not phosphorylated
+        and 1 if phosphorylated. As an example, if I had a protein with three phosphosites 
+        (S4,Y43,S105), the tuple for the fully unphosphorylated would be (0,0,0) and with 
+        Y43 phosphorylated would be (0,1,0)
 
         """
         
+        # determine the number of calculations needed to run
         ncalcs = self.SeqObj.calculateNumberDifferentPhosphoStates()
+
+        # print messages
         status_message("Running exaustive kappa distribution analysis based on phosphorylation states")
         status_message("This function will now make " + str(ncalcs) + " independent kappa calculations\nIf this is a big number you may want to investigate a subset of possible phosphosites or\nuse a Monte Carlo approach to subsample")
         
