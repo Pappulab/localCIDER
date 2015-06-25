@@ -494,7 +494,7 @@ class SequenceParameters:
         # determine the number of calculations needed to run
         ncalcs = self.SeqObj.calculateNumberDifferentPhosphoStates()
 
-        # print messages
+        # print status message
         status_message("Running exaustive kappa distribution analysis based on phosphorylation states")
         status_message("This function will now make " + str(ncalcs) + " independent kappa calculations\nIf this is a big number you may want to investigate a subset of possible phosphosites or\nuse a Monte Carlo approach to subsample")
         

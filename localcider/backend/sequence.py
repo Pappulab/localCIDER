@@ -39,7 +39,7 @@
    ! MAIN AUTHOR:   James Ahad and Alex Holehouse                             !
    !                                                                          !
    !--------------------------------------------------------------------------!
-w
+
    
    File Description:
    ================
@@ -69,10 +69,10 @@ import itertools
 from backendtools import return_absolute_datafile_path, warning_message, verifyType, status_message, warning_message
 from restable import ResTable
 from data import aminoacids
-from data.highComplexitySequences import maxComplexity
 import data  
 from localciderExceptions import SequenceException
-import zlib
+from sequenceComplexity import SequenceComplexity
+
 
 
 ######################
@@ -239,19 +239,6 @@ class Sequence:
         return AADICT
 
 
-    #...................................................................................#
-    def raw_sequence_complexity(self):
-        """ Return the normalized sequence complexity, where normalization
-            occurs relative to a random string of the same length.
-
-            Note that we are explicitly defining sequence complexity based on the ability
-            to minimally encode that specific sequence.
-        """
-        
-        if self.len > 1000:
-            raise SequenceException("Currently only sequences less than 1000 residues are subject to sequence complexity analysis - also, this feature is actually not officially out yet!")
-            
-        return float(len(zlib.compress(self.seq)))/maxComplexity[self.len]
 
 
     #...................................................................................#
@@ -323,7 +310,7 @@ class Sequence:
             # however, it may be indicative of a bug in the code which we should address
             if kappaVal > 1.0 and kappaVal < 1.1:
                 return 1.0
-            else:
+            else:                    
                 return kappaVal
             
 
@@ -478,10 +465,10 @@ class Sequence:
         return np.vstack((np.arange(1,nblobs+1), blobncpr))
 
 
-        #...................................................................................#
+    #...................................................................................#
     def linearDistOfFCR(self, bloblen):
         """
-        Returns a np vertical stack object showing the FCR over
+        Returns an np vertical stack object showing the FCR over
         blob-sized regions along the sequence
         """
 
@@ -502,7 +489,7 @@ class Sequence:
     #...................................................................................#
     def linearDistOfSigma(self, bloblen):
         """
-        Returns a np vertical stackobject showing how the "sigma" parameter 
+        Returns an np vertical stackobject showing how the "sigma" parameter 
         varies over blob-sized regions along the sequence
         """
 
@@ -532,7 +519,7 @@ class Sequence:
     #...................................................................................#
     def linearDistOfHydropathy(self, bloblen):
         """
-        Returns a np vertical stackobject showing how the 0 to 1 normallized hydrophobicity 
+        Returns an np vertical stackobject showing how the 0 to 1 normallized hydrophobicity 
         varies over blob-sized regions along the sequence
         """
        
@@ -561,11 +548,9 @@ class Sequence:
     #...................................................................................#
     def linearDistOfHydropathy_2(self, bloblen):
         """
-        Returns a np vertical stackobject showing how the 0 to 9 normallized hydrophobicity 
+        Returns an np vertical stackobject showing how the 0 to 9 normallized hydrophobicity 
         varies over blob-sized regions along the sequence
         """
-
-
         nblobs = self.len-bloblen+1
 
         blobhydro = [0]*nblobs
@@ -581,9 +566,32 @@ class Sequence:
             blob = hydrochain[i:(i+bloblen)]
             blobhydro[i] = sum(blob)
         return np.vstack((np.arange(1,nblobs+1), blobhydro))
+        
+    # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+    #
+    #                         SEQUENCE COMPLEXITY FUNCTIONS
+    #
+    # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
 
+    def linearDistOfComplexity(self, window_size, step_size, complexity_measure=''):
+        """
+        Returns the vectorial complexity using a sliding window
 
+        """
+        
+        ComplexityObject = SequenceComplexity()
+        
+
+
+    def sequenceComplexity(self, window_size, step_size, complexity_measure=''):
+        """
+        Returns the overal sequence complexity associated with the sequence
+        """
+
+        ComplexityObject = SequenceComplexity()
+        
+        
 
     # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
     #
@@ -817,18 +825,15 @@ class Sequence:
             for midNeuts in xrange(0,nneuts+1):
                 midBlock = '0'*midNeuts
 
-
                 for startNeuts in xrange(0,nneuts-midNeuts+1):
                     setupSequence = ''
 
-                    # construct some permutation of the sequence
-                    
+                    # construct some permutation of the sequence                    
                     setupSequence = '0'*startNeuts
 
                     setupSequence += posBlock
                     setupSequence += midBlock
                     setupSequence += negBlock
-
 
                     setupSequence = setupSequence + '0'*(nneuts-startNeuts-midNeuts)
 
@@ -883,8 +888,7 @@ class Sequence:
 
         # get a random number
         rand = rng.Random()        
-        rand.seed(time.time())
-        
+        rand.seed(time.time())        
 
         # determine the indices from which we can swap 
 
@@ -1186,6 +1190,8 @@ class Sequence:
                 sites.append(idx)
             idx=idx+1
         return sites
+
+    
 
     # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
     #
