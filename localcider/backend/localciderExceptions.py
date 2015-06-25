@@ -57,7 +57,6 @@
 class PlottingException(Exception):
     """
     Exception for the plotting functions
-
     """
     pass
     
@@ -99,4 +98,11 @@ class ResTableException(Exception):
 # backend.wang_landau
 #...................................................................................#
 class WLException(Exception):
+    pass
+
+
+######################
+# backend.wang_landau
+#...................................................................................#
+class SequenceComplexityException(Exception):
     pass
