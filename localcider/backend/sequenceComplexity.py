@@ -48,6 +48,8 @@
 import zlib
 from data.highComplexitySequences import maxComplexity
 
+from localciderExceptions import SequenceException, SequenceComplexityException
+
 class SequenceComplexity:
     """
     Dedicated class to dealing with sequence complexity issues.
@@ -78,5 +80,237 @@ class SequenceComplexity:
             raise SequenceException("Currently only sequences less than 1000 residues are subject to sequence complexity analysis - also, this feature is actually not officially out yet!")
             
         return float(len(zlib.compress(sequence)))/maxComplexity[len(sequence)]
+
+    #...................................................................................#
+    def reduce_alphabet(self, sequence, alphabetSize=20, userAlphabet={}):
+        """
+        Converts your sequence to either one of the 11 predefined alphabets (defined based
+        on size) or allows you to define your own alphabet using the userAlphabet dictionary.
+        
+        userAlphabet is checked for sanity (i.e. that it can deal with all 20 amino acids)
+
+        Predefined alphabets are shown below
+              
+        two      - [(LVIMCAGSTPFYW), (EDNQKRH)]
+        three    - [(LVIMCAGSTP), (FYW), (EDNQKRH)]
+        four     - [(LVIMC), (AGSTP), (FYW), (EDNQKRH)]
+        five     - [(LVIMC), (ASGTP), (FYW), (EDNQ), (KRH)]
+        six      - [(LVIM), (ASGT), (PHC), (FYW), (EDNQ), (KR)]
+        eight    - [(LVIMC), (AG), (ST), (P), (FYW), (EDNQ), (KR), (H)] 
+        ten      - [(LVIM), (C), (A), (G), (ST), (P), (FYW), (EDNQ), (KR), (H)]
+        eleven   - [(LVIM), (C), (A), (G), (ST), (P), (FYW), (ED), (NQ), (KR), (H)]
+        twelve   - [(LVIM), (C), (A), (G), (ST), (P), (FY), (W), (EQ), (DN), (KR), (H)]
+        fifteen  - [(LVIM), (C), (A), (G), (S), (T), (P), (FY), (W), (E), (Q), (D), (N), (KR), (H)]
+        eighteen - [(LM), (VI), (C), (A), (G), (S), (T), (P), (F), (Y), (W), (E), (D), (N), (Q), (K), (R), (H)]
+        twenty   - all twenty!
+        
+
+        """
+        two      = ['L','E']
+        three    = ['L','F','E']        
+	four     = ['L','A','F','E']
+	five     = ['L','A','F','E','K']
+	six      = ['L','A','P','F','E','K']
+	eight    = ['L','A','S','P','F','E','K','H']
+	ten      = ['L','C','A','G','S','P','F','E','K','H']
+        eleven   = ['L','C','A','G','S','P','F','E','K','H','Q']
+	twelve   = ['L','C','A','G','S','P','F','W','E','D','K','H']
+	fifteen  = ['L','C','A','G','S','T','P','F','W','E','Q','D','N','K','H']
+	eighteen = ['L','V','C','A','G','S','T','P','F','Y','W','E','D','N','Q','K','R','H']
+	twenty   = ['R','H','K','D','E','S','T','N','Q','C','G','P','A','I','L','M','F','W','Y','V']
+    
+	aa = []
+	alphabet = []
+
+        ##
+        ## USER DEFINED ALPHABET
+        ##
+        
+        if len(userAlphabet) > 0:
+            # user defined alphabet being used
+            for x in ['R','H','K','D','E','S','T','N','Q','C','G','P','A','I','L','M','F','W','Y','V']:
+                if not x in userAlphabet:
+                    raise SequenceComplexityException('Invalid user alphabet supplied - does not allow mapping of amino acid %s'%x)
+
+            for x in aminoacids:
+                aa.append(userAlphabet[x])
+
+            return aa
+        
+        ##
+        ## PREDEFINED DEFINED ALPHABET
+        ##
+            
+	#2: [(LVIMCAGSTPFYW), (EDNQKRH)]
+        if (alpha == 2):
+            alphabet = two
+            for x in aminoacids:
+                if x in ('L','V','I','M','C','A','G','S','T','P','F','Y','W'):
+                    aa.append('L')
+                else:
+                    aa.append('E')
+
+        #3: [(LVIMCAGSTP), (FYW), (EDNQKRH)]
+        elif (alpha == 3):
+            alphabet = three
+            for x in aminoacids:
+                if x in ('L','V','I','M','C','A','G','S','T','P'):
+                    aa.append('L')
+                elif x in ('F','Y','W'):
+                    aa.append('F')
+                else:
+                    aa.append('E')
+
+        #4: [(LVIMC), (AGSTP), (FYW), (EDNQKRH)]
+	elif (alpha == 4):
+            alphabet = four
+            for x in aminoacids:
+                if x in ('L','V','I','M','C'):
+                    aa.append('L')
+                elif x in ('A','G','S','T','P'):
+                    aa.append('A')
+                elif x in ('F','Y','W'):
+                    aa.append('F')
+                else:
+                    aa.append('E')
+
+	#5: [(LVIMC), (ASGTP), (FYW), (EDNQ), (KRH)]
+        elif (alpha == 5):
+            alphabet = five
+            for x in aminoacids:
+                if x in ('L','V','I','M','C'):
+                    aa.append('L')
+                elif x in ('A','S','G','T','P'):
+                    aa.append('A')
+                elif x in ('F','Y','W'):
+                    aa.append('F')
+                elif x in ('E','D','N','Q'):
+                    aa.append('E')
+                else:
+                    aa.append('K')
+        
+	#6: [(LVIM), (ASGT), (PHC), (FYW), (EDNQ), (KR)]
+	elif (alpha == 6):
+            alphabet = six
+            for x in aminoacids:
+                if x in ('L','V','I','M'):
+                    aa.append('L')
+                elif x in ('A','S','G','T'):
+                    aa.append('A')
+                elif x in ('P','H','C'):
+                    aa.append('P')
+                elif x in ('F','Y','W'):
+                    aa.append('F')
+                elif x in ('E','D','N','Q'):
+                    aa.append('E')
+                else:
+                    aa.append('K')
+        
+	#8: [(LVIMC), (AG), (ST), (P), (FYW), (EDNQ), (KR), (H)]
+	elif (alpha == 8):
+            alphabet = eight
+            for x in aminoacids:
+                if x in ('L','V','I','M'):
+                    aa.append('L')
+                elif x in ('A','G'):
+                    aa.append('A')
+                elif x in ('S','T'):
+                    aa.append('S')
+                elif x in ('F','Y','W'):
+                    aa.append('F')
+                elif x in ('E','D','N','Q'):
+                    aa.append('E')
+                else:
+                    aa.append('K')
+        
+        #10: [(LVIM), (C), (A), (G), (ST), (P), (FYW), (EDNQ), (KR), (H)]
+	elif (alpha == 10):
+            alphabet = ten
+            for x in aminoacids:
+                if x in ('L','V','I','M'):
+                    aa.append('L')
+                elif x in ('S','T'):
+                    aa.append('S')
+                elif x in ('F','Y','W'):
+                    aa.append('F')
+                elif x in ('E','D','N','Q'):
+                    aa.append('E')
+                elif x in ('K','R'):
+                    aa.append('K')
+                else:
+                    aa.append(x)
+                    
+        #11: [(LVIM), (C), (A), (G), (ST), (P), (FYW), (ED), (NQ), (KR), (H)]
+	elif (alpha == 11):
+            alphabet = ten
+            for x in aminoacids:
+                if x in ('L','V','I','M'):
+                    aa.append('L')
+                elif x in ('S','T'):
+                    aa.append('S')
+                elif x in ('F','Y','W'):
+                    aa.append('F')
+                elif x in ('E','D')                
+                    aa.append('E')
+                elif x in ('N','Q'):
+                    aa.append('Q')
+                elif x in ('K','R'):
+                    aa.append('K')
+                else:
+                    aa.append(x)
+                    
+	#12: [(LVIM), (C), (A), (G), (ST), (P), (FY), (W), (EQ), (DN), (KR), (H)]
+        elif (alpha == 12):
+            alphabet = twelve
+            for x in aminoacids:
+                if x in ('L','V','I','M'):
+                    aa.append('L')
+                elif x in ('S','T'):
+                    aa.append('S')
+                elif x in ('F','Y'):
+                    aa.append('F')
+                elif x in ('E','Q'):
+                    aa.append('E')
+                elif x in ('D','N'):
+                    aa.append('D')
+                elif x in ('K','R'):
+                    aa.append('K')
+                else:
+                    aa.append(x)
+                    
+        #15: [(LVIM), (C), (A), (G), (S), (T), (P), (FY), (W), (E), (Q), (D), (N), (KR), (H)]
+	elif (alpha == 15):
+            alphabet = fifteen
+            for x in aminoacids:
+                if x in ('L','V','I','M'):
+                    aa.append('L')
+                elif x in ('F','Y'):
+                    aa.append('F')
+                elif x in ('K','R'):
+                    aa.append('K')
+                else:
+                    aa.append(x)
+                    
+	#18: [(LM), (VI), (C), (A), (G), (S), (T), (P), (F), (Y), (W), (E), (D), (N), (Q), (K), (R), (H)]
+        elif (alpha == 18):
+            alphabet = eighteen
+            for x in aminoacids:
+                if x in ('L','M'):
+                    aa.append('L')
+                elif x in ('V','I'):
+                    aa.append('V')
+                else:
+                    aa.append(x)
+	elif (alpha == 20):
+            alphabet = twenty
+            aa = aminoacids
+	else:
+            print ("ERROR: invalid aa alphabet selected, using 20-letter alphabet instead")
+            alphabet = twenty
+            aa = aminoacids
+
+
+	return aa
+
 
     
