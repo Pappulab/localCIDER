@@ -112,9 +112,6 @@ class Sequence:
         self.len = len(seq)
         self.chargePattern = chargePattern
 
-
-        
-
         if(chargePattern == []):
             for i in np.arange(0,self.len):
                 if(lkupTab.lookUpCharge(self.seq[i])>0):
@@ -132,6 +129,9 @@ class Sequence:
 
         # set color pallete
         self.set_HTMLColorResiduePalette(aminoacids.DEFAULT_COLOR_PALETTE)
+
+        # build a complexity object (just code encapsulation - no state)
+        self.ComplexityObject = SequenceComplexity()
 
 
     #...................................................................................#
@@ -580,7 +580,8 @@ class Sequence:
 
         """
         
-        ComplexityObject = SequenceComplexity()
+
+        pass
         
 
 
@@ -588,8 +589,13 @@ class Sequence:
         """
         Returns the overal sequence complexity associated with the sequence
         """
+        pass
 
-        ComplexityObject = SequenceComplexity()
+    def get_reducedAlphabetSequence(self, alphabetSize=20, userAlphabet={}):
+        """
+
+        """
+        return self.ComplexityObject.reduce_alphabet(self.seq, alphabetSize, userAlphabet)
         
         
 

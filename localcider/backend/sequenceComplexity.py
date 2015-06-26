@@ -59,12 +59,10 @@ class SequenceComplexity:
 
     """
 
-    def __init__(self, alphabet=20):
+    def __init__(self):
         pass
         
 
-    
-    
         
 
     #...................................................................................#
@@ -118,9 +116,11 @@ class SequenceComplexity:
 	fifteen  = ['L','C','A','G','S','T','P','F','W','E','Q','D','N','K','H']
 	eighteen = ['L','V','C','A','G','S','T','P','F','Y','W','E','D','N','Q','K','R','H']
 	twenty   = ['R','H','K','D','E','S','T','N','Q','C','G','P','A','I','L','M','F','W','Y','V']
+
     
 	aa = []
 	alphabet = []
+
 
         ##
         ## USER DEFINED ALPHABET
@@ -132,28 +132,42 @@ class SequenceComplexity:
                 if not x in userAlphabet:
                     raise SequenceComplexityException('Invalid user alphabet supplied - does not allow mapping of amino acid %s'%x)
 
-            for x in aminoacids:
+            # build the reduced sequence
+            for x in sequence:
                 aa.append(userAlphabet[x])
+            
+            # finally build the alphabet
+            alphabet = []
+            for x in ['R','H','K','D','E','S','T','N','Q','C','G','P','A','I','L','M','F','W','Y','V']:
+                val = userAlphabet[x]
+                if val not in alphabet:
+                    alphabet.append(val)
 
-            return aa
+            return (aa, alphabet)
         
         ##
         ## PREDEFINED DEFINED ALPHABET
         ##
+
+        if alphabetSize not in [2,3,4,5,6,8,10,11,12,15,18,20]:
+            raise SequenceComplexityException('Predefined alphabet sizes must be one of (2,3,4,5,6,8,10,11 12,15,18,20)')
+
+        
+        alphabetSize = int(alphabetSize)
             
 	#2: [(LVIMCAGSTPFYW), (EDNQKRH)]
-        if (alpha == 2):
+        if (alphabetSize == 2):
             alphabet = two
-            for x in aminoacids:
+            for x in sequence:
                 if x in ('L','V','I','M','C','A','G','S','T','P','F','Y','W'):
                     aa.append('L')
                 else:
                     aa.append('E')
 
         #3: [(LVIMCAGSTP), (FYW), (EDNQKRH)]
-        elif (alpha == 3):
+        elif (alphabetSize == 3):
             alphabet = three
-            for x in aminoacids:
+            for x in sequence:
                 if x in ('L','V','I','M','C','A','G','S','T','P'):
                     aa.append('L')
                 elif x in ('F','Y','W'):
@@ -162,9 +176,9 @@ class SequenceComplexity:
                     aa.append('E')
 
         #4: [(LVIMC), (AGSTP), (FYW), (EDNQKRH)]
-	elif (alpha == 4):
+	elif (alphabetSize == 4):
             alphabet = four
-            for x in aminoacids:
+            for x in sequence:
                 if x in ('L','V','I','M','C'):
                     aa.append('L')
                 elif x in ('A','G','S','T','P'):
@@ -175,9 +189,9 @@ class SequenceComplexity:
                     aa.append('E')
 
 	#5: [(LVIMC), (ASGTP), (FYW), (EDNQ), (KRH)]
-        elif (alpha == 5):
+        elif (alphabetSize == 5):
             alphabet = five
-            for x in aminoacids:
+            for x in sequence:
                 if x in ('L','V','I','M','C'):
                     aa.append('L')
                 elif x in ('A','S','G','T','P'):
@@ -190,9 +204,9 @@ class SequenceComplexity:
                     aa.append('K')
         
 	#6: [(LVIM), (ASGT), (PHC), (FYW), (EDNQ), (KR)]
-	elif (alpha == 6):
+	elif (alphabetSize == 6):
             alphabet = six
-            for x in aminoacids:
+            for x in sequence:
                 if x in ('L','V','I','M'):
                     aa.append('L')
                 elif x in ('A','S','G','T'):
@@ -207,9 +221,9 @@ class SequenceComplexity:
                     aa.append('K')
         
 	#8: [(LVIMC), (AG), (ST), (P), (FYW), (EDNQ), (KR), (H)]
-	elif (alpha == 8):
+	elif (alphabetSize == 8):
             alphabet = eight
-            for x in aminoacids:
+            for x in sequence:
                 if x in ('L','V','I','M'):
                     aa.append('L')
                 elif x in ('A','G'):
@@ -224,9 +238,9 @@ class SequenceComplexity:
                     aa.append('K')
         
         #10: [(LVIM), (C), (A), (G), (ST), (P), (FYW), (EDNQ), (KR), (H)]
-	elif (alpha == 10):
+	elif (alphabetSize == 10):
             alphabet = ten
-            for x in aminoacids:
+            for x in sequence:
                 if x in ('L','V','I','M'):
                     aa.append('L')
                 elif x in ('S','T'):
@@ -241,16 +255,16 @@ class SequenceComplexity:
                     aa.append(x)
                     
         #11: [(LVIM), (C), (A), (G), (ST), (P), (FYW), (ED), (NQ), (KR), (H)]
-	elif (alpha == 11):
+	elif (alphabetSize == 11):
             alphabet = ten
-            for x in aminoacids:
+            for x in sequence:
                 if x in ('L','V','I','M'):
                     aa.append('L')
                 elif x in ('S','T'):
                     aa.append('S')
                 elif x in ('F','Y','W'):
                     aa.append('F')
-                elif x in ('E','D')                
+                elif x in ('E','D'):                
                     aa.append('E')
                 elif x in ('N','Q'):
                     aa.append('Q')
@@ -260,9 +274,9 @@ class SequenceComplexity:
                     aa.append(x)
                     
 	#12: [(LVIM), (C), (A), (G), (ST), (P), (FY), (W), (EQ), (DN), (KR), (H)]
-        elif (alpha == 12):
+        elif (alphabetSize == 12):
             alphabet = twelve
-            for x in aminoacids:
+            for x in sequence:
                 if x in ('L','V','I','M'):
                     aa.append('L')
                 elif x in ('S','T'):
@@ -279,9 +293,9 @@ class SequenceComplexity:
                     aa.append(x)
                     
         #15: [(LVIM), (C), (A), (G), (S), (T), (P), (FY), (W), (E), (Q), (D), (N), (KR), (H)]
-	elif (alpha == 15):
+	elif (alphabetSize == 15):
             alphabet = fifteen
-            for x in aminoacids:
+            for x in sequence:
                 if x in ('L','V','I','M'):
                     aa.append('L')
                 elif x in ('F','Y'):
@@ -292,25 +306,73 @@ class SequenceComplexity:
                     aa.append(x)
                     
 	#18: [(LM), (VI), (C), (A), (G), (S), (T), (P), (F), (Y), (W), (E), (D), (N), (Q), (K), (R), (H)]
-        elif (alpha == 18):
+        elif (alphabetSize == 18):
             alphabet = eighteen
-            for x in aminoacids:
+            for x in sequence:
                 if x in ('L','M'):
                     aa.append('L')
                 elif x in ('V','I'):
                     aa.append('V')
                 else:
                     aa.append(x)
-	elif (alpha == 20):
+	elif (alphabetSize == 20):
             alphabet = twenty
-            aa = aminoacids
+            aa = sequence
 	else:
             print ("ERROR: invalid aa alphabet selected, using 20-letter alphabet instead")
             alphabet = twenty
-            aa = aminoacids
+            aa = sequence
 
 
-	return aa
+	return aa, alphabet
+
+    ###########################################################
+    # calculate Wootton-Federhen complexity
+    ###########################################################
+    def CWF(sequence, alphabet, window_size, step_size):
+        """
+        Function to calculate the Wootton-Federhen complexity
+
+        
+        """
+
+        # Initialize the current step
+	step = 0 
+
+	CWF_array = []
+        
+        # for each position
+	while (step <= len(sequence)-window_size):
+
+            # restart complexity calculation for this window
+            CWF = 0 #
+
+            # for every residue in the alphabet
+            for x in alphabet: 
+                i = 0 # reset the position for this window
+                n = 0 # reset the amino acid count for this window
+
+                # for each position in the window
+                for i in range(0, window_size): 
+
+                    # calculate the sequence position
+                    position = step+i 
+                    
+                    if sequence[position] is x: #tally the frequency of this sequence in this window
+                        n += 1
+
+                # so now n = the number of times amino acid x appears in the window
+
+                # calculate the probability of this sequence in this window
+                p = n/window_size
+                if p > 0: # add this probability to the complexity value for this window
+                    CWF = p*(math.log(p,len(alphabet))) + CWF
+
+            CWF_array.append(-CWF) #store the complexity score for this window
+            step = step + step_size #increment the step
+
+	return CWF_array
+
 
 
     

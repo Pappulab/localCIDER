@@ -125,7 +125,7 @@ class SequenceParameters:
         ********************************************************************************
         Ref: Kyte, J., & Doolittle, R. F. (1982). A simple method for displaying the 
         hydropathic character of a protein. Journal of Molecular Biology, 157(1), 
-        105–132.
+        105-132.
         ********************************************************************************
 
         OUTPUT: 
@@ -200,7 +200,7 @@ class SequenceParameters:
         ********************************************************************************
         Ref: Das, R. K., & Pappu, R. V. (2013). Conformations of intrinsically disordered 
         proteins are influenced by linear sequence distributions of oppositely 
-        charged residues. PNAS, 110(33), 13392–13397.
+        charged residues. PNAS, 110(33), 13392-13397.
         ********************************************************************************
         
         OUTPUT: 
@@ -508,6 +508,15 @@ class SequenceParameters:
         """
 
         return self.SeqObj.get_phosphosequence()
+
+    # ===========================---================= #
+    # ======= SEQUENCE COMPLEXITY FUNCTIONS ========= #  
+    #...................................................................................#
+    def get_reducedAlphabetSequence(self, alphabetSize=20, userAlphabet={}):
+        """"
+        DOCS
+        """
+        return self.SeqObj.get_reducedAlphabetSequence(alphabetSize, userAlphabet)
 
         
     
