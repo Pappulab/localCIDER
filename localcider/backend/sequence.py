@@ -574,14 +574,13 @@ class Sequence:
     # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
 
-    def linearDistOfComplexity(self, window_size, step_size, complexity_measure=''):
+    def get_linear_WF_complexity(self, alphabetSize=20, userAlphabet={}, window_size=10, step_size=1):
         """
-        Returns the vectorial complexity using a sliding window
+        Returns the Wooton-Federhen vectorial complexity using a sliding window approach
 
         """
+        return self.ComplexityObject.get_WF_complexity(self.seq, alphabetSize, userAlphabet, window_size, step_size)
         
-
-        pass
         
 
 
@@ -593,6 +592,7 @@ class Sequence:
 
     def get_reducedAlphabetSequence(self, alphabetSize=20, userAlphabet={}):
         """
+        dOCS
 
         """
         return self.ComplexityObject.reduce_alphabet(self.seq, alphabetSize, userAlphabet)

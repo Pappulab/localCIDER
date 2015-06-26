@@ -46,6 +46,7 @@
 
 """
 import zlib
+import math
 from data.highComplexitySequences import maxComplexity
 
 from localciderExceptions import SequenceException, SequenceComplexityException
@@ -126,7 +127,7 @@ class SequenceComplexity:
         ## USER DEFINED ALPHABET
         ##
         
-        if len(userAlphabet) > 0:
+        if len(userAlphabet) > 0:            
             # user defined alphabet being used
             for x in ['R','H','K','D','E','S','T','N','Q','C','G','P','A','I','L','M','F','W','Y','V']:
                 if not x in userAlphabet:
@@ -329,9 +330,15 @@ class SequenceComplexity:
     ###########################################################
     # calculate Wootton-Federhen complexity
     ###########################################################
-    def CWF(sequence, alphabet, window_size, step_size):
+    def CWF(self, sequence, alphabet, window_size, step_size):
         """
         Function to calculate the Wootton-Federhen complexity
+
+        Requires four parameters
+        1) Amino acid sequence
+        2) Alphabet being used
+        3) Window_size for sliding window
+        4) Stepsize for moving along the sliding window
 
         
         """
@@ -346,32 +353,31 @@ class SequenceComplexity:
 
             # restart complexity calculation for this window
             CWF = 0 #
+        
+            # get the current window
+            window = sequence[step:step+window_size]
 
             # for every residue in the alphabet
             for x in alphabet: 
-                i = 0 # reset the position for this window
-                n = 0 # reset the amino acid count for this window
 
-                # for each position in the window
-                for i in range(0, window_size): 
-
-                    # calculate the sequence position
-                    position = step+i 
-                    
-                    if sequence[position] is x: #tally the frequency of this sequence in this window
-                        n += 1
-
-                # so now n = the number of times amino acid x appears in the window
-
-                # calculate the probability of this sequence in this window
-                p = n/window_size
-                if p > 0: # add this probability to the complexity value for this window
+                # p is between 0 and 1
+                p = float(window.count(x))/window_size
+                
+                if p > 0:
                     CWF = p*(math.log(p,len(alphabet))) + CWF
-
+                    
             CWF_array.append(-CWF) #store the complexity score for this window
             step = step + step_size #increment the step
 
 	return CWF_array
+
+
+    def get_WF_complexity(self, sequence, alphabetSize=20, userAlphabet={}, window_size=10,step_size=1):
+
+        # reduce alphabet complexity
+        (reduced_sequence, alphabet) = self.reduce_alphabet(sequence, alphabetSize, userAlphabet)
+
+        return self.CWF(reduced_sequence, alphabet, window_size, step_size)
 
 
 

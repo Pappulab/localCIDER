@@ -22,6 +22,7 @@ from backend.seqfileparser import SequenceFileParser
 from backend.backendtools import status_message
 from backend import plotting
 from backend.localciderExceptions import SequenceException
+from backend.localciderExceptions import SequenceComplexityException
 
 class SequenceParameters:
 
@@ -514,9 +515,37 @@ class SequenceParameters:
     #...................................................................................#
     def get_reducedAlphabetSequence(self, alphabetSize=20, userAlphabet={}):
         """"
-        DOCS
+        DOCS (TODO)
         """
         return self.SeqObj.get_reducedAlphabetSequence(alphabetSize, userAlphabet)
+
+
+
+    def get_linearComplexity(self, complexityType, alphabetSize=20, userAlphabet={}, window_size=10, step_size=1):
+        """"
+        DOCS (TODO)
+        """
+        
+        # set the allowed types of complexity here
+        allowed_types = ('WF')
+
+        # provide case insensitivity 
+        try:
+            complexityType = complexityType.upper()
+        except AttributeError:
+            pass 
+
+        # check fi the type passed is actually one of the ones we know about
+        if complexityType not in allowed_types:
+            raise SequenceComplexityException("Complexity type %s is not a valid type - must be one of %s"%(complexityType, allowed_types))
+            
+
+            
+        if complexityType == "WF":
+            return self.SeqObj.get_linear_WF_complexity(alphabetSize, userAlphabet, window_size, step_size)
+        
+
+        
 
         
     
