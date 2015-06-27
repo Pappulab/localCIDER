@@ -389,7 +389,7 @@ class SequenceParameters:
         2) Intermediate (Janus) sequences
         3) Strong polyampholytes
         4 and 5) Strong polyelectrolytes
-
+        
         OUTPUT: 
         --------------------------------------------------------------------------------
         Returns an integer describing the region on the density of states 
@@ -513,19 +513,120 @@ class SequenceParameters:
     # ===========================---================= #
     # ======= SEQUENCE COMPLEXITY FUNCTIONS ========= #  
     #...................................................................................#
-    def get_reducedAlphabetSequence(self, alphabetSize=20, userAlphabet={}):
+    def get_reduced_alphabet_sequence(self, alphabetSize=20, userAlphabet={}):
         """"
-        DOCS (TODO)
+        Get your sequence converted into a lower resolution (reduced) alphabet. A set of reduced alphabets exist and are defined below, or the user can define their own alphabet. 
+        
+        INPUT: 
+        --------------------------------------------------------------------------------
+        alphabetSize  | Defines the size of the alphabet being used, where pre-defined 
+                        alphabets are then used based on the specific size. Those 
+                        pre-defined alphabets are defined below.
+        
+        userAlphabet  | Allows the user to define their own alphabet. The format here 
+                        is a dictionary where each key-value pair is amino-acid to translation.
+                        This means you need a dictionary of length 20 where each amino acid
+                        is mapped to another amino acid. This is kind of tedious, but it helps
+                        avoid user-error where specific amino acids are missed.
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Returns an amino acid squence which has been reduced down to a simple composition
+        based on the defined alphabet. Note this returns the sequence only, not a 
+        SequenceParameters object.
+
+
+        Predefined alphabets shown below - all except eleven are based on alphabets defined in 
+        the reference below.
+
+        two      - [(LVIMCAGSTPFYW), (EDNQKRH)]
+        three    - [(LVIMCAGSTP), (FYW), (EDNQKRH)]
+        four     - [(LVIMC), (AGSTP), (FYW), (EDNQKRH)]
+        five     - [(LVIMC), (ASGTP), (FYW), (EDNQ), (KRH)]
+        six      - [(LVIM), (ASGT), (PHC), (FYW), (EDNQ), (KR)]
+        eight    - [(LVIMC), (AG), (ST), (P), (FYW), (EDNQ), (KR), (H)] 
+        ten      - [(LVIM), (C), (A), (G), (ST), (P), (FYW), (EDNQ), (KR), (H)]
+        eleven   - [(LVIM), (C), (A), (G), (ST), (P), (FYW), (ED), (NQ), (KR), (H)]
+        twelve   - [(LVIM), (C), (A), (G), (ST), (P), (FY), (W), (EQ), (DN), (KR), (H)]
+        fifteen  - [(LVIM), (C), (A), (G), (S), (T), (P), (FY), (W), (E), (Q), (D), (N), (KR), (H)]
+        eighteen - [(LM), (VI), (C), (A), (G), (S), (T), (P), (F), (Y), (W), (E), (D), (N), (Q), (K), (R), (H)]
+        twenty   - all twenty!
+
+        REF: Murphy, L. R., Wallqvist, A., & Levy, R. M. (2000). Simplified amino acid alphabets for 
+        protein fold recognition and implications for folding. Protein Engineering, 13(3), 149-152.
+
+
         """
         return self.SeqObj.get_reducedAlphabetSequence(alphabetSize, userAlphabet)
 
 
 
-    def get_linearComplexity(self, complexityType, alphabetSize=20, userAlphabet={}, window_size=10, step_size=1):
-        """"
-        DOCS (TODO)
+    def get_linearComplexity(self, complexityType="WF", alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1):
+
         """
+        Returns the linear sequence complexity as defined by complexityType. Optionally,
+        the sequence complexity of a reduced complexity alphabet can be returned, where 
+        that reduced alphabet is defined by either the alphabetSize or the userAlphabet 
+        dictionary.
+
         
+        INPUT: 
+        --------------------------------------------------------------------------------
+        complexityType | Defines the complexity measure being employed. Is a string equal
+                         to one of the opions described below;
+
+                         WF - Wooton-Federhen complexity [1]
+
+                         (Default = 'WF')
+
+        alphabetSize   | Defines the size of the alphabet being used, where pre-defined 
+                         alphabets are then used based on the specific size. Those 
+                         pre-defined alphabets are defined below. (Default = 20, i.e. no
+                         reduction in amino acid complexity)
+        
+        userAlphabet   | Allows the user to define their own alphabet. The format here 
+                         is a dictionary where each key-value pair is amino-acid to translation.
+                         This means you need a dictionary of length 20 where each amino acid
+                         is mapped to another amino acid. This is kind of tedious, but it helps
+                         avoid user-error where specific amino acids are missed. (default=None)
+
+        windowSize     | Sliding window size over which complexity is calculated (default=10)
+
+        stepSize       | Size of steps taken as we define a new sliding window. Default is
+                         1 and should probably always be used...
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Returns a vector of values corresponding to the sliding window complexity of the
+        sequence, using the measure defined, and using the reduced alphabet complexity as 
+        defined
+
+
+        Predefined alphabets shown below - all except eleven are based on alphabets defined in 
+        the reference below.
+
+        two      - [(LVIMCAGSTPFYW), (EDNQKRH)]
+        three    - [(LVIMCAGSTP), (FYW), (EDNQKRH)]
+        four     - [(LVIMC), (AGSTP), (FYW), (EDNQKRH)]
+        five     - [(LVIMC), (ASGTP), (FYW), (EDNQ), (KRH)]
+        six      - [(LVIM), (ASGT), (PHC), (FYW), (EDNQ), (KR)]
+        eight    - [(LVIMC), (AG), (ST), (P), (FYW), (EDNQ), (KR), (H)] 
+        ten      - [(LVIM), (C), (A), (G), (ST), (P), (FYW), (EDNQ), (KR), (H)]
+        eleven   - [(LVIM), (C), (A), (G), (ST), (P), (FYW), (ED), (NQ), (KR), (H)]
+        twelve   - [(LVIM), (C), (A), (G), (ST), (P), (FY), (W), (EQ), (DN), (KR), (H)]
+        fifteen  - [(LVIM), (C), (A), (G), (S), (T), (P), (FY), (W), (E), (Q), (D), (N), (KR), (H)]
+        eighteen - [(LM), (VI), (C), (A), (G), (S), (T), (P), (F), (Y), (W), (E), (D), (N), (Q), (K), (R), (H)]
+        twenty   - all twenty!
+
+        [1] Wootton, J. C., & Federhen, S. (1993). Statistics of local complexity in amino acid sequences 
+            and sequence databases. Computers & Chemistry, 17(2), 149-163.
+        
+        [n]: Murphy, L. R., Wallqvist, A., & Levy, R. M. (2000). Simplified amino acid alphabets for 
+        protein fold recognition and implications for folding. Protein Engineering, 13(3), 149-152.
+
+       
+        """
+
         # set the allowed types of complexity here
         allowed_types = ('WF')
 
@@ -538,15 +639,9 @@ class SequenceParameters:
         # check fi the type passed is actually one of the ones we know about
         if complexityType not in allowed_types:
             raise SequenceComplexityException("Complexity type %s is not a valid type - must be one of %s"%(complexityType, allowed_types))
-            
-
-            
+                        
         if complexityType == "WF":
-            return self.SeqObj.get_linear_WF_complexity(alphabetSize, userAlphabet, window_size, step_size)
-        
-
-        
-
+            return self.SeqObj.get_linear_WF_complexity(alphabetSize, userAlphabet, windowSize, stepSize)
         
     
     # ============================================ #

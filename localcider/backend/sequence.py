@@ -574,25 +574,20 @@ class Sequence:
     # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
 
-    def get_linear_WF_complexity(self, alphabetSize=20, userAlphabet={}, window_size=10, step_size=1):
+    def get_linear_WF_complexity(self, alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1):
         """
         Returns the Wooton-Federhen vectorial complexity using a sliding window approach
 
         """
-        return self.ComplexityObject.get_WF_complexity(self.seq, alphabetSize, userAlphabet, window_size, step_size)
+        return self.ComplexityObject.get_WF_complexity(self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
         
         
 
 
-    def sequenceComplexity(self, window_size, step_size, complexity_measure=''):
-        """
-        Returns the overal sequence complexity associated with the sequence
-        """
-        pass
 
     def get_reducedAlphabetSequence(self, alphabetSize=20, userAlphabet={}):
         """
-        dOCS
+        Returns the amino acid sequence after being translated to a reduced alphabet
 
         """
         return self.ComplexityObject.reduce_alphabet(self.seq, alphabetSize, userAlphabet)

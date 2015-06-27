@@ -94,6 +94,8 @@ ONE_TO_THREE = {'A':'ALA',
                 'W':'TRP',
                 'Y':'TYR'}
 
+TWENTY_AAs = ['R','H','K','D','E','S','T','N','Q','C','G','P','A','I','L','M','F','W','Y','V']
+
 DEFAULT_COLOR_PALETTE = {'A':'black', 
                          'C':'black',
                          'D':'red',

@@ -50,6 +50,7 @@ import math
 from data.highComplexitySequences import maxComplexity
 
 from localciderExceptions import SequenceException, SequenceComplexityException
+from data.aminoacids import TWENTY_AAs
 
 class SequenceComplexity:
     """
@@ -105,6 +106,7 @@ class SequenceComplexity:
         
 
         """
+
         two      = ['L','E']
         three    = ['L','F','E']        
 	four     = ['L','A','F','E']
@@ -121,17 +123,27 @@ class SequenceComplexity:
     
 	aa = []
 	alphabet = []
-
-
-        ##
-        ## USER DEFINED ALPHABET
-        ##
+        
+        # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # USER DEFINED ALPHABET
+        #
+        # Note that if we're using a user defined alphabet then we ignore the alphabetSize 
+        # parameter entirly
         
         if len(userAlphabet) > 0:            
-            # user defined alphabet being used
-            for x in ['R','H','K','D','E','S','T','N','Q','C','G','P','A','I','L','M','F','W','Y','V']:
-                if not x in userAlphabet:
-                    raise SequenceComplexityException('Invalid user alphabet supplied - does not allow mapping of amino acid %s'%x)
+            if not isinstance(userAlphabet, dict):
+                raise SequenceComplexityException('Invalid user alphabet supplied, must be a dictionary or dictionary derived object')
+                
+            # this is all sanity checking for our userdefined alphabet, but is important
+            # because most of the other functions assume the sequence being passed is valid
+            for x in TWENTY_AAs:
+                try:
+                    converted = userAlphabet[x]
+                except KeyError: 
+                    raise SequenceComplexityException('Invalid user alphabet supplied - does not allow mapping of amino acid %s' % x)
+
+                if converted in TWENTY_AAs:
+                    raise SequenceComplexityException('Invalid user alphabet supplied - amino acid %s maps to %s, which is not a valid amino acid (must be upper case)' % (x, converted))
 
             # build the reduced sequence
             for x in sequence:
@@ -139,23 +151,29 @@ class SequenceComplexity:
             
             # finally build the alphabet
             alphabet = []
-            for x in ['R','H','K','D','E','S','T','N','Q','C','G','P','A','I','L','M','F','W','Y','V']:
+            for x in TWENTY_AAs:
                 val = userAlphabet[x]
                 if val not in alphabet:
                     alphabet.append(val)
 
-            return (aa, alphabet)
+            return ("".join(aa), alphabet)
         
-        ##
-        ## PREDEFINED DEFINED ALPHABET
-        ##
-
+        # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # PREDEFINED DEFINED ALPHABET
+        # 
+        # NOTE - we don't get here if we've used a userdefined alphabet
+        # check the type of alphabetSize is OK
+        try:
+            alphabetSize = int(alphabetSize)
+        except ValueError:
+            raise SequenceComplexityException("alphabetSize should be an number, or a string which can be converted into an integer")
+            
+        # check that one of the known alphabets is being used
         if alphabetSize not in [2,3,4,5,6,8,10,11,12,15,18,20]:
             raise SequenceComplexityException('Predefined alphabet sizes must be one of (2,3,4,5,6,8,10,11 12,15,18,20)')
 
-        
-        alphabetSize = int(alphabetSize)
-            
+        # Now we figure out which alphabet we're using and then generate a reduced resolution 
+        # sequence
 	#2: [(LVIMCAGSTPFYW), (EDNQKRH)]
         if (alphabetSize == 2):
             alphabet = two
@@ -325,21 +343,20 @@ class SequenceComplexity:
             aa = sequence
 
 
-	return aa, alphabet
+	return ("".join(aa), alphabet)
 
     ###########################################################
     # calculate Wootton-Federhen complexity
     ###########################################################
-    def CWF(self, sequence, alphabet, window_size, step_size):
+    def CWF(self, sequence, alphabet, windowSize, stepSize):
         """
         Function to calculate the Wootton-Federhen complexity
 
         Requires four parameters
         1) Amino acid sequence
         2) Alphabet being used
-        3) Window_size for sliding window
+        3) windowSize for sliding window
         4) Stepsize for moving along the sliding window
-
         
         """
 
@@ -349,35 +366,35 @@ class SequenceComplexity:
 	CWF_array = []
         
         # for each position
-	while (step <= len(sequence)-window_size):
+	while (step <= len(sequence)-windowSize):
 
             # restart complexity calculation for this window
             CWF = 0 #
         
             # get the current window
-            window = sequence[step:step+window_size]
+            window = sequence[step:step+windowSize]
 
             # for every residue in the alphabet
             for x in alphabet: 
 
                 # p is between 0 and 1
-                p = float(window.count(x))/window_size
+                p = float(window.count(x))/windowSize
                 
                 if p > 0:
                     CWF = p*(math.log(p,len(alphabet))) + CWF
                     
             CWF_array.append(-CWF) #store the complexity score for this window
-            step = step + step_size #increment the step
+            step = step + stepSize #increment the step
 
 	return CWF_array
 
 
-    def get_WF_complexity(self, sequence, alphabetSize=20, userAlphabet={}, window_size=10,step_size=1):
+    def get_WF_complexity(self, sequence, alphabetSize=20, userAlphabet={}, windowSize=10,stepSize=1):
 
         # reduce alphabet complexity
         (reduced_sequence, alphabet) = self.reduce_alphabet(sequence, alphabetSize, userAlphabet)
 
-        return self.CWF(reduced_sequence, alphabet, window_size, step_size)
+        return self.CWF(reduced_sequence, alphabet, windowSize, stepSize)
 
 
 
