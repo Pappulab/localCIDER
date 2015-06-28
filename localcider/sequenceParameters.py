@@ -561,7 +561,7 @@ class SequenceParameters:
 
 
 
-    def get_linearComplexity(self, complexityType="WF", alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1):
+    def get_linearComplexity(self, complexityType="WF", alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3):
 
         """
         Returns the linear sequence complexity as defined by complexityType. Optionally,
@@ -576,6 +576,8 @@ class SequenceParameters:
                          to one of the opions described below;
 
                          WF - Wooton-Federhen complexity [1]
+
+                         LC - Linqguistic complexity 
 
                          (Default = 'WF')
 
@@ -594,6 +596,8 @@ class SequenceParameters:
 
         stepSize       | Size of steps taken as we define a new sliding window. Default is
                          1 and should probably always be used...
+
+        wordSize       | Relevant for linguistic complexity (need more details!)
 
         OUTPUT:
         --------------------------------------------------------------------------------
@@ -628,7 +632,7 @@ class SequenceParameters:
         """
 
         # set the allowed types of complexity here
-        allowed_types = ('WF')
+        allowed_types = ('WF', 'LC')
 
         # provide case insensitivity 
         try:
@@ -641,7 +645,14 @@ class SequenceParameters:
             raise SequenceComplexityException("Complexity type %s is not a valid type - must be one of %s"%(complexityType, allowed_types))
                         
         if complexityType == "WF":
+            if not wordSize == 3:
+                print "WARNING: Ignoring wordSize argument for Wooton-Federhen complexity"
+                
             return self.SeqObj.get_linear_WF_complexity(alphabetSize, userAlphabet, windowSize, stepSize)
+
+        if complexityType == "LC":
+            return self.SeqObj.get_linear_LC_complexity(alphabetSize, userAlphabet, windowSize, stepSize, wordSize)
+            
         
     
     # ============================================ #

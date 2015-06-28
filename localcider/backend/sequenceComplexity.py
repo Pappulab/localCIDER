@@ -388,6 +388,51 @@ class SequenceComplexity:
 
 	return CWF_array
 
+        ###########################################################
+        # calculate linguistic complexity
+        #############ste##############################################
+    def LC(self, sequence, alphabet, windowSize, stepSize, wordSize):
+
+        # the current step
+        step = 0 
+        LC_array = []
+
+        while (step <= len(sequence)-windowSize):
+
+            # restart complexity calculation for this window
+            LC = 0
+
+            # reset the position for this window
+            i = 0 
+
+            ngrams = set()
+
+            ngram = ''
+
+            # for each position in the window
+            for i in range(0,windowSize-wordSize): 
+
+                # extract the current ngram
+                position = step+i 
+                ngram = ''.join(sequence[position:position+wordSize])
+
+                # if this ngram is not already present in the set
+                if ngram not in ngrams: 
+                    # add it to the ngrams set 
+                    ngrams.add(ngram) 
+
+            print ngrams
+            v = len(ngrams) #size of ngrams set
+            vmax = min(len(alphabet)**wordSize, windowSize-1+wordSize)
+            LC = float(v)/vmax
+            print v
+            print vmax
+            LC_array.append(LC) #add this to an array of the complexity profile scores
+            step += stepSize #increment the step
+
+        return LC_array
+
+
 
     def get_WF_complexity(self, sequence, alphabetSize=20, userAlphabet={}, windowSize=10,stepSize=1):
 
@@ -395,6 +440,14 @@ class SequenceComplexity:
         (reduced_sequence, alphabet) = self.reduce_alphabet(sequence, alphabetSize, userAlphabet)
 
         return self.CWF(reduced_sequence, alphabet, windowSize, stepSize)
+
+
+    def get_LC_complexity(self, sequence, alphabetSize=20, userAlphabet={}, windowSize=10,stepSize=1,wordSize=3):
+
+        # reduce alphabet complexity
+        (reduced_sequence, alphabet) = self.reduce_alphabet(sequence, alphabetSize, userAlphabet)
+
+        return self.LC(reduced_sequence, alphabet, windowSize, stepSize, wordSize)
 
 
 

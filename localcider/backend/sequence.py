@@ -580,6 +580,15 @@ class Sequence:
 
         """
         return self.ComplexityObject.get_WF_complexity(self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
+
+
+
+    def get_linear_LC_complexity(self, alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3):
+        """
+        Returns the Linguistic Complexity vectorial complexity using a sliding window approach
+
+        """
+        return self.ComplexityObject.get_LC_complexity(self.seq, alphabetSize, userAlphabet, windowSize, stepSize, wordSize)
         
         
 
