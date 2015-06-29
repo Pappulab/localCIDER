@@ -575,9 +575,11 @@ class SequenceParameters:
         complexityType | Defines the complexity measure being employed. Is a string equal
                          to one of the opions described below;
 
-                         WF - Wooton-Federhen complexity [1]
+                         WF  - Wooton-Federhen complexity [1]
 
-                         LC - Linqguistic complexity 
+                         LC  - Linqguistic complexity [ ] 
+
+                         LZW - Lempel-Ziv-Welch [ ] 
 
                          (Default = 'WF')
 
@@ -632,7 +634,7 @@ class SequenceParameters:
         """
 
         # set the allowed types of complexity here
-        allowed_types = ('WF', 'LC')
+        allowed_types = ('WF', 'LC', 'LZW')
 
         # provide case insensitivity 
         try:
@@ -649,6 +651,12 @@ class SequenceParameters:
                 print "WARNING: Ignoring wordSize argument for Wooton-Federhen complexity"
                 
             return self.SeqObj.get_linear_WF_complexity(alphabetSize, userAlphabet, windowSize, stepSize)
+
+        if complexityType == "LZW":
+            if not wordSize == 3:
+                print "WARNING: Ignoring wordSize argument for Wooton-Federhen complexity"
+                
+            return self.SeqObj.get_linear_LZW_complexity(alphabetSize, userAlphabet, windowSize, stepSize)
 
         if complexityType == "LC":
             return self.SeqObj.get_linear_LC_complexity(alphabetSize, userAlphabet, windowSize, stepSize, wordSize)

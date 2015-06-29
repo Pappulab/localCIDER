@@ -345,6 +345,8 @@ class SequenceComplexity:
 
 	return ("".join(aa), alphabet)
 
+
+
     ###########################################################
     # calculate Wootton-Federhen complexity
     ###########################################################
@@ -388,10 +390,19 @@ class SequenceComplexity:
 
 	return CWF_array
 
-        ###########################################################
-        # calculate linguistic complexity
-        #############ste##############################################
+
+
+    ###########################################################
+    # calculate linguistic complexity
+    ###########################################################
     def LC(self, sequence, alphabet, windowSize, stepSize, wordSize):
+        # Simple explanation of linguistic complexity
+        # 
+        # Linguistic complexity is basically asking, given a window of some size,
+        # lets figure out the number of unique 'words' of some (specific) size in 
+        # that window, and divide that by the maximum possible number of unique words
+        # in the window. We do this for each window, to create a vectorial
+        # representation of the complexity
 
         # the current step
         step = 0 
@@ -409,11 +420,13 @@ class SequenceComplexity:
 
             ngram = ''
 
-            # for each position in the window
+            # for each position in the window we step through with a word of
+            # size wordSize
             for i in range(0,windowSize-wordSize): 
 
                 # extract the current ngram
                 position = step+i 
+
                 ngram = ''.join(sequence[position:position+wordSize])
 
                 # if this ngram is not already present in the set
@@ -421,17 +434,63 @@ class SequenceComplexity:
                     # add it to the ngrams set 
                     ngrams.add(ngram) 
 
-            print ngrams
-            v = len(ngrams) #size of ngrams set
+            # size of ngrams set
+            v = len(ngrams) 
+            
+            # max possible number of words
             vmax = min(len(alphabet)**wordSize, windowSize-1+wordSize)
+            
+            # linguistic complexity associated with this window
             LC = float(v)/vmax
-            print v
-            print vmax
-            LC_array.append(LC) #add this to an array of the complexity profile scores
-            step += stepSize #increment the step
+            
+            # add this to an array of the complexity profile scores and
+            # increment the step
+            LC_array.append(LC) 
+            step = step + stepSize
 
         return LC_array
 
+    ###########################################################
+    # calculate Lempel-Ziv-Welch complexity
+    ###########################################################
+    def LZW(self, sequence, alphabet, windowSize, stepSize):
+        # the current step
+	step = 0 
+        
+	LZW_array = []
+
+	while (step <= len(sequence)-windowSize):
+            LZW = 0 # restart complexity calculation for this window
+            i = 0   # reset the position for this window
+            w = ''  # reset the word
+
+            ngrams = set()
+
+            # for each position in the window
+            for i in range(0,windowSize): 
+                position = step+i 
+
+                # if we find a word which is already in
+                # the ngrams set, update w to that 
+                if (w+sequence[position] in ngrams):
+                    w = sequence[position] + w
+
+                # else we found a new word
+                else:
+                    ngrams.add(w+sequence[position])
+                    w = sequence[position]
+
+                print w
+
+            # size of ngrams set
+            n = len(ngrams)
+            
+            if (windowSize > 0):
+                LZW = float(n)/windowSize
+                LZW_array.append(LZW) # add this to an array of the complexity profile scores
+            step += stepSize         # increment the step
+
+	return LZW_array 
 
 
     def get_WF_complexity(self, sequence, alphabetSize=20, userAlphabet={}, windowSize=10,stepSize=1):
@@ -448,6 +507,14 @@ class SequenceComplexity:
         (reduced_sequence, alphabet) = self.reduce_alphabet(sequence, alphabetSize, userAlphabet)
 
         return self.LC(reduced_sequence, alphabet, windowSize, stepSize, wordSize)
+
+
+    def get_LZW_complexity(self, sequence, alphabetSize=20, userAlphabet={}, windowSize=10,stepSize=1):
+
+        # reduce alphabet complexity
+        (reduced_sequence, alphabet) = self.reduce_alphabet(sequence, alphabetSize, userAlphabet)
+
+        return self.LZW(reduced_sequence, alphabet, windowSize, stepSize)
 
 
 

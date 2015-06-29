@@ -576,7 +576,7 @@ class Sequence:
 
     def get_linear_WF_complexity(self, alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1):
         """
-        Returns the Wooton-Federhen vectorial complexity using a sliding window approach
+        Returns the Wooton-Federhen (WF) vectorial complexity using a sliding window approach
 
         """
         return self.ComplexityObject.get_WF_complexity(self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
@@ -585,10 +585,18 @@ class Sequence:
 
     def get_linear_LC_complexity(self, alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3):
         """
-        Returns the Linguistic Complexity vectorial complexity using a sliding window approach
+        Returns the Linguistic Complexity (LC) vectorial complexity using a sliding window approach
 
         """
         return self.ComplexityObject.get_LC_complexity(self.seq, alphabetSize, userAlphabet, windowSize, stepSize, wordSize)
+
+
+    def get_linear_LZW_complexity(self, alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1):
+        """
+        Returns the Lempel-Ziv-Welch (LZW) vectorial complexity using a sliding window approach
+
+        """
+        return self.ComplexityObject.get_LZW_complexity(self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
         
         
 
