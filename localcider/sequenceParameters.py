@@ -581,6 +581,9 @@ class SequenceParameters:
 
                          LZW - Lempel-Ziv-Welch [ ] 
 
+                         LZWpp - Lempel-Ziv-Welch plus plus - updated algorithm which
+                                 treats homopolymers
+
                          (Default = 'WF')
 
         alphabetSize   | Defines the size of the alphabet being used, where pre-defined 
