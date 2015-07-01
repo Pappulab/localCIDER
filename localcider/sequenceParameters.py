@@ -581,8 +581,7 @@ class SequenceParameters:
 
                          LZW - Lempel-Ziv-Welch [ ] 
 
-                         LZWpp - Lempel-Ziv-Welch plus plus - updated algorithm which
-                                 treats homopolymers
+                         RHP - Richardson, Holehouse, Pappu
 
                          (Default = 'WF')
 
@@ -637,7 +636,7 @@ class SequenceParameters:
         """
 
         # set the allowed types of complexity here
-        allowed_types = ('WF', 'LC', 'LZW')
+        allowed_types = ('WF', 'LC', 'LZW', 'RHP')
 
         # provide case insensitivity 
         try:
@@ -660,6 +659,13 @@ class SequenceParameters:
                 print "WARNING: Ignoring wordSize argument for Wooton-Federhen complexity"
                 
             return self.SeqObj.get_linear_LZW_complexity(alphabetSize, userAlphabet, windowSize, stepSize)
+
+        if complexityType == "RHP":
+            if not wordSize == 3:
+                print "WARNING: Ignoring wordSize argument for Wooton-Federhen complexity"
+                
+            return self.SeqObj.get_linear_RHP_complexity(alphabetSize, userAlphabet, windowSize, stepSize)
+
 
         if complexityType == "LC":
             return self.SeqObj.get_linear_LC_complexity(alphabetSize, userAlphabet, windowSize, stepSize, wordSize)

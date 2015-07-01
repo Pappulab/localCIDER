@@ -599,12 +599,12 @@ class Sequence:
         return self.ComplexityObject.get_LZW_complexity(self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
 
 
-    def get_linear_LZWplusplus_complexity(self, alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1):
+    def get_linear_RHP_complexity(self, alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1):
         """
         Returns the Lempel-Ziv-Welch (LZW) vectorial complexity using a sliding window approach
 
         """
-        return self.ComplexityObject.get_LZWplusplus_complexity(self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
+        return self.ComplexityObject.get_RHP_complexity(self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
         
         
 
