@@ -577,11 +577,10 @@ class SequenceParameters:
 
                          WF  - Wooton-Federhen complexity [1]
 
-                         LC  - Linqguistic complexity [ ] 
+                         LC  - Linguistic complexity      [2] 
 
-                         LZW - Lempel-Ziv-Welch [ ] 
+                         LZW - Lempel-Ziv-Welch           [3] 
 
-                         RHP - Richardson, Holehouse, Pappu
 
                          (Default = 'WF')
 
@@ -599,9 +598,9 @@ class SequenceParameters:
         windowSize     | Sliding window size over which complexity is calculated (default=10)
 
         stepSize       | Size of steps taken as we define a new sliding window. Default is
-                         1 and should probably always be used...
+                         1 (recommended to keep at 1)
 
-        wordSize       | Relevant for linguistic complexity (need more details!)
+        wordSize       | Relevant for linguistic complexity 
 
         OUTPUT:
         --------------------------------------------------------------------------------
@@ -611,7 +610,7 @@ class SequenceParameters:
 
 
         Predefined alphabets shown below - all except eleven are based on alphabets defined in 
-        the reference below.
+        the reference below [4]
 
         two      - [(LVIMCAGSTPFYW), (EDNQKRH)]
         three    - [(LVIMCAGSTP), (FYW), (EDNQKRH)]
@@ -626,10 +625,20 @@ class SequenceParameters:
         eighteen - [(LM), (VI), (C), (A), (G), (S), (T), (P), (F), (Y), (W), (E), (D), (N), (Q), (K), (R), (H)]
         twenty   - all twenty!
 
+        --------------------------------------------------------------------------------
+        REFERENCES
+        
         [1] Wootton, J. C., & Federhen, S. (1993). Statistics of local complexity in amino acid sequences 
             and sequence databases. Computers & Chemistry, 17(2), 149-163.
+
+        [2] Troyanskaya, O. G., Arbell, O., Koren, Y., Landau, G. M., & Bolshoy, A. (2002). Sequence 
+            complexity profiles of prokaryotic genomic sequences: a fast algorithm for calculating linguistic 
+            complexity. Bioinformatics , 18(5), 679–688.
+
+        [3] Lempel, A.& Ziv, J. (1976). On the complexity of finite sequence. IEEE Trans. Inf. Theory, 
+            vol. IT-22, no. 1, 75-81.
         
-        [n]: Murphy, L. R., Wallqvist, A., & Levy, R. M. (2000). Simplified amino acid alphabets for 
+        [4] Murphy, L. R., Wallqvist, A., & Levy, R. M. (2000). Simplified amino acid alphabets for 
         protein fold recognition and implications for folding. Protein Engineering, 13(3), 149-152.
 
        
