@@ -142,7 +142,7 @@ class SequenceComplexity:
                 except KeyError: 
                     raise SequenceComplexityException('Invalid user alphabet supplied - does not allow mapping of amino acid %s' % x)
 
-                if converted in TWENTY_AAs:
+                if converted not in TWENTY_AAs:
                     raise SequenceComplexityException('Invalid user alphabet supplied - amino acid %s maps to %s, which is not a valid amino acid (must be upper case)' % (x, converted))
 
             # build the reduced sequence
@@ -275,7 +275,7 @@ class SequenceComplexity:
                     
         #11: [(LVIM), (C), (A), (G), (ST), (P), (FYW), (ED), (NQ), (KR), (H)]
 	elif (alphabetSize == 11):
-            alphabet = ten
+            alphabet = eleven
             for x in sequence:
                 if x in ('L','V','I','M'):
                     aa.append('L')

@@ -106,7 +106,6 @@ class Sequence:
         if validateSeq:
             seq=seq.upper()
             seq = self.validateSequence(seq)
-
         
         self.seq = seq.upper()
         self.len = len(seq)
@@ -597,18 +596,9 @@ class Sequence:
 
         """
         return self.ComplexityObject.get_LZW_complexity(self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
-
-
-    def get_linear_RHP_complexity(self, alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1):
-        """
-        Returns the Lempel-Ziv-Welch (LZW) vectorial complexity using a sliding window approach
-
-        """
-        return self.ComplexityObject.get_RHP_complexity(self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
-        
         
 
-
+        get_reducedAlphabetSequence(alphabetSize, userAlphabet)
 
     def get_reducedAlphabetSequence(self, alphabetSize=20, userAlphabet={}):
         """
