@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.6                                                         !
+   !    Version 0.1.7                                                         !
    !                                                                          !
    !    Copyright (C) 2014, The localCIDER development team (current and      !
    !                        former contributors): Alex Holehouse, James       !
@@ -56,6 +56,9 @@
    complexity and then suggesting that users use that in whatever means they 
    want is a much safer way, rather than assuming some biasing will apply to
    all users' needs.
+
+   This isn't really part of localCIDER, but may be useful for theoretical calculatoins
+   associated with complexity. Be wary of depleting the entropy pool, though!
    
 """
 

@@ -68,7 +68,7 @@ class SequenceComplexity:
         
 
     #...................................................................................#
-    def raw_compressed_complexity(self, sequence):
+    def Zlib_compressed_complexity(self, sequence):
         """ Return the normalized sequence complexity, where normalization
             occurs relative to a random string of the same length.
 
@@ -473,14 +473,14 @@ class SequenceComplexity:
                 # if we find a word which is already in
                 # the ngrams set, update w to that 
                 if (w+sequence[position] in ngrams):
+
                     w = sequence[position] + w
+                    #w = w+sequence[position]
 
                 # else we found a new word
                 else:
                     ngrams.add(w+sequence[position])
                     w = sequence[position]
-
-                print w
 
             # size of ngrams set
             n = len(ngrams)
@@ -515,6 +515,8 @@ class SequenceComplexity:
         (reduced_sequence, alphabet) = self.reduce_alphabet(sequence, alphabetSize, userAlphabet)
 
         return self.LZW(reduced_sequence, alphabet, windowSize, stepSize)
+
+
 
 
 
