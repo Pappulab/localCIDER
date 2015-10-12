@@ -1,4 +1,4 @@
-""" 
+"""
    !--------------------------------------------------------------------------!
    ! LICENSE INFO:                                                            !
    !--------------------------------------------------------------------------!
@@ -40,19 +40,18 @@
    !                                                                          !
    !--------------------------------------------------------------------------!
 
-   
+
    File Description:
    ================
-   
+
    Package configuration info
 
 """
-## CONFIGURATION STUFF YOU MIGHT WANT TO CHANGE
+# CONFIGURATION STUFF YOU MIGHT WANT TO CHANGE
 HUSH_WARNINGS = False
-HUSH_STATUS   = False
-HUSH_ALL      = False
+HUSH_STATUS = False
+HUSH_ALL = False
 
 
 # DO NOT CHANGE ANYTHING BELOW THIS LINE
-VERSION="0.1.7"
-
+VERSION = "0.1.7"

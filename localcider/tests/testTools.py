@@ -1,4 +1,4 @@
-""" 
+"""
    !--------------------------------------------------------------------------!
    ! LICENSE INFO:                                                            !
    !--------------------------------------------------------------------------!
@@ -50,30 +50,23 @@ import random
 
 AAs = list("QWERTYIPASDFGHKLCVNM")
 
-def generate_random_sequence(minLen=1,maxLen=100):
+
+def generate_random_sequence(minLen=1, maxLen=100):
 
     # generate 5 random sequences
     # LENGTH BETWEEN 1 AND 150
-    random.seed()        
-    S1=""
-    for i in xrange(minLen,maxLen):
-        S1=S1+random.choice(AAs)
+    random.seed()
+    S1 = ""
+    for i in xrange(minLen, maxLen):
+        S1 = S1 + random.choice(AAs)
 
     return S1
 
 
-def generate_random_sequence_list(number=10,minLen=1,maxLen=100):
-    
-    seqlist=[]
-    for i in xrange(0,number):
-        seqlist.append(generate_random_sequence(minLen,maxLen))
+def generate_random_sequence_list(number=10, minLen=1, maxLen=100):
+
+    seqlist = []
+    for i in xrange(0, number):
+        seqlist.append(generate_random_sequence(minLen, maxLen))
 
     return seqlist
-       
-       
-
-
-
-       
-        
-       

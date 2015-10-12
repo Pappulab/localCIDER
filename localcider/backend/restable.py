@@ -1,4 +1,4 @@
-""" 
+"""
    !--------------------------------------------------------------------------!
    ! LICENSE INFO:                                                            !
    !--------------------------------------------------------------------------!
@@ -43,7 +43,7 @@
 
    File Description:
    ================
-   
+
    Class constructs a querayable ResTable object which provides rapid
    for each amino acid's properties
 
@@ -58,6 +58,7 @@ from data.aminoacids import THREE_TO_ONE, ONE_TO_THREE
 
 from localciderExceptions import ResTableException
 
+
 class ResTable:
     """ Class which holds data on amino acids as read from the data.aminoacids file
 
@@ -66,54 +67,52 @@ class ResTable:
     #...................................................................................#
     def __init__(self):
         """ Takes a filename and initializes the self.residue_table list
-            with the contents of a residue table file        
+            with the contents of a residue table file
         """
-        
+
         self.residue_table = {}
 
         residue_list = data.aminoacids.buildTable()
 
         for r in residue_list:
-            res = Residue(r[0],r[1],r[2],r[3],r[4])
+            res = Residue(r[0], r[1], r[2], r[3], r[4])
             self.residue_table[res.letterCode3] = res
 
-
     #...................................................................................#
-    def lookForRes(self,resCode):
+    def lookForRes(self, resCode):
         """ Returns a Residue objected defined by the resCode (can be
             three letter or one letter - we don't care!
         """
-        
+
         # if we're using a three letter code
         if len(resCode) == 1:
             if resCode in ONE_TO_THREE.keys():
                 return self.residue_table[ONE_TO_THREE[resCode]]
-                
+
         # if we're usin a one letter code
         elif len(resCode) == 3:
             if resCode in THREE_TO_ONE.keys():
                 return self.residue_table[resCode]
-        
+
         # if we got here we had an invalid AA code
-        raise ResTableException("Invalid amino acid code provided [" + str(resCode) +"]")
-            
+        raise ResTableException(
+            "Invalid amino acid code provided [" + str(resCode) + "]")
 
     #...................................................................................#
-    def lookUpHydropathy(self,resCode):
-        """ 
+    def lookUpHydropathy(self, resCode):
+        """
         Get an amino acid's hydropathy
         """
 
         res = self.lookForRes(resCode)
         return res.hydropathy
-        
 
     #...................................................................................#
-    def lookUpCharge(self,resCode):
-        """ 
+    def lookUpCharge(self, resCode):
+        """
         Get the charge on a residue (1/-1/0)
         """
-        
+
         # first check for reduced residue types (aka charge +/-/0)
         if(resCode == '+'):
             return 1
@@ -124,5 +123,3 @@ class ResTable:
         else:
             res = self.lookForRes(resCode)
             return res.charge
-
-

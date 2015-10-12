@@ -1,4 +1,4 @@
-""" 
+"""
    !--------------------------------------------------------------------------!
    ! LICENSE INFO:                                                            !
    !--------------------------------------------------------------------------!
@@ -46,102 +46,267 @@
 
 """
 
-import os.path, time
+import os.path
+import time
 import unittest
 import random
 from localcider import plots, sequenceParameters
 import testTools
 
-class TestPlotsFunctions(unittest.TestCase):
-    
-    def setUp(self):
-        self.rseq = sequenceParameters.SequenceParameters(testTools.generate_random_sequence(minLen=20,maxLen=500))
 
-        
+class TestPlotsFunctions(unittest.TestCase):
+
+    def setUp(self):
+        self.rseq = sequenceParameters.SequenceParameters(
+            testTools.generate_random_sequence(minLen=20, maxLen=500))
+
     def test_save_single_phasePlot(self):
         fp = self.rseq.get_fraction_positive()
         fn = self.rseq.get_fraction_negative()
-        
-        plots.save_single_phasePlot(fp,fn,'tmpfiles/single_PP','TEST TITLE')
-        plots.save_single_phasePlot(fp,fn,'tmpfiles/single_PP_NO_LEGEND','TEST TITLE',False)
 
-   
-        
+        plots.save_single_phasePlot(fp, fn, 'tmpfiles/single_PP', 'TEST TITLE')
+        plots.save_single_phasePlot(
+            fp, fn, 'tmpfiles/single_PP_NO_LEGEND', 'TEST TITLE', False)
+
     def test_save_multiple_phasePlot(self):
 
-        rseq2 = sequenceParameters.SequenceParameters(testTools.generate_random_sequence(minLen=20,maxLen=500))
+        rseq2 = sequenceParameters.SequenceParameters(
+            testTools.generate_random_sequence(minLen=20, maxLen=500))
 
         fp1 = self.rseq.get_fraction_positive()
         fn1 = self.rseq.get_fraction_negative()
         fp2 = rseq2.get_fraction_positive()
-        fn2 = rseq2.get_fraction_negative()        
-        
-        plots.save_multiple_phasePlot([fp1,fp2],[fn1,fn2],'tmpfiles/mult_PP', ['a','b'], 'TEST TITLE')
-        plots.save_multiple_phasePlot([fp1,fp2],[fn1,fn2],'tmpfiles/mult_PP_NO_LEGEND',['a','b'],title='TEST TITLE',legendOn=False)
-        plots.save_multiple_phasePlot([fp1,fp2],[fn1,fn2],'tmpfiles/mult_PP_NO_LEGEND_xLim1',['a','b'],title='TEST TITLE',legendOn=False, xLim=1)
-        plots.save_multiple_phasePlot([fp1,fp2],[fn1,fn2],'tmpfiles/mult_PP_NO_LEGEND_xlim2',['a','b'],title='TEST TITLE',legendOn=False, xLim=2)
-        plots.save_multiple_phasePlot([fp1,fp2],[fn1,fn2],'tmpfiles/mult_PP_NO_LEGEND_xlim2_ylim2',['a','b'],title='TEST TITLE',legendOn=False, xLim=2,yLim=2)
-        plots.save_multiple_phasePlot([fp1,fp2],[fn1,fn2],'tmpfiles/mult_PP_NO_LEGEND_xlim2_ylim2_fs_20',['a','b'],title='TEST TITLE',legendOn=False, xLim=2,yLim=2, fontSize=20)
+        fn2 = rseq2.get_fraction_negative()
 
-
+        plots.save_multiple_phasePlot(
+            [fp1, fp2], [fn1, fn2], 'tmpfiles/mult_PP', ['a', 'b'], 'TEST TITLE')
+        plots.save_multiple_phasePlot([fp1,
+                                       fp2],
+                                      [fn1,
+                                       fn2],
+                                      'tmpfiles/mult_PP_NO_LEGEND',
+                                      ['a',
+                                       'b'],
+                                      title='TEST TITLE',
+                                      legendOn=False)
+        plots.save_multiple_phasePlot([fp1,
+                                       fp2],
+                                      [fn1,
+                                       fn2],
+                                      'tmpfiles/mult_PP_NO_LEGEND_xLim1',
+                                      ['a',
+                                       'b'],
+                                      title='TEST TITLE',
+                                      legendOn=False,
+                                      xLim=1)
+        plots.save_multiple_phasePlot([fp1,
+                                       fp2],
+                                      [fn1,
+                                       fn2],
+                                      'tmpfiles/mult_PP_NO_LEGEND_xlim2',
+                                      ['a',
+                                       'b'],
+                                      title='TEST TITLE',
+                                      legendOn=False,
+                                      xLim=2)
+        plots.save_multiple_phasePlot([fp1,
+                                       fp2],
+                                      [fn1,
+                                       fn2],
+                                      'tmpfiles/mult_PP_NO_LEGEND_xlim2_ylim2',
+                                      ['a',
+                                       'b'],
+                                      title='TEST TITLE',
+                                      legendOn=False,
+                                      xLim=2,
+                                      yLim=2)
+        plots.save_multiple_phasePlot([fp1,
+                                       fp2],
+                                      [fn1,
+                                       fn2],
+                                      'tmpfiles/mult_PP_NO_LEGEND_xlim2_ylim2_fs_20',
+                                      ['a',
+                                       'b'],
+                                      title='TEST TITLE',
+                                      legendOn=False,
+                                      xLim=2,
+                                      yLim=2,
+                                      fontSize=20)
 
     def test_save_multiple_phasePlot2(self):
 
-        rseq2 = sequenceParameters.SequenceParameters(testTools.generate_random_sequence(minLen=20,maxLen=500))        
+        rseq2 = sequenceParameters.SequenceParameters(
+            testTools.generate_random_sequence(minLen=20, maxLen=500))
 
-        plots.save_multiple_phasePlot2([self.rseq,rseq2],'tmpfiles/mult_PP',['a','b'],'TEST TITLE')
-        plots.save_multiple_phasePlot2([self.rseq,rseq2],'tmpfiles/mult_PP_NO_LEGEND',['a','b'],'TEST TITLE',False)
-        plots.save_multiple_phasePlot2([self.rseq,rseq2],'tmpfiles/mult_PP_NO_LEGEND_xLim1',['a','b'],title='TEST TITLE',legendOn=False, xLim=1)
-        plots.save_multiple_phasePlot2([self.rseq,rseq2],'tmpfiles/mult_PP_NO_LEGEND_xlim2',['a','b'],title='TEST TITLE',legendOn=False, xLim=2)
-        plots.save_multiple_phasePlot2([self.rseq,rseq2],'tmpfiles/mult_PP_NO_LEGEND_xlim2_ylim2',['a','b'],title='TEST TITLE',legendOn=False, xLim=2,yLim=2)
-        plots.save_multiple_phasePlot2([self.rseq,rseq2],'tmpfiles/mult_PP_NO_LEGEND_xlim2_ylim2_fs_20',['a','b'],title='TEST TITLE',legendOn=False, xLim=2,yLim=2, fontSize=20)
-
-
+        plots.save_multiple_phasePlot2(
+            [self.rseq, rseq2], 'tmpfiles/mult_PP', ['a', 'b'], 'TEST TITLE')
+        plots.save_multiple_phasePlot2(
+            [self.rseq, rseq2], 'tmpfiles/mult_PP_NO_LEGEND', ['a', 'b'], 'TEST TITLE', False)
+        plots.save_multiple_phasePlot2([self.rseq,
+                                        rseq2],
+                                       'tmpfiles/mult_PP_NO_LEGEND_xLim1',
+                                       ['a',
+                                        'b'],
+                                       title='TEST TITLE',
+                                       legendOn=False,
+                                       xLim=1)
+        plots.save_multiple_phasePlot2([self.rseq,
+                                        rseq2],
+                                       'tmpfiles/mult_PP_NO_LEGEND_xlim2',
+                                       ['a',
+                                        'b'],
+                                       title='TEST TITLE',
+                                       legendOn=False,
+                                       xLim=2)
+        plots.save_multiple_phasePlot2([self.rseq,
+                                        rseq2],
+                                       'tmpfiles/mult_PP_NO_LEGEND_xlim2_ylim2',
+                                       ['a',
+                                        'b'],
+                                       title='TEST TITLE',
+                                       legendOn=False,
+                                       xLim=2,
+                                       yLim=2)
+        plots.save_multiple_phasePlot2([self.rseq,
+                                        rseq2],
+                                       'tmpfiles/mult_PP_NO_LEGEND_xlim2_ylim2_fs_20',
+                                       ['a',
+                                        'b'],
+                                       title='TEST TITLE',
+                                       legendOn=False,
+                                       xLim=2,
+                                       yLim=2,
+                                       fontSize=20)
 
     def test_save_single_uverskyPlot(self):
         hydro = self.rseq.get_uversky_hydropathy()
-        mnc   = self.rseq.get_mean_net_charge()
-        
-        plots.save_single_phasePlot(hydro,mnc,'tmpfiles/single_UV','TEST TITLE')
-        plots.save_single_phasePlot(hydro,mnc,'tmpfiles/single_UV_NO_LEGEND','TEST TITLE',False)
-        
+        mnc = self.rseq.get_mean_net_charge()
 
+        plots.save_single_phasePlot(
+            hydro, mnc, 'tmpfiles/single_UV', 'TEST TITLE')
+        plots.save_single_phasePlot(
+            hydro,
+            mnc,
+            'tmpfiles/single_UV_NO_LEGEND',
+            'TEST TITLE',
+            False)
 
     def test_save_multiple_uverskyPlot(self):
 
-        rseq2 = sequenceParameters.SequenceParameters(testTools.generate_random_sequence(minLen=20,maxLen=500))
+        rseq2 = sequenceParameters.SequenceParameters(
+            testTools.generate_random_sequence(minLen=20, maxLen=500))
 
         hy1 = self.rseq.get_uversky_hydropathy()
         mnc1 = self.rseq.get_mean_net_charge()
         hy2 = rseq2.get_uversky_hydropathy()
-        mnc2 = rseq2.get_mean_net_charge()        
-        
-        plots.save_multiple_uverskyPlot([hy1,hy2],[mnc1,mnc2],'tmpfiles/mult_UV', ['a','b'], 'TEST TITLE')
-        plots.save_multiple_uverskyPlot([hy1,hy2],[mnc1,mnc2],'tmpfiles/mult_UV_NO_LEGEND',['a','b'],title='TEST TITLE',legendOn=False)
-        plots.save_multiple_uverskyPlot([hy1,hy2],[mnc1,mnc2],'tmpfiles/mult_UV_NO_LEGEND_xLim1',['a','b'],title='TEST TITLE',legendOn=False, xLim=1)
-        plots.save_multiple_uverskyPlot([hy1,hy2],[mnc1,mnc2],'tmpfiles/mult_UV_NO_LEGEND_xlim2',['a','b'],title='TEST TITLE',legendOn=False, xLim=2)
-        plots.save_multiple_uverskyPlot([hy1,hy2],[mnc1,mnc2],'tmpfiles/mult_UV_NO_LEGEND_xlim2_ylim2',['a','b'],title='TEST TITLE',legendOn=False, xLim=2,yLim=2)
-        plots.save_multiple_uverskyPlot([hy1,hy2],[mnc1,mnc2],'tmpfiles/mult_UV_NO_LEGEND_xlim2_ylim2_fs_20',['a','b'],title='TEST TITLE',legendOn=False, xLim=2,yLim=2, fontSize=20)
+        mnc2 = rseq2.get_mean_net_charge()
 
-        
+        plots.save_multiple_uverskyPlot(
+            [hy1, hy2], [mnc1, mnc2], 'tmpfiles/mult_UV', ['a', 'b'], 'TEST TITLE')
+        plots.save_multiple_uverskyPlot([hy1,
+                                         hy2],
+                                        [mnc1,
+                                         mnc2],
+                                        'tmpfiles/mult_UV_NO_LEGEND',
+                                        ['a',
+                                         'b'],
+                                        title='TEST TITLE',
+                                        legendOn=False)
+        plots.save_multiple_uverskyPlot([hy1,
+                                         hy2],
+                                        [mnc1,
+                                         mnc2],
+                                        'tmpfiles/mult_UV_NO_LEGEND_xLim1',
+                                        ['a',
+                                         'b'],
+                                        title='TEST TITLE',
+                                        legendOn=False,
+                                        xLim=1)
+        plots.save_multiple_uverskyPlot([hy1,
+                                         hy2],
+                                        [mnc1,
+                                         mnc2],
+                                        'tmpfiles/mult_UV_NO_LEGEND_xlim2',
+                                        ['a',
+                                         'b'],
+                                        title='TEST TITLE',
+                                        legendOn=False,
+                                        xLim=2)
+        plots.save_multiple_uverskyPlot([hy1,
+                                         hy2],
+                                        [mnc1,
+                                         mnc2],
+                                        'tmpfiles/mult_UV_NO_LEGEND_xlim2_ylim2',
+                                        ['a',
+                                         'b'],
+                                        title='TEST TITLE',
+                                        legendOn=False,
+                                        xLim=2,
+                                        yLim=2)
+        plots.save_multiple_uverskyPlot([hy1,
+                                         hy2],
+                                        [mnc1,
+                                         mnc2],
+                                        'tmpfiles/mult_UV_NO_LEGEND_xlim2_ylim2_fs_20',
+                                        ['a',
+                                         'b'],
+                                        title='TEST TITLE',
+                                        legendOn=False,
+                                        xLim=2,
+                                        yLim=2,
+                                        fontSize=20)
 
     def test_save_multiple_uverskyPlot2(self):
 
-        rseq2 = sequenceParameters.SequenceParameters(testTools.generate_random_sequence(minLen=20,maxLen=500))
-                
+        rseq2 = sequenceParameters.SequenceParameters(
+            testTools.generate_random_sequence(minLen=20, maxLen=500))
+
         hy1 = self.rseq.get_uversky_hydropathy()
         mnc1 = self.rseq.get_mean_net_charge()
         hy2 = rseq2.get_uversky_hydropathy()
-        mnc2 = rseq2.get_mean_net_charge()        
-        
+        mnc2 = rseq2.get_mean_net_charge()
 
-        plots.save_multiple_uverskyPlot2([self.rseq, rseq2],'tmpfiles/mult_UV', ['a','b'], 'TEST TITLE')
-        plots.save_multiple_uverskyPlot2([self.rseq, rseq2],'tmpfiles/mult_UV2_NO_LEGEND',['a','b'],title='TEST TITLE',legendOn=False)
-        plots.save_multiple_uverskyPlot2([self.rseq, rseq2],'tmpfiles/mult_UV2_NO_LEGEND_xLim1',['a','b'],title='TEST TITLE',legendOn=False, xLim=1)
-        plots.save_multiple_uverskyPlot2([self.rseq, rseq2],'tmpfiles/mult_UV2_NO_LEGEND_xlim2',['a','b'],title='TEST TITLE',legendOn=False, xLim=2)
-        plots.save_multiple_uverskyPlot2([self.rseq, rseq2],'tmpfiles/mult_UV2_NO_LEGEND_xlim2_ylim2',['a','b'],title='TEST TITLE',legendOn=False, xLim=2,yLim=2)
-        plots.save_multiple_uverskyPlot2([self.rseq, rseq2],'tmpfiles/mult_UV2_NO_LEGEND_xlim2_ylim2_fs_20',['a','b'],title='TEST TITLE',legendOn=False, xLim=2,yLim=2, fontSize=20)
-
-
-        
-
+        plots.save_multiple_uverskyPlot2(
+            [self.rseq, rseq2], 'tmpfiles/mult_UV', ['a', 'b'], 'TEST TITLE')
+        plots.save_multiple_uverskyPlot2([self.rseq,
+                                          rseq2],
+                                         'tmpfiles/mult_UV2_NO_LEGEND',
+                                         ['a',
+                                          'b'],
+                                         title='TEST TITLE',
+                                         legendOn=False)
+        plots.save_multiple_uverskyPlot2([self.rseq,
+                                          rseq2],
+                                         'tmpfiles/mult_UV2_NO_LEGEND_xLim1',
+                                         ['a',
+                                          'b'],
+                                         title='TEST TITLE',
+                                         legendOn=False,
+                                         xLim=1)
+        plots.save_multiple_uverskyPlot2([self.rseq,
+                                          rseq2],
+                                         'tmpfiles/mult_UV2_NO_LEGEND_xlim2',
+                                         ['a',
+                                          'b'],
+                                         title='TEST TITLE',
+                                         legendOn=False,
+                                         xLim=2)
+        plots.save_multiple_uverskyPlot2([self.rseq,
+                                          rseq2],
+                                         'tmpfiles/mult_UV2_NO_LEGEND_xlim2_ylim2',
+                                         ['a',
+                                          'b'],
+                                         title='TEST TITLE',
+                                         legendOn=False,
+                                         xLim=2,
+                                         yLim=2)
+        plots.save_multiple_uverskyPlot2([self.rseq,
+                                          rseq2],
+                                         'tmpfiles/mult_UV2_NO_LEGEND_xlim2_ylim2_fs_20',
+                                         ['a',
+                                          'b'],
+                                         title='TEST TITLE',
+                                         legendOn=False,
+                                         xLim=2,
+                                         yLim=2,
+                                         fontSize=20)

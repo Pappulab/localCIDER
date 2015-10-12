@@ -1,4 +1,4 @@
-""" 
+"""
    !--------------------------------------------------------------------------!
    ! LICENSE INFO:                                                            !
    !--------------------------------------------------------------------------!
@@ -41,16 +41,16 @@
    !--------------------------------------------------------------------------!
 
 
-   
+
    File Description:
    ================
-   
-   backendtools contains various utilities and tools used by localCIDER. Especially 
+
+   backendtools contains various utilities and tools used by localCIDER. Especially
    useful is the fact all STDOUT is done through the various *_message methods
    defined here. This allows easy control over the degree of verbosity localCIDER
    displays. Verbocity is hard-coded into the config file
 
- 
+
 
 """
 import sys
@@ -58,13 +58,15 @@ import os
 from config import HUSH_WARNINGS, HUSH_STATUS, HUSH_ALL
 
 #...................................................................................#
-def warning_message(message):    
+
+
+def warning_message(message):
     if not HUSH_WARNINGS and not HUSH_ALL:
         print "WARNING: " + message
 
 
 #...................................................................................#
-def status_message(message):    
+def status_message(message):
     """
     Unless the HUSH_STATUS variable is set to True
     this function prints $message to STDOUT
@@ -102,7 +104,7 @@ def warn_notReadyYet():
 
 #...................................................................................#
 def return_absolute_datafile_path(filename):
-    """ 
+    """
     Function which returns the absolute path
     of a file in the package's data directory.
 
@@ -110,21 +112,21 @@ def return_absolute_datafile_path(filename):
     warn_thisWillBeRemoved()
 
     # get the absolute path of where we are now
-    absolute_path= os.path.realpath('__file__')
+    absolute_path = os.path.realpath('__file__')
     splitted = os.path.split(absolute_path)
 
     print absolute_path
 
     # cut off the first two path
-    for i in range(0,2):
+    for i in range(0, 2):
         splitted = os.path.split(splitted[0])
 
-    return(os.path.join(splitted[0],"data",filename))
+    return(os.path.join(splitted[0], "data", filename))
 
 
 #...................................................................................#
-def verifyType(obj,typeHere):
-    """ 
+def verifyType(obj, typeHere):
+    """
     Function which takes an object and some type and ensures the
     object
 
@@ -136,9 +138,9 @@ def verifyType(obj,typeHere):
             return True
         else:
             return False
-    except SyntaxError, e:
+    except SyntaxError as e:
         # a primitive upon which .__class__ is invalid
-        if type(obj) == typeHere:
+        if isinstance(obj, typeHere):
             return True
         else:
             return False

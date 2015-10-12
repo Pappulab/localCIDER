@@ -1,4 +1,4 @@
-""" 
+"""
    !--------------------------------------------------------------------------!
    ! LICENSE INFO:                                                            !
    !--------------------------------------------------------------------------!
@@ -40,15 +40,13 @@
    !                                                                          !
    !--------------------------------------------------------------------------!
 
-   
+
    File Description:
    ================
-   
-   Contains exceptions associated with localcider  
+
+   Contains exceptions associated with localcider
 
 """
-
-
 
 
 ######################
@@ -59,16 +57,18 @@ class PlottingException(Exception):
     Exception for the plotting functions
     """
     pass
-    
+
 ######################
 # backend.keyfile
 #...................................................................................#
+
+
 class KeyFileException(Exception):
     """
     Exception for the KeyFile class
     """
     pass
-    
+
 
 ######################
 # backend.sequence
@@ -83,6 +83,8 @@ class SequenceException(Exception):
 ######################
 # backend.seqfileparser
 #...................................................................................#
+
+
 class SequenceFileParserException(Exception):
     pass
 

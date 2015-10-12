@@ -1,4 +1,11 @@
-from distutils.core import setup
+from setuptools import setup
+import sys
+
+extras = {}
+if sys.version_info >= (3, 0):
+    extras.update(
+            use_2to3=True,
+    )
 
 setup(
     name='localcider',
@@ -13,4 +20,5 @@ setup(
     long_description=open('README.txt').read(),
     install_requires=[
         "numpy","matplotlib"],
+    **extras
 )

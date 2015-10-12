@@ -39,11 +39,11 @@
    ! MAIN AUTHOR:   Alex Holehouse                                            !
    !                                                                          !
    !--------------------------------------------------------------------------!
- 
-   
+
+
    File Description:
    ================
-   
+
    This is the main package index for the backend package. backend holds all the
    inner guts of localCIDER, and represents functions that users should never
    call directly. Instead, users should import sequenceParameters or other modules
@@ -51,5 +51,3 @@
 
 
 """
- 
-

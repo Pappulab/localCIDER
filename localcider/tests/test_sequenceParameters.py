@@ -1,4 +1,4 @@
-""" 
+"""
    !--------------------------------------------------------------------------!
    ! LICENSE INFO:                                                            !
    !--------------------------------------------------------------------------!
@@ -44,7 +44,8 @@
 
 """
 
-import os.path, time
+import os.path
+import time
 import unittest
 import random
 
@@ -54,11 +55,9 @@ import testTools
 
 class TestSequenceParametersFunctions(unittest.TestCase):
 
-    def setUp(self):        
-        self.testObj = sequenceParameters.SequenceParameters("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAAGKTKEGVLYVGSKTKEGVVHGVATVAEKTKEQVTNVGGAVVTGVTAVAQKTVEGAGSIAAATGFVKKDQLGKNEEGAPQEGILEDMPVDPDNEAYEMPSEEGYQDYEPEA")
-
-
-
+    def setUp(self):
+        self.testObj = sequenceParameters.SequenceParameters(
+            "MDVFMKGLSKAKEGVVAAAEKTKQGVAEAAGKTKEGVLYVGSKTKEGVVHGVATVAEKTKEQVTNVGGAVVTGVTAVAQKTVEGAGSIAAATGFVKKDQLGKNEEGAPQEGILEDMPVDPDNEAYEMPSEEGYQDYEPEA")
 
     # <><><><><><><><><><><><><><><><><><><><><><><><><><><><>
     #
@@ -68,13 +67,15 @@ class TestSequenceParametersFunctions(unittest.TestCase):
 
     def test_clear_phosphosites(self):
         # set phosphosites
-        #self.testObj.
+        # self.testObj.
         pass
 
     def test_get_sequence(self):
-        seq=self.testObj.get_sequence()
-        self.assertEqual(seq, "MDVFMKGLSKAKEGVVAAAEKTKQGVAEAAGKTKEGVLYVGSKTKEGVVHGVATVAEKTKEQVTNVGGAVVTGVTAVAQKTVEGAGSIAAATGFVKKDQLGKNEEGAPQEGILEDMPVDPDNEAYEMPSEEGYQDYEPEA")
-        
+        seq = self.testObj.get_sequence()
+        self.assertEqual(
+            seq,
+            "MDVFMKGLSKAKEGVVAAAEKTKQGVAEAAGKTKEGVLYVGSKTKEGVVHGVATVAEKTKEQVTNVGGAVVTGVTAVAQKTVEGAGSIAAATGFVKKDQLGKNEEGAPQEGILEDMPVDPDNEAYEMPSEEGYQDYEPEA")
+
     def test_get_mean_hydropathy(self):
         MH = self.testObj.get_mean_hydropathy()
         self.assertEqual(MH, 4.097142857142858)
@@ -82,46 +83,45 @@ class TestSequenceParametersFunctions(unittest.TestCase):
     def test_get_uversky_hydropathy(self):
         MUH = self.testObj.get_uversky_hydropathy()
         self.assertEqual(MUH, 0.4552380952380952)
-        
+
     def test_get_fraction_disorder_promoting(self):
         FD = self.testObj.get_fraction_disorder_promoting()
         self.assertEqual(FD, 0.7285714285714285)
-        
-    def test_get_amino_acid_fractions(self):
-        AADict=self.testObj.get_amino_acid_fractions()
 
-        PC={'A': 0.1357142857142857,
-            'C': 0.0,
-            'D': 0.04285714285714286,
-            'E': 0.12857142857142856,
-            'F': 0.014285714285714285,
-            'G': 0.12857142857142856,
-            'H': 0.007142857142857143,
-            'I': 0.014285714285714285,
-            'K': 0.10714285714285714,
-            'L': 0.02857142857142857,
-            'M': 0.02857142857142857,
-            'N': 0.02142857142857143,
-            'P': 0.03571428571428571,
-            'Q': 0.04285714285714286,
-            'R': 0.0,
-            'S': 0.02857142857142857,
-            'T': 0.07142857142857142,
-            'V': 0.1357142857142857,
-            'W': 0.0,
-            'Y': 0.02857142857142857}
+    def test_get_amino_acid_fractions(self):
+        AADict = self.testObj.get_amino_acid_fractions()
+
+        PC = {'A': 0.1357142857142857,
+              'C': 0.0,
+              'D': 0.04285714285714286,
+              'E': 0.12857142857142856,
+              'F': 0.014285714285714285,
+              'G': 0.12857142857142856,
+              'H': 0.007142857142857143,
+              'I': 0.014285714285714285,
+              'K': 0.10714285714285714,
+              'L': 0.02857142857142857,
+              'M': 0.02857142857142857,
+              'N': 0.02142857142857143,
+              'P': 0.03571428571428571,
+              'Q': 0.04285714285714286,
+              'R': 0.0,
+              'S': 0.02857142857142857,
+              'T': 0.07142857142857142,
+              'V': 0.1357142857142857,
+              'W': 0.0,
+              'Y': 0.02857142857142857}
 
         for AA in AADict:
             self.assertEqual(AADict[AA], PC[AA])
-            
-        
+
     def test_get_kappa(self):
-        KP=self.testObj.get_kappa()        
+        KP = self.testObj.get_kappa()
         self.assertEqual(KP, 0.17167490749129125)
-       
+
     def test_get_countPos(self):
         CP = self.testObj.get_countPos()
-        self.assertEqual(CP,15)
+        self.assertEqual(CP, 15)
 
     def test_get_countNeg(self):
         CN = self.testObj.get_countNeg()
@@ -134,7 +134,7 @@ class TestSequenceParametersFunctions(unittest.TestCase):
     def test_get_fraction_positive(self):
         FPos = self.testObj.get_fraction_positive()
         self.assertEqual(FPos, 0.10714285714285714)
-        
+
     def test_get_fraction_negative(self):
         FNeg = self.testObj.get_fraction_negative()
         self.assertEqual(FNeg, 0.17142857142857143)
@@ -142,48 +142,50 @@ class TestSequenceParametersFunctions(unittest.TestCase):
     def test_get_FCR(self):
         FCR = self.testObj.get_FCR()
         self.assertEqual(FCR, 0.2785714285714286)
-        
+
     def test_get_NCPR(self):
         NCPR = self.testObj.get_NCPR()
         self.assertEqual(NCPR, -0.06428571428571428)
-        
+
     def test_get_mean_net_charge(self):
         MNC = self.testObj.get_mean_net_charge()
         self.assertEqual(MNC, 0.06428571428571428)
-        
+
     def test_get_phasePlotRegion(self):
         PPR = self.testObj.get_phasePlotRegion()
         self.assertEqual(PPR, 2)
-        
+
     def test_get_phosphosites(self):
         PS_pre = self.testObj.get_phosphosites()
-        self.assertEqual(len(PS_pre),0)
+        self.assertEqual(len(PS_pre), 0)
 
-        
     def test_get_kappa_after_phosphorylation(self):
-        
+
         # check we're starting with the phosphosites set empty
-        self.assertEqual(len(self.testObj.get_phosphosites()),0)
+        self.assertEqual(len(self.testObj.get_phosphosites()), 0)
 
         # run and test phosphorylation
-        self.testObj.set_phosphosites([33,39,42])
-        self.assertEqual(len(self.testObj.get_phosphosites()),3)
+        self.testObj.set_phosphosites([33, 39, 42])
+        self.assertEqual(len(self.testObj.get_phosphosites()), 3)
 
         PostPhosK = self.testObj.get_kappa_after_phosphorylation()
         self.assertEqual(PostPhosK, 0.15101360943849682)
 
         pass
+
     def test_get_all_phosphorylatable_sites(self):
-        
+
         all_sites = self.testObj.get_all_phosphorylatable_sites()
-        
-        self.assertEqual(all_sites, [9, 22, 33, 39, 42, 44, 54, 59, 64, 72, 75, 81, 87, 92, 125, 129, 133, 136])
-    
+
+        self.assertEqual(
+            all_sites, [
+                9, 22, 33, 39, 42, 44, 54, 59, 64, 72, 75, 81, 87, 92, 125, 129, 133, 136])
+
     def test_get_full_phosphostatus_kappa_distribution(self):
-        
+
         # just to be sure
         self.testObj.clear_phosphosites()
-        self.testObj.set_phosphosites([33,39,42])
+        self.testObj.set_phosphosites([33, 39, 42])
 
         FPKD = [(0.17167490749129125,
                  0.10714285714285714,
@@ -241,64 +243,58 @@ class TestSequenceParametersFunctions(unittest.TestCase):
                  -0.08571428571428572,
                  4.042142857142857,
                  ('1', '1', '1'))]
-        
 
         FPKD_calc = self.testObj.get_full_phosphostatus_kappa_distribution()
 
         self.assertEqual(FPKD_calc, FPKD)
-        
 
     def test_set_phosphosites(self):
-        
+
         # note we also check that incorrect phosphosites are not
         # assigned
-                
+
         self.testObj.clear_phosphosites()
 
         print ""
         print "###### WE EXPECT A WARNING ON THE LINE BELOW ######"
-        self.testObj.set_phosphosites([33,39,42,43])
+        self.testObj.set_phosphosites([33, 39, 42, 43])
         print "###################################################"
-        self.assertEqual(self.testObj.get_phosphosites(),[33,39,42])
-    
+        self.assertEqual(self.testObj.get_phosphosites(), [33, 39, 42])
 
     def test_save_phaseDiagramPlot(self):
         # Should test the creation date but that's for a later update...
         # note that if we can create and save the file we can also display it
         self.testObj.save_phaseDiagramPlot("tmpfiles/phaseplot_test")
-        
 
     def test_save_uverskyPlot(self):
-        # 
-        # 
+        #
+        #
         self.testObj.save_uverskyPlot("tmpfiles/uversky_test")
 
-    
     def test_general_coverage(self):
 
-
         AAs = list("QWERTYIPASDFGHKLCVNM")
-        
+
         # generate 5 random sequences
         # LENGTH BETWEEN 1 AND 150
         random.seed()
-        
-        seq_list=[]
-        for i in xrange(0,10):
-            L1= random.randrange(200,1000)
 
-            S1=""
-            for i in xrange(0,L1):
-                S1=S1+random.choice(AAs)
+        seq_list = []
+        for i in xrange(0, 10):
+            L1 = random.randrange(200, 1000)
+
+            S1 = ""
+            for i in xrange(0, L1):
+                S1 = S1 + random.choice(AAs)
 
             seq_list.append(S1)
-            
 
-        pos = 0 
+        pos = 0
         print ""
 
-        seq_list = testTools.generate_random_sequence_list(number=10, minLen=100, maxLen=1000)
-        
+        seq_list = testTools.generate_random_sequence_list(
+            number=10, minLen=100, maxLen=1000)
+
         for i in seq_list:
             print ""
             print "Sequence " + str(pos)
@@ -318,92 +314,230 @@ class TestSequenceParametersFunctions(unittest.TestCase):
             iSEQ.get_phasePlotRegion()
             iSEQ.get_mean_hydropathy()
             iSEQ.get_uversky_hydropathy()
-            psites=iSEQ.get_all_phosphorylatable_sites()
+            psites = iSEQ.get_all_phosphorylatable_sites()
             if psites > 0:
 
                 # grab 3 sites ranodmly
-                sites=[]
-                for i in xrange(0,2):
+                sites = []
+                for i in xrange(0, 2):
                     sites.append(random.choice(psites))
                 iSEQ.set_phosphosites(sites)
                 iSEQ.get_kappa_after_phosphorylation()
                 iSEQ.get_phosphosequence()
                 iSEQ.get_full_phosphostatus_kappa_distribution()
                 iSEQ.clear_phosphosites()
-        
-            # single 
-            iSEQ.save_phaseDiagramPlot("tmpfiles/phase_test_S"+str(pos))
-            iSEQ.save_uverskyPlot("tmpfiles/uversky_test_S"+str(pos))
+
+            # single
+            iSEQ.save_phaseDiagramPlot("tmpfiles/phase_test_S" + str(pos))
+            iSEQ.save_uverskyPlot("tmpfiles/uversky_test_S" + str(pos))
 
             # try with a blobval
-            iSEQ.save_linearNCPR("tmpfiles/NCPR_test_S"+str(pos),5)
-            iSEQ.save_linearFCR("tmpfiles/FCR_test_S"+str(pos),5)
-            iSEQ.save_linearHydropathy("tmpfiles/Hydropathy_test_S"+str(pos),5)
-            iSEQ.save_linearSigma("tmpfiles/sigma_test_S"+str(pos),5)
-            
+            iSEQ.save_linearNCPR("tmpfiles/NCPR_test_S" + str(pos), 5)
+            iSEQ.save_linearFCR("tmpfiles/FCR_test_S" + str(pos), 5)
+            iSEQ.save_linearHydropathy(
+                "tmpfiles/Hydropathy_test_S" + str(pos), 5)
+            iSEQ.save_linearSigma("tmpfiles/sigma_test_S" + str(pos), 5)
+
             # try with default
-            iSEQ.save_linearNCPR("tmpfiles/NCPR_test_S"+str(pos))
-            iSEQ.save_linearFCR("tmpfiles/FCR_test_S"+str(pos))
-            iSEQ.save_linearHydropathy("tmpfiles/Hydropathy_test_S"+str(pos))
-            iSEQ.save_linearSigma("tmpfiles/sigma_test_S"+str(pos))
+            iSEQ.save_linearNCPR("tmpfiles/NCPR_test_S" + str(pos))
+            iSEQ.save_linearFCR("tmpfiles/FCR_test_S" + str(pos))
+            iSEQ.save_linearHydropathy("tmpfiles/Hydropathy_test_S" + str(pos))
+            iSEQ.save_linearSigma("tmpfiles/sigma_test_S" + str(pos))
 
-
-            pos=pos+1
-
+            pos = pos + 1
 
     def test_pathological_sequences(self):
 
         # first our ability to reproduce the Das paper sequences
-        das=['EKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEK','EEEKKKEEEKKKEEEKKKEEEKKKEEEKKKEEEKKKEEEKKKEEEKKKEK',
-             'KEKKKEKKEEKKEEKEKEKEKEEKKKEEKEKEKEKKKEEKEKEEKKEEEE','KEKEEKEKKKEEEEKEKKKKEEKEKEKEKEEKKEEKKKKEEKEEKEKEKE',
-             'KEKEKKEEKEKKEEEKKEKEKEKKKEEKKKEEKEEKKEEKKKEEKEEEKE','EEEKKEKKEEKEEKKEKKEKEEEKKKEKEEKKEEEKKKEKEEEEKKKKEK',
-             'EEEEKKKKEEEEKKKKEEEEKKKKEEEEKKKKEEEEKKKKEEEEKKKKEK','KKKKEEEEKKKKEEEEKKKKEEEEKKKKEEEEKKKKEEEEKKKKEEEEKE',
-             'EEKKEEEKEKEKEEEEEKKEKKEKKEKKKEEKEKEKKKEKKKKEKEEEKE','EKKKKKKEEKKKEEEEEKKKEEEKKKEKKEEKEKEEKEKKEKKEEKEEEE',
-             'EKEKKKKKEEEKKEKEEEEKEEEEKKKKKEKEEEKEEKKEEKEKKKEEKK','EKKEEEEEEKEKKEEEEKEKEKKEKEEKEKKEKKKEKKEEEKEKKKKEKK',
-             'KEKKKEKEKKEKKKEEEKKKEEEKEKKKEEKKEKKEKKEEEEEEEKEEKE','EKKEKEEKEEEEKKKKKEEKEKKEKKKKEKKKKKEEEEEEKEEKEKEKEE',
-             'KKEKKEKKKEKKEKKEEEKEKEKKEKKKKEKEKKEEEEEEEEKEEKKEEE','EKEKEEKKKEEKKKKEKKEKEEKKEKEKEKKEEEEEEEEEKEKKEKKKKE',
-             'EKEKKKKKKEKEKKKKEKEKKEKKEKEEEKEEKEKEKKEEKKEEEEEEEE','KEEKKEEEEEEEKEEKKKKKEKKKEKKEEEKKKEEKKKEEEEEEKKKKEK',
-             'EEEEEKKKKKEEEEEKKKKKEEEEEKKKKKEEEEEKKKKKEEEEEKKKKK','EEKEEEEEEKEEEKEEKKEEEKEKKEKKEKEEKKEKKKKKKKKKKKKEEE',
-             'EEEEEEEEEKEKKKKKEKEEKKKKKKEKKEKKKKEKKEEEEEEKEEEKKK','KEEEEKEEKEEKKKKEKEEKEKKKKKKKKKKKKEKKEEEEEEEEKEKEEE',
-             'EEEEEKEEEEEEEEEEEKEEKEKKKKKKEKKKKKKKEKEKKKKEKKEEKK','EEEEKEEEEEKEEEEEEEEEEEEKKKEEKKKKKEKKKKKKKEKKKKKKKK',
-             'EEEEEEEEEEEKEEEEKEEKEEKEKKKKKKKKKKKKKKKKKKEEKKEEKE','KEEEEEEEKEEKEEEEEEEEEKEEEEKEEKKKKKKKKKKKKKKKKKKKKE',
-             'KKEKKKEKKEEEEEEEEEEEEEEEEEEEEKEEKKKKKKKKKKKKKKKEKK','EKKKKKKKKKKKKKKKKKKKKKEEEEEEEEEEEEEEEEEEKKEEEEEKEK',
-             'KEEEEKEEEEEEEEEEEEEEEEEEEEEKKKKKKKKKKKKKKKKKKKKKKK','EEEEEEEEEEEEEEEEEEEEEEEEEKKKKKKKKKKKKKKKKKKKKKKKKK']
+        das = [
+            'EKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEK',
+            'EEEKKKEEEKKKEEEKKKEEEKKKEEEKKKEEEKKKEEEKKKEEEKKKEK',
+            'KEKKKEKKEEKKEEKEKEKEKEEKKKEEKEKEKEKKKEEKEKEEKKEEEE',
+            'KEKEEKEKKKEEEEKEKKKKEEKEKEKEKEEKKEEKKKKEEKEEKEKEKE',
+            'KEKEKKEEKEKKEEEKKEKEKEKKKEEKKKEEKEEKKEEKKKEEKEEEKE',
+            'EEEKKEKKEEKEEKKEKKEKEEEKKKEKEEKKEEEKKKEKEEEEKKKKEK',
+            'EEEEKKKKEEEEKKKKEEEEKKKKEEEEKKKKEEEEKKKKEEEEKKKKEK',
+            'KKKKEEEEKKKKEEEEKKKKEEEEKKKKEEEEKKKKEEEEKKKKEEEEKE',
+            'EEKKEEEKEKEKEEEEEKKEKKEKKEKKKEEKEKEKKKEKKKKEKEEEKE',
+            'EKKKKKKEEKKKEEEEEKKKEEEKKKEKKEEKEKEEKEKKEKKEEKEEEE',
+            'EKEKKKKKEEEKKEKEEEEKEEEEKKKKKEKEEEKEEKKEEKEKKKEEKK',
+            'EKKEEEEEEKEKKEEEEKEKEKKEKEEKEKKEKKKEKKEEEKEKKKKEKK',
+            'KEKKKEKEKKEKKKEEEKKKEEEKEKKKEEKKEKKEKKEEEEEEEKEEKE',
+            'EKKEKEEKEEEEKKKKKEEKEKKEKKKKEKKKKKEEEEEEKEEKEKEKEE',
+            'KKEKKEKKKEKKEKKEEEKEKEKKEKKKKEKEKKEEEEEEEEKEEKKEEE',
+            'EKEKEEKKKEEKKKKEKKEKEEKKEKEKEKKEEEEEEEEEKEKKEKKKKE',
+            'EKEKKKKKKEKEKKKKEKEKKEKKEKEEEKEEKEKEKKEEKKEEEEEEEE',
+            'KEEKKEEEEEEEKEEKKKKKEKKKEKKEEEKKKEEKKKEEEEEEKKKKEK',
+            'EEEEEKKKKKEEEEEKKKKKEEEEEKKKKKEEEEEKKKKKEEEEEKKKKK',
+            'EEKEEEEEEKEEEKEEKKEEEKEKKEKKEKEEKKEKKKKKKKKKKKKEEE',
+            'EEEEEEEEEKEKKKKKEKEEKKKKKKEKKEKKKKEKKEEEEEEKEEEKKK',
+            'KEEEEKEEKEEKKKKEKEEKEKKKKKKKKKKKKEKKEEEEEEEEKEKEEE',
+            'EEEEEKEEEEEEEEEEEKEEKEKKKKKKEKKKKKKKEKEKKKKEKKEEKK',
+            'EEEEKEEEEEKEEEEEEEEEEEEKKKEEKKKKKEKKKKKKKEKKKKKKKK',
+            'EEEEEEEEEEEKEEEEKEEKEEKEKKKKKKKKKKKKKKKKKKEEKKEEKE',
+            'KEEEEEEEKEEKEEEEEEEEEKEEEEKEEKKKKKKKKKKKKKKKKKKKKE',
+            'KKEKKKEKKEEEEEEEEEEEEEEEEEEEEKEEKKKKKKKKKKKKKKKEKK',
+            'EKKKKKKKKKKKKKKKKKKKKKEEEEEEEEEEEEEEEEEEKKEEEEEKEK',
+            'KEEEEKEEEEEEEEEEEEEEEEEEEEEKKKKKKKKKKKKKKKKKKKKKKK',
+            'EEEEEEEEEEEEEEEEEEEEEEEEEKKKKKKKKKKKKKKKKKKKKKKKKK']
 
-        das_kappa=[0.000880589547008, 0.00256304234944,0.0138226351796,0.024499790002,0.0139736279003,0.0272607247241,0.0450342748224,0.0450342748224,0.0624156640006,0.083437842179,0.0840461196368,0.0864189374177,0.0951073474213,0.131060316051,0.135374506326,0.145853296103,0.16433443748,0.167720875959,0.194104529923,0.27210316789,0.273742292347,0.321856766152,0.354595821897,0.445561294563,0.528308824282,0.610154441657,0.672910640197,0.766654273884,0.876364376789,1.0]
+        das_kappa = [
+            0.000880589547008,
+            0.00256304234944,
+            0.0138226351796,
+            0.024499790002,
+            0.0139736279003,
+            0.0272607247241,
+            0.0450342748224,
+            0.0450342748224,
+            0.0624156640006,
+            0.083437842179,
+            0.0840461196368,
+            0.0864189374177,
+            0.0951073474213,
+            0.131060316051,
+            0.135374506326,
+            0.145853296103,
+            0.16433443748,
+            0.167720875959,
+            0.194104529923,
+            0.27210316789,
+            0.273742292347,
+            0.321856766152,
+            0.354595821897,
+            0.445561294563,
+            0.528308824282,
+            0.610154441657,
+            0.672910640197,
+            0.766654273884,
+            0.876364376789,
+            1.0]
 
-        count=0
+        count = 0
         for i in das:
-            a=sequenceParameters.SequenceParameters(i)
-            
-            self.assertEqual(round(das_kappa[count],12),round(a.get_kappa(),12))
-            count=count+1
+            a = sequenceParameters.SequenceParameters(i)
 
+            self.assertEqual(
+                round(
+                    das_kappa[count], 12), round(
+                    a.get_kappa(), 12))
+            count = count + 1
 
-        Pathoseqs=['EEEEEEEEEEEDDEEEEGDD', 'EEEDDEEEEDESSSSGGGEE', 'EEEEEFGLDEEDEDEDEDEE', 'EEEEEDEDEDEDEDEAGSEL', 'EEEDDEDDEDSEEDSEDDED', 'EEDAECIDDDEEDEEDEEED', 'EDDEEAEEEEEEEEEEEDED', 'DGEDEDDEDDDDDDDDDDDD', 'SEEEEEEKEEEEEEEEEEEE', 'EEKEEEEEEEEEEEEEEEDE', 'EDSNEDEEEDDEEEDEEDDE', 'DEEEDDEEEDEEDDEDDESD', 'DDDDDDDSDDQGDEDDEDEE', 'EEDDEEEEEEEEEEEEELTE', 'EEDEEDEEEEESESSDSEEE', 'EGADMEEEEEEEEEEEEEEE', 'DDDDEDDDEDDDDEDLRTDS', 'EEEEEEEEEEEEETGSNSEE', 'SDSDSEEEDDEEEDDEDEDD', 'EGLGVQGAEEEEEEEEEEEE', 'ESEEGQEDEDEEDEEDEDEE', 'DEDEEEEDEEEDEEDKDADS', 'EEEKEDEEEEEEEEEEEEEE', 'DEEEEEEEEEEEEEEEVTEV', 'EPIEEEEEEEEEEEEEEEED', 'EEEEEEEEEEEEEEDQDMDA', 'ESDEEEEEEEEEEEEEDDDD', 'EEEEEEEEEEEDDDDDKGDG', 'DDEDDEESDEEEEEEEEEEE', 'EEEEEEEEEEEEATDSEEEE', 'QEEGGEEEEEEEEEEEEEEE', 'EEEEEDEEEEEEEDSIVDDA', 'EEEEDEEEEGEEGEEDEEDE', 'EQLSEEEEEEEEEEEEEEEE', 'EEEEEEEEEEEAEEEEEEED', 'DEEEDEEEEEEDEEALLEDE', 'EEEEEEEELPEDDEEEEEEE', 'EEELPEDDEEEEEEEEEDDD', 'EEEDDEDEEEEEEEEEGDGE', 'ESSEEEEEEEDEEEEEEEEE', 'EEEEEEEEEEEEEEEEEGEE', 'EENDDQEEEEEDEDDEDDEE', 'EDEEEEDDDDDDEGEDDGEE', 'PLDKACAEDDDEEDEEEEEE', 'DDEDDDEAEDNDEDEDDDEE', 'DEDDDEDGEDVEDEEEEEEE', 'EDGEDVEDEEEEEEEEEEEE', 'EEEEEEEEEEEEEEEEAAPD', 'EEEEEEEEQEEEEEEEEEEE', 'EEDEDEDLEEEEEEEEEDDD', 'EEEEGGGQGEEEEEEEEDEE', 'EEEEEEEDDEDEDADISLEE', 'DDDDDDEEDDDEDDDDDDFD', 'DEEEDDDSEEDEEDDEDEDE', 'EEEEEEEEEEEEEDFEEEEE', 'EEEEEDEEEYFEEEEEEEEE', 'EEEEGELEEEEEEEDEEEEE', 'DSSSSSEDEEEEEEEEEDED', 'ELGYPREEDEEEEEDDEEEE', 'DLGEEEEEEEEEDEEEEEDD', 'EEDEEEEEDDDDDELEDEGE', 'EDEEEEEEEEEEEKEEEEEW', 'EEAEEEEEEDEEEEEEEEEE', 'DDDDDDDEEDGVFDDEDEEE', 'EEEEEEEEEAPVSVWDEEED', 'EDDDDDDDEDDDDEEENAED', 'EDEEEEEEEEEEDEDEDLEE', 'EEEDDDEDEDEEDDVSEGSE', 'EEEEEEEEEEEEEEEAEEEE', 'DEEEEEEEEEYDEEEEEEDD', 'DEDDEDEDEDEDEDEDEDKE', 'DEDEDEDEDEDEDKEEEEED', 'DASDNEEEEEEEEEEEEEEE', 'EEVDQQEEEEEEEEEEEEEE', 'EEEEEEEEEEEAAAAVALGE', 'EDEDDEDEDEEEEDDENGDS', 'ENEEDDEDEDDDEDDDEDED', 'DEDEDDDEDDDEDEDNESEG', 'EVDEDGEEEEEEEEEEEEEE', 'EEEEEEEEEEEEEEEEYEQD', 'EEEEEEDGHSEQEEEEEEEE', 'EEDDKEDDDDDEDDDDEEDE', 'DEEDEEEEEEEEEDDDDDTE', 'EMEESEEDEEEEDEEEEEED', 'EEDEEEEEEDEEESKAGGED', 'EEEEEAEEEEEEEEEEEEEE', 'EERNGLEEEEEDDEEDEEDD']
+        Pathoseqs = [
+            'EEEEEEEEEEEDDEEEEGDD',
+            'EEEDDEEEEDESSSSGGGEE',
+            'EEEEEFGLDEEDEDEDEDEE',
+            'EEEEEDEDEDEDEDEAGSEL',
+            'EEEDDEDDEDSEEDSEDDED',
+            'EEDAECIDDDEEDEEDEEED',
+            'EDDEEAEEEEEEEEEEEDED',
+            'DGEDEDDEDDDDDDDDDDDD',
+            'SEEEEEEKEEEEEEEEEEEE',
+            'EEKEEEEEEEEEEEEEEEDE',
+            'EDSNEDEEEDDEEEDEEDDE',
+            'DEEEDDEEEDEEDDEDDESD',
+            'DDDDDDDSDDQGDEDDEDEE',
+            'EEDDEEEEEEEEEEEEELTE',
+            'EEDEEDEEEEESESSDSEEE',
+            'EGADMEEEEEEEEEEEEEEE',
+            'DDDDEDDDEDDDDEDLRTDS',
+            'EEEEEEEEEEEEETGSNSEE',
+            'SDSDSEEEDDEEEDDEDEDD',
+            'EGLGVQGAEEEEEEEEEEEE',
+            'ESEEGQEDEDEEDEEDEDEE',
+            'DEDEEEEDEEEDEEDKDADS',
+            'EEEKEDEEEEEEEEEEEEEE',
+            'DEEEEEEEEEEEEEEEVTEV',
+            'EPIEEEEEEEEEEEEEEEED',
+            'EEEEEEEEEEEEEEDQDMDA',
+            'ESDEEEEEEEEEEEEEDDDD',
+            'EEEEEEEEEEEDDDDDKGDG',
+            'DDEDDEESDEEEEEEEEEEE',
+            'EEEEEEEEEEEEATDSEEEE',
+            'QEEGGEEEEEEEEEEEEEEE',
+            'EEEEEDEEEEEEEDSIVDDA',
+            'EEEEDEEEEGEEGEEDEEDE',
+            'EQLSEEEEEEEEEEEEEEEE',
+            'EEEEEEEEEEEAEEEEEEED',
+            'DEEEDEEEEEEDEEALLEDE',
+            'EEEEEEEELPEDDEEEEEEE',
+            'EEELPEDDEEEEEEEEEDDD',
+            'EEEDDEDEEEEEEEEEGDGE',
+            'ESSEEEEEEEDEEEEEEEEE',
+            'EEEEEEEEEEEEEEEEEGEE',
+            'EENDDQEEEEEDEDDEDDEE',
+            'EDEEEEDDDDDDEGEDDGEE',
+            'PLDKACAEDDDEEDEEEEEE',
+            'DDEDDDEAEDNDEDEDDDEE',
+            'DEDDDEDGEDVEDEEEEEEE',
+            'EDGEDVEDEEEEEEEEEEEE',
+            'EEEEEEEEEEEEEEEEAAPD',
+            'EEEEEEEEQEEEEEEEEEEE',
+            'EEDEDEDLEEEEEEEEEDDD',
+            'EEEEGGGQGEEEEEEEEDEE',
+            'EEEEEEEDDEDEDADISLEE',
+            'DDDDDDEEDDDEDDDDDDFD',
+            'DEEEDDDSEEDEEDDEDEDE',
+            'EEEEEEEEEEEEEDFEEEEE',
+            'EEEEEDEEEYFEEEEEEEEE',
+            'EEEEGELEEEEEEEDEEEEE',
+            'DSSSSSEDEEEEEEEEEDED',
+            'ELGYPREEDEEEEEDDEEEE',
+            'DLGEEEEEEEEEDEEEEEDD',
+            'EEDEEEEEDDDDDELEDEGE',
+            'EDEEEEEEEEEEEKEEEEEW',
+            'EEAEEEEEEDEEEEEEEEEE',
+            'DDDDDDDEEDGVFDDEDEEE',
+            'EEEEEEEEEAPVSVWDEEED',
+            'EDDDDDDDEDDDDEEENAED',
+            'EDEEEEEEEEEEDEDEDLEE',
+            'EEEDDDEDEDEEDDVSEGSE',
+            'EEEEEEEEEEEEEEEAEEEE',
+            'DEEEEEEEEEYDEEEEEEDD',
+            'DEDDEDEDEDEDEDEDEDKE',
+            'DEDEDEDEDEDEDKEEEEED',
+            'DASDNEEEEEEEEEEEEEEE',
+            'EEVDQQEEEEEEEEEEEEEE',
+            'EEEEEEEEEEEAAAAVALGE',
+            'EDEDDEDEDEEEEDDENGDS',
+            'ENEEDDEDEDDDEDDDEDED',
+            'DEDEDDDEDDDEDEDNESEG',
+            'EVDEDGEEEEEEEEEEEEEE',
+            'EEEEEEEEEEEEEEEEYEQD',
+            'EEEEEEDGHSEQEEEEEEEE',
+            'EEDDKEDDDDDEDDDDEEDE',
+            'DEEDEEEEEEEEEDDDDDTE',
+            'EMEESEEDEEEEDEEEEEED',
+            'EEDEEEEEEDEEESKAGGED',
+            'EEEEEAEEEEEEEEEEEEEE',
+            'EERNGLEEEEEDDEEDEEDD']
 
         for i in Pathoseqs:
-            a=sequenceParameters.SequenceParameters(i)
+            a = sequenceParameters.SequenceParameters(i)
 
-            self.assertGreaterEqual(1,a.get_kappa())
-
+            self.assertGreaterEqual(1, a.get_kappa())
 
     def test_phaseDiagramDefinitions(self):
-        base="EKEKEKEKEKEKEK"
-        sequences=[]
-        phaseplotreg=[]
-        for extender in ['E','K','G', 'GK', 'GE']:
-            for i in range(0,50):
+        base = "EKEKEKEKEKEKEK"
+        sequences = []
+        phaseplotreg = []
+        for extender in ['E', 'K', 'G', 'GK', 'GE']:
+            for i in range(0, 50):
                 if i > 20:
                     if i % 2 == 0:
                         continue
                 if i > 30:
                     if i % 3 == 0:
                         continue
-            
-                sequences.append(sequenceParameters.SequenceParameters(base+extender*i))
-                phaseplotreg.append(sequenceParameters.SequenceParameters(base+extender*i).get_phasePlotRegion())
 
+                sequences.append(
+                    sequenceParameters.SequenceParameters(
+                        base + extender * i))
+                phaseplotreg.append(
+                    sequenceParameters.SequenceParameters(
+                        base + extender * i).get_phasePlotRegion())
 
-        plots.save_multiple_phasePlot2(sequences, 'tmpfiles/check_phasePlot_regions_match', phaseplotreg)
-
+        plots.save_multiple_phasePlot2(
+            sequences,
+            'tmpfiles/check_phasePlot_regions_match',
+            phaseplotreg)

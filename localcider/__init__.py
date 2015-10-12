@@ -1,4 +1,4 @@
-""" 
+"""
    !--------------------------------------------------------------------------!
    ! LICENSE INFO:                                                            !
    !--------------------------------------------------------------------------!
@@ -40,11 +40,11 @@
    !                                                                          !
    !--------------------------------------------------------------------------!
 
-   
+
    File Description:
    ================
-   
-   This is the main package import file for the localCIDER package. 
+
+   This is the main package import file for the localCIDER package.
 
 """
 
@@ -52,17 +52,15 @@ __all__ = ['sequenceParameters', 'plots']
 
 from backend.config import VERSION as localCIDER_version
 from backend.backendtools import status_message
-import sequenceParameters as sequenceParameters 
+import sequenceParameters as sequenceParameters
 import sequencePermutants as sequencePermutants
 import plots as plots
 
 # Explicit exception importing
-from backend.localciderExceptions import KeyFileException 
+from backend.localciderExceptions import KeyFileException
 from backend.localciderExceptions import PlottingException
 from backend.localciderExceptions import SequenceException
 from backend.localciderExceptions import SequenceFileParserException
 from backend.localciderExceptions import ResTableException
 from backend.localciderExceptions import WLException
 status_message("localCIDER version " + localCIDER_version)
-
-
