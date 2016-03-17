@@ -4,11 +4,11 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.7                                                         !
+   !    Version 0.1.8                                                         !
    !                                                                          !
-   !    Copyright (C) 2014, The localCIDER development team (current and      !
-   !                        former contributors): Alex Holehouse, James       !
-   !                        Ahad, Rahul K. Das.                               !
+   !    Copyright (C) 2014 - 2015                                             !
+   !    The localCIDER development team (current and former contributors)     !
+   !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
    !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
    !    University in St. Louis. Please see the website for citation          !
@@ -107,7 +107,8 @@ def save_single_phasePlot(
         legendOn=True,
         xLim=1,
         yLim=1,
-        fontSize=10):
+        fontSize=10,
+        saveFormat='pdf'):
     """
     Save a single-sequence Das-Pappu phase diagram to file
     """
@@ -124,7 +125,13 @@ def save_single_phasePlot(
         initial_plottingObject, legendOn, title, xLim, yLim)
 
     # save the plot and then close the matloblib plotting object
-    finalized_plottingObject.savefig(filename, dpi=200)
+    # note we default to 200 dpi for PNG files - this value
+    # is hardcoded
+    if saveFormat == 'png':
+        finalized_plottingObject.savefig(filename, format=saveFormat, dpi=200)
+    else:
+        finalized_plottingObject.savefig(filename, format=saveFormat)
+
     finalized_plottingObject.close()
 
 
@@ -169,7 +176,8 @@ def save_multiple_phasePlot(
         legendOn=True,
         xLim=1,
         yLim=1,
-        fontSize=10):
+        fontSize=10,
+        saveFormat='png'):
     """
     Save multiple-sequences on a Das-Pappu phase diagram to file
     """
@@ -184,7 +192,15 @@ def save_multiple_phasePlot(
         initial_plottingObject, legendOn, title, xLim, yLim)
 
     # save the plot and then close the matloblib plotting object
-    finalized_plottingObject.savefig(filename, dpi=200)
+    # save the plot and then close the matloblib plotting object
+    # note we default to 200 dpi for PNG files - this value
+    # is hardcoded
+    if saveFormat == 'png':
+        finalized_plottingObject.savefig(filename, format=saveFormat, dpi=200)
+    else:
+        finalized_plottingObject.savefig(filename, format=saveFormat)
+
+    
     finalized_plottingObject.close()
 
 
@@ -228,7 +244,8 @@ def save_single_uverskyPlot(
         legendOn=True,
         xLim=1,
         yLim=1,
-        fontSize=10):
+        fontSize=10,
+        saveFormat='png'):
     """
     Function to save a single point on a Uversky plots
 
@@ -245,7 +262,11 @@ def save_single_uverskyPlot(
         initial_plottingObject, legendOn, title, xLim, yLim)
 
     # save the plot and then close the matloblib plotting object
-    finalized_plottingObject.savefig(filename, dpi=200)
+    if saveFormat == 'png':
+        finalized_plottingObject.savefig(filename, format=saveFormat, dpi=200)
+    else:
+        finalized_plottingObject.savefig(filename, format=saveFormat)
+
     finalized_plottingObject.close()
 
 
@@ -288,7 +309,8 @@ def save_multiple_uverskyPlot(
         legendOn=True,
         xLim=1,
         yLim=1,
-        fontSize=10):
+        fontSize=10,
+        saveFormat='png'):
 
     # Create a plotting object
     initial_plottingObject = multiple_plot(
@@ -297,7 +319,11 @@ def save_multiple_uverskyPlot(
         initial_plottingObject, legendOn, title, xLim, yLim)
 
     # save the plot and then close the matloblib plotting object
-    plt.savefig(filename, dpi=200)
+    if saveFormat == 'png':
+        finalized_plottingObject.savefig(filename, format=saveFormat, dpi=200)
+    else:
+        finalized_plottingObject.savefig(filename, format=saveFormat)
+
     plt.close()
 
 
@@ -541,35 +567,45 @@ def finalize_uversky(plt, legendOn, title, xLim, yLim):
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
 #...................................................................................#
-def save_linearNCPR(SeqObj, blobLen, filename):
-    save_linearplot(build_NCPR_plot, SeqObj, blobLen, filename)
+def save_linearNCPR(SeqObj, blobLen, filename, saveFormat='png'):
+    save_linearplot(build_NCPR_plot, SeqObj, blobLen, filename, saveFormat)
 
 
 #...................................................................................#
-def save_linearFCR(SeqObj, blobLen, filename):
-    save_linearplot(build_FCR_plot, SeqObj, blobLen, filename)
+def save_linearFCR(SeqObj, blobLen, filename, saveFormat='png'):
+    save_linearplot(build_FCR_plot, SeqObj, blobLen, filename, saveFormat)
 
 
 #...................................................................................#
-def save_linearSigma(SeqObj, blobLen, filename):
-    save_linearplot(build_sigma_plot, SeqObj, blobLen, filename)
+def save_linearSigma(SeqObj, blobLen, filename, saveFormat='png'):
+    save_linearplot(build_sigma_plot, SeqObj, blobLen, filename, saveFormat)
 
 
 #...................................................................................#
-def save_linearHydropathy(SeqObj, blobLen, filename):
-    save_linearplots(build_hydropathy_plot, SeqObj, blobLen, filename)
+def save_linearHydropathy(SeqObj, blobLen, filename, saveFormat='png'):
+    save_linearplots(build_hydropathy_plot, SeqObj, blobLen, filename, saveFormat)
 
-#
-#
 #...................................................................................#
+def save_linearComplexity(complexityVector, complexityType, seqlen, filename, saveFormat='png'): 
+    # Different structure to the others because here we have to pass a built complexity
+    # vector into this function from the SeqObj
+    
 
+    plt = show_linearComplexity(complexityVector, complexityType, seqlen, getFig=True)
+    
+    if saveFormat == 'png':
+        plt.savefig(filename, format=saveFormat, dpi=200)
+    else:
+        plt.savefig(filename, format=saveFormat)
 
+    plt.close()
+
+#...................................................................................#
 def show_linearNCPR(SeqObj, blobLen, getFig=False):
     if getFig:
         return show_linearplot(build_NCPR_plot, SeqObj, blobLen, getFig)
     else:
         show_linearplot(build_NCPR_plot, SeqObj, blobLen, getFig)
-
 
 #...................................................................................#
 def show_linearFCR(SeqObj, blobLen, getFig=False):
@@ -579,15 +615,12 @@ def show_linearFCR(SeqObj, blobLen, getFig=False):
         show_linearplot(build_FCR_plot, SeqObj, blobLen, getFig)
 
 #...................................................................................#
-
-
 def show_linearSigma(SeqObj, blobLen, getFig=False):
 
     if getFig:
         return show_linearplot(build_sigma_plot, SeqObj, blobLen, getFig)
     else:
         show_linearplot(build_sigma_plot, SeqObj, blobLen, getFig)
-
 
 #...................................................................................#
 def show_linearHydropathy(SeqObj, blobLen, getFig=False):
@@ -597,21 +630,71 @@ def show_linearHydropathy(SeqObj, blobLen, getFig=False):
     else:
         show_linearplot(build_hydropathy_plot, SeqObj, blobLen)
 
+#...................................................................................#
+def show_linearComplexity(complexityVector, complexityType, seqlen, getFig=False):
+    """
+    The complexity plotting functions opperate outside of the general linear sequence
+    framework as there are types of options/behaviours specific enough to the
+    complexity plots that trying to shoe-horn them into the existing code would not
+    be a good design decision.
+
+
+    """
+    
+    # first generate the bar-plot and save the list of bars
+    barlist = plt.bar(complexityVector[0,:], 
+                      complexityVector[1,:],
+                      width=1,
+                      linewidth=1.1,
+                      edgecolor='k',
+                      color='#A8A8A8')
+
+    # set the limits
+    plt.ylim([0,1])
+    plt.xlim([1, seqlen])
+
+    # set the font properties
+    axes_pro = FontProperties()
+    axes_pro.set_size('large')
+    axes_pro.set_weight('bold')
+
+    # set the axis labels
+    plt.xlabel('Residue', fontproperties=axes_pro)
+    plt.ylabel('Complexity', fontproperties=axes_pro)
+    
+    # set the title (i.e. what type of complexity was calculated)
+    axes_pro.set_size('x-large')
+    if complexityType == 'WF':
+        title='Wooton-Federhen complexity'
+    elif complexityType == 'LC':
+        title='Linguistic complexity'
+    elif complexityType == 'LZW':
+        title='Lempel-Ziv-Welch complexity'
+    else:
+        raise PlottingException('Unexpected complexity type passed - should never happen')
+
+    plt.title(title, fontproperties=axes_pro)
+    
+    # finally either show the plot or return the plt object
+    if getFig:
+        return plt
+    else:
+        plt.show()
+
 
 ##
-# Functions below allow construction of the various Linear Sequence Plots #DRY
+# Functions below allow construction of the various Linear Sequence Plots - i.e. should 
+# be considered internal to this file
 ##
 
-
+#...................................................................................#
 def __build_linear_plot(
         data,
         title="",
         xlabel="Blob index",
         ylabel="",
-        ylimits=[
-            0,
-            1],
-    hline=None,
+        ylimits=[0,1],
+        hline=None,
         setPositiveNegativeBars=False):
     """
     Internal function which expects data to be a Nx2 matrix (np.vstack) where column 1
@@ -624,17 +707,12 @@ def __build_linear_plot(
     """
 
     # plot the data
-    barlist = plt.bar(
-        data[
-            0,
-            :],
-        data[
-            1,
-            :],
-        width=1,
-        linewidth=1.1,
-        edgecolor='k',
-        color='#A8A8A8')
+    barlist = plt.bar( data[0,:], 
+                       data[1,:],
+                       width=1,
+                       linewidth=1.1,
+                       edgecolor='k',
+                       color='#A8A8A8')
 
     # this is really inefficient but means we have a consistent
     #
@@ -749,7 +827,7 @@ def build_hydropathy_plot(SeqObj, blobLen):
 
 
 #...................................................................................#
-def save_linearplot(build_fun, SeqObj, blobLen, filename):
+def save_linearplot(build_fun, SeqObj, blobLen, filename, saveFormat='png'):
     """
     Internal function which builds and saves a linear sequence plot
 
@@ -757,7 +835,12 @@ def save_linearplot(build_fun, SeqObj, blobLen, filename):
     """
 
     plt = build_fun(SeqObj, blobLen)
-    plt.savefig(filename, dpi=200)
+    
+    if saveFormat == 'png':
+        plt.savefig(filename, format=saveFormat, dpi=200)
+    else:
+        plt.savefig(filename, format=saveFormat)
+
     plt.close()
 
 

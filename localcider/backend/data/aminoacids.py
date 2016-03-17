@@ -4,11 +4,11 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.7                                                         !
+   !    Version 0.1.8                                                         !
    !                                                                          !
-   !    Copyright (C) 2014, The localCIDER development team (current and      !
-   !                        former contributors): Alex Holehouse, James       !
-   !                        Ahad, Rahul K. Das.                               !
+   !    Copyright (C) 2014 - 2015                                             !
+   !    The localCIDER development team (current and former contributors)     !
+   !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
    !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
    !    University in St. Louis. Please see the website for citation          !
@@ -255,6 +255,45 @@ def get_KD_uversky():
     return uversky 
 
            
+def get_PPII_Hilser():
+    """
+    Returns an amino acid dictionary with the PPII propensity of
+    each residue as calculated by Elam et al [1] (Taken from [2]). 
+
+
+    [1] - Elam WA, Schrank TP, Campagnolo AJ, Hilser VJ. Evolutionary 
+    conservation of the polyproline II conformation surrounding intrinsically 
+    disordered phosphorylation sites. 
+    Protein Sci. 2013; 22: 405 - 417. doi: 10.1002/pro.2217 PMID: 23341186
+
+    [2] - Tomasso, M. E., Tarver, M. J., Devarajan, D. & Whitten, S. T. 
+    Hydrodynamic Radii of Intrinsically Disordered Proteins Determined 
+    from Experimental Polyproline II Propensities. 
+    PLoS Comput. Biol. 12, e1004686 (2016).
+
+    """
+    return  {'ILE': 0.39,                
+             'VAL': 0.39,
+             'LEU': 0.24,
+             'PHE': 0.17,
+             'CYS': 0.25,
+             'MET': 0.36,
+             'ALA': 0.37,
+             'GLY': 0.13,
+             'THR': 0.32,
+             'SER': 0.24,
+             'TRP': 0.25,
+             'TYR': 0.25,
+             'PRO': 1.00,
+             'HIS': 0.20,
+             'GLU': 0.42,
+             'GLN': 0.53,
+             'ASP': 0.30,
+             'ASN': 0.27,
+             'LYS': 0.56,
+             'ARG': 0.38}
+
+    
 
 
 """"
@@ -305,6 +344,8 @@ def build_amino_acids_skeleton():
 
     # get a dictionary of 3 letter to KD hydrophobicity
     KD_Dict     = get_KD_shifted()
+
+    PPII_Dict   = get_PPII_Hilser()
     
     # build the initial skeleton of amnino acids 
     skeleton=[["Alanine",        "ALA", "A"],
@@ -337,6 +378,9 @@ def build_amino_acids_skeleton():
 
         # update this residue with the KD hydrophobicity
         res.append(charge_Dict[res[1]])
+        
+        # update the residue with the PPII content
+        res.append(PPII_Dict[res[1]])
     
     return skeleton
     

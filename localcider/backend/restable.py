@@ -4,11 +4,11 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.7                                                         !
+   !    Version 0.1.8                                                         !
    !                                                                          !
-   !    Copyright (C) 2014, The localCIDER development team (current and      !
-   !                        former contributors): Alex Holehouse, James       !
-   !                        Ahad, Rahul K. Das.                               !
+   !    Copyright (C) 2014 - 2015                                             !
+   !    The localCIDER development team (current and former contributors)     !
+   !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
    !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
    !    University in St. Louis. Please see the website for citation          !
@@ -75,7 +75,7 @@ class ResTable:
         residue_list = data.aminoacids.buildTable()
 
         for r in residue_list:
-            res = Residue(r[0], r[1], r[2], r[3], r[4])
+            res = Residue(r[0], r[1], r[2], r[3], r[4], r[5])
             self.residue_table[res.letterCode3] = res
 
     #...................................................................................#
@@ -123,3 +123,14 @@ class ResTable:
         else:
             res = self.lookForRes(resCode)
             return res.charge
+
+    #...................................................................................#
+    def lookUpPPII(self, resCode):
+        """
+        Get an amino acid's PPII propensity as defined by Hilser.
+        """
+
+        res = self.lookForRes(resCode)
+        return res.PPII
+
+        

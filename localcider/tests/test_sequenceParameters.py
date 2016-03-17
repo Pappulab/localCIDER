@@ -4,11 +4,11 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.7                                                         !
+   !    Version 0.1.8                                                         !
    !                                                                          !
-   !    Copyright (C) 2014, The localCIDER development team (current and      !
-   !                        former contributors): Alex Holehouse, James       !
-   !                        Ahad, Rahul K. Das.                               !
+   !    Copyright (C) 2014 - 2015                                             !
+   !    The localCIDER development team (current and former contributors)     !
+   !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
    !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
    !    University in St. Louis. Please see the website for citation          !
@@ -48,6 +48,8 @@ import os.path
 import time
 import unittest
 import random
+
+import numpy as np
 
 from localcider import sequenceParameters, plots
 import testTools
@@ -291,9 +293,42 @@ class TestSequenceParametersFunctions(unittest.TestCase):
 
         pos = 0
         print ""
-
+        
+        # generate a list of 10 random sequences between
+        # length 100 and 1000
         seq_list = testTools.generate_random_sequence_list(
-            number=10, minLen=100, maxLen=1000)
+            number=1, minLen=100, maxLen=1000)
+
+        # some edge cases...
+        """
+        seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=3,  maxLen=3))
+        seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=4,  maxLen=4))
+        seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=5,  maxLen=5))
+        seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=6,  maxLen=6))
+        seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=7,  maxLen=7))
+        seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=8,  maxLen=8))
+        seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=9,  maxLen=9))
+        seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=10, maxLen=10))
+        seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=11, maxLen=11))
+        seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=12, maxLen=12))
+        """
+
+        seq_list.append('EEEEEEEEEE')
+        seq_list.append('KKKKKKKKKK')
+        seq_list.append('EKEKEKEKEK')
+        seq_list.append('GGGGGGGGGG')
+
+        seq_list.append('EEEE')
+        seq_list.append('KKKK')
+        seq_list.append('EKEK')
+        seq_list.append('GGGG')
+
+        seq_list.append('EEEEE')
+        seq_list.append('KKKKK')
+        seq_list.append('EKEKE')
+        seq_list.append('GGGGG')
+            
+
 
         for i in seq_list:
             print ""
@@ -314,10 +349,48 @@ class TestSequenceParametersFunctions(unittest.TestCase):
             iSEQ.get_phasePlotRegion()
             iSEQ.get_mean_hydropathy()
             iSEQ.get_uversky_hydropathy()
-            psites = iSEQ.get_all_phosphorylatable_sites()
-            if psites > 0:
+            iSEQ.get_HTMLColorString()
+            #iSEQ.
+            iSEQ.get_delta()
+            iSEQ.get_deltaMax()
+            
+            # check various reduced alphabets
+            for ABS in [2,3, 4,5,6,8,10,11,12,15,18,20]:
+                iSEQ.get_reduced_alphabet_sequence(ABS)
 
-                # grab 3 sites ranodmly
+
+            # actually check this...
+            self.assertEqual(iSEQ.get_length(), len(iSEQ))
+
+            # get linear vectors...
+            max_blobsize=len(i)
+            iSEQ.get_linear_FCR(min(5,max_blobsize))
+            iSEQ.get_linear_FCR(1)
+            iSEQ.get_linear_FCR(min(10, max_blobsize))
+
+            iSEQ.get_linear_NCPR(min(5,max_blobsize))
+            iSEQ.get_linear_NCPR(1)
+            iSEQ.get_linear_NCPR(min(10, max_blobsize))
+
+            iSEQ.get_linear_hydropathy(min(5,max_blobsize))
+            iSEQ.get_linear_hydropathy(1)
+            iSEQ.get_linear_hydropathy(min(10, max_blobsize))
+
+            # get complexity vectors (simple checks, more in depth in the
+            # complexity test file...)
+            for CT in ['WF','LC','LZW']:
+                for ABS in [2,5,10,20]:
+                    for windowsize in [1,2,3]:
+                        iSEQ.get_linear_complexity(complexityType=CT, alphabetSize=ABS, windowSize=windowsize)
+                        
+
+            
+            psites = iSEQ.get_all_phosphorylatable_sites()
+            print "psites"
+            print psites
+            if len(psites) > 0:
+
+                # grab 3 sites randomly
                 sites = []
                 for i in xrange(0, 2):
                     sites.append(random.choice(psites))
@@ -332,17 +405,17 @@ class TestSequenceParametersFunctions(unittest.TestCase):
             iSEQ.save_uverskyPlot("tmpfiles/uversky_test_S" + str(pos))
 
             # try with a blobval
-            iSEQ.save_linearNCPR("tmpfiles/NCPR_test_S" + str(pos), 5)
-            iSEQ.save_linearFCR("tmpfiles/FCR_test_S" + str(pos), 5)
+            iSEQ.save_linearNCPR("tmpfiles/NCPR_test_S" + str(pos), min(5, max_blobsize))
+            iSEQ.save_linearFCR("tmpfiles/FCR_test_S" + str(pos), min(5, max_blobsize))
             iSEQ.save_linearHydropathy(
-                "tmpfiles/Hydropathy_test_S" + str(pos), 5)
-            iSEQ.save_linearSigma("tmpfiles/sigma_test_S" + str(pos), 5)
+                "tmpfiles/Hydropathy_test_S" + str(pos), min(5, max_blobsize))
+            iSEQ.save_linearSigma("tmpfiles/sigma_test_S" + str(pos), min(5, max_blobsize))
 
             # try with default
-            iSEQ.save_linearNCPR("tmpfiles/NCPR_test_S" + str(pos))
-            iSEQ.save_linearFCR("tmpfiles/FCR_test_S" + str(pos))
-            iSEQ.save_linearHydropathy("tmpfiles/Hydropathy_test_S" + str(pos))
-            iSEQ.save_linearSigma("tmpfiles/sigma_test_S" + str(pos))
+            iSEQ.save_linearNCPR("tmpfiles/NCPR_test_S" + str(pos), min(5, max_blobsize))
+            iSEQ.save_linearFCR("tmpfiles/FCR_test_S" + str(pos), min(5, max_blobsize))
+            iSEQ.save_linearHydropathy("tmpfiles/Hydropathy_test_S" + str(pos), min(5, max_blobsize))
+            iSEQ.save_linearSigma("tmpfiles/sigma_test_S" + str(pos), min(5, max_blobsize))
 
             pos = pos + 1
 
@@ -541,3 +614,58 @@ class TestSequenceParametersFunctions(unittest.TestCase):
             sequences,
             'tmpfiles/check_phasePlot_regions_match',
             phaseplotreg)
+
+
+    def test_get_linear_NCPR(self):
+        testSeq = sequenceParameters.SequenceParameters('ASLPEALPSEPEASPEPASLEAPLSEPLASEASEEKEKEKEKEKEKEKEKEKEKALSPELASPELASEKEKASLEAPSELAPSELALSELAPSEAPSEAL')
+        self.assertEqual((np.array([ 0. ,  0. , -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.4, -0.4,
+                                    -0.4, -0.2, -0.4, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2,
+                                    -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.4, -0.6,
+                                    -0.2, -0.4, -0.2, -0.2,  0.2, -0.2,  0.2, -0.2,  0.2, -0.2,  0.2,
+                                    -0.2,  0.2, -0.2,  0.2, -0.2,  0.2, -0.2,  0.2,  0. ,  0.2,  0. ,
+                                    0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.4,
+                                    0. , -0.2,  0. ,  0. ,  0.2,  0. ,  0. , -0.2, -0.2, -0.2, -0.4,
+                                    -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2,
+                                    -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.4, -0.2, -0.2,  0. ,
+                                    0. ]) == testSeq.get_linear_NCPR()[1]).all(), True)
+
+    def test_get_linear_FCR(self):
+        testSeq = sequenceParameters.SequenceParameters('ASLPEALPSEPEASPEPASLEAPLSEPLASEASEEKEKEKEKEKEKEKEKEKEKALSPELASPELASEKEKASLEAPSELAPSELALSELAPSEAPSEAL')
+        self.assertEqual((np.array([ 0. ,  0. ,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.4,  0.4,
+                                     0.4,  0.2,  0.4,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,
+                                     0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.4,  0.6,
+                                     0.6,  0.8,  1. ,  1. ,  1. ,  1. ,  1. ,  1. ,  1. ,  1. ,  1. ,
+                                     1. ,  1. ,  1. ,  1. ,  1. ,  1. ,  1. ,  1. ,  0.8,  0.6,  0.4,
+                                     0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.4,
+                                     0.4,  0.6,  0.8,  0.8,  0.6,  0.4,  0.4,  0.2,  0.2,  0.2,  0.4,
+                                     0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,
+                                     0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.2,  0.4,  0.2,  0.2,  0. ,
+                                     0. ]) == testSeq.get_linear_FCR()[1]).all(), True)
+
+    def test_get_linear_hydropathy(self):
+        testSeq = sequenceParameters.SequenceParameters('ASLPEALPSEPEASPEPASLEAPLSEPLASEASEEKEKEKEKEKEKEKEKEKEKALSPELASPELASEKEKASLEAPSELAPSELALSELAPSEAPSEAL')
+        self.assertEqual((np.array([ 0.        ,  0.        ,  0.49333333,  0.49333333,  0.59555556,
+                                  0.47555556,  0.49333333,  0.49333333,  0.41777778,  0.25555556,
+                                  0.33111111,  0.33111111,  0.37333333,  0.33111111,  0.37333333,
+                                  0.37333333,  0.37333333,  0.49333333,  0.49333333,  0.56888889,
+                                  0.49333333,  0.59555556,  0.49333333,  0.49333333,  0.41777778,
+                                  0.53777778,  0.49333333,  0.49333333,  0.49333333,  0.56888889,
+                                  0.46666667,  0.34888889,  0.28888889,  0.28      ,  0.16222222,
+                                  0.09333333,  0.09333333,  0.08444444,  0.09333333,  0.08444444,
+                                  0.09333333,  0.08444444,  0.09333333,  0.08444444,  0.09333333,
+                                  0.08444444,  0.09333333,  0.08444444,  0.09333333,  0.08444444,
+                                  0.09333333,  0.08444444,  0.21111111,  0.37333333,  0.44222222,
+                                  0.48444444,  0.49333333,  0.53777778,  0.49333333,  0.49333333,
+                                  0.49333333,  0.49333333,  0.49333333,  0.49333333,  0.49333333,
+                                  0.45111111,  0.44222222,  0.28      ,  0.15333333,  0.21111111,
+                                  0.27111111,  0.44222222,  0.44222222,  0.56888889,  0.49333333,
+                                  0.49333333,  0.33111111,  0.49333333,  0.49333333,  0.49333333,
+                                  0.49333333,  0.49333333,  0.49333333,  0.49333333,  0.61333333,
+                                  0.61333333,  0.61333333,  0.61333333,  0.61333333,  0.49333333,
+                                  0.49333333,  0.49333333,  0.44888889,  0.37333333,  0.39111111,
+                                  0.33111111,  0.44888889,  0.49333333,  0.        ,  0.        ]) - testSeq.get_linear_hydropathy()[1] < 0.0001).all(), True)
+
+
+    
+
+                         

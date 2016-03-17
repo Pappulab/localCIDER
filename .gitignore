@@ -59,3 +59,11 @@ wang_landau/
 *.fasta 
 tmpfiles/*
 localcider/tests/tmpfiles/*
+
+.DS_store
+MANIFEST
+README.html
+local_scripts/
+old_README.txt
+output.html
+tst*

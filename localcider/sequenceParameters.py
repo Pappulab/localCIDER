@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.7                                                         !
+   !    Version 0.1.8                                                         !
    !--------------------------------------------------------------------------!
 
    File Description:
@@ -26,6 +26,17 @@ from backend.localciderExceptions import SequenceComplexityException
 
 
 class SequenceParameters:
+    """
+    A SequenceParameters object is the main object for examining sequence properties 
+    in localCIDER. From this object a wide array of methods can be called on the
+    object to explore a wide range of sequence properties.
+
+    An 
+
+
+
+
+    """
 
     def __init__(self, sequence="", sequenceFile=""):
 
@@ -337,10 +348,8 @@ class SequenceParameters:
     #...................................................................................#
     def get_phasePlotRegion(self):
         """
-
         Returns the IDP diagram of states [REF 1] region based on the FCR/NCPR
         rules. Possible return values are;
-
 
 
             1 +-----------------------+---------------+
@@ -493,7 +502,82 @@ class SequenceParameters:
 
         return self.SeqObj.get_phosphosequence()
 
-    # ===========================---================= #
+    #...................................................................................#
+    def get_PPII_propensity(self):
+        """
+        Get the overall sequence's PPII propensity as defined by Hilser et al [1] using
+        the values reported in table 1 from [2]
+
+
+        [1] - Elam WA, Schrank TP, Campagnolo AJ, Hilser VJ. Evolutionary 
+        conservation of the polyproline II conformation surrounding intrinsically 
+        disordered phosphorylation sites. 
+        Protein Sci. 2013; 22: 405- 417. doi: 10.1002/pro.2217 PMID: 23341186
+
+        [2] - Tomasso, M. E., Tarver, M. J., Devarajan, D. & Whitten, S. T. 
+        Hydrodynamic Radii of Intrinsically Disordered Proteins Determined 
+        from Experimental Polyproline II Propensities. 
+        PLoS Comput. Biol. 12, e1004686 (2016).
+
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Float with the sequence's f_{PPII, chain}
+
+        """
+
+        return self.SeqObj.FPPII_chain()
+
+
+
+    # =============================================== #
+    # =======  LINEAR SEQUENCE INFORMATION  ========= #
+    #...................................................................................#
+    def get_linear_NCPR(self, windowSize=5):
+        """
+        Returns a numpy vector of the net charge per residue (NCPR) as defined by a 
+        sliding window. The first dimension contains the values and the second the associated
+        index values along the sequence.
+
+        windowSize     | Sliding window size over which NCPR is calculated (default = 5
+                         to match the default for kappa calculation)
+
+        """
+
+        return(self.SeqObj.linearDistOfNCPR(windowSize))
+
+
+    #...................................................................................#
+    def get_linear_FCR(self, windowSize=5):
+        """
+        Returns a 2D numpy vector of the fraction of charged residues (FCR) as defined by a 
+        sliding window. The first dimension contains the values and the second the associated
+        index values along the sequence.
+       
+        windowSize     | Sliding window size over which NCPR is calculated (default = 5
+                         to match the default for kappa calculation)
+
+        """
+
+        return(self.SeqObj.linearDistOfFCR(windowSize))
+
+
+    #...................................................................................#
+    def get_linear_hydropathy(self, windowSize=5):
+        """
+        Returns a numpy vector of the Kyte-Doolitle hydropathy of a sequence as defined
+        by a sliding window. The first dimension contains the values and the second the associated
+        index values along the sequence.
+
+        windowSize     | Sliding window size over which NCPR is calculated (default = 5
+                         to match the default for kappa calculation)
+
+        """
+
+        return(self.SeqObj.linearDistOfHydropathy(windowSize))
+        
+
+    # =============================================== #
     # ======= SEQUENCE COMPLEXITY FUNCTIONS ========= #
     #...................................................................................#
     def get_reduced_alphabet_sequence(self, alphabetSize=20, userAlphabet={}):
@@ -517,7 +601,6 @@ class SequenceParameters:
         Returns an amino acid squence which has been reduced down to a simple composition
         based on the defined alphabet. Note this returns the sequence only, not a
         SequenceParameters object.
-
 
         Predefined alphabets shown below - all except eleven are based on alphabets defined in
         the reference below.
@@ -543,7 +626,7 @@ class SequenceParameters:
         return self.SeqObj.get_reducedAlphabetSequence(
             alphabetSize, userAlphabet)
 
-    def get_linearComplexity(
+    def get_linear_complexity(
             self,
             complexityType="WF",
             alphabetSize=20,
@@ -556,7 +639,6 @@ class SequenceParameters:
         the sequence complexity of a reduced complexity alphabet can be returned, where
         that reduced alphabet is defined by either the alphabetSize or the userAlphabet
         dictionary.
-
 
         INPUT:
         --------------------------------------------------------------------------------
@@ -588,7 +670,144 @@ class SequenceParameters:
         stepSize       | Size of steps taken as we define a new sliding window. Default is
                          1 (recommended to keep at 1)
 
-        wordSize       | Relevant for linguistic complexity
+        wordSize       | Relevant for linguistic complexity, ignored for other types. Default
+                         is 3
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Returns a vector of values corresponding to the sliding window complexity of the
+        sequence, using the measure defined, and using the reduced alphabet complexity as
+        defined
+
+        Predefined alphabets shown below - all except eleven are based on alphabets defined in
+        the reference below [4]
+
+        two      - [(LVIMCAGSTPFYW), (EDNQKRH)]
+        three    - [(LVIMCAGSTP), (FYW), (EDNQKRH)]
+        four     - [(LVIMC), (AGSTP), (FYW), (EDNQKRH)]
+        five     - [(LVIMC), (ASGTP), (FYW), (EDNQ), (KRH)]
+        six      - [(LVIM), (ASGT), (PHC), (FYW), (EDNQ), (KR)]
+        eight    - [(LVIMC), (AG), (ST), (P), (FYW), (EDNQ), (KR), (H)]
+        ten      - [(LVIM), (C), (A), (G), (ST), (P), (FYW), (EDNQ), (KR), (H)]
+        eleven   - [(LVIM), (C), (A), (G), (ST), (P), (FYW), (ED), (NQ), (KR), (H)]
+        twelve   - [(LVIM), (C), (A), (G), (ST), (P), (FY), (W), (EQ), (DN), (KR), (H)]
+        fifteen  - [(LVIM), (C), (A), (G), (S), (T), (P), (FY), (W), (E), (Q), (D), (N), (KR), (H)]
+        eighteen - [(LM), (VI), (C), (A), (G), (S), (T), (P), (F), (Y), (W), (E), (D), (N), (Q), (K), (R), (H)]
+        twenty   - all twenty!
+
+        --------------------------------------------------------------------------------
+        REFERENCES
+
+        [1] Wootton, J. C., & Federhen, S. (1993). Statistics of local complexity in amino acid sequences
+            and sequence databases. Computers & Chemistry, 17(2), 149-163.
+
+        [2] Troyanskaya, O. G., Arbell, O., Koren, Y., Landau, G. M., & Bolshoy, A. (2002). Sequence
+            complexity profiles of prokaryotic genomic sequences: a fast algorithm for calculating linguistic
+            complexity. Bioinformatics , 18(5), 679 - 688.
+
+        [3] Lempel, A.& Ziv, J. (1976). On the complexity of finite sequence. IEEE Trans. Inf. Theory,
+            vol. IT-22, no. 1, 75-81.
+
+        [4] Murphy, L. R., Wallqvist, A., & Levy, R. M. (2000). Simplified amino acid alphabets for
+        protein fold recognition and implications for folding. Protein Engineering, 13(3), 149-152.
+
+        """
+
+        # set the allowed types of complexity here
+        allowed_types = ('WF', 'LC', 'LZW')
+
+        # provide case insensitivity
+        try:
+            complexityType = complexityType.upper()
+        except AttributeError:
+            pass
+
+        # check fi the type passed is actually one of the ones we know about
+        if complexityType not in allowed_types:
+            raise SequenceComplexityException(
+                "Complexity type %s is not a valid type - must be one of %s" %
+                (complexityType, allowed_types))
+
+        if complexityType == "WF":
+            if not wordSize == 3:
+                print "WARNING: Ignoring wordSize argument for Wooton-Federhen complexity"
+
+            return self.SeqObj.get_linear_WF_complexity(
+                alphabetSize, userAlphabet, windowSize, stepSize)
+
+        if complexityType == "LZW":
+            if not wordSize == 3:
+                print "WARNING: Ignoring wordSize argument for LZW complexity"
+
+            return self.SeqObj.get_linear_LZW_complexity(
+                alphabetSize, userAlphabet, windowSize, stepSize)
+
+        # coming soon - a new complexity measure...!
+        if complexityType == "RHP":
+            """
+            if not wordSize == 3:
+                print "WARNING: Ignoring wordSize argument for RHP complexity"
+
+            return self.SeqObj.get_linear_RHP_complexity(
+                alphabetSize, userAlphabet, windowSize, stepSize)
+            """
+
+        if complexityType == "LC":
+            return self.SeqObj.get_linear_LC_complexity(
+                alphabetSize, userAlphabet, windowSize, stepSize, wordSize)
+
+
+
+    def show_linearComplexity(
+            self,
+            complexityType="WF",
+            alphabetSize=20,
+            userAlphabet={},
+            windowSize=10,
+            stepSize=1,
+            wordSize=3,
+            getFig=False):
+        
+        """
+        Returns the linear sequence complexity as defined by complexityType. Optionally,
+        the sequence complexity of a reduced complexity alphabet can be returned, where
+        that reduced alphabet is defined by either the alphabetSize or the userAlphabet
+        dictionary.
+
+        INPUT:
+        --------------------------------------------------------------------------------
+        complexityType | Defines the complexity measure being employed. Is a string equal
+                         to one of the opions described below;
+
+                         WF  - Wooton-Federhen complexity [1]
+
+                         LC  - Linguistic complexity      [2]
+
+                         LZW - Lempel-Ziv-Welch           [3]
+
+                         (Default = 'WF')
+
+        alphabetSize   | Defines the size of the alphabet being used, where pre-defined
+                         alphabets are then used based on the specific size. Those
+                         pre-defined alphabets are defined below. (Default = 20, i.e. no
+                         reduction in amino acid complexity)
+
+        userAlphabet   | Allows the user to define their own alphabet. The format here
+                         is a dictionary where each key-value pair is amino-acid to translation.
+                         This means you need a dictionary of length 20 where each amino acid
+                         is mapped to another amino acid. This is kind of tedious, but it helps
+                         avoid user-error where specific amino acids are missed. (default=None)
+
+        windowSize     | Sliding window size over which complexity is calculated (default=10)
+
+        stepSize       | Size of steps taken as we define a new sliding window. Default is
+                         1 (recommended to keep at 1)
+
+        wordSize       | Relevant for linguistic complexity, ignored for other types. Default
+                         is 3
+
+        getFig         | Return the matplotlib figure object (for further customization)
+                         (Default = False)
 
         OUTPUT:
         --------------------------------------------------------------------------------
@@ -621,7 +840,124 @@ class SequenceParameters:
 
         [2] Troyanskaya, O. G., Arbell, O., Koren, Y., Landau, G. M., & Bolshoy, A. (2002). Sequence
             complexity profiles of prokaryotic genomic sequences: a fast algorithm for calculating linguistic
-            complexity. Bioinformatics , 18(5), 679–688.
+            complexity. Bioinformatics , 18(5), 679 - 688.
+
+        [3] Lempel, A.& Ziv, J. (1976). On the complexity of finite sequence. IEEE Trans. Inf. Theory,
+            vol. IT-22, no. 1, 75-81.
+
+        [4] Murphy, L. R., Wallqvist, A., & Levy, R. M. (2000). Simplified amino acid alphabets for
+        protein fold recognition and implications for folding. Protein Engineering, 13(3), 149-152.
+        
+        """
+
+        # first get the complexity info
+        linear_complexity_vector = self.get_linear_complexity(
+            complexityType, 
+            alphabetSize,
+            userAlphabet,
+            windowSize,
+            stepSize,
+            wordSize)
+
+        # now generate the figure and either return the figure object or just show it
+        if getFig:
+            return plotting.show_linearComplexity(linear_complexity_vector, 
+                                                  complexityType, 
+                                                  len(self.SeqObj.seq), 
+                                                  getFig)
+        else:
+            plotting.show_linearComplexity(linear_complexity_vector, 
+                                           complexityType, 
+                                           len(self.SeqObj.seq), 
+                                           getFig)
+
+    def save_linearComplexity(
+            self,
+            filename,
+            complexityType="WF",
+            alphabetSize=20,
+            userAlphabet={},
+            windowSize=10,
+            stepSize=1,
+            wordSize=3,
+            saveFormat='png'):
+        """
+        Returns the linear sequence complexity as defined by complexityType. Optionally,
+        the sequence complexity of a reduced complexity alphabet can be returned, where
+        that reduced alphabet is defined by either the alphabetSize or the userAlphabet
+        dictionary.
+
+        INPUT:
+        --------------------------------------------------------------------------------
+        filename       | Name of a file to write to
+
+        complexityType | Defines the complexity measure being employed. Is a string equal
+                         to one of the opions described below;
+
+                         WF  - Wooton-Federhen complexity [1]
+
+                         LC  - Linguistic complexity      [2]
+
+                         LZW - Lempel-Ziv-Welch           [3]
+
+                         (Default = 'WF')
+
+        alphabetSize   | Defines the size of the alphabet being used, where pre-defined
+                         alphabets are then used based on the specific size. Those
+                         pre-defined alphabets are defined below. (Default = 20, i.e. no
+                         reduction in amino acid complexity)
+
+        userAlphabet   | Allows the user to define their own alphabet. The format here
+                         is a dictionary where each key-value pair is amino-acid to translation.
+                         This means you need a dictionary of length 20 where each amino acid
+                         is mapped to another amino acid. This is kind of tedious, but it helps
+                         avoid user-error where specific amino acids are missed. (default=None)
+
+        windowSize     | Sliding window size over which complexity is calculated (default=10)
+
+        stepSize       | Size of steps taken as we define a new sliding window. Default is
+                         1 (recommended to keep at 1)
+
+        wordSize       | Relevant for linguistic complexity, ignored for other types. Default
+                         is 3
+
+        saveFormat     | Defines the file formal to save plots as. This parameter
+                         is passed to matplotlibs savefig command which supports 
+                         the following filetypes: emf, eps, pdf, png, ps, raw, 
+                         rgba, svg, svgz. (DEFAULT = png)
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Returns a vector of values corresponding to the sliding window complexity of the
+        sequence, using the measure defined, and using the reduced alphabet complexity as
+        defined
+
+
+        Predefined alphabets shown below - all except eleven are based on alphabets defined in
+        the reference below [4]
+
+        two      - [(LVIMCAGSTPFYW), (EDNQKRH)]
+        three    - [(LVIMCAGSTP), (FYW), (EDNQKRH)]
+        four     - [(LVIMC), (AGSTP), (FYW), (EDNQKRH)]
+        five     - [(LVIMC), (ASGTP), (FYW), (EDNQ), (KRH)]
+        six      - [(LVIM), (ASGT), (PHC), (FYW), (EDNQ), (KR)]
+        eight    - [(LVIMC), (AG), (ST), (P), (FYW), (EDNQ), (KR), (H)]
+        ten      - [(LVIM), (C), (A), (G), (ST), (P), (FYW), (EDNQ), (KR), (H)]
+        eleven   - [(LVIM), (C), (A), (G), (ST), (P), (FYW), (ED), (NQ), (KR), (H)]
+        twelve   - [(LVIM), (C), (A), (G), (ST), (P), (FY), (W), (EQ), (DN), (KR), (H)]
+        fifteen  - [(LVIM), (C), (A), (G), (S), (T), (P), (FY), (W), (E), (Q), (D), (N), (KR), (H)]
+        eighteen - [(LM), (VI), (C), (A), (G), (S), (T), (P), (F), (Y), (W), (E), (D), (N), (Q), (K), (R), (H)]
+        twenty   - all twenty!
+
+        --------------------------------------------------------------------------------
+        REFERENCES
+
+        [1] Wootton, J. C., & Federhen, S. (1993). Statistics of local complexity in amino acid sequences
+            and sequence databases. Computers & Chemistry, 17(2), 149-163.
+
+        [2] Troyanskaya, O. G., Arbell, O., Koren, Y., Landau, G. M., & Bolshoy, A. (2002). Sequence
+            complexity profiles of prokaryotic genomic sequences: a fast algorithm for calculating linguistic
+            complexity. Bioinformatics , 18(5), 679 - 688.
 
         [3] Lempel, A.& Ziv, J. (1976). On the complexity of finite sequence. IEEE Trans. Inf. Theory,
             vol. IT-22, no. 1, 75-81.
@@ -632,46 +968,29 @@ class SequenceParameters:
 
         """
 
-        # set the allowed types of complexity here
-        allowed_types = ('WF', 'LC', 'LZW', 'RHP')
 
-        # provide case insensitivity
-        try:
-            complexityType = complexityType.upper()
-        except AttributeError:
-            pass
+            
+        # first get the complexity info and build the correct vector
+        linear_complexity_vector = self.get_linear_complexity(
+            complexityType, 
+            alphabetSize,
+            userAlphabet,
+            windowSize,
+            stepSize,
+            wordSize)
 
-        # check fi the type passed is actually one of the ones we know about
-        if complexityType not in allowed_types:
-            raise SequenceComplexityException(
-                "Complexity type %s is not a valid type - must be one of %s" %
-                (complexityType, allowed_types))
+        # now generate and save the relevant figure
+        plotting.save_linearComplexity(linear_complexity_vector, 
+                                       complexityType, 
+                                       len(self.SeqObj.seq), 
+                                       filename,
+                                       saveFormat)
 
-        if complexityType == "WF":
-            if not wordSize == 3:
-                print "WARNING: Ignoring wordSize argument for Wooton-Federhen complexity"
 
-            return self.SeqObj.get_linear_WF_complexity(
-                alphabetSize, userAlphabet, windowSize, stepSize)
+        
 
-        if complexityType == "LZW":
-            if not wordSize == 3:
-                print "WARNING: Ignoring wordSize argument for Wooton-Federhen complexity"
-
-            return self.SeqObj.get_linear_LZW_complexity(
-                alphabetSize, userAlphabet, windowSize, stepSize)
-
-        if complexityType == "RHP":
-            if not wordSize == 3:
-                print "WARNING: Ignoring wordSize argument for Wooton-Federhen complexity"
-
-            return self.SeqObj.get_linear_RHP_complexity(
-                alphabetSize, userAlphabet, windowSize, stepSize)
-
-        if complexityType == "LC":
-            return self.SeqObj.get_linear_LC_complexity(
-                alphabetSize, userAlphabet, windowSize, stepSize, wordSize)
-
+        
+        
     # ============================================ #
     # ======= PLOTTING DIAGRAM FUNCTIONS ========= #
     #...................................................................................#
@@ -739,7 +1058,8 @@ class SequenceParameters:
             legendOn=True,
             xLim=1,
             yLim=1,
-            fontSize=10):
+            fontSize=10,
+            saveFormat='png'):
         """
         Generates the Pappu-Das phase diagram (diagram of states), places
         this sequence on that plot, and saves it at the <filename> location
@@ -748,12 +1068,17 @@ class SequenceParameters:
         --------------------------------------------------------------------------------
         filename  | Writeable filename
 
-        label     | A label for the point on the phase diagram
-        title     | Plot title (DEFAULT = 'Diagram of states')
-        legendOn  | Boolean for if the figure legend should be displayed or not
-        xLim      | Max value for the x axis (fract. positive charge) (DEFAULT = 1)
-        yLim      | Max value for the y axis (fract. negative charge) (DEFAULT = 1)
-        fontSize  | Size of font for label (DEFAULT = 10)
+        label      | A label for the point on the phase diagram
+        title      | Plot title (DEFAULT = 'Diagram of states')
+        legendOn   | Boolean for if the figure legend should be displayed or not
+        xLim       | Max value for the x axis (fract. positive charge) (DEFAULT = 1)
+        yLim       | Max value for the y axis (fract. negative charge) (DEFAULT = 1)
+        fontSize   | Size of font for label (DEFAULT = 10)
+        saveFormat | Defines the file formal to save plots as. This parameter
+                     is passed to matplotlibs savefig command which supports 
+                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     rgba, svg, svgz. (DEFAULT = png)
+
 
 
         OUTPUT:
@@ -771,7 +1096,8 @@ class SequenceParameters:
             legendOn,
             xLim,
             yLim,
-            fontSize)
+            fontSize,
+            saveFormat)
 
     #...................................................................................#
     def show_uverskyPlot(
@@ -839,7 +1165,9 @@ class SequenceParameters:
             legendOn=True,
             xLim=1,
             yLim=1,
-            fontSize=10):
+            fontSize=10,
+            saveFormat='png'):
+        
         """
         Generates the Pappu-Das phase diagram (diagram of states), places
         this sequence on that plot, and saves it at the <filename> location
@@ -848,12 +1176,17 @@ class SequenceParameters:
         --------------------------------------------------------------------------------
         filename  | A writeable filename
 
-        label     | A label for the point on the phase diagram
-        title     | Plot title (DEFAULT = 'Uversky plot')
-        legendOn  | Boolean for if the figure legend should be displayed or not
-        xLim      | Max value for the x axis (mean net charge) (DEFAULT = 1)
-        yLim      | Max value for the y axis (hydropathy) (DEFAULT = 1)
-        fontSize  | Size of font for label (DEFAULT = 10)
+        label      | A label for the point on the phase diagram
+        title      | Plot title (DEFAULT = 'Uversky plot')
+        legendOn   | Boolean for if the figure legend should be displayed or not
+        xLim       | Max value for the x axis (mean net charge) (DEFAULT = 1)
+        yLim       | Max value for the y axis (hydropathy) (DEFAULT = 1)
+        fontSize   | Size of font for label (DEFAULT = 10)
+        saveFormat | Defines the file formal to save plots as. This parameter
+                     is passed to matplotlibs savefig command which supports 
+                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     rgba, svg, svgz. (DEFAULT = png)
+
 
 
         OUTPUT:
@@ -873,10 +1206,11 @@ class SequenceParameters:
             legendOn,
             xLim,
             yLim,
-            fontSize)
+            fontSize,
+            saveFormat)
 
     #...................................................................................#
-    def save_linearNCPR(self, filename, blobLen=5):
+    def save_linearNCPR(self, filename, blobLen=5, saveFormat='png'):
         """
         Generates a plot of how the NCPR (net charge per residue) changes as we move
         along the linear amino acid sequence in blobLen size steps. This uses a sliding window
@@ -884,13 +1218,17 @@ class SequenceParameters:
 
         INPUT:
         --------------------------------------------------------------------------------
-        filename | Name of the file to write
-        bloblen  | Set the windowsize (DEFAULT = 5)
+        filename   | Name of the file to write
+        bloblen    | Set the windowsize (DEFAULT = 5)
+        saveFormat | Defines the file formal to save plots as. This parameter
+                     is passed to matplotlibs savefig command which supports 
+                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     rgba, svg, svgz. (DEFAULT = png)
 
 
         OUTPUT:
         --------------------------------------------------------------------------------
-        Nothing, but creates a .png file at the filename location
+        Nothing, but creates a saved file at the filename location.
 
 
         """
@@ -899,10 +1237,11 @@ class SequenceParameters:
             plotting.build_NCPR_plot,
             self.SeqObj,
             blobLen,
-            filename)
+            filename,
+            saveFormat)
 
     #...................................................................................#
-    def save_linearFCR(self, filename, blobLen=5):
+    def save_linearFCR(self, filename, blobLen=5, saveFormat='png'):
         """
         Generates a plot of how the FCR (fraction of charged residues) changes as we move
         along the linear amino acid sequence in blobLen size steps. This uses a sliding window
@@ -910,8 +1249,13 @@ class SequenceParameters:
 
         INPUT:
         --------------------------------------------------------------------------------
-        filename | Name of the file to write
-        bloblen  | Set the windowsize (DEFAULT = 5)
+        filename   | Name of the file to write
+        bloblen    | Set the windowsize (DEFAULT = 5)
+        saveFormat | Defines the file formal to save plots as. This parameter
+                     is passed to matplotlibs savefig command which supports 
+                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     rgba, svg, svgz. (DEFAULT = png)
+
 
 
         OUTPUT:
@@ -925,10 +1269,11 @@ class SequenceParameters:
             plotting.build_FCR_plot,
             self.SeqObj,
             blobLen,
-            filename)
+            filename,
+            saveFormat)
 
     #...................................................................................#
-    def save_linearSigma(self, filename, blobLen=5):
+    def save_linearSigma(self, filename, blobLen=5, saveFormat='png'):
         """
         Generates a plot of how the Sigma parameter changes as we move
         along the linear amino acid sequence in blobLen size steps. This uses a sliding window
@@ -940,9 +1285,13 @@ class SequenceParameters:
 
         INPUT:
         --------------------------------------------------------------------------------
-        filename | Name of the file to write
-        bloblen  | Set the windowsize (DEFAULT = 5)
-
+        filename   | Name of the file to write
+        bloblen    | Set the windowsize (DEFAULT = 5)
+        saveFormat | Defines the file formal to save plots as. This parameter
+                     is passed to matplotlibs savefig command which supports 
+                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     rgba, svg, svgz. (DEFAULT = png)
+        
 
         OUTPUT:
         --------------------------------------------------------------------------------
@@ -954,10 +1303,11 @@ class SequenceParameters:
             plotting.build_sigma_plot,
             self.SeqObj,
             blobLen,
-            filename)
+            filename,
+            saveFormat)
 
     #...................................................................................#
-    def save_linearHydropathy(self, filename, blobLen=5):
+    def save_linearHydropathy(self, filename, blobLen=5, saveFormat='png'):
         """
         Generates a plot of how the mean hydropathy changes as we move
         along the linear amino acid sequence in blobLen size steps. This uses a sliding window
@@ -968,8 +1318,13 @@ class SequenceParameters:
 
         INPUT:
         --------------------------------------------------------------------------------
-        filename | Name of the file to write
-        bloblen  | Set the windowsize (DEFAULT = 5)
+        filename   | Name of the file to write
+        bloblen    | Set the windowsize (DEFAULT = 5)
+        saveFormat | Defines the file formal to save plots as. This parameter
+                     is passed to matplotlibs savefig command which supports 
+                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     rgba, svg, svgz. (DEFAULT = png)
+
 
 
         OUTPUT:
@@ -982,7 +1337,8 @@ class SequenceParameters:
             plotting.build_hydropathy_plot,
             self.SeqObj,
             blobLen,
-            filename)
+            filename,
+            saveFormat)
 
     #...................................................................................#
     def show_linearNCPR(self, blobLen=5, getFig=False):
@@ -1078,6 +1434,8 @@ class SequenceParameters:
 
         return plotting.show_linearplot(
             plotting.build_hydropathy_plot, self.SeqObj, blobLen, getFig)
+
+
 
     # ============================================== #
     # ============ FORMATTING FUNCTIONS ============ #

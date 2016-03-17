@@ -4,11 +4,11 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.7                                                         !
+   !    Version 0.1.8                                                         !
    !                                                                          !
-   !    Copyright (C) 2014, The localCIDER development team (current and      !
-   !                        former contributors): Alex Holehouse, James       !
-   !                        Ahad, Rahul K. Das.                               !
+   !    Copyright (C) 2014 - 2015                                             !
+   !    The localCIDER development team (current and former contributors)     !
+   !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
    !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
    !    University in St. Louis. Please see the website for citation          !
@@ -54,9 +54,10 @@ class Residue:
        Residue class which defines the properties for each residue.
     """
 
-    def __init__(self, name, letterCode3, letterCode1, hydropathy, charge):
+    def __init__(self, name, letterCode3, letterCode1, hydropathy, charge, PPII):
         self.name = name                      # full name     [glycine]
         self.letterCode3 = letterCode3        # 3 letter code [gly]
         self.letterCode1 = letterCode1        # 1 letter code [g]
         self.hydropathy = hydropathy          # hydropathy score
         self.charge = charge                  # charge
+        self.PPII = PPII                      # PPII propensity (Hilser)

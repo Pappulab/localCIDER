@@ -4,11 +4,11 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.7                                                         !
+   !    Version 0.1.8                                                         !
    !                                                                          !
-   !    Copyright (C) 2014, The localCIDER development team (current and      !
-   !                        former contributors): Alex Holehouse, James       !
-   !                        Ahad, Rahul K. Das.                               !
+   !    Copyright (C) 2014 - 2015                                             !
+   !    The localCIDER development team (current and former contributors)     !
+   !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
    !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
    !    University in St. Louis. Please see the website for citation          !
@@ -56,8 +56,9 @@ def generate_random_sequence(minLen=1, maxLen=100):
     # generate 5 random sequences
     # LENGTH BETWEEN 1 AND 150
     random.seed()
+    end = random.randint(minLen, maxLen)    
     S1 = ""
-    for i in xrange(minLen, maxLen):
+    for i in xrange(0, end):
         S1 = S1 + random.choice(AAs)
 
     return S1

@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.7                                                         !
+   !    Version 0.1.8                                                         !
    !--------------------------------------------------------------------------!
 
    File Description:
@@ -99,23 +99,27 @@ def save_single_phasePlot(
         legendOn=True,
         xLim=1,
         yLim=1,
-        fontSize=10):
+        fontSize=10,
+        saveFormat='png'):
     """
     Plot a single sequence on the Pappu-Das phase plot (diagram of states).
 
     INPUT:
     --------------------------------------------------------------------------------
-    fp        | Fraction of positive residues
-    fn        | Fraction of negative residues
-    filename  | Path/name of file to save plot (.png is appended)
+    fp         | Fraction of positive residues
+    fn         | Fraction of negative residues
+    filename   | Path/name of file to save plot (.png is appended)
 
-    label     | On-plot label of sequence (DEFAULT = no label)
-    title     | Plot title (DEFAULT = "Diagram of states")
-    legendOn  | Include the phase diagram region legend (DEFAULT = True)
-    xLim      | Set upper limit for the x axis (DEFAULT = 1)
-    yLim      | Set upper limit for the x axis (DEFAULT = 1)
-    fontSize  | Set font size for the point labels (DEFAULT = 10)
-
+    label      | On-plot label of sequence (DEFAULT = no label)
+    title      | Plot title (DEFAULT = "Diagram of states")
+    legendOn   | Include the phase diagram region legend (DEFAULT = True)
+    xLim       | Set upper limit for the x axis (DEFAULT = 1)
+    yLim       | Set upper limit for the x axis (DEFAULT = 1)
+    fontSize   | Set font size for the point labels (DEFAULT = 10)
+    saveFormat | Defines the file formal to save plots as. This parameter
+                 is passed to matplotlibs savefig command which supports 
+                 the following filetypes: emf, eps, pdf, png, ps, raw, 
+                 rgba, svg, svgz. (DEFAULT = png)
 
     OUTPUT:
     --------------------------------------------------------------------------------
@@ -132,7 +136,8 @@ def save_single_phasePlot(
         legendOn,
         xLim,
         yLim,
-        fontSize)
+        fontSize,
+        saveFormat)
 
 
 #...................................................................................#
@@ -245,7 +250,8 @@ def save_multiple_phasePlot(
         legendOn=True,
         xLim=1,
         yLim=1,
-        fontSize=10):
+        fontSize=10,
+        saveFormat='png'):
     """
     Plot multiple sequences on the same Pappu-Das phase plot (diagram of states) and save that file
 
@@ -261,6 +267,11 @@ def save_multiple_phasePlot(
     xLim       | Set upper limit for the x axis (DEFAULT = 1)
     yLim       | Set upper limit for the y axis (DEFAULT = 1)
     fontSize   | Set font size for the point labels (DEFAULT = 10)
+    saveFormat | Defines the file formal to save plots as. This parameter
+                 is passed to matplotlibs savefig command which supports 
+                 the following filetypes: emf, eps, pdf, png, ps, raw, 
+                 rgba, svg, svgz. (DEFAULT = png)
+
 
 
     OUTPUT:
@@ -278,7 +289,8 @@ def save_multiple_phasePlot(
         legendOn,
         xLim,
         yLim,
-        fontSize)
+        fontSize,
+        saveFormat)
 
 
 #...................................................................................#
@@ -290,7 +302,8 @@ def save_multiple_phasePlot2(
         legendOn=True,
         xLim=1,
         yLim=1,
-        fontSize=10):
+        fontSize=10,
+        saveFormat='png'):
     """
     Plot multiple sequences on the same Pappu-Das phase plot (diagram of states) and save that file.
     This function takes SequenceParameter objects rather than raw values.
@@ -306,7 +319,10 @@ def save_multiple_phasePlot2(
     xLim          | Set upper limit for the x axis (DEFAULT = 1)
     yLim          | Set upper limit for the y axis (DEFAULT = 1)
     fontSize      | Set font size for the point labels (DEFAULT = 10)
-
+    saveFormat    | Defines the file formal to save plots as. This parameter
+                    is passed to matplotlibs savefig command which supports 
+                    the following filetypes: emf, eps, pdf, png, ps, raw, 
+                    rgba, svg, svgz. (DEFAULT = png)
 
     OUTPUT:
     --------------------------------------------------------------------------------
@@ -330,7 +346,8 @@ def save_multiple_phasePlot2(
         legendOn,
         xLim,
         yLim,
-        fontSize)
+        fontSize,
+        saveFormat)
 
 
 ####################################################
@@ -397,7 +414,8 @@ def save_single_uverskyPlot(
         legendOn=True,
         xLim=1,
         yLim=1,
-        fontSize=10):
+        fontSize=10,
+        saveFormat='png'):
     """
     Plots a single sequence on the Uversky plot (hydropathy vs. mean net charge) and save it to 'filename' (.png is
     appended).
@@ -414,6 +432,10 @@ def save_single_uverskyPlot(
     xLim            | Set upper limit for the x axis (DEFAULT = 1)
     yLim            | Set upper limit for the y axis (DEFAULT = 1)
     fontSize        | Set font size for the point labels (DEFAULT = 10)
+    saveFormat      | Defines the file formal to save plots as. This parameter
+                      is passed to matplotlibs savefig command which supports 
+                      the following filetypes: emf, eps, pdf, png, ps, raw, 
+                      rgba, svg, svgz. (DEFAULT = png)
 
 
     OUTPUT:
@@ -431,7 +453,8 @@ def save_single_uverskyPlot(
         legendOn,
         xLim,
         yLim,
-        fontSize)
+        fontSize,
+        saveFormat)
 
 
 #...................................................................................#
@@ -544,7 +567,8 @@ def save_multiple_uverskyPlot(
         legendOn=True,
         xLim=1,
         yLim=1,
-        fontSize=10):
+        fontSize=10,
+        saveFormat='png'):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and saves that plot to 'filename' (.png
     is appended).
@@ -561,6 +585,11 @@ def save_multiple_uverskyPlot(
     xLim                 | Set upper limit for the x axis (DEFAULT = 1)
     yLim                 | Set upper limit for the y axis (DEFAULT = 1)
     fontSize             | Set font size for the point labels (DEFAULT = 10)
+    saveFormat           | Defines the file formal to save plots as. This parameter
+                           is passed to matplotlibs savefig command which supports 
+                           the following filetypes: emf, eps, pdf, png, ps, raw, 
+                           rgba, svg, svgz. (DEFAULT = png)
+
 
 
     OUTPUT:
@@ -579,7 +608,8 @@ def save_multiple_uverskyPlot(
         legendOn,
         xLim,
         yLim,
-        fontSize)
+        fontSize,
+        saveFormat)
 
 
 #...................................................................................#
@@ -591,7 +621,8 @@ def save_multiple_uverskyPlot2(
         legendOn=True,
         xLim=1,
         yLim=1,
-        fontSize=10):
+        fontSize=10,
+        saveFormat='png'):
     """
     Plots multiple sequences on the Uversky plot (hydropathy vs. mean net charge) and saves that plot to 'filename' (.png
     is appended). This function takes SequenceParameter objects instead of list of hydropathy and mean_net_charge
@@ -608,6 +639,10 @@ def save_multiple_uverskyPlot2(
     xLim            | Set upper limit for the x axis (DEFAULT = 1)
     yLim            | Set upper limit for the y axis (DEFAULT = 1)
     fontSize        | Set font size for the point labels (DEFAULT = 10)
+    saveFormat      | Defines the file formal to save plots as. This parameter
+                      is passed to matplotlibs savefig command which supports 
+                      the following filetypes: emf, eps, pdf, png, ps, raw, 
+                      rgba, svg, svgz. (DEFAULT = png)
 
 
     OUTPUT:

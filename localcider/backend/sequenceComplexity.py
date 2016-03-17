@@ -4,11 +4,11 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.7                                                         !
+   !    Version 0.1.8                                                         !
    !                                                                          !
-   !    Copyright (C) 2014, The localCIDER development team (current and      !
-   !                        former contributors): Alex Holehouse, James       !
-   !                        Ahad, Rahul K. Das.                               !
+   !    Copyright (C) 2014 - 2015                                             !
+   !    The localCIDER development team (current and former contributors)     !
+   !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
    !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
    !    University in St. Louis. Please see the website for citation          !
@@ -46,6 +46,7 @@
 
 """
 import zlib
+import numpy as np
 import math
 from data.highComplexitySequences import maxComplexity
 
@@ -65,6 +66,8 @@ class SequenceComplexity:
     def __init__(self):
         pass
 
+
+
     #...................................................................................#
     def Zlib_compressed_complexity(self, sequence):
         """ Return the normalized sequence complexity, where normalization
@@ -80,6 +83,8 @@ class SequenceComplexity:
 
         return float(len(zlib.compress(sequence))) / \
             maxComplexity[len(sequence)]
+
+
 
     #...................................................................................#
     def reduce_alphabet(self, sequence, alphabetSize=20, userAlphabet={}):
@@ -107,13 +112,13 @@ class SequenceComplexity:
 
         """
 
-        two = ['L', 'E']
-        three = ['L', 'F', 'E']
-        four = ['L', 'A', 'F', 'E']
-        five = ['L', 'A', 'F', 'E', 'K']
-        six = ['L', 'A', 'P', 'F', 'E', 'K']
-        eight = ['L', 'A', 'S', 'P', 'F', 'E', 'K', 'H']
-        ten = ['L', 'C', 'A', 'G', 'S', 'P', 'F', 'E', 'K', 'H']
+        two    = ['L', 'E']
+        three  = ['L', 'F', 'E']
+        four   = ['L', 'A', 'F', 'E']
+        five   = ['L', 'A', 'F', 'E', 'K']
+        six    = ['L', 'A', 'P', 'F', 'E', 'K']
+        eight  = ['L', 'A', 'S', 'P', 'F', 'E', 'K', 'H']
+        ten    = ['L', 'C', 'A', 'G', 'S', 'P', 'F', 'E', 'K', 'H']
         eleven = ['L', 'C', 'A', 'G', 'S', 'P', 'F', 'E', 'K', 'H', 'Q']
         twelve = ['L', 'C', 'A', 'G', 'S', 'P', 'F', 'W', 'E', 'D', 'K', 'H']
         fifteen = [
@@ -212,7 +217,7 @@ class SequenceComplexity:
         # check that one of the known alphabets is being used
         if alphabetSize not in [2, 3, 4, 5, 6, 8, 10, 11, 12, 15, 18, 20]:
             raise SequenceComplexityException(
-                'Predefined alphabet sizes must be one of (2,3,4,5,6,8,10,11 12,15,18,20)')
+                'Predefined alphabet sizes must be one of (2,3,4,5,6,8,10,11 12,15,18,20)\nGot [%i]'%alphabetSize)
 
         # Now we figure out which alphabet we're using and then generate a reduced resolution
         # sequence
@@ -298,7 +303,7 @@ class SequenceComplexity:
         elif (alphabetSize == 8):
             alphabet = eight
             for x in sequence:
-                if x in ('L', 'V', 'I', 'M'):
+                if x in ('L', 'V', 'I', 'M', 'C'):
                     aa.append('L')
                 elif x in ('A', 'G'):
                     aa.append('A')
@@ -308,6 +313,10 @@ class SequenceComplexity:
                     aa.append('F')
                 elif x in ('E', 'D', 'N', 'Q'):
                     aa.append('E')
+                elif x in ('H'):
+                    aa.append('H')
+                elif x in ('P'):
+                    aa.append('P')
                 else:
                     aa.append('K')
 
@@ -402,7 +411,10 @@ class SequenceComplexity:
             aa = sequence
 
         return ("".join(aa), alphabet)
+    
+        
 
+    #...................................................................................#
     ###########################################################
     # calculate Wootton-Federhen complexity
     ###########################################################
@@ -447,6 +459,9 @@ class SequenceComplexity:
 
         return CWF_array
 
+
+
+    #...................................................................................#
     ###########################################################
     # calculate linguistic complexity
     ###########################################################
@@ -505,6 +520,9 @@ class SequenceComplexity:
 
         return LC_array
 
+
+
+    #...................................................................................#
     ###########################################################
     # calculate Lempel-Ziv-Welch complexity
     ###########################################################
@@ -548,6 +566,9 @@ class SequenceComplexity:
 
         return LZW_array
 
+
+
+    #...................................................................................#
     def get_WF_complexity(
             self,
             sequence,
@@ -560,7 +581,11 @@ class SequenceComplexity:
         (reduced_sequence, alphabet) = self.reduce_alphabet(
             sequence, alphabetSize, userAlphabet)
 
-        return self.CWF(reduced_sequence, alphabet, windowSize, stepSize)
+        complexity_vector = self.CWF(reduced_sequence, alphabet, windowSize, stepSize)
+
+        return self.get_indexed_complexity_vector(complexity_vector, len(sequence))
+
+        
 
     def get_LC_complexity(
             self,
@@ -575,13 +600,16 @@ class SequenceComplexity:
         (reduced_sequence, alphabet) = self.reduce_alphabet(
             sequence, alphabetSize, userAlphabet)
 
-        return self.LC(
+        complexity_vector =  self.LC(
             reduced_sequence,
             alphabet,
             windowSize,
             stepSize,
             wordSize)
 
+        return self.get_indexed_complexity_vector(complexity_vector, len(sequence))
+
+        
     def get_LZW_complexity(
             self,
             sequence,
@@ -594,4 +622,44 @@ class SequenceComplexity:
         (reduced_sequence, alphabet) = self.reduce_alphabet(
             sequence, alphabetSize, userAlphabet)
 
-        return self.LZW(reduced_sequence, alphabet, windowSize, stepSize)
+
+        complexity_vector = self.LZW(reduced_sequence, alphabet, windowSize, stepSize)
+
+        return self.get_indexed_complexity_vector(complexity_vector, len(sequence))
+
+
+    def get_indexed_complexity_vector(self, complexity_vector, seq_len):
+        """
+        Takes a complexity vector of length N and returns a 2xN matrix containing
+        the complexity vector and the corresponding residue positions distributed
+        equally along the sequence of length seq_len
+
+        """
+
+        # having retrieved the vector we want to also return indicies which represent
+        # an even distribution of points across the sequence (this is always going
+        # to be the correct representation of the vector)
+        complexity_vector_len = len(complexity_vector)
+        spacing = seq_len/complexity_vector_len
+
+        # based on the spacing calculate the necessary remainder (i.e. what's left
+        # over..)
+        remainder = (seq_len - (spacing*complexity_vector_len))
+
+        if remainder % 2 == 0:
+            flank_start = remainder/2
+            flank_end = remainder/2
+        else:
+            flank_start = (remainder-1)/2
+            flank_end = (remainder+1)/2
+
+        # finally set the start and end positions as half-way through the spacing
+        # unit + the appropriate flanking sequence offset from either the first
+        # or last residue
+
+        index_start = (flank_start+1) + spacing/2
+        index_end   = ((seq_len + 1)-flank_end) + spacing/2
+        indices = np.arange(index_start, index_end, spacing, dtype=int)
+
+        return np.vstack((indices, complexity_vector))
+

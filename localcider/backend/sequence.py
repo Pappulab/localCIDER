@@ -4,11 +4,11 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.7                                                         !
+   !    Version 0.1.8                                                         !
    !                                                                          !
-   !    Copyright (C) 2014, The localCIDER development team (current and      !
-   !                        former contributors): Alex Holehouse, James       !
-   !                        Ahad, Rahul K. Das.                               !
+   !    Copyright (C) 2014 - 2015                                             !
+   !    The localCIDER development team (current and former contributors)     !
+   !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
    !    localCIDER was developed in the lab of Rohit Pappu at Washington      !
    !    University in St. Louis. Please see the website for citation          !
@@ -78,7 +78,7 @@ from sequenceComplexity import SequenceComplexity
 
 # lookuptable is a global table of AA properties
 #
-# Hydrophobicity of amino acids is determined by the KD table
+# Hydropathy of amino acids is determined by the KD table
 #
 lkupTab = ResTable()
 
@@ -398,7 +398,7 @@ class Sequence:
         Return the mean hydropathy as calculated by Uversky (window size of
         five, with normalized Kyte-Doolitle scale.
 
-        This means we can use different hydrophobicity scales if we choose, but
+        This means we can use different hydropathy scales if we choose, but
         it won't break the Uversky plots
         """
 
@@ -425,6 +425,23 @@ class Sequence:
         ans /= (np.arange(0, self.len) + 1)
         return ans
 
+        
+
+    def FPPII_chain(self):
+        """ 
+        Returns the overal chain's average PPII propensity as defined by Hilser.        
+
+        """
+
+        total = 0
+        for i in xrange(0, self.len):
+            total = total + lkupTab.lookUpPPII(self.seq[i])
+
+        return (total/float(self.len))
+
+        
+
+
     #...................................................................................#
     def linearDistOfNCPR(self, bloblen):
         """
@@ -432,8 +449,22 @@ class Sequence:
         blob-sized regions along the sequence
         """
 
+        # detemrine the number of blobs of length blpblen in the sequence
         nblobs = self.len - bloblen + 1
 
+        # determine the flanking positions over which we don't calculate 
+        # NCPR values BUT still want to include to build a profile which is
+        # the correct length. 
+        flank = int(bloblen/2)
+        
+        if 2*flank+nblobs == self.len:
+            flank_start = flank
+            flank_end   = flank
+        else:
+            flank_start = flank - 1
+            flank_end   = flank 
+            
+        # initialize an empty list of blobs
         blobncpr = [0] * nblobs
 
         # for each overlapping blob in the sequence calculate the NCPR
@@ -443,7 +474,7 @@ class Sequence:
             bneg = len(np.where(blob < 0)[0])
             blobncpr[i] = (bpos - bneg) / (bloblen + 0.0)
 
-        return np.vstack((np.arange(1, nblobs + 1), blobncpr))
+        return np.vstack((np.arange(1, self.len + 1), [0]*flank_start + blobncpr + [0]*flank_end))
 
     #...................................................................................#
     def linearDistOfFCR(self, bloblen):
@@ -452,18 +483,35 @@ class Sequence:
         blob-sized regions along the sequence
         """
 
+        self.__check_window_to_length(bloblen)
+
         nblobs = self.len - bloblen + 1
 
-        blobncpr = [0] * nblobs
+        # determine the flanking positions over which we don't calculate 
+        # FCR values BUT still want to include to build a profile which is
+        # the correct length. 
+        flank = int(bloblen/2)
+
+        # if bloblen is odd
+        if 2*flank+nblobs == self.len:
+            flank_start = flank
+            flank_end   = flank 
+        else:
+            flank_start = flank - 1
+            flank_end   = flank 
+
+        blobfcr = [0] * nblobs
+
+        
 
         # for each overlapping blob in the sequence calculate the FCR
         for i in np.arange(0, nblobs):
             blob = self.chargePattern[i:(i + bloblen)]
             bpos = len(np.where(blob > 0)[0])
             bneg = len(np.where(blob < 0)[0])
-            blobncpr[i] = (bpos + bneg) / (bloblen + 0.0)
+            blobfcr[i] = (bpos + bneg) / (bloblen + 0.0)
 
-        return np.vstack((np.arange(1, nblobs + 1), blobncpr))
+        return np.vstack((np.arange(1, self.len + 1), [0]*flank_start + blobfcr + [0]*flank_end))
 
     #...................................................................................#
     def linearDistOfSigma(self, bloblen):
@@ -472,7 +520,21 @@ class Sequence:
         varies over blob-sized regions along the sequence
         """
 
+        self.__check_window_to_length(bloblen)
+
         nblobs = self.len - bloblen + 1
+
+        # determine the flanking positions over which we don't calculate 
+        # sigma values BUT still want to include to build a profile which is
+        # the correct length. 
+        flank = int(bloblen/2)
+        
+        if 2*flank+nblobs == self.len:
+            flank_start = flank
+            flank_end   = flank
+        else:
+            flank_start = flank - 1
+            flank_end   = flank 
 
         blobsig = [0] * nblobs
 
@@ -492,16 +554,30 @@ class Sequence:
                 bsig = bncpr**2 / bfcr
             blobsig[i] = bsig
 
-        return np.vstack((np.arange(1, nblobs + 1), blobsig))
-
+        return np.vstack((np.arange(1, self.len + 1), [0]*flank_start + blobsig + [0]*flank_end))
+        
     #...................................................................................#
     def linearDistOfHydropathy(self, bloblen):
         """
-        Returns an np vertical stackobject showing how the 0 to 1 normallized hydrophobicity
+        Returns an np vertical stackobject showing how the 0 to 1 normallized hydropathy
         varies over blob-sized regions along the sequence
         """
+        
+        self.__check_window_to_length(bloblen)
 
         nblobs = self.len - bloblen + 1
+
+        # determine the flanking positions over which we don't calculate 
+        # hydropathy values BUT still want to include to build a profile which is
+        # the correct length. 
+        flank = int(bloblen/2)
+        
+        if 2*flank+nblobs == self.len:
+            flank_start = flank
+            flank_end   = flank
+        else:
+            flank_start = flank - 1
+            flank_end   = flank         
 
         blobhydro = [0] * nblobs
 
@@ -509,7 +585,7 @@ class Sequence:
         # in the sequence (using the Uversky-normalized KD scale which runs from 0 to 1
         # with 1 being the most hydrophobic.
 
-        # get Uversky hydrophobicity lookup table
+        # get Uversky hydropathy lookup table
         KDU = aminoacids.get_KD_uversky()
 
         hydrochain = []
@@ -520,15 +596,29 @@ class Sequence:
         for i in np.arange(0, nblobs):
             blob = hydrochain[i:(i + bloblen)]
             blobhydro[i] = sum(blob) / float(bloblen)
-        return np.vstack((np.arange(1, nblobs + 1), blobhydro))
+
+        return np.vstack((np.arange(1, self.len + 1), [0]*flank_start + blobhydro + [0]*flank_end))
 
     #...................................................................................#
     def linearDistOfHydropathy_2(self, bloblen):
         """
-        Returns an np vertical stackobject showing how the 0 to 9 normallized hydrophobicity
+        Returns an np vertical stackobject showing how the 0 to 9 normallized hydropathy
         varies over blob-sized regions along the sequence
         """
+
+        self.__check_window_to_length(bloblen)
+        
         nblobs = self.len - bloblen + 1
+
+        flank = int(bloblen/2)
+        
+        if 2*flank+nblobs == self.len:
+            flank_start = flank
+            flank_end   = flank
+        else:
+            flank_start = flank - 1
+            flank_end   = flank
+
 
         blobhydro = [0] * nblobs
 
@@ -542,7 +632,10 @@ class Sequence:
         for i in np.arange(0, nblobs):
             blob = hydrochain[i:(i + bloblen)]
             blobhydro[i] = sum(blob)
-        return np.vstack((np.arange(1, nblobs + 1), blobhydro))
+
+        return np.vstack((np.arange(1, self.len + 1), [0]*flank_start + blobhydro + [0]*flank_end))
+
+
 
     # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
     #
@@ -560,6 +653,9 @@ class Sequence:
         Returns the Wooton-Federhen (WF) vectorial complexity using a sliding window approach
 
         """
+        
+        self.__check_window_to_length(windowSize)
+
         return self.ComplexityObject.get_WF_complexity(
             self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
 
@@ -574,6 +670,9 @@ class Sequence:
         Returns the Linguistic Complexity (LC) vectorial complexity using a sliding window approach
 
         """
+
+        self.__check_window_to_length(windowSize)
+
         return self.ComplexityObject.get_LC_complexity(
             self.seq, alphabetSize, userAlphabet, windowSize, stepSize, wordSize)
 
@@ -584,13 +683,15 @@ class Sequence:
             windowSize=10,
             stepSize=1):
         """
-        Returns the Lempel-Ziv-Welch (LZW) vectorial complexity using a sliding window approach
+        Returns the Lempel-Ziv-Welch (LZW) vectorial complexity using a sliding window approach.
 
         """
+
+        self.__check_window_to_length(windowSize)
+
         return self.ComplexityObject.get_LZW_complexity(
             self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
 
-        get_reducedAlphabetSequence(alphabetSize, userAlphabet)
 
     def get_reducedAlphabetSequence(self, alphabetSize=20, userAlphabet={}):
         """
@@ -1308,3 +1409,16 @@ class Sequence:
         s += "Phase Plot Region: %i\n" % (self.phasePlotRegion())
         s += "Phase Plot Annotation: %s\n" % (self.phasePlotAnnotation())
         return s
+    
+
+    def __check_window_to_length(self, bloblen):
+        """
+        Check to ensure that a window size is not greater than the sequence length
+        which will cause issues...
+
+
+        """
+        if len(self.seq) < bloblen:
+            raise SequenceException('Trying to use a window/blob size of %i but the sequence is only %i residues in length! Window size must be < the sequence length.' % (bloblen, len(self.seq)))
+
+                                
