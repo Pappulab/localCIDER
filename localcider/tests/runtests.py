@@ -55,7 +55,7 @@ import __init__ as test
 
 
 ## TEST flags
-ALL = False
+ALL = True
 sequenceParameters_test = True
 plots_test = False
 sequence_test = False

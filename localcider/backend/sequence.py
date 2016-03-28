@@ -264,6 +264,11 @@ class Sequence:
         return (self.countPos() + self.countNeg()) / (self.len + 0.0)
 
     #...................................................................................#
+    def FER(self):
+        """ Get the fraction of charged residues in the sequence """
+        return (self.countPos() + self.countNeg() + self.seq.count('P')) / (self.len + 0.0)
+
+    #...................................................................................#
     def NCPR(self):
         """ Get the net charge per residue of the sequence """
         return (self.countPos() - self.countNeg()) / (self.len + 0.0)
@@ -297,6 +302,50 @@ class Sequence:
                 return 1.0
             else:
                 return kappaVal
+
+
+    #...................................................................................#
+    def kappa_proline(self):
+        """
+        Return the kappa-proline value, as defined in Martin et al. 
+
+        """
+
+        # firstly convert the sequence into a 2 letter alphabet of
+        # E/D/R/K/P or 'other'
+        newseq=''
+        for res in self.seq:
+            if res == 'P' or res =='E' or res =='D' or res =='K' or res =='R': 
+                newseq=newseq+'E'
+            else:
+                newseq=newseq+'K'
+
+        # then calculate the new kappa value in this new sequence space and
+        # return the value
+        augmented_seq = Sequence(newseq)
+
+        return augmented_seq.kappa()
+
+
+    #...................................................................................#
+    def kappa_proline_seq(self):
+        """
+        Return the kappa-proline sequence, where R/K/D/E/P are X and all other residues
+        are O
+
+        """
+
+        # firstly convert the sequence into a 2 letter alphabet of
+        # E/D/R/K/P or 'other'
+        newseq=''
+        for res in self.seq:
+            if res == 'P' or res =='E' or res =='D' or res =='K' or res =='R': 
+                newseq=newseq+'X'
+            else:
+                newseq=newseq+'O'
+
+        return newseq
+
 
     #...................................................................................#
     def phasePlotRegion(self):
@@ -424,24 +473,27 @@ class Sequence:
             ans.append(ans[i - 1] + lkupTab.lookUpHydropathy(self.seq[i]))
         ans /= (np.arange(0, self.len) + 1)
         return ans
-
         
-
+    #...................................................................................#
     def FPPII_chain(self):
         """ 
-        Returns the overal chain's average PPII propensity as defined by Hilser.        
+        Returns the overal chain's average PPII propensity as defined by Elam et al[1].
 
+        [1] - Elam WA, Schrank TP, Campagnolo AJ, Hilser VJ. Evolutionary 
+        conservation of the polyproline II conformation surrounding intrinsically 
+        disordered phosphorylation sites. 
+        Protein Sci. 2013; 22: 405- 417. doi: 10.1002/pro.2217 PMID: 23341186
+        
         """
-
+        
+        # calculate the total PPII sum for the sequence
         total = 0
         for i in xrange(0, self.len):
             total = total + lkupTab.lookUpPPII(self.seq[i])
 
+        # normalize by the sequence length
         return (total/float(self.len))
-
         
-
-
     #...................................................................................#
     def linearDistOfNCPR(self, bloblen):
         """
@@ -501,9 +553,7 @@ class Sequence:
             flank_end   = flank 
 
         blobfcr = [0] * nblobs
-
         
-
         # for each overlapping blob in the sequence calculate the FCR
         for i in np.arange(0, nblobs):
             blob = self.chargePattern[i:(i + bloblen)]
@@ -643,6 +693,7 @@ class Sequence:
     #
     # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
+    #...................................................................................#
     def get_linear_WF_complexity(
             self,
             alphabetSize=20,
@@ -659,6 +710,7 @@ class Sequence:
         return self.ComplexityObject.get_WF_complexity(
             self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
 
+    #...................................................................................#
     def get_linear_LC_complexity(
             self,
             alphabetSize=20,
@@ -676,6 +728,7 @@ class Sequence:
         return self.ComplexityObject.get_LC_complexity(
             self.seq, alphabetSize, userAlphabet, windowSize, stepSize, wordSize)
 
+    #...................................................................................#
     def get_linear_LZW_complexity(
             self,
             alphabetSize=20,
@@ -693,6 +746,7 @@ class Sequence:
             self.seq, alphabetSize, userAlphabet, windowSize, stepSize)
 
 
+    #...................................................................................#
     def get_reducedAlphabetSequence(self, alphabetSize=20, userAlphabet={}):
         """
         Returns the amino acid sequence after being translated to a reduced alphabet
@@ -710,6 +764,8 @@ class Sequence:
     # The functions in the following section focus on parameters involved in the kappa
     # calculation.
     #
+
+
     #...................................................................................#
     def sigma(self):
         """ Returns the sigma value for a sequence
@@ -1318,6 +1374,7 @@ class Sequence:
         ), self.FCR(), self.NCPR(), self.sigma(), self.delta(), self.deltaMax(), self.kappa(), self.meanHydropathy())
         return s
 
+    #...................................................................................#
     def set_HTMLColorResiduePalette(self, colorDict):
         """
         Function which lets you userdefine the color pallete being used with a dictionary of [AA]="color" mappings where
@@ -1371,6 +1428,7 @@ class Sequence:
         for i in valid:
             self.aminoAcidColorMap[i] = valid[i]
 
+    #...................................................................................#
     def get_HTMLColorString(self):
         """
         Function which creates a <p> </p> wrapped HTML string with the sequence colored according to the defined
@@ -1411,6 +1469,7 @@ class Sequence:
         return s
     
 
+    #...................................................................................#
     def __check_window_to_length(self, bloblen):
         """
         Check to ensure that a window size is not greater than the sequence length

@@ -296,11 +296,10 @@ class TestSequenceParametersFunctions(unittest.TestCase):
         
         # generate a list of 10 random sequences between
         # length 100 and 1000
-        seq_list = testTools.generate_random_sequence_list(
-            number=1, minLen=100, maxLen=1000)
+        seq_list = testTools.generate_random_sequence_list(number=10, minLen=100, maxLen=1000)
+            
 
         # some edge cases...
-        """
         seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=3,  maxLen=3))
         seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=4,  maxLen=4))
         seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=5,  maxLen=5))
@@ -311,7 +310,6 @@ class TestSequenceParametersFunctions(unittest.TestCase):
         seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=10, maxLen=10))
         seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=11, maxLen=11))
         seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=12, maxLen=12))
-        """
 
         seq_list.append('EEEEEEEEEE')
         seq_list.append('KKKKKKKKKK')
@@ -350,6 +348,9 @@ class TestSequenceParametersFunctions(unittest.TestCase):
             iSEQ.get_mean_hydropathy()
             iSEQ.get_uversky_hydropathy()
             iSEQ.get_HTMLColorString()
+            iSEQ.get_kappa_proline()
+            iSEQ.get_PPII_propensity()
+            iSEQ.get_kappa_proline_sequence()
             #iSEQ.
             iSEQ.get_delta()
             iSEQ.get_deltaMax()
@@ -381,7 +382,7 @@ class TestSequenceParametersFunctions(unittest.TestCase):
             for CT in ['WF','LC','LZW']:
                 for ABS in [2,5,10,20]:
                     for windowsize in [1,2,3]:
-                        iSEQ.get_linear_complexity(complexityType=CT, alphabetSize=ABS, windowSize=windowsize)
+                        iSEQ.get_linear_complexity(complexityType=CT, alphabetSize=ABS, blobLen=windowsize)
                         
 
             

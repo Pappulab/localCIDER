@@ -24,17 +24,11 @@ from backend import plotting
 from backend.localciderExceptions import SequenceException
 from backend.localciderExceptions import SequenceComplexityException
 
-
 class SequenceParameters:
     """
     A SequenceParameters object is the main object for examining sequence properties 
     in localCIDER. From this object a wide array of methods can be called on the
     object to explore a wide range of sequence properties.
-
-    An 
-
-
-
 
     """
 
@@ -58,6 +52,7 @@ class SequenceParameters:
 
     # ============================================ #
     # ============= SETTER FUNCTIONS ============= #
+
     #...................................................................................#
     def set_phosphosites(self, phosphosites):
         """
@@ -98,6 +93,7 @@ class SequenceParameters:
 
     # ============================================ #
     # ============= GETTER FUNCTIONS ============= #
+
     #...................................................................................#
     def get_sequence(self):
         """
@@ -217,6 +213,47 @@ class SequenceParameters:
         return self.SeqObj.kappa()
 
     #...................................................................................#
+    def get_kappa_proline(self):
+        """
+        Get the kappa-proline value associated with a sequence. kappa-proline describes
+        the patterning between charged/proline residues. 
+
+        ********************************************************************************
+        Ref: Martin, E. W., Holehouse A. S.,  Pappu, R.V.  & Mittag, T. (2016). Sequence 
+        determinants of the conformational properties of an intrinsically disordered 
+        protein prior to and upon multi-site phosphorylation (in preparation)
+        ********************************************************************************
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Float with the sequence's kappa-proline value
+
+        """
+
+        return self.SeqObj.kappa_proline()
+
+    #...................................................................................#
+    def get_kappa_proline_sequence(self):
+        """
+        Get the 2-alphabet sequence used for calculating the kappa-proline parameter
+        as defined in Martin et al. R/K/D/E/P are represented as X and all other residues
+        are O.
+
+        ********************************************************************************
+        Ref: Martin, E. W., Holehouse A. S.,  Pappu, R.V.  & Mittag, T. (2016). Sequence 
+        determinants of the conformational properties of an intrinsically disordered 
+        protein prior to and upon multi-site phosphorylation (in preparation)
+        ********************************************************************************
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Float with the sequence's kappa-proline value
+
+        """
+
+        return self.SeqObj.kappa_proline_seq()
+
+    #...................................................................................#
     def get_deltaMax(self):
         """
         Get the maximum delta value for a sequence of this composition. Note kappa is
@@ -284,11 +321,11 @@ class SequenceParameters:
     #...................................................................................#
     def get_fraction_positive(self):
         """
-        Get the fraction of positive residues in the sequence
+        Get the fraction of positively charged residues in the sequence
 
         OUTPUT:
         --------------------------------------------------------------------------------
-        Float with the sequence's fraction of positive residues (F+)
+        Float with the sequence's fraction of positively charged residues (F+)
         """
 
         return self.SeqObj.Fplus()
@@ -296,11 +333,11 @@ class SequenceParameters:
     #...................................................................................#
     def get_fraction_negative(self):
         """
-        Get the fraction of negative residues in the sequence
+        Get the fraction of negatively residues in the sequence
 
         OUTPUT
         --------------------------------------------------------------------------------:
-        Float with the sequence's fraction of positive residues (F+)
+        Float with the sequence's fraction of negatively charged residues (F-)
 
         """
 
@@ -318,6 +355,20 @@ class SequenceParameters:
         """
 
         return self.SeqObj.FCR()
+
+    #...................................................................................#
+    def get_fraction_expanding(self):
+        """
+        Get the fraction of expanding residues in the sequence. We define 'expanding'
+        residues as D/E/R/K/P. This will be the same as the FCR+fraction of proline
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Float with the sequence's fraction of expanidng residues
+
+        """
+
+        return self.SeqObj.FER()
 
     #...................................................................................#
     def get_NCPR(self):
@@ -529,56 +580,56 @@ class SequenceParameters:
         return self.SeqObj.FPPII_chain()
 
 
-
     # =============================================== #
     # =======  LINEAR SEQUENCE INFORMATION  ========= #
     #...................................................................................#
-    def get_linear_NCPR(self, windowSize=5):
+    def get_linear_NCPR(self, blobLen=5):
         """
         Returns a numpy vector of the net charge per residue (NCPR) as defined by a 
         sliding window. The first dimension contains the values and the second the associated
-        index values along the sequence.
+        index values along the sequence. A stepsize of 1 is always used.
 
-        windowSize     | Sliding window size over which NCPR is calculated (default = 5
-                         to match the default for kappa calculation)
+        blobLen     | Sliding window size over which NCPR is calculated (default = 5
+                      to match the default for kappa calculation)
 
         """
 
-        return(self.SeqObj.linearDistOfNCPR(windowSize))
+        return(self.SeqObj.linearDistOfNCPR(blobLen))
 
 
     #...................................................................................#
-    def get_linear_FCR(self, windowSize=5):
+    def get_linear_FCR(self, blobLen=5):
         """
         Returns a 2D numpy vector of the fraction of charged residues (FCR) as defined by a 
         sliding window. The first dimension contains the values and the second the associated
-        index values along the sequence.
+        index values along the sequence. A stepsize of 1 is always used.
        
-        windowSize     | Sliding window size over which NCPR is calculated (default = 5
-                         to match the default for kappa calculation)
+        blobLen     | Sliding window size over which FCR is calculated (default = 5
+                      to match the default for kappa calculation)
 
         """
 
-        return(self.SeqObj.linearDistOfFCR(windowSize))
+        return(self.SeqObj.linearDistOfFCR(blobLen))
 
 
     #...................................................................................#
-    def get_linear_hydropathy(self, windowSize=5):
+    def get_linear_hydropathy(self, blobLen=5):
         """
         Returns a numpy vector of the Kyte-Doolitle hydropathy of a sequence as defined
         by a sliding window. The first dimension contains the values and the second the associated
-        index values along the sequence.
+        index values along the sequence. A stepsize of 1 is always used.
 
-        windowSize     | Sliding window size over which NCPR is calculated (default = 5
-                         to match the default for kappa calculation)
+        blobLen     | Sliding window size over which the hydrophobicity is calculated (default = 5
+                      to match the default for kappa calculation)
 
         """
 
-        return(self.SeqObj.linearDistOfHydropathy(windowSize))
+        return(self.SeqObj.linearDistOfHydropathy(blobLen))
         
 
     # =============================================== #
     # ======= SEQUENCE COMPLEXITY FUNCTIONS ========= #
+
     #...................................................................................#
     def get_reduced_alphabet_sequence(self, alphabetSize=20, userAlphabet={}):
         """"
@@ -626,12 +677,13 @@ class SequenceParameters:
         return self.SeqObj.get_reducedAlphabetSequence(
             alphabetSize, userAlphabet)
 
+    #...................................................................................#
     def get_linear_complexity(
             self,
             complexityType="WF",
             alphabetSize=20,
             userAlphabet={},
-            windowSize=10,
+            blobLen=10,
             stepSize=1,
             wordSize=3):
         """
@@ -665,7 +717,7 @@ class SequenceParameters:
                          is mapped to another amino acid. This is kind of tedious, but it helps
                          avoid user-error where specific amino acids are missed. (default=None)
 
-        windowSize     | Sliding window size over which complexity is calculated (default=10)
+        blobLen     | Sliding window size over which complexity is calculated (default=10)
 
         stepSize       | Size of steps taken as we define a new sliding window. Default is
                          1 (recommended to keep at 1)
@@ -733,14 +785,14 @@ class SequenceParameters:
                 print "WARNING: Ignoring wordSize argument for Wooton-Federhen complexity"
 
             return self.SeqObj.get_linear_WF_complexity(
-                alphabetSize, userAlphabet, windowSize, stepSize)
+                alphabetSize, userAlphabet, blobLen, stepSize)
 
         if complexityType == "LZW":
             if not wordSize == 3:
                 print "WARNING: Ignoring wordSize argument for LZW complexity"
 
             return self.SeqObj.get_linear_LZW_complexity(
-                alphabetSize, userAlphabet, windowSize, stepSize)
+                alphabetSize, userAlphabet, blobLen, stepSize)
 
         # coming soon - a new complexity measure...!
         if complexityType == "RHP":
@@ -749,21 +801,21 @@ class SequenceParameters:
                 print "WARNING: Ignoring wordSize argument for RHP complexity"
 
             return self.SeqObj.get_linear_RHP_complexity(
-                alphabetSize, userAlphabet, windowSize, stepSize)
+                alphabetSize, userAlphabet, blobLen, stepSize)
             """
 
         if complexityType == "LC":
             return self.SeqObj.get_linear_LC_complexity(
-                alphabetSize, userAlphabet, windowSize, stepSize, wordSize)
+                alphabetSize, userAlphabet, blobLen, stepSize, wordSize)
 
 
-
+    #...................................................................................#
     def show_linearComplexity(
             self,
             complexityType="WF",
             alphabetSize=20,
             userAlphabet={},
-            windowSize=10,
+            blobLen=10,
             stepSize=1,
             wordSize=3,
             getFig=False):
@@ -798,7 +850,7 @@ class SequenceParameters:
                          is mapped to another amino acid. This is kind of tedious, but it helps
                          avoid user-error where specific amino acids are missed. (default=None)
 
-        windowSize     | Sliding window size over which complexity is calculated (default=10)
+        blobLen     | Sliding window size over which complexity is calculated (default=10)
 
         stepSize       | Size of steps taken as we define a new sliding window. Default is
                          1 (recommended to keep at 1)
@@ -855,7 +907,7 @@ class SequenceParameters:
             complexityType, 
             alphabetSize,
             userAlphabet,
-            windowSize,
+            blobLen,
             stepSize,
             wordSize)
 
@@ -871,13 +923,14 @@ class SequenceParameters:
                                            len(self.SeqObj.seq), 
                                            getFig)
 
+    #...................................................................................#
     def save_linearComplexity(
             self,
             filename,
             complexityType="WF",
             alphabetSize=20,
             userAlphabet={},
-            windowSize=10,
+            blobLen=10,
             stepSize=1,
             wordSize=3,
             saveFormat='png'):
@@ -913,7 +966,7 @@ class SequenceParameters:
                          is mapped to another amino acid. This is kind of tedious, but it helps
                          avoid user-error where specific amino acids are missed. (default=None)
 
-        windowSize     | Sliding window size over which complexity is calculated (default=10)
+        blobLen     | Sliding window size over which complexity is calculated (default=10)
 
         stepSize       | Size of steps taken as we define a new sliding window. Default is
                          1 (recommended to keep at 1)
@@ -975,7 +1028,7 @@ class SequenceParameters:
             complexityType, 
             alphabetSize,
             userAlphabet,
-            windowSize,
+            blobLen,
             stepSize,
             wordSize)
 
@@ -1111,7 +1164,7 @@ class SequenceParameters:
             getFig=False):
         """
         Generates the Uversky phase diagram (hydropathy vs NCPR), places
-        this sequence on that plot, and creates it on the screen
+        this sequence on that plot, and renders it on the screen
 
         INPUT:
         --------------------------------------------------------------------------------
@@ -1169,7 +1222,7 @@ class SequenceParameters:
             saveFormat='png'):
         
         """
-        Generates the Pappu-Das phase diagram (diagram of states), places
+        Generates the Uversky phase diagram (hydropathy vs NCPR), places
         this sequence on that plot, and saves it at the <filename> location
 
         INPUT:
@@ -1465,6 +1518,8 @@ class SequenceParameters:
         """
         self.SeqObj.set_HTMLColorResiduePalette(colorDict)
 
+
+    #...................................................................................#
     def get_HTMLColorString(self):
         """
         Returns a string which contains a correctly formatted HTML string of the sequence
@@ -1485,11 +1540,14 @@ class SequenceParameters:
         return "SequenceParameter [len=" + \
             str(len(self.SeqObj.seq)) + "], [seq='" + self.SeqObj.seq + "']"
 
+
     #...................................................................................#
     def __str__(self):
         """ Returns the sequences """
         return self.__unicode__()
 
+
+    #...................................................................................#
     def __len__(self):
         """ Returns the sequence length """
         return len(self.SeqObj.seq)
