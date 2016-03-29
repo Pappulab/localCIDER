@@ -1541,6 +1541,9 @@ class SequenceParameters:
             str(len(self.SeqObj.seq)) + "], [seq='" + self.SeqObj.seq + "']"
 
 
+    def __repr__(self):
+        return "["+hex(id(self)) + "]: " + self.__unicode__()
+
     #...................................................................................#
     def __str__(self):
         """ Returns the sequences """

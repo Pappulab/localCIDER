@@ -2,7 +2,7 @@
 localCIDER
 ==========
 
-`version 0.1.7 - February 2015`
+`version 0.1.8 - March 2016`
 
 **Introduction**
 
@@ -41,7 +41,7 @@ About
 
 **localCIDER** was written by Alex Holehouse and James Ahad in the `Pappu Lab <http://pappulab.wustl.edu>`_ . A manuscript is currently under preparation for citation, but until that time please cite localCIDER as;
 
-    A.S. Holehouse, J. Ahad, R.K. Das, R.V. Pappu (2015) localCIDER, http://pappulab.wustl.edu/localCIDER/
+Holehouse, A. S., Ahad, J., Das, R. K. & Pappu, R. V. CIDER: Classification of Intrinsically Disordered Ensemble Regions. Biophys. J. 108, 228a (2015).
 
 --------------
 References 

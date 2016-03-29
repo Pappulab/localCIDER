@@ -1,6 +1,6 @@
 # localCIDER
 
-`v 0.1.7 - February 2015`
+`v 0.1.8 - March 2016`
 
 
 # Introduction
@@ -18,24 +18,48 @@
 
 Moreover, if there's a type of analysis you use frequently and you think other users would appreciate, we'd be happy to build this in to **localCIDER**. Adding new functionality is typically much more involved for a web-app.
 
-
 # Installation
 
 ## Introduction
-**localCIDER** version 0.1.7 was submitted to `pip` (the Python Package Index) on in February 2015. This should be considered an alpha release, which is to say we're still ironing out creases, and it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. However, many (most, actually) of the features are ready to go!
+**localCIDER** version 0.1.8 was submitted to `pip` (the Python Package Index) on in March 2016. This should be considered a stable release, however, if you encounter any issues/bugs it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. 
+
+## New Features
+In 0.1.8 we have added a number of new features, as detailed below:
+
+* The kappa-P (proline/charge patterning) parameter has been added. This is used in the upcoming paper by Martin and Holehouse (reference to come). 
+
+* Three different sequence complexity measures have been added: Wooton-Federhen complexity [8], Linguistic complexity [9], Lempel-Ziv-Welch (LZW) complexity [10]. These algorithms have a number of parameters which can be defined, as well as the ability to use a set of pre-defined reduced alphabetes [11]
+
+* Overall PPII propensity can be calculated based on the amino acid PPII propensity as defined by Elam *et al.* [6].
+
+* All figures can now be saved as PDFs (useful for post-process with graphics tools, e.g. Adobe Illustrator)
+
+* The bar positions for blob-based figures have been updated such that bin centers are used on all figures. This makes comparing figures using different blob-widths much easier.
+
+* Numpy vectors of the linear NCPR, FCR, hydropathy and sequence complexity can now be directly returned for further analysis 
+
+* Sequences can be directly converted to a reduced alphabet sequence. The mapping of true amino-acid alphabet to reduced alphabet can take advantage of 11 predefined mappings, or this mapping can be defined using a custom dictionary.
+
+* localCIDER can now run under Python 3
+
+If there are sequence feautures you would like to see added to localCIDER please don't hesitate to get in touch - we're always looking for new features to add and to further grow localCIDER as a general purpose protein analysis framework.
+
 
 ## Installing on OSX or linux
 We recommend installing using `pip`. `pip` is a command line interface for downloading and installing packages from the Python package index (PyPI). If you don't yet have pip installed [see the documentation here](http://pip.readthedocs.org/en/latest/installing.html).
 
-We also recommend `virtualenv` although this is not at all required, it's just generally a good route to go if you use Python!
+We also recommend `virtualenv` although this is not at all required, it's just generally a good route to go if you use Python! For more information on `virtualenv` check out [this link](https://virtualenv.pypa.io/en/latest/)
 
-Once `pip` is installed **localCIDER** can be installed by running
+Once `pip` is installed, **localCIDER** can be installed by running;
 
-    [sudo] pip install localcider
+    [sudo] pip install localcider 
 
 Very simple! **localCIDER** depends on both `numpy` and `matplotlib`, both of which will be installed via `pip` if you haven't already installed them.
 
 If you encounter issues installing please let me know. That said, any issues *should* be due to problems with Numpy or `matplotlib` and not **localCIDER**, so investigate the documentation associated with installing those packages first.
+
+## Python 2 and Python 3
+As of version 0.1.8 localCIDER is supported under both Python 2.x and 3.x. localCIDER has been extensively tested and used with Python 2.7.x, and we recommend this version of Python.
 
 ### Known installation issues
 
@@ -47,7 +71,7 @@ If you encounter issues installing please let me know. That said, any issues *sh
     [sudo] zypper install libpng16-devel
     [sudo] zypper install python-numpy-devel
     
-Of course, one or more of these may well already be installed, so your best bet is to try installing **localcider** and if it fails check these guys are installed by using
+Of course, one or more of these may already be installed, so your best bet is to try installing **localcider**, and if it fails check these guys are installed by using
 
     zypper search <package-name> # an 'i' next to the package indicates it's installed
 
@@ -57,15 +81,17 @@ An alternative issue may be that installing `python-numpy-devel` (which is requi
     
 To install `matplotlib` (NOTE the `-tk` at the end!)
 
+Getting Python packaging and OpenSuse to work together can be a pain, so there are likely alternative solutions to those presented here.
+
 #### Ubuntu
 The issues for OpenSuse are also true for Ubuntu - specifically `Ubuntu` seems to need the `python-dev` package to install `numpy`, and the `libfreetype6-dev` package for to get Freetype working in `matplotlib`
 
     [sudo] apt-get install python-dev
-	[sudo] apt-get install libfreetype6-dev 
+    [sudo] apt-get install libfreetype6-dev 
 
 
 ### Upgrading via pip
-localCIDER does not automatically update, but for the next few months expect fairly regular updates. To see the historic update schedule see the end of this file.
+localCIDER does not automatically update, but can be updated using pip. To see the historic update schedule see the end of this file.
 
 
 `pip` allows you to upgrade packages to the latest version using
@@ -98,8 +124,8 @@ Tested on Windows 7 64 bit
 8) Write code to use localCIDER package
  
  
-# How to use
-Once you have localcider installed via pip, fire up Python and `import` the localcider package;
+# Using localCIDER
+Once you have localCIDER installed, fire up Python and `import` the localcider package;
 
     import localcider
     
@@ -110,7 +136,6 @@ There are two main localcider modules right now;
 * `sequenceParameters` which lets you calculate many different parameters, as well as show or save plots relating to a specific sequence - ***this is the main module of interest***
 * `plots` which lets you plot certain parameters independent of sequenceParameters
 
-In the next release (V 0.2.0) we'll also introduce the `sequencePermutant` code, which employs a variety of approaches to generate permutants.
 
 #### Quick-start - calculate kappa of my sequence and plot it on the Das-Pappu diagram of states 
 
@@ -120,11 +145,14 @@ The following code will print the kappa value of your sequence to the terminal p
     from localcider.sequenceParameters import SequenceParameters
     
     # create a SequenceParameters object with your amino acid sequence
-    SeqOb = SequenceParameters("MY AMINO ACID SEQUENCE")
+    SeqOb = SequenceParameters("DAEFRHDSGYEVHHQKLVFFAEDVGSNKGAIIGLMVGGVV")
     
     # carry out analysis
-    SeqOb.get_kappa()
+    SeqOb.get_kappa() 
     SeqOb.save_phaseDiagramPlot('my_snazzy_plot')
+    
+    # For publications we recommend using vector graphics and saving plots as PDF files 
+    SeqOb.save_phaseDiagramPlot('my_snazzy_plot', saveFormat='pdf'))
     
     
 #### Interactive help
@@ -157,7 +185,7 @@ By opening your code with this line you now have direct access to the `SequenceP
     from localcider.sequenceParameters import SequenceParameters
 	
 	# the sequence below is the first 30 residues from alpha-synuclein
-	seqOb = SequenceParameters("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAA")     
+	SeqOb = SequenceParameters("MDVFMKGLSKAKEGVVAAAEKTKQGVAEAA")     
     
 Or alternatively
     
@@ -165,44 +193,76 @@ Or alternatively
     from localcider.sequenceParameters import SequenceParameters
 	
 	# the sequence below is the first 30 residues from alpha-synuclein
-	seqOb = SequenceParameters(sequenceFile="syn.fasta")
+	SeqOb = SequenceParameters(sequenceFile="syn.fasta")
 	
 	
 
-Both these code snippets create a `SequenceParameters` object (here called `seqOb`, but obviously this variable could be named anything), on which we can carry out a huge range of operations. The complete function list is shown below for reference.
+Both these code snippets create a `SequenceParameters` object - here that object is called `SeqOb`, but obviously this variable could be named anything. We can run a huge range of analysis routines on this object. The complete function list is shown below for reference.
 
-Most of these functions don't take arguments. Optional arguments are prefixed with a question mark (?). For each function we use the `seqOb.<function>` syntax - e.g.
+Many of these functions don't take arguments. Optional arguments are prefixed with a question mark (?). For each function we use the `seqOb.<function>` syntax - e.g.
 
     seqOb.get_FCR()
 
 
-### SequenceParameters functions
+### Single value sequence analysis functions
+The functions below perform analysis which ge
 
 Function name | Operation 
 :---: | :---: 
-`get_FCR()`  | Get the fraction of charged residues
-`get_NCPR()` | Get the net charge per residue
-`get_countNeg()` | Get the number of negatively charged amino acids 
-`get_countPos()` | Get the number of positivly charged amino acids
-`get_fraction_negative()` | Get the fraction of residues which are negatively charged
-`get_fraction_positive()` | Get the fraction of residues which are positivly charged
+`get_length()`  | Get the sequence length
+`get_FCR()`  | Get the fraction of charged residues in the sequence [4]
+`get_NCPR()` | Get the net charge per residue of the sequence [5]
+`get_countNeg()` | Get the number of negatively charged residues in the sequence (D/E)
+`get_countPos()` | Get the number of positively charged residues in the sequence (R/K)
 `get_countNeut()` | Get the number of neutral amino acids
+`get_fraction_negative()` | Get the fraction of residues which are negatively charged (F-)
+`get_fraction_positive()` | Get the fraction of residues which are positively charged (F+)
+`get_fraction_expanding()` | Get the fraction of residues which are predicted to contribute to chain expansion (E/D/R/K/P)
 `get_amino_acid_fractions()` | Get a dictionary of the fractions of each amino acid in the sequence
-`get_fraction_disorder_promoting()` | Get the fraction of residues predicted to be 'disorder promoting' [REF 1]
-`get_kappa()` | Get the kappa value of the sequence [REF 2]
+`get_fraction_disorder_promoting()` | Get the fraction of residues predicted to be 'disorder promoting' [1]. Note this is NOT a disorder prediction!
+`get_kappa()` | Get the sequence's kappa value [2]
 `get_mean_net_charge()` | Get the absolute mean net charge of your sequence
 `get_phase_plot_region()` | Get the region on the Das-Pappu diagram of states where your sequence falls [2]
-`get_mean_hydropathy()` | Get the mean hydropathy as calculated from a skewed Kyte-Doolittle hydrophobicity scale* [REF 3]
-`get_uversky_hydropathy()` | Get the mean hydropathy as calculated from a normalized Kyte-Doolittle hydrophobicity scale\*\* [REF 3 REF 4]
-`get_delta()` <br>*New in 0.1.2* | Returns the delta value of the sequence, as defined in the Das-Pappu paper [2]
-`get_deltaMax()` <br> *New in 0.1.2* | Returns the maximum possible delta value for a sequence of this composition
-`get_HTMLColorString()` <br> *New in 0.1.2*| Returns a fully formated HTML string which can be used to represent your sequence. The coloring used has a default, but can be defined using the `set_HTMLColorResiduePalette` function
-`set_HTMLColorResiduePalette(colorDictionary)` <br> *New in 0.1.2*| Allows you to custom define a colour pallete. The colorDictionary must be a dictionary object that maps each of the 20 amino acids to a color. Currently 17 possible colors can be assigned to the 20 amino acids. These are;<br> aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, orange, purple, red, silver, teal, white, and yellow. This set of 17 colors represents the HTML browser compatible set of colors.
+`get_mean_hydropathy()` | Get the mean hydropathy as calculated from a skewed Kyte-Doolittle hydrophobicity scale* [3]
+`get_uversky_hydropathy()` | Get the mean hydropathy as calculated from a normalized Kyte-Doolittle hydrophobicity scale\*\* [3,4]
+`get_PPII_propensity()` | Get the overall sequence's PPII propensity as defined by Hilser et al [6] using the values reported in table 1 from [7]
+`get_delta()` <br> | Returns the delta value of the sequence, as defined when calculating kapp [2] 
+`get_deltaMax()` <br> | Returns the maximum possible delta value (delta-max) for a sequence of this composition
+
 
 
 \* The skewed hydrophobicity scale shifts the normal KD scale such that the lowest value is 0 (instead of -4.5) and the highest value is 9 (instead of 4.5)
 
 \** The normalized Kyte-Doolittle scale converts all values on the scale to fall between 0 and 1
+
+
+### Vectorial sequence analysis functions
+The following functions generate a vector of values which describes some property associated with the sequence as a function of sequence position.
+
+Function name | Operation 
+:---: | :---: 
+`get_linear_FCR(blobLen=5)`  | Returns a 2D numpy vector of the fraction of charged residues (FCR) as defined by a sliding window. The first dimension of the 2D vector contains the local FCR values and the second contains the associated residue index values along the sequence. the `blobLen` keyword defines the window size used to calculate the sequence-local FCR. A stepsize of 1 is always used.
+`get_linear_NCPR(blobLen=5)`  | Returns a 2D numpy vector of the net charge per residue (NCPR) as defined by a sliding window. The first dimension of the 2D vector contains the local NCPR values and the second contains the associated residue index values along the sequence. The `blobLen` keyword defines the window size used to calculate the sequence-local NCPR. A stepsize of 1 is always used.
+`get_linear_hydropathy(blobLen=5)`  | Returns a 2D numpy vector of the local hydropathy as defined by a sliding window using the Kyte-Doolite hydropathy scale[3]. The first dimension of the 2D vector contains the local hydropathy score and the second contains the associated residue index values along the sequence. The `blobLen` keyword defines the window size used to calculate the sequence-local hydropathy. A stepsize of 1 is always used.
+`get_linear_complexity(complexityType='WF', alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3)` | Returns the linear sequence complexity as defined by complexityType. Optionally, the sequence complexity of a reduced complexity alphabet can be returned, where that reduced alphabet is defined by either the alphabetSize (which takes advantage of 11 pre-defined simplified alphabets) or via a custom userAlphabet dictionary. <br><br>The `complexityType` Defines the complexity measure being employed. Three different complexity measures are provided by localCIDER, where the measure being used is passed via a string with one of 'WF', 'LC', or 'LZW'. WF is Wooton-Federhen complexity [8], which reports on the sequence's local Shannon entropy, and is the complexity measure used in the SEG algorithm. LC is Linguistic complexity [9], which reports on the number of distinct subsequences over the maximum number of different subsequences given the alphabet size and the word size. Finally, LZW is Lempel-Ziv-Welch [10] complexity, and effectivly asks how efficienctly the sequence can undergo lossless compression using unique subsequences. <br><br>The `alphabetSize` defines the size of the alphabet being used, where pre-defined alphabets are then used based on the specific size. Those pre-defined alphabets are defined below this table for clarity. By default an `alphabetSize` of 20 is used (i.e. no reduction in amino acid complexity). 'userAlphabet' Allows the user to define their own reduced alphabet. The format here is a dictionary where each key-value pair is amino-acid to X. This means you need a dictionary of length 20 where each amino acid is mapped to another amino acid. This is somewhat of tedious, but it helps avoid user-error where specific amino acids are missed. (default=None). <br><br>The `blobLen` is the sliding window size over which complexity is calculated (default=10). The `stepSize` is the size of steps taken as we define a new sliding window. Finally, the `wordSize` keyword is only relevant for the linguistic complexity (LC), ignored for other types, and defines the size of word for the algorithm. Default is 3. We recommend further reading of the associated literature to better understand these complexity measures. 
+
+#### Reduced alphabets
+Predefined alphabets shown below - all except eleven are based on alphabets defined in the reference below [11].
+
+    two      - [(LVIMCAGSTPFYW), (EDNQKRH)]
+    three    - [(LVIMCAGSTP), (FYW), (EDNQKRH)]
+    four     - [(LVIMC), (AGSTP), (FYW), (EDNQKRH)]
+    five     - [(LVIMC), (ASGTP), (FYW), (EDNQ), (KRH)]
+    six      - [(LVIM), (ASGT), (PHC), (FYW), (EDNQ), (KR)]
+    eight    - [(LVIMC), (AG), (ST), (P), (FYW), (EDNQ), (KR), (H)]
+    ten      - [(LVIM), (C), (A), (G), (ST), (P), (FYW), (EDNQ), (KR), (H)]
+    eleven   - [(LVIM), (C), (A), (G), (ST), (P), (FYW), (ED), (NQ), (KR), (H)]
+    twelve   - [(LVIM), (C), (A), (G), (ST), (P), (FY), (W), (EQ), (DN), (KR), (H)]
+    fifteen  - [(LVIM), (C), (A), (G), (S), (T), (P), (FY), (W), (E), (Q), (D), (N), (KR), (H)]
+    eighteen - [(LM), (VI), (C), (A), (G), (S), (T), (P), (F), (Y), (W), (E), (D), (N), (Q), (K), (R), (H)]
+    twenty   - all twenty!
+
+
 
 ### Phosphorylation functions
 The following functions augment your sequence to consider the impact of phosphorylation on the electrostatic properties. Note this makes the highly simplifying assumption that the phosphorylation of a Ser/Thr/Tyr residue simply adds a negative charge to your protein chain. In reality, many other properties of the chain are impacted by phosphorylation than simply the linear charge patterning.
@@ -215,23 +275,43 @@ Function name | Operation
 `clear_phosphosites()` | Clears any previously defined phosphosites
 `get_kappa_after_phosphorylation()` | Get the kappa value assuming full phosphorylation (with H<sub>2</sub>PO<sub>4</sub><sup>-1</sup>).
 `get_phosphosequence()` | Returns the fully phosphorylated sequence, with "phosphorylated residues" replaced with glutamate (E)
-`get_full_phosphostatus_kappa_distribution()`|  ** UNDER DEVELOPMENT ** For each phospho-permutant, given the available phosphosites, calculate the kappa, fraction positive, fraction negative, FCR, NCPR, mean hydropathy and the phosphostatus. Phosphostatus is itself a tuple, where each position defines the phosphorylation status of each consecutive phosphosite in the sequence; 0 indicates unphosphorylated and 1 indicates phosphorylated. The function call returns a list of tuples, where each tuple contains the information described for each unique phospho-permutant. We're still determining if all this information is necessary. The assumption currently being made is that phosphorylation introduces a -1 charge only. While this may not be fully accurate, it provides a good and simple first approximation for the effect of phosphorylation.  Also note that as the number of phosphosites increases the number of calculations here scales as n^2. Be warned!
+`get_full_phosphostatus_kappa_distribution()`|  For each possible phospho-permutant, given the available phosphosites, calculate the kappa, fraction positive, fraction negative, FCR, NCPR, mean hydropathy and the phosphostatus. Phosphostatus is itself a tuple, where each position defines the phosphorylation status of each consecutive phosphosite in the sequence; 0 indicates unphosphorylated and 1 indicates phosphorylated. <br> <br> The function call returns a list of tuples, where each tuple contains the information described for each unique phospho-permutant. The assumption currently being made is that phosphorylation introduces a -1 charge only. While this may not be fully accurate, it provides a good and simple first approximation for the effect of phosphorylation.  Also note that as the number of phosphosites increases the number of calculations here scales as n^2. Be warned!
 
-### Plotting functions
-The following functions let you plot parameters from your sequence in a set of defined plots.
+
+### Miscellaneous functions
+The functions below represent a variety of miscellaneous functions.
 
 Function name | Operation 
 :---: | :---: 
-`show_phaseDiagramPlot(label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)`| Renders a `matplotlib` Das-Pappu diagram of states plot with your sequence on the diagram<sup>[2]</sup>. `label` can be a string which labels your sequence on the plot. `legendOn` defines if the regions labels are included as a legend. `xLim` and `yLim` define the max values for the X and Y axes. `fontSize` defines the size of the label font. `getFig` defines if a matplotlib object is returned instead of being rendered. 
-`show_uverskyDiagramPlot(label="", legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)`| Renders a `matplotlib` Uversky plot with your sequence on the diagram<sup>[4]</sup>. `label` can be a string which labels your sequence on the plot. `legendOn` defines if the regions labels are included as a legend. `xLim` and `yLim` define the max values for the X and Y axes. `fontSize` defines the size of the label font. `getFig` defines if a matplotlib object is returned instead of being rendered.
-`show_linearHydropathy(blobLen=5, getFig=False)`| Renders a `matplotlib` plot of the moving average hydropathy along the sequence, where the hydropathy is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used (**This made be changed to the default value in future releases**). `getFig` defines if a matplotlib object is returned instead of being rendered.
-`show_linearNCPR(blobLen=5, getFig=False)` | Renders a `matplotlib` plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used (**This made be changed to the default value in future releases**). `getFig` defines if a matplotlib object is returned instead of being rendered.
-`show_linearSigma(blobLen=5, getFig=False)` | Renders a `matplotlib` plot of the moving average sigma parameter along the sequence, where sigma is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used (**This made be changed to the default value in future releases**). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR. `getFig` defines if a matplotlib object is returned instead of being rendered.
-`save_phaseDiagram_plot(filename, label="")` | Renders a `matplotlib` Das-Pappu diagram of states plot with your sequence on the diagram<sup>[2]</sup>. `label` can be a string which labels your sequence on the plot. The plot is saved in the `filename` location (`.png` is appended).
-`save_uverskyDiagram_plot(filename, label="")` | Renders a `matplotlib` Uversky plot with your sequence on the diagram<sup>[4]</sup>. `label` can be a string which labels your sequence on the plot. The plot is saved in the `filename` location (`.png` is appended).
-`save_linearHydropathy(blobLen, filename)` | Renders a `matplotlib` plot of the moving average hydropathy along the sequence, where the hydropathy is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used (**This made be changed to the default value in future releases**). The plot is saved in the `filename` location (`.png` is appended).
-`save_linearNCPR(blobLen, filename)`| Renders a `matplotlib` plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used (**This made be changed to the default value in future releases**). The plot is saved in the `filename` location (`.png` is appended).
-`save_linearSigma(blobLen, filename)` | Saves a `matplotlib` generated plot of the moving avesequenceParametersrage sigma parameter along the sequence, where sigma is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used (**This made be changed to the default value in future releases**). Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR. The plot is saved in the `filename` location (`.png` is appended).
+`get_HTMLColorString()` <br> | Returns a fully formated HTML string which can be used to represent your sequence. The coloring used has a default, but can be defined using the `set_HTMLColorResiduePalette` function
+`set_HTMLColorResiduePalette(colorDictionary)` <br> | Allows you to custom define a colour pallete. The colorDictionary must be a dictionary object that maps each of the 20 amino acids to a color. Currently 17 possible colors can be assigned to the 20 amino acids. These are;<br> aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, orange, purple, red, silver, teal, white, and yellow. This set of 17 colors represents the HTML browser compatible set of colors.
+
+### Plotting functions (on-screen 'show' functions)
+The following functions let you plot parameters from your sequence and display the results immediately on screen.
+
+Function name | Operation 
+:---: | :---: 
+`show_phaseDiagramPlot(label="", title='Diagram of states', legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)`| Renders a `matplotlib` Das-Pappu diagram of states plot with your sequence on the diagram<sup>[2]</sup>. If a `label` is provided this is a string which annotates your sequence on the plot. If a `title` is provided this sets the plot title. `legendOn` defines if the region labels are included as a legend. `xLim` and `yLim` define the max values for the X and Y axes. `fontSize` defines the size of the label font. `getFig` defines if a matplotlib object is returned instead of being rendered on screen. 
+`show_uverskyDiagramPlot(label="", title='Uversky Plot', legendOn=True, xLim=1, yLim=1, fontSize=10, getFig=False)`| Renders a `matplotlib` Uversky plot with your sequence on the diagram<sup>[4]</sup>. `label` can be a string which labels your sequence on the plot. If a `title` is provided this sets the plot title. `legendOn` defines if the regions labels are included as a legend. `xLim` and `yLim` define the max values for the X and Y axes. `fontSize` defines the size of the label font. `getFig` defines if a matplotlib object is returned instead of being rendered.
+`show_linearHydropathy(blobLen=5, getFig=False)`| Renders a `matplotlib` plot of the moving average hydropathy along the sequence, where the hydropathy is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used. `getFig` defines if a matplotlib object is returned instead of being rendered.
+`show_linearNCPR(blobLen=5, getFig=False)` | Renders a `matplotlib` plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used. `getFig` defines if a matplotlib object is returned instead of being rendered.
+`show_linearFCR(blobLen=5, getFig=False)` | Renders a `matplotlib` plot of the moving average fraction of charged residues (FCR) along the sequence, where the FCR is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used. `getFig` defines if a matplotlib object is returned instead of being rendered.
+`show_linearSigma(blobLen=5, getFig=False)` | Renders a `matplotlib` plot of the moving average sigma parameter along the sequence, where sigma is calculated in overlapping windows of size `blobLen`. Typically a blob length of 5-7 is used. Recall that sigma is calculated as the NCPR<sup>2</sup> / FCR. `getFig` defines if a matplotlib object is returned instead of being rendered.
+`show_linearComplexity(complexityType='WF', alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3, getFig=False)` | Renders a `matplotlib` plot of the linear sequence complexity. For a discussion of the various options see the `get_linear_complexity` description under the SequenceParameters functions table. `getFig` defines if a matplotlib object is returned instead of being rendered.
+
+
+### Plotting functions (file-creating 'save' functions)
+The following functions let you plot parameters from your sequence and save those plots to file for future use.
+
+Function name | Operation 
+:---: | :---: 
+`save_phaseDiagramPlot(filename, label='', title='Diagram of states', legendOn=True, xLim=1, yLim=1, fontSize=10, saveFormat='png')` | Generates a `matplotlib` Das-Pappu diagram of states plot which is then saved to disk. `filename` is required and defines the file to be saved. Adding extensions is recommended but not required. All options are the same as in `show_phaseDiagramPlot`, with the addition of the `saveFormat` keyword, which defines the output format - this parameter is passed to matplotlibs savefig command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz. (DEFAULT = png) 
+`save_uverskyPlot(filename, label='', title='Uversky plot', legendOn=True, xLim=1, yLim=1, fontSize=10, saveFormat='png')` | Generates a `matplotlib` Uversky plot with your sequence on the diagram<sup>[4]</sup> which is then saved to disk. `filename` is required and defines the file to be saved. Adding extensions is recommended but not required. All options are the same as in `show_uverskyPlot`, with the addition of the `saveFormat` keyword, which defines the output format - this parameter is passed to matplotlibs savefig command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz. (DEFAULT = png) 
+`save_linearHydropathy(filename, blobLen=5, saveFormat='png')` | Renders a `matplotlib` plot of the moving average hydropathy along the sequence, where the hydropathy is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used. The plot is saved in the `filename` location. Adding extensions is recommended but not required. The `saveFormat` keyword defines the output format - this parameter is passed to matplotlibs savefig command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.
+`save_linearNCPR(filename, blobLen=5, saveFormat='png')`| Renders a `matplotlib` plot of the moving average net charge per residue (NCPR) along the sequence, where the NCPR is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used. The plot is saved in the `filename` location. Adding extensions is recommended but not required. The `saveFormat` keyword defines the output format - this parameter is passed to matplotlibs savefig command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.
+`save_linearFCR(filename, blobLen=5, saveFormat='png')`| Renders a `matplotlib` plot of the moving average fraction of charged residues (FCR) along the sequence, where the FCR is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used. The plot is saved in the `filename` location. Adding extensions is recommended but not required. The `saveFormat` keyword defines the output format - this parameter is passed to matplotlibs savefig command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.
+`save_linearSigma(filename, blobLen=5, saveFormat='png')`  | Renders a `matplotlib` plot of the moving sigma value, where sigma defines the local charge assymetry and is used in the calculation of kappa. Sigma is calculated over blobs of `blobLen` size, typically with blobs of 5-7 residues. The plot is saved in the `filename` location. Adding extensions is recommended but not required. The `saveFormat` keyword defines the output format - this parameter is passed to matplotlibs savefig command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.
+`save_linearComplexity(filename, complexityType='WF', alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3, saveFormat='png')` | Renders a `matplotlib` plot of the linear sequence complexity . For a discussion of the various options see the `get_linear_complexity` description under the SequenceParameters functions table. The plot is saved in the `filename` location. Adding extensions is recommended but not required. The `saveFormat` keyword defines the output format - this parameter is passed to matplotlibs savefig command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.
 
 
 # Plotting with the plots module
@@ -431,7 +511,7 @@ Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a cano
 
 1. **I get a kappa value greater than 1?!**
 
-kappa is a ratio of your sequence's delta over the maximium possible value for a sequence of that composition. The original mechanism for computing what the maximum delta value is was using Monte Carlo simulations, but this is *insanely* expensive computationally, so for localCIDER we developed a set of heuristics which work 99% of the time. In rare cases, you may find a kappa value greater than 1, which indicates that our heuristics have failed. We try to ensure this doesn't happen, but if you do encounter a kappa greater than 1 PLEASE email the sequence to me as it represents a very rare case we haven't encountered in our testing procedures!
+kappa is a ratio of your sequence's delta over the maximium possible value for a sequence of that composition. The original mechanism for computing what the maximum delta value is was using Monte Carlo simulations, but this is *extremely* computationally expensive. To avoid this we have developed a new deterministic algorithm that uses a number of rule-based heuristics. During early testing of these heuristics there were examples of kappa values being greater than 1, which indicates that these heuristics have failed. As of Fall 2015 we have run many millions of disordered sequences without encountering sequences with a kappa > 1. However, should you encounter a sequence with a kappa value greater than 1 PLEASE email the sequence to me, as it represents a very rare edge case that we haven't encountered in our testing procedures.
 
 2. **I want to run localCIDER on my cluster but it has not graphical frontend and I can't get matplotlib to work**
 
@@ -446,30 +526,38 @@ If you call any functions which depend on `matplotlib` this will obviously fail,
 
 # Epilog
 
-## localCIDER roadmap
-
-We have a fairly well defined roadmap for the next few sets of minor release for localCIDER, with the first major release coming sometime thereafter
-
-#### V 0.2.0
-* Turn on the sequence permutant generator and Wang-Landau density of kappa states analysis 
-
-#### V 0.3.0
-* Provide stand alone, command line tools for the more computationally intensive operations (to make deploying on HPC infrastructure 
-
+## Feature request
+We'd like localCIDER to be the single-software solution for sequence analysis. To this end, if you have analysis routines you would like to be incorporated used please contact us about adding these into localCIDER. If you can provide us with Python code for performing the analysis in question, we can almost guarentee incorporation into the next version of localCIDER. 
 
 ## About
-localCIDER was developed in the Pappu lab by Alex Holehouse, with much of the original code written by James Ahad. Importantly, we believe scientific software should be held to same (or higher) software standards as general commercial and open source projects. To this end we use Git for version control, employ standard conventions for versioning, run an ever-expanding set of unit tests, and try to ensure all code is well structured and well documented. The source code is fully open and [can be viewed here](https://github.com/Pappulab/localCIDER).
+localCIDER was developed in the Pappu lab by Alex Holehouse, with additional code by James Ahad and Mary Richardson. Many of the early ideas were pioneered by [Dr. Rahul Das](https://sites.google.com/site/rahulkdas82/home). 
+
+We believe scientific software should be held to same (or higher) software standards as general commercial and open source projects. To this end we use Git for version control, employ standard conventions for versioning, run an ever-expanding set of unit tests, and try to ensure all code is well structured and well documented. The source code is fully open and [can be viewed here](https://github.com/Pappulab/localCIDER).
 
 
 ## References
 
-**[1]** **A. Campen, R.M. Williams, C.J. Brown, J. Meng, V.N. Uversky, A.K. Dunker**. (2008) [*Protein Pept Lett.* 15(9) pp 956 - 963](http://www.ncbi.nlm.nih.gov/pubmed/18991772)
+**[1]** Campen, A. et al. TOP-IDP-scale: a new amino acid scale measuring propensity for intrinsic disorder. Protein Pept. Lett. 15, 956–963 (2008).
 
-**[2]** **R.K. Das & R.V. Pappu** (2013) [*PNAS* 110, 33, pp 13392 - 13397](http://www.pnas.org/content/110/33/13392.short)
+**[2]** Das, R. K. & Pappu, R. V. Conformations of intrinsically disordered proteins are influenced by linear sequence distributions of oppositely charged residues. Proc. Natl. Acad. Sci. U. S. A. 110, 13392–13397 (2013).
 
-**[3]** **J. Kyte, R. Doolittle** (1982) [*J. Mol. Biol.* 157 pp 105 - 132](http://www.ncbi.nlm.nih.gov/pubmed/7108955)
+**[3]** Kyte, J. & Doolittle, R. F. A simple method for displaying the hydropathic character of a protein. J. Mol. Biol. 157, 105–132 (1982).
 
-**[4]** **V. Uversky** (2002) [*Protein Sci. Apr* 11(4) pp 739 - 756](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2373528/)
+**[4]** Uversky, V. N. Natively unfolded proteins: a point where biology waits for physics. Protein Sci. 11, 739–756 (2002).
+
+**[5]** Mao, A. H., Crick, S. L., Vitalis, A., Chicoine, C. L. & Pappu, R. V. Net charge per residue modulates conformational ensembles of intrinsically disordered proteins. Proc. Natl. Acad. Sci. U. S. A. 107, 8183–8188 (2010).
+
+**[6]** Elam WA, Schrank TP, Campagnolo AJ, Hilser VJ. Evolutionary conservation of the polyproline II conformation surrounding intrinsically disordered phosphorylation sites. Protein Sci. 2013; 22: 405- 417. doi: 10.1002/pro.2217 PMID: 23341186
+
+**[7]** Tomasso, M. E., Tarver, M. J., Devarajan, D. & Whitten, S. T. Hydrodynamic Radii of Intrinsically Disordered Proteins Determined from Experimental Polyproline II Propensities. PLoS Comput. Biol. 12, e1004686 (2016).
+
+**[8]** Wootton, J. C., & Federhen, S. (1993). Statistics of local complexity in amino acid sequences and sequence databases. Computers & Chemistry, 17(2), 149-163.
+
+**[9]** Troyanskaya, O. G., Arbell, O., Koren, Y., Landau, G. M., & Bolshoy, A. (2002). Sequence complexity profiles of prokaryotic genomic sequences: a fast algorithm for calculating linguistic complexity. Bioinformatics , 18(5), 679 - 688.
+
+**[10]** Lempel, A.& Ziv, J. (1976). On the complexity of finite sequence. IEEE Trans. Inf. Theory, vol. IT-22, no. 1, 75-81.
+
+**[11]** Murphy, L. R., Wallqvist, A., & Levy, R. M. (2000). Simplified amino acid alphabets for protein fold recognition and implications for folding. Protein Engineering, 13(3), 149-152.
 
 
 ## Thanks
@@ -480,16 +568,19 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * Katra Kolsek (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization
 * Alex Chin (Johns Hopkins University) for a crucial bug report
 * Thomas Pranzatelli (Washington University in St. Louis) for testing and bug reports
+* Carlos Hernández (Stanford University) for Python 3 support and PEP8 compliance 
+* Luke Wheeler (University of Oregon) for Python 3 testing
  
 
 ## Update schedule
 
-* version 0.1.0 [August 10th 2014]
-* version 0.1.1 [August 14th 2014] (minor bug fixes, more tests, improved sequence parsing)
-* version 0.1.2 [October 1st 2014] (more tests, fixed heuristic bugs in extreme kappa sequences, significant improvement on plotting customization, cleaned up docs and code documentation)
-* version 0.1.3 [October 13th 2014] (more tests, corrected a bug introduced in 0.1.2 for sequences with no neutral residues, corrected a bug in how titles/labels were assigned by default, improved how classification into the 5 regions is done, and explicitly allow for regions 4 (positive electrolytes) and 5 (negative electrolytes) rather than general polyelectrolytes)
-* version 0.1.4 [January 16th 2014] (corrected bug in the way KD hydrophobicity was calculated - alanine incorrectly set to 0)
-* version 0.1.7 [February 25th 2014] (bunch of additional updates and code readability improvements, as well as changing how NCPR/FCR plots are made (bar instead of line)).
+* **version 0.1.0** [August 10th 2014]
+* **version 0.1.1** [August 14th 2014] (minor bug fixes, more tests, improved sequence parsing)
+* **version 0.1.2** [October 1st 2014] (more tests, fixed heuristic bugs in extreme kappa sequences, significant improvement on plotting customization, cleaned up docs and code documentation)
+* **version 0.1.3** [October 13th 2014] (more tests, corrected a bug introduced in 0.1.2 for sequences with no neutral residues, corrected a bug in how titles/labels were assigned by default, improved how classification into the 5 regions is done, and explicitly allow for regions 4 (positive electrolytes) and 5 (negative electrolytes) rather than general polyelectrolytes)
+* **version 0.1.4** [January 16th 2014] (corrected bug in the way KD hydrophobicity was calculated - alanine incorrectly set to 0)
+* **version 0.1.7** [February 25th 2014] (bunch of additional updates and code readability improvements, as well as changing how NCPR/FCR plots are made (bar instead of line)).
+* **version 0.1.8** [March 28th 2016] (Major update with a number of additional features. All figures can now be generated as PDFs, sequence complexity analysis has been added, PPII propensity added, kappa-P added. Pleasantly, no bugs needed fixing, however!)
 
 
 ----------

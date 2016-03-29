@@ -96,12 +96,12 @@ class TestComplexityFunctions(unittest.TestCase):
         # test a range of window sizes
         for i in [1,2,3,4,5,10]:
             for j in random_seqs:
-                SequenceParameters(j).get_linear_complexity('WF',windowSize=i)
+                SequenceParameters(j).get_linear_complexity('WF',blobLen=i)
 
         # test a range of window sizes
         for i in [1,2,3,4,5,10]:
             for j in random_seqs:
-                SequenceParameters(j).get_linear_complexity('WF',windowSize=i)
+                SequenceParameters(j).get_linear_complexity('WF',blobLen=i)
 
         # test a range of step-sizes
         for i in [1,2,3,4,5,10]:
@@ -128,12 +128,12 @@ class TestComplexityFunctions(unittest.TestCase):
         # test a range of window sizes
         for i in [1,2,3,4,5,10]:
             for j in random_seqs:
-                SequenceParameters(j).get_linear_complexity('LC',windowSize=i)
+                SequenceParameters(j).get_linear_complexity('LC',blobLen=i)
 
         # test a range of window sizes
         for i in [1,2,3,4,5,10]:
             for j in random_seqs:
-                SequenceParameters(j).get_linear_complexity('LC',windowSize=i)
+                SequenceParameters(j).get_linear_complexity('LC',blobLen=i)
 
         # test a range of step-sizes
         for i in [1,2,3,4,5,10]:
@@ -160,12 +160,12 @@ class TestComplexityFunctions(unittest.TestCase):
         # test a range of window sizes
         for i in [1,2,3,4,5,10]:
             for j in random_seqs:
-                SequenceParameters(j).get_linear_complexity('LZW',windowSize=i)
+                SequenceParameters(j).get_linear_complexity('LZW',blobLen=i)
 
         # test a range of window sizes
         for i in [1,2,3,4,5,10]:
             for j in random_seqs:
-                SequenceParameters(j).get_linear_complexity('LZW',windowSize=i)
+                SequenceParameters(j).get_linear_complexity('LZW',blobLen=i)
 
         # test a range of step-sizes
         for i in [1,2,3,4,5,10]:
