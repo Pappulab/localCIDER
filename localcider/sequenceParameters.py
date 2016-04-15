@@ -1551,6 +1551,6 @@ class SequenceParameters:
 
 
     #...................................................................................#
-    def __len__(self):
+    def __len__(self):`
         """ Returns the sequence length """
         return len(self.SeqObj.seq)

@@ -221,6 +221,8 @@ Function name | Operation
 `get_amino_acid_fractions()` | Get a dictionary of the fractions of each amino acid in the sequence
 `get_fraction_disorder_promoting()` | Get the fraction of residues predicted to be 'disorder promoting' [1]. Note this is NOT a disorder prediction!
 `get_kappa()` | Get the sequence's kappa value [2]
+`get_kappa_proline()` | Get the sequence's kappa-proline value. Kappa-proline defines the patterning between charged/proline residues and all other residues, and is described further in the forthcoming paper by Martin and Holehouse (submitted April 2016).
+`get_kappa_proline_sequence()` | Returns the reduced-alphabet sequence used to calculate the kappa-p parameter, where by R/K/D/E/P residues are defined as 'X' and all other residues are 'O'. This provides a clear visual description of the charge/proline patterning.
 `get_mean_net_charge()` | Get the absolute mean net charge of your sequence
 `get_phase_plot_region()` | Get the region on the Das-Pappu diagram of states where your sequence falls [2]
 `get_mean_hydropathy()` | Get the mean hydropathy as calculated from a skewed Kyte-Doolittle hydrophobicity scale* [3]
