@@ -297,7 +297,10 @@ class Sequence:
             # just set it to 0 because the sequence with the highest delta is probably
             # an sequence-Isomer of the sequence we have. If this deviation is larger,
             # however, it may be indicative of a bug in the code which we
-            # should address
+            # should address 
+            #
+            # It's probably worth pointing out that after > 10 Million sequences 
+            # analyzed we're yet to find a bug - May 2016
             if kappaVal > 1.0 and kappaVal < 1.1:
                 return 1.0
             else:

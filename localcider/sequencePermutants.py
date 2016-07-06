@@ -51,7 +51,9 @@ class SequencePermutants:
     #...................................................................................#
     def __init__(self, sequence="", sequenceFile=""):
         """
-        sequencePermutant objects, like sequenceParameter objects, can be initialized by either an amino acid sequence as a string, or a sequence file. Such sequence files can be FASTA files, or simply an amino acid sequence in a text file.
+        sequencePermutant objects, like sequenceParameter objects, can be initialized by either an amino acid 
+        sequence as a string, or a sequence file. Such sequence files can be FASTA files, or simply an amino 
+        acid sequence in a text file.
 
         """
 
@@ -134,3 +136,5 @@ class SequencePermutants:
         # and return
         SP.SeqObj = SO
         return SP
+
+
