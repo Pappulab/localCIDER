@@ -59,8 +59,13 @@
 
 """
 import os
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
+import numpy as np
+from scipy.interpolate import interp1d
+from scipy.interpolate import UnivariateSpline
+
 
 from sequence import Sequence
 from backendtools import verifyType
@@ -857,3 +862,107 @@ def show_linearplot(build_fun, SeqObj, blobLen, getFig=False):
         return plt
     else:
         plt.show()
+
+
+
+#...................................................................................#
+def save_local_composition_plot(residue_number, density_vectors, legend_color, legend_names, filename, saveFormat='png', max_val=-1, line_thickness=[], title='', plot_data=False):
+    """
+    Unlike the other plotting functions, the save_local_composition_plot is the only function for plotting local linear
+    composition. It doesn't take advantage of the other builder functions, but instead exists as its own stand alone function.
+
+    Arguments are as follows:
+
+    residue_number - vector with 1-n numbering the residues
+
+    density_vector - x by n np matrix where there are n values for each of the
+                     n residues for x different residue groups
+
+    legend_color - list of matplotlib compatible colors (must be the same length
+                   as the number of groups)
+
+    legend_names = list of names to assign for each group type (must be the same length
+                   as the number of groups)
+
+    filename - name of file to be saved
+
+    save_format - format to be saved (default = 'png', 'pdf' also accepted)
+
+    max_val - default maximum density value for residue group density (default =-1,
+              which means the optimum value for dynamic range is calculated automatically
+        
+
+    """
+
+
+    # determine the number of different groups
+    n_groups = density_vectors.shape[0]
+
+    # correct for bad starting values
+    if max_val > 1 or max_val < 0:
+        max_val = -1
+        
+    # determine the maximum density of any of the groups (note if a user-defined max_val is provided this
+    # is skipped
+    if max_val == -1:
+        max_val = np.max(density_vectors)    
+
+    # do some sanity checking to make sure all our ducks are in a row before we go all in
+    if n_groups != len(legend_names):
+        raise PlottingException('Mismatch in the number of of groups provided and the number of groups named for figure legend')
+
+    if  n_groups != len(legend_color):
+        raise PlottingException('Mismatch in the number of of groups provided and the number of groups defined for line colors')
+
+    if len(line_thickness) == 0:
+        for i in xrange(0, n_groups):
+            line_thickness.append(3)
+            
+    handles_vector = []
+    #fig = plt.figure(
+    plt.figure(figsize=(0.075*len(residue_number),12.5))
+
+    font = {'family' : 'Bitstream Vera Sans',
+            'weight' : 'normal',
+            'size'   : 25}
+
+    matplotlib.rc('font', **font)
+
+    
+    for i in xrange(0, n_groups):
+        
+        # fit the density associated with group
+        fx = UnivariateSpline(residue_number, density_vectors[i], s=1)
+
+        if plot_data:
+            h, = plt.plot(residue_number, density_vectors[i], color=legend_color[i], label=legend_names[i], linewidth=(line_thickness[i]*0.5))
+
+        h, = plt.plot(residue_number, fx(residue_number), color=legend_color[i], label=legend_names[i], linewidth=line_thickness[i])
+        handles_vector.append(h)
+
+
+    # set the legend and bounding box positions so everything looks nice
+    ax = plt.subplot(111)
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0 + box.height * 0.1, box.width, box.height * 0.9])                     
+    plt.legend(handles=handles_vector, loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=4)
+               
+    # set some asthetics stuff to make it look nice
+    axes = plt.gca()
+    axes.set_ylim([0,max_val])
+    axes.set_xlim([1,len(residue_number)])
+    plt.ylabel('Local Amino Acid Density', fontsize=26)
+
+    # if we provided a title set that badboy
+    if len(title) > 0:        
+        plt.title(title, fontsize=30, loc='left')
+    
+    plt.savefig(filename, format=saveFormat)
+    plt.close()
+
+
+
+
+        
+
+    

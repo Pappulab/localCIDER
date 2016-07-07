@@ -559,7 +559,6 @@ class SequenceParameters:
         Get the overall sequence's PPII propensity as defined by Hilser et al [1] using
         the values reported in table 1 from [2]
 
-
         [1] - Elam WA, Schrank TP, Campagnolo AJ, Hilser VJ. Evolutionary 
         conservation of the polyproline II conformation surrounding intrinsically 
         disordered phosphorylation sites. 
@@ -569,7 +568,6 @@ class SequenceParameters:
         Hydrodynamic Radii of Intrinsically Disordered Proteins Determined 
         from Experimental Polyproline II Propensities. 
         PLoS Comput. Biol. 12, e1004686 (2016).
-
 
         OUTPUT:
         --------------------------------------------------------------------------------
@@ -625,6 +623,21 @@ class SequenceParameters:
         """
 
         return(self.SeqObj.linearDistOfHydropathy(blobLen))
+
+
+    #...................................................................................#
+    def get_linear_sequence_composition(self, blobLen=5):
+        """
+        Returns a numpy matrix where each
+
+
+        blobLen     | Sliding window size over which the hydrophobicity is calculated (default = 5
+                      to match the default for kappa calculation)
+
+        """
+
+
+        return(self.SeqObj.linearCompositions(blobLen))
         
 
     # =============================================== #
@@ -1393,6 +1406,50 @@ class SequenceParameters:
             filename,
             saveFormat)
 
+
+    #...................................................................................#
+    def save_linearComposition(self, filename, blobLen=5, saveFormat='png', title='', plot_data=False):
+        """
+        Generates a plot that for the standard grouping of amino acids plots the local
+        linear density of those groups along the sequence. Density is calculated using a
+        sliding window, and the data is then fit to a Univariate cubic spline fit which
+        smoothes out a lot of the noise associated with a sliding-window style analysis.
+
+        INPUT:
+        --------------------------------------------------------------------------------
+        filename   | Name of the file to write
+        blobLen    | Set the windowsize (DEFAULT = 5)
+        saveFormat | Defines the file formal to save plots as. This parameter
+                     is passed to matplotlibs savefig command which supports 
+                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     rgba, svg, svgz. (DEFAULT = png)
+        title      | Set the title for the figure (useful when generating many
+                     profiles for different proteins
+        plot_data  | [DEFAULT = False] will overlay the raw data on top of the 
+                     cubic spline interpolation. This can be useful to check that 
+                     the blobLen selected is actually capturing the relevant 
+                     features in the underlying data.
+        
+
+
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Nothing, but creates a .png file at the filename location
+
+        """
+
+        out_tuple = self.get_linear_sequence_composition(blobLen)
+        residues = out_tuple[0]
+        density  = out_tuple[1]
+
+        colors = ['red',  'blue', 'brown', 'green',  'black',  'orange', 'purple']
+        names  = ['E/D.', 'R/K',  'E/D/R/K',  'Q/N/S/T/G/H',  'I/L/V/M', 'F/Y/W.' ,  'P']
+        line_thickness = [2.5, 2.5, 3.5, 3.5, 3.5, 3.5, 3.5]
+
+        plotting.save_local_composition_plot(residues, density, colors, names, filename, saveFormat, line_thickness=line_thickness, title=title, plot_data=plot_data)
+
+
     #...................................................................................#
     def show_linearNCPR(self, blobLen=5, getFig=False):
         """
@@ -1551,6 +1608,6 @@ class SequenceParameters:
 
 
     #...................................................................................#
-    def __len__(self):`
+    def __len__(self):
         """ Returns the sequence length """
         return len(self.SeqObj.seq)

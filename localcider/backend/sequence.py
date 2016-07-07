@@ -531,6 +531,8 @@ class Sequence:
 
         return np.vstack((np.arange(1, self.len + 1), [0]*flank_start + blobncpr + [0]*flank_end))
 
+    
+
     #...................................................................................#
     def linearDistOfFCR(self, bloblen):
         """
@@ -612,7 +614,7 @@ class Sequence:
     #...................................................................................#
     def linearDistOfHydropathy(self, bloblen):
         """
-        Returns an np vertical stackobject showing how the 0 to 1 normallized hydropathy
+        Returns an np vertical stackobject showing how the 0 to 1 normalized hydropathy
         varies over blob-sized regions along the sequence
         """
         
@@ -672,7 +674,6 @@ class Sequence:
             flank_start = flank - 1
             flank_end   = flank
 
-
         blobhydro = [0] * nblobs
 
         # construct a vector of the hydropathy values of each residue in
@@ -688,8 +689,109 @@ class Sequence:
 
         return np.vstack((np.arange(1, self.len + 1), [0]*flank_start + blobhydro + [0]*flank_end))
 
+    #...................................................................................#
+    def linearDenistyOfAAs(self,
+                                  bloblen,
+                                  targetAAs):
+        """
+        Function which returns a np.vertical stackobject showing the 0 to 1 normalized density
+        of the AAs in the targetAAs list. 
 
 
+        bloblen defines the window size used, while targetAAs should be a list of one or 
+        more amino acids of interest (upper case).
+
+        """
+
+        self.__check_window_to_length(bloblen)
+        
+        nblobs = self.len - bloblen + 1
+
+        flank = int(bloblen/2)
+        
+        if 2*flank+nblobs == self.len:
+            flank_start = flank
+            flank_end   = flank
+        else:
+            flank_start = flank - 1
+            flank_end   = flank
+
+        blob_density = [0] * nblobs
+
+        # construct a binary list where residues in the targetAA list
+        # are set to 1 and all others are set to 0 
+        target_seq=[]
+        for res in self.seq:
+            if res in targetAAs:
+                target_seq.append(1.0)
+            else:
+                target_seq.append(0.0)
+            
+        # construct a vector of the hydropathy values of each residue in
+        # in the sequence (using the re-set KD scale which runs from 0 to 9
+        # with 9 being the most hydrophobic. This scaling may be changed
+        # in future versions...
+
+        # for each overlapping blob in the sequence calculate the hydropathy
+        for i in np.arange(0, nblobs):
+            blob = target_seq[i:(i + bloblen)]
+            blob_density[i] = sum(blob)/float(bloblen)
+
+        return np.vstack((np.arange(1, self.len + 1), [0]*flank_start + blob_density + [0]*flank_end))
+    
+    #...................................................................................#
+    def linearCompositions(self,
+                           bloblen,
+                           grps=[]):
+
+        """
+        Function which returns an n by X matrix showing the density of different groups of amino
+        acids running along the sequence. The amino acid group can be defined by the user by providing
+        a list of lists, where each sub-list contains amino acids for a distinct group. Alternativly, the
+        default grouping provides 7 groups which are
+
+        acidic    (E and D)
+        basic     (K and R)
+        charged   (E, D, K, and R)
+        polar     (Q, N, S, T, G, C, and G)
+        aliphatic (L, M, I, and V)
+        aromatic  (F, Y, and W)
+        proline   (P)
+        alanine   (A)
+
+        """        
+        
+        # if we've defined our own groups (NOTE no sanity checking...)
+        if len(grps) > 0:
+
+            # then skip ahead...
+            pass
+
+        # else use the standard AA grouping
+        else:                
+            grps.append(['E','D'])                     # acidic
+            grps.append(['R','K'])                     # basic
+            grps.append(['R','K','E','D'])             # charged
+            grps.append(['Q','N','S','T','G','H'])     # polar
+            grps.append(['A','L','M','I','V'])         # hydrophobic
+            grps.append(['F','Y','W'])                 # aromatic
+            grps.append(['P'])                         # proline
+            
+        # first create a np vector object with the linear density of the
+        # first group
+        tmp = self.linearDenistyOfAAs(bloblen, grps[0])
+        density = tmp[1]
+        
+        # for for each remaining group just keep adding to it
+        for group in grps[1:]:
+            tmp = self.linearDenistyOfAAs(bloblen, group)
+            density = np.vstack((density, tmp[1]))
+
+        # finally give the         
+        return (tmp[0], density)
+            
+            
+        
     # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
     #
     #                         SEQUENCE COMPLEXITY FUNCTIONS
