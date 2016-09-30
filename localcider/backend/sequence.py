@@ -4,9 +4,9 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.8                                                         !
+   !    Version 0.1.9                                                         !
    !                                                                          !
-   !    Copyright (C) 2014 - 2015                                             !
+   !    Copyright (C) 2014 - 2016                                             !
    !    The localCIDER development team (current and former contributors)     !
    !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
@@ -348,6 +348,77 @@ class Sequence:
                 newseq=newseq+'O'
 
         return newseq
+
+
+    #...................................................................................#
+    def kappa_X(self, grp1, grp2=None):
+        """
+        Return the user defined kappa value, where residues are subdivided into one
+        or two arbitrary groups. If only grp1 is defined then the 20 amino acids are
+        divided into grp1 and not grp1, and the patterning is determined for the perfect
+        binary system. If grp2 is defined the 20 amino acids are divided into grp1, grp2,
+        not grp1 or grp2, and the binary patterning of grp1 and grp2 residues is determined
+        in the context of a ternary system.
+
+        As an example, to get the original kappa definition, grouping would be
+        grp1 = ['E','D']
+        grp2 = ['K','D']
+
+        While for the kappa-proline definition the grouping would be
+        grp1 = ['P','E','D','K','R']
+
+        """
+
+        
+        ############################################################
+        def parse_group(localgrp):
+            """ Local function for parsing AA groupings """
+
+            try:
+                localgrp = set([x.upper() for x in localgrp])
+            except AttributeError:
+                raise SequenceException("ERROR: There was a problem when parsing the kappa_X group argument [%s] - this should be a list of of native AA one letter codes" % (localgrp))
+                            
+            for res in localgrp:
+                if res not in aminoacids.TWENTY_AAs:
+                    raise SequenceException("When using kappa_X found non-natural amino acid [%s] in grouping"%(res))
+
+            return localgrp
+        ############################################################
+        
+        
+        grp1 = parse_group(grp1)
+
+        if grp2:
+            grp2 = parse_group(grp2)
+
+        if grp2:
+            # firstly convert the sequence into a 3 letter alphabet of
+            # grp1, grp2, or 'other'
+            newseq=''
+            for res in self.seq:
+                if res in grp1:
+                    newseq=newseq+'E'                
+                elif res in grp2:
+                    newseq=newseq+'K'
+                else:
+                    newseq=newseq+'G'
+
+        else:
+            # firstly convert the sequence into a 2 letter alphabet of
+            # grp1 residue or 'other'
+            newseq=''
+            for res in self.seq:
+                if res in grp1:
+                    newseq=newseq+'E'                
+                else:
+                    newseq=newseq+'K'
+            
+        # then calculate the new kappa value in this new sequence space and
+        # return the value
+        augmented_seq = Sequence(newseq)
+
+        return augmented_seq.kappa()
 
 
     #...................................................................................#

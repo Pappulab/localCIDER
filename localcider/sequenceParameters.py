@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.8                                                         !
+   !    Version 0.1.9                                                         !
    !--------------------------------------------------------------------------!
 
    File Description:
@@ -213,15 +213,15 @@ class SequenceParameters:
         return self.SeqObj.kappa()
 
     #...................................................................................#
-    def get_kappa_proline(self):
+    def get_Omega(self):
         """
-        Get the kappa-proline value associated with a sequence. kappa-proline describes
-        the patterning between charged/proline residues. 
+        Get the Omega value associated with a sequence. Omega describes
+        the patterning between charged/proline residues and all other residues
 
         ********************************************************************************
         Ref: Martin, E. W., Holehouse A. S.,  Pappu, R.V.  & Mittag, T. (2016). Sequence 
         determinants of the conformational properties of an intrinsically disordered 
-        protein prior to and upon multi-site phosphorylation (in preparation)
+        protein prior to and upon multi-site phosphorylation (submitted)
         ********************************************************************************
 
         OUTPUT:
@@ -233,25 +233,48 @@ class SequenceParameters:
         return self.SeqObj.kappa_proline()
 
     #...................................................................................#
-    def get_kappa_proline_sequence(self):
+    def get_Omega_sequence(self):
         """
-        Get the 2-alphabet sequence used for calculating the kappa-proline parameter
+        Get the 2-alphabet sequence used for calculating the Omega parameter
         as defined in Martin et al. R/K/D/E/P are represented as X and all other residues
         are O.
 
         ********************************************************************************
         Ref: Martin, E. W., Holehouse A. S.,  Pappu, R.V.  & Mittag, T. (2016). Sequence 
         determinants of the conformational properties of an intrinsically disordered 
-        protein prior to and upon multi-site phosphorylation (in preparation)
+        protein prior to and upon multi-site phosphorylation (submitted)
         ********************************************************************************
 
         OUTPUT:
         --------------------------------------------------------------------------------
-        Float with the sequence's kappa-proline value
+        String giving the sequence in a reduced 2-letter alphabet.
 
         """
 
         return self.SeqObj.kappa_proline_seq()
+
+    #...................................................................................#
+    def get_kappa_X(self, grp1, grp2=None):
+        """
+        Get the user defined patterning paremeter, where residues are grouped into either
+        two groups (grp1 and ALL other residues) or three groups (grp1, grp2, and ALL
+        other residues).
+
+        For context, kappa would be calulated using
+        grp1 = ['E','D']
+        grp2 = ['K','D']
+
+        While for Omgega definition the grouping would be
+        grp1 = ['P','E','D','K','R']
+        (note grp2 is left =None)
+                
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Float with the user-defined patterning parameter
+
+        """
+
+        return self.SeqObj.kappa_X(grp1, grp2)
 
     #...................................................................................#
     def get_deltaMax(self):
