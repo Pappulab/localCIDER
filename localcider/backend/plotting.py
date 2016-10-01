@@ -650,7 +650,7 @@ def show_linearComplexity(complexityVector, complexityType, seqlen, getFig=False
     barlist = plt.bar(complexityVector[0,:], 
                       complexityVector[1,:],
                       width=1,
-                      linewidth=1.1,
+                      linewidth=1.0,
                       edgecolor='k',
                       color='#A8A8A8')
 
@@ -905,26 +905,51 @@ def save_local_composition_plot(residue_number, density_vectors, legend_color, l
     # determine the maximum density of any of the groups (note if a user-defined max_val is provided this
     # is skipped
     if max_val == -1:
-        max_val = np.max(density_vectors)    
+        # this means max is 0.1 above max value OR 1.0, whicever is smaller
+        max_val = min(np.max(density_vectors)+0.1, 1.0)
 
     # do some sanity checking to make sure all our ducks are in a row before we go all in
     if n_groups != len(legend_names):
         raise PlottingException('Mismatch in the number of of groups provided and the number of groups named for figure legend')
 
+    # sanity check groups and legend color vector
     if  n_groups != len(legend_color):
         raise PlottingException('Mismatch in the number of of groups provided and the number of groups defined for line colors')
-
-    if len(line_thickness) == 0:
-        for i in xrange(0, n_groups):
-            line_thickness.append(3)
             
+
+    ##
+    ## The following section sets the figure size and font size, and is kind of an empyrical hack to make
+    ## the generated figure look good and legible regardless of the number of residues. Works well!
+
+    # if we're working with a sequence < 250 points
+    if len(residue_number) < 250:
+        width  = 20.0
+        height = 12.5
+        fs1    = 22
+        fs2    = 28
+        if len(line_thickness) == 0:
+            for i in xrange(0, n_groups):
+                line_thickness.append(1.5)
+
+    # if we're working with a sequence > 250 points
+    else:
+        width  = 0.075*len(residue_number)
+        height = 0.04*len(residue_number)
+        fs1    = 0.08*len(residue_number)
+        fs2    = 0.10*len(residue_number)
+        if len(line_thickness) == 0:
+            for i in xrange(0, n_groups):
+                line_thickness.append(3.0)
+        
+    num_res = len(residue_number)
+    
     handles_vector = []
     #fig = plt.figure(
-    plt.figure(figsize=(0.075*len(residue_number),12.5))
+    plt.figure(figsize=(width, height))
 
     font = {'family' : 'Bitstream Vera Sans',
             'weight' : 'normal',
-            'size'   : 25}
+            'size'   : fs1}
 
     matplotlib.rc('font', **font)
 
@@ -950,12 +975,12 @@ def save_local_composition_plot(residue_number, density_vectors, legend_color, l
     # set some asthetics stuff to make it look nice
     axes = plt.gca()
     axes.set_ylim([0,max_val])
-    axes.set_xlim([1,len(residue_number)])
-    plt.ylabel('Local Amino Acid Density', fontsize=26)
+    axes.set_xlim([1,num_res])
+    plt.ylabel('Local Amino Acid Density', fontsize=fs2)
 
     # if we provided a title set that badboy
     if len(title) > 0:        
-        plt.title(title, fontsize=30, loc='left')
+        plt.title(title, fontsize=fs2, loc='left')
     
     plt.savefig(filename, format=saveFormat)
     plt.close()
