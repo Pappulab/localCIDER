@@ -19,12 +19,12 @@
         <h1 class="header">localCIDER</h1>
         <p class="header">localCIDER lets you compute sequence parameters for disordered proteins</p>
 
-              <ul>
-          <li><a href="https://github.com/Pappulab/localCIDER">View On <strong>GitHub</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu">Go to <strong>Pappu lab</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu/CIDER/">Go to <strong>CIDER</strong> </a></li>
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/Pappulab/localCIDER/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/Pappulab/localCIDER/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/Pappulab/localCIDER">View On GitHub</a></li>
         </ul>
-        
+
         <p class="header">This project is maintained by <a class="header name" href="https://github.com/Pappulab">Pappulab</a></p>
 
 
@@ -33,7 +33,7 @@
         <h1>
 <a id="localcider" class="anchor" href="#localcider" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>localCIDER</h1>
 
-<p><code>v 0.1.8 - March 2016</code></p>
+<p><code>v 0.1.9 - October 2016</code></p>
 
 <h1>
 <a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h1>
@@ -61,22 +61,18 @@
 <h2>
 <a id="introduction-1" class="anchor" href="#introduction-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
 
-<p><strong>localCIDER</strong> version 0.1.8 was submitted to <code>pip</code> (the Python Package Index) on in March 2016. This should be considered a stable release, however, if you encounter any issues/bugs it would be greatly appreciated if you could report any issues to <a href="mailto:alex.holehouse@wustl.edu">alex.holehouse@wustl.edu</a>. </p>
+<p><strong>localCIDER</strong> version 0.1.9 was submitted to PyPI (the Python Package Index) in October 2016. This should be considered a stable release, however, if you encounter any issues/bugs it would be greatly appreciated if you could report any issues to <a href="mailto:alex.holehouse@wustl.edu">alex.holehouse@wustl.edu</a>. </p>
 
 <h2>
 <a id="new-features" class="anchor" href="#new-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>New Features</h2>
 
-<p>In 0.1.8 we have added a number of new features, as detailed below:</p>
+<p>In 0.1.9 we have added a number of new features, as detailed below:</p>
 
 <ul>
-<li><p>The kappa-P (proline/charge patterning) parameter has been added. This is used in the upcoming paper by Martin and Holehouse (reference to come). </p></li>
-<li><p>Three different sequence complexity measures have been added: Wooton-Federhen complexity [8], Linguistic complexity [9], Lempel-Ziv-Welch (LZW) complexity [10]. These algorithms have a number of parameters which can be defined, as well as the ability to use a set of pre-defined reduced alphabetes [11]</p></li>
-<li><p>Overall PPII propensity can be calculated based on the amino acid PPII propensity as defined by Elam <em>et al.</em> [6].</p></li>
-<li><p>All figures can now be saved as PDFs (useful for post-process with graphics tools, e.g. Adobe Illustrator)</p></li>
-<li><p>The bar positions for blob-based figures have been updated such that bin centers are used on all figures. This makes comparing figures using different blob-widths much easier.</p></li>
-<li><p>Numpy vectors of the linear NCPR, FCR, hydropathy and sequence complexity can now be directly returned for further analysis </p></li>
-<li><p>Sequences can be directly converted to a reduced alphabet sequence. The mapping of true amino-acid alphabet to reduced alphabet can take advantage of 11 predefined mappings, or this mapping can be defined using a custom dictionary.</p></li>
-<li><p>localCIDER can now run under Python 3</p></li>
+<li><p>Local compositional analysis has been added to help identify local regions which are enriched in a particular type of amino acid. Proteins are complex heteropolymers, so plotting the local density of each amino acid with a sliding becomes impossible to interpret, as we just generate a series of jagged lines. To overcome this challenge we take a dual approach: firstly, amino acids are group by physiochemical properties. Secondly, we then fit the noisy data to a univariate spline to give a smoothed description of the local density along the sequence. Combined, this allows us to generate easy-to-read plots that illustrate the local density of residues at any given location along the sequence</p></li>
+<li><p>The Omega patterning parameter (previously kappa_proline) is re-defined as per the manuscript by Martin &amp; Holehouse <em>et al.</em></p></li>
+<li><p>A generalized patterning parameter for considering 2 or 3 letter alphabets is released, allowing researchers to, generally, ask questions about sequence patterning</p></li>
+<li><p>The figure generation code has been further optimised, as has code documentation</p></li>
 </ul>
 
 <p>If there are sequence feautures you would like to see added to localCIDER please don't hesitate to get in touch - we're always looking for new features to add and to further grow localCIDER as a general purpose protein analysis framework.</p>
@@ -152,6 +148,12 @@
 <p>However, this command will upgrade all the dependencies as well, which may not be a desirable behaviour. To upgrade <em>just</em> <strong>localCIDER</strong> use</p>
 
 <pre><code>[sudo] pip install -U --no-deps lolcacider 
+</code></pre>
+
+<p>Alternativly, you can update by uninstalling and re-installing <code>localcider</code> using</p>
+
+<pre><code>pip uninstall localcider
+pip install localcider 
 </code></pre>
 
 <h2>
@@ -325,12 +327,12 @@ SeqOb = SequenceParameters(sequenceFile="syn.fasta")
 <td align="center">Get the sequence's kappa value [2]</td>
 </tr>
 <tr>
-<td align="center"><code>get_kappa_proline()</code></td>
-<td align="center">Get the sequence's kappa-proline value. Kappa-proline defines the patterning between charged/proline residues and all other residues, and is described further in the forthcoming paper by Martin and Holehouse (submitted April 2016).</td>
+<td align="center"><code>get_kappa_Omega()</code></td>
+<td align="center">Get the sequence's Omega value. Omega defines the patterning between charged/proline residues and all other residues, and is described further in the forthcoming paper by Martin and Holehouse (submitted Sept. 2016).</td>
 </tr>
 <tr>
-<td align="center"><code>get_kappa_proline_sequence()</code></td>
-<td align="center">Returns the reduced-alphabet sequence used to calculate the kappa-p parameter, where by R/K/D/E/P residues are defined as 'X' and all other residues are 'O'. This provides a clear visual description of the charge/proline patterning.</td>
+<td align="center"><code>get_kappa_Omega_sequence()</code></td>
+<td align="center">Returns the reduced-alphabet sequence used to calculate the Omega parameter, where by R/K/D/E/P residues are defined as 'X' and all other residues are 'O'. This provides a clear visual description of the charge/proline patterning.</td>
 </tr>
 <tr>
 <td align="center"><code>get_mean_net_charge()</code></td>
@@ -399,6 +401,10 @@ SeqOb = SequenceParameters(sequenceFile="syn.fasta")
 <tr>
 <td align="center"><code>get_linear_complexity(complexityType='WF', alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3)</code></td>
 <td align="center">Returns the linear sequence complexity as defined by complexityType. Optionally, the sequence complexity of a reduced complexity alphabet can be returned, where that reduced alphabet is defined by either the alphabetSize (which takes advantage of 11 pre-defined simplified alphabets) or via a custom userAlphabet dictionary. <br><br>The <code>complexityType</code> Defines the complexity measure being employed. Three different complexity measures are provided by localCIDER, where the measure being used is passed via a string with one of 'WF', 'LC', or 'LZW'. WF is Wooton-Federhen complexity [8], which reports on the sequence's local Shannon entropy, and is the complexity measure used in the SEG algorithm. LC is Linguistic complexity [9], which reports on the number of distinct subsequences over the maximum number of different subsequences given the alphabet size and the word size. Finally, LZW is Lempel-Ziv-Welch [10] complexity, and effectivly asks how efficienctly the sequence can undergo lossless compression using unique subsequences. <br><br>The <code>alphabetSize</code> defines the size of the alphabet being used, where pre-defined alphabets are then used based on the specific size. Those pre-defined alphabets are defined below this table for clarity. By default an <code>alphabetSize</code> of 20 is used (i.e. no reduction in amino acid complexity). 'userAlphabet' Allows the user to define their own reduced alphabet. The format here is a dictionary where each key-value pair is amino-acid to X. This means you need a dictionary of length 20 where each amino acid is mapped to another amino acid. This is somewhat of tedious, but it helps avoid user-error where specific amino acids are missed. (default=None). <br><br>The <code>blobLen</code> is the sliding window size over which complexity is calculated (default=10). The <code>stepSize</code> is the size of steps taken as we define a new sliding window. Finally, the <code>wordSize</code> keyword is only relevant for the linguistic complexity (LC), ignored for other types, and defines the size of word for the algorithm. Default is 3. We recommend further reading of the associated literature to better understand these complexity measures.</td>
+</tr>
+<tr>
+<td align="center"><code>get_linear_sequence_composition(blobLen=5, grps=[])</code></td>
+<td align="center">Returns an X by n matrix, where n is the number of amino acids in the sequence and X is the number of distinct groups of amino acids provided. This functions allows the local amino acid composition to be explored using a sliding window that computes the local density of one or more groups of amino acids along the sequence. The <code>blobLen</code> keyword defines the window size used to calculate the local sequence composition, and a stepsise of 1 is always used. The <code>grps</code> variable defines a list of lists, where each sub-list has elements that are amino acids. If no groups are provided a default grouping of amino acids by their physiochemical properties are used, i.e. <code>grps = [['E','D'], ['R','K'], ['R','K','E','D'], ['Q','N','S','T','G','H', 'C'], ['A','L','M','I','V'], ['F','Y','W'], ['P']]</code>, where groupsings are negativly charged, positivly chagred, charged, polar, aliphatic, aromatic, proline.</td>
 </tr>
 </tbody>
 </table>
@@ -577,7 +583,11 @@ twenty   - all twenty!
 </tr>
 <tr>
 <td align="center"><code>save_linearComplexity(filename, complexityType='WF', alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3, saveFormat='png')</code></td>
-<td align="center">Renders a <code>matplotlib</code> plot of the linear sequence complexity . For a discussion of the various options see the <code>get_linear_complexity</code> description under the SequenceParameters functions table. The plot is saved in the <code>filename</code> location. Adding extensions is recommended but not required. The <code>saveFormat</code> keyword defines the output format - this parameter is passed to matplotlibs savefig command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.</td>
+<td align="center">Renders a <code>matplotlib</code> plot of the linear sequence complexity. For a discussion of the various options see the <code>get_linear_complexity</code> description under the SequenceParameters functions table. The plot is saved in the <code>filename</code> location. Adding extensions is recommended but not required. The <code>saveFormat</code> keyword defines the output format - this parameter is passed to matplotlibs savefig command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.</td>
+</tr>
+<tr>
+<td align="center"><code>save_linearCoposition(filename, blobLen=5, saveFormat='png', title='', plot_data=False))</code></td>
+<td align="center">Renders a <code>matplotlib</code> plot of the local, vectorial amino acid composition. In version 0.1.9 the only grouping is the standard physiochemical grouping of amino acids, but in future versions we plan to add customizable groups to the plotting functions (customizable groups are available in the equivalent analysis function <code>get_linear_sequence_composition</code>). The local density is initially calculated and the fit to a univariate spline to remove noise and make the local sequence features more easily identifiable. If the <code>plot_data</code> variable is set to true the raw data is plotted alongside this spline fit, to ensure the fitting procedure is capturing the relevant sequence features. The plot is saved in the <code>filename</code> location. Adding extensions is recommended but not required. The <code>saveFormat</code> keyword defines the output format - this parameter is passed to matplotlibs <code>savefig</code> command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.</td>
 </tr>
 </tbody>
 </table>
@@ -728,7 +738,7 @@ localcider.ResTableException
 localcider.PlottingException
 </code></pre>
 
-<p>There are a couple more but these relate to functionality not yet available in version 0.1.0</p>
+<p>There are a couple more but these relate to functionality not yet available in version 0.1.9</p>
 
 <h1>
 <a id="tutorials" class="anchor" href="#tutorials" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tutorials</h1>
@@ -943,24 +953,21 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 
 <ul>
 <li>
-<strong>version 0.1.0</strong> [August 10th 2014]</li>
+<strong>version 0.1.0</strong> - August 10th 2014: Initial release </li>
 <li>
-<strong>version 0.1.1</strong> <a href="minor%20bug%20fixes,%20more%20tests,%20improved%20sequence%20parsing">August 14th 2014</a>
-</li>
+<strong>version 0.1.1</strong> - August 14th 2014: Minor bug fixes, more tests, improved sequence parsing</li>
 <li>
-<strong>version 0.1.2</strong> <a href="more%20tests,%20fixed%20heuristic%20bugs%20in%20extreme%20kappa%20sequences,%20significant%20improvement%20on%20plotting%20customization,%20cleaned%20up%20docs%20and%20code%20documentation">October 1st 2014</a>
-</li>
+<strong>version 0.1.2</strong> - October 1st 2014: More tests, fixed heuristic bugs in extreme kappa sequences, significant improvement on plotting customization, cleaned up docs and code documentation</li>
 <li>
-<strong>version 0.1.3</strong> <a href="more%20tests,%20corrected%20a%20bug%20introduced%20in%200.1.2%20for%20sequences%20with%20no%20neutral%20residues,%20corrected%20a%20bug%20in%20how%20titles/labels%20were%20assigned%20by%20default,%20improved%20how%20classification%20into%20the%205%20regions%20is%20done,%20and%20explicitly%20allow%20for%20regions%204%20(positive%20electrolytes)%20and%205%20(negative%20electrolytes)%20rather%20than%20general%20polyelectrolytes">October 13th 2014</a>
-</li>
+<strong>version 0.1.3</strong> - October 13th 2014: More tests, corrected a bug introduced in 0.1.2 for sequences with no neutral residues, corrected a bug in how titles/labels were assigned by default, improved how classification into the 5 regions is done, and explicitly allow for regions 4 (positive electrolytes) and 5 (negative electrolytes) rather than general polyelectrolytes</li>
 <li>
-<strong>version 0.1.4</strong> <a href="corrected%20bug%20in%20the%20way%20KD%20hydrophobicity%20was%20calculated%20-%20alanine%20incorrectly%20set%20to%200">January 16th 2014</a>
-</li>
+<strong>version 0.1.4</strong> - January 16th 2015: Corrected bug in the way KD hydrophobicity was calculated - alanine incorrectly set to 0</li>
 <li>
-<strong>version 0.1.7</strong> <a href="bunch%20of%20additional%20updates%20and%20code%20readability%20improvements,%20as%20well%20as%20changing%20how%20NCPR/FCR%20plots%20are%20made%20(bar%20instead%20of%20line)">February 25th 2014</a>.</li>
+<strong>version 0.1.7</strong> - February 25th 2015: Bunch of additional updates and code readability improvements, as well as changing how NCPR/FCR plots are made (bar instead of line)</li>
 <li>
-<strong>version 0.1.8</strong> <a href="Major%20update%20with%20a%20number%20of%20additional%20features.%20All%20figures%20can%20now%20be%20generated%20as%20PDFs,%20sequence%20complexity%20analysis%20has%20been%20added,%20PPII%20propensity%20added,%20kappa-P%20added.%20Pleasantly,%20no%20bugs%20needed%20fixing,%20however!">March 28th 2016</a>
-</li>
+<strong>version 0.1.8</strong> - March 28th 2016: Major update with a number of additional features. All figures can now be generated as PDFs, sequence complexity analysis has been added, PPII propensity added, kappa-P added. Pleasantly, no bugs needed fixing, however!</li>
+<li>
+<strong>version 0.1.9</strong> - September 31st 2016: Added local amino acid composition, general patterning parameter, and improved on plot formatting. </li>
 </ul>
       </section>
       <footer>
