@@ -4,9 +4,9 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.8                                                         !
+   !    Version 0.1.9                                                         !
    !                                                                          !
-   !    Copyright (C) 2014 - 2015                                             !
+   !    Copyright (C) 2014 - 2016                                             !
    !    The localCIDER development team (current and former contributors)     !
    !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
@@ -219,17 +219,17 @@ class TestPlotsFunctions(unittest.TestCase):
         hydro = self.rseq.get_uversky_hydropathy()
         mnc = self.rseq.get_mean_net_charge()
 
-        plots.save_single_phasePlot(
+        plots.save_single_uverskyPlot(
             hydro, mnc, 'tmpfiles/single_UV', 'TEST TITLE')
 
-        plots.save_single_phasePlot(
+        plots.save_single_uverskyPlot(
             hydro,
             mnc,
             'tmpfiles/single_UV_NO_LEGEND.png',
             'TEST TITLE',
             False)
 
-        plots.save_single_phasePlot(
+        plots.save_single_uverskyPlot(
             hydro,
             mnc,
             'tmpfiles/single_UV_NO_LEGEND.pdf',
