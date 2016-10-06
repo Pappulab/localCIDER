@@ -367,30 +367,12 @@ class Sequence:
         While for the kappa-proline definition the grouping would be
         grp1 = ['P','E','D','K','R']
 
-        """
-
+        """                
         
-        ############################################################
-        def parse_group(localgrp):
-            """ Local function for parsing AA groupings """
-
-            try:
-                localgrp = set([x.upper() for x in localgrp])
-            except AttributeError:
-                raise SequenceException("ERROR: There was a problem when parsing the kappa_X group argument [%s] - this should be a list of of native AA one letter codes" % (localgrp))
-                            
-            for res in localgrp:
-                if res not in aminoacids.TWENTY_AAs:
-                    raise SequenceException("When using kappa_X found non-natural amino acid [%s] in grouping"%(res))
-
-            return localgrp
-        ############################################################
-        
-        
-        grp1 = parse_group(grp1)
+        grp1 = self.__parse_group(grp1)
 
         if grp2:
-            grp2 = parse_group(grp2)
+            grp2 = self.__parse_group(grp2)
 
         if grp2:
             # firstly convert the sequence into a 3 letter alphabet of
@@ -798,12 +780,7 @@ class Sequence:
             else:
                 target_seq.append(0.0)
             
-        # construct a vector of the hydropathy values of each residue in
-        # in the sequence (using the re-set KD scale which runs from 0 to 9
-        # with 9 being the most hydrophobic. This scaling may be changed
-        # in future versions...
-
-        # for each overlapping blob in the sequence calculate the hydropathy
+        # for each overlapping blob in the sequence calculate the local density of amino acid
         for i in np.arange(0, nblobs):
             blob = target_seq[i:(i + bloblen)]
             blob_density[i] = sum(blob)/float(bloblen)
@@ -824,11 +801,10 @@ class Sequence:
         acidic    (E and D)
         basic     (K and R)
         charged   (E, D, K, and R)
-        polar     (Q, N, S, T, G, C, and G)
-        aliphatic (L, M, I, and V)
+        polar     (Q, N, S, T, G, C, and H)
+        aliphatic (A, L, M, I, and V)
         aromatic  (F, Y, and W)
-        proline   (P)
-        alanine   (A)
+        proline   (P)       
 
         """        
         
@@ -836,17 +812,22 @@ class Sequence:
         if len(grps) > 0:
 
             # then skip ahead...
-            pass
+
+            sanitized_groups = []
+            for group in grps:
+                sanitized_groups.append(self.__parse_group(group))
+
+            grps = sanitized_groups
 
         # else use the standard AA grouping
         else:                
-            grps.append(['E','D'])                     # acidic
-            grps.append(['R','K'])                     # basic
-            grps.append(['R','K','E','D'])             # charged
-            grps.append(['Q','N','S','T','G','H'])     # polar
-            grps.append(['A','L','M','I','V'])         # hydrophobic
-            grps.append(['F','Y','W'])                 # aromatic
-            grps.append(['P'])                         # proline
+            grps.append(['E','D'])                        # acidic
+            grps.append(['R','K'])                        # basic
+            grps.append(['R','K','E','D'])                # charged
+            grps.append(['Q','N','S','T','G','H', 'C'])   # polar
+            grps.append(['A','L','M','I','V'])            # hydrophobic
+            grps.append(['F','Y','W'])                    # aromatic
+            grps.append(['P'])                            # proline
             
         # first create a np vector object with the linear density of the
         # first group
@@ -1657,3 +1638,18 @@ class Sequence:
             raise SequenceException('Trying to use a window/blob size of %i but the sequence is only %i residues in length! Window size must be < the sequence length.' % (bloblen, len(self.seq)))
 
                                 
+    #...................................................................................#            
+    def __parse_group(self, localgrp):
+        """ Helper function to take a list of AAs and make sure they're upper case and valid AAs"""
+
+        try:
+            localgrp = set([x.upper() for x in localgrp])
+        except AttributeError:
+            raise SequenceException("ERROR: There was a problem when parsing the amino acid grouping set [%s] - this should be a list of of native AA one letter codes" % (localgrp))
+                            
+        for res in localgrp:
+            if res not in aminoacids.TWENTY_AAs:
+                raise SequenceException("ERROR: Found non-natural amino acid [%s] in grouping " % (res))
+
+        return localgrp
+

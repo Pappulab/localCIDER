@@ -649,18 +649,33 @@ class SequenceParameters:
 
 
     #...................................................................................#
-    def get_linear_sequence_composition(self, blobLen=5):
+    def get_linear_sequence_composition(self, blobLen=5, grps=[]):
         """
-        Returns a numpy matrix where each
+        Returns an n by X matrix showing the density of different groups of amino
+        acids running along the sequence. The amino acid group can be defined by the user by providing
+        a list of lists, where each sub-list contains amino acids for a distinct group. Alternativly, the
+        default grouping provides 7 groups which are
+
+        acidic    (E and D)
+        basic     (K and R)
+        charged   (E, D, K, and R)
+        polar     (Q, N, S, T, G, C, and H)
+        aliphatic (A, L, M, I, and V)
+        aromatic  (F, Y, and W)
+        proline   (P)       
 
 
-        blobLen     | Sliding window size over which the hydrophobicity is calculated (default = 5
+        blobLen     | Sliding window size over which the local density is calculated (default = 5
                       to match the default for kappa calculation)
 
+        grps        | List of lists, where the sublists define groups of amino acids. i.e. to pass
+                      in the default values described above, grps would be set to
+                      [['E','D'], ['R','K'], ['R','K','E','D'], ['Q','N','S','T','G','H', 'C'], 
+                       ['A','L','M','I','V'], ['F','Y','W'], ['P']]        
+
         """
 
-
-        return(self.SeqObj.linearCompositions(blobLen))
+        return(self.SeqObj.linearCompositions(blobLen, grps))
         
 
     # =============================================== #
