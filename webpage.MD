@@ -45,12 +45,12 @@ Once `pip` is installed, **localCIDER** can be installed by running;
 
     [sudo] pip install localcider 
 
-Very simple! **localCIDER** depends on both `numpy` and `matplotlib`, both of which will be installed via `pip` if you haven't already installed them.
+Very simple! **localCIDER** depends on the three pillars of scientific Python computing (`numpy`, `scipy`, and  `matplotlib`), all of which will be installed via `pip` if you haven't already installed them.
 
 If you encounter issues installing please let me know. That said, any issues *should* be due to problems with Numpy or `matplotlib` and not **localCIDER**, so investigate the documentation associated with installing those packages first.
 
 ## Python 2 and Python 3
-As of version 0.1.8 localCIDER is supported under both Python 2.x and 3.x. localCIDER has been extensively tested and used with Python 2.7.x, and we recommend this version of Python.
+As of version 0.1.8 localCIDER is supported under both Python 2.x and 3.x. localCIDER has been extensively tested and used with Python 2.7.x, and we recommend this version of Python. If you encounter issues using localCIDER with Python version 3.x please let us knnow! 
 
 ### Known installation issues
 
