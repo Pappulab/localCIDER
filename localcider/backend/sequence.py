@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.9                                                         !
+   !    Version 0.1.10                                                        !
    !                                                                          !
    !    Copyright (C) 2014 - 2016                                             !
    !    The localCIDER development team (current and former contributors)     !
@@ -308,9 +308,14 @@ class Sequence:
 
 
     #...................................................................................#
-    def kappa_proline(self):
+    def Omega(self):
         """
-        Return the kappa-proline value, as defined in Martin et al. 
+        Return the Omega value, as defined in Martin et al. [1] 
+
+        [1] Martin, E.W., Holehouse, A.S., Grace, C.R., Hughes, A., Pappu, R.V., and 
+        Mittag, T. (2016). Sequence determinants of the conformational properties 
+        of an intrinsically disordered protein prior to and upon multisite phosphorylation.
+        J. Am. Chem. Soc. (10.1021/jacs.6b10272)
 
         """
 
@@ -331,13 +336,13 @@ class Sequence:
 
 
     #...................................................................................#
-    def kappa_proline_seq(self):
+    def Omega_seq(self):
         """
-        Return the kappa-proline sequence, where R/K/D/E/P are X and all other residues
-        are O
+        Return the Omega sequence, where R/K/D/E/P are X and all other residues
+        are O. This is useful for visualizing what the sequence used to calculate
+        Omega actually looks like.
 
         """
-
         # firstly convert the sequence into a 2 letter alphabet of
         # E/D/R/K/P or 'other'
         newseq=''
@@ -531,21 +536,34 @@ class Sequence:
         return ans
         
     #...................................................................................#
-    def FPPII_chain(self):
+    def FPPII_chain(self,mode='hilser'):
         """ 
-        Returns the overal chain's average PPII propensity as defined by Elam et al[1].
+        Returns the overal chain's average PPII propensity as defined by one of three 
+        possible PPII scales - Elam et al [1], Rucker et al [2], or Shi et al [3]. 
+
+        The keyword 'mode' should be a string defining which of these three scales
+        to use, and must be one of 'hilser', 'creamer', or 'kallenbach'        
 
         [1] - Elam WA, Schrank TP, Campagnolo AJ, Hilser VJ. Evolutionary 
         conservation of the polyproline II conformation surrounding intrinsically 
         disordered phosphorylation sites. 
         Protein Sci. 2013; 22: 405- 417. doi: 10.1002/pro.2217 PMID: 23341186
+
+        [2] - Rucker, A.L., Pager, C.T., Campbell, M.N., Qualls, J.E., 
+        and Creamer, T.P. (2003). Host-guest scale of left-handed 
+        polyproline II helix formation. Proteins 53, 68-75. 
+
+        [3] - Shi, Z., Chen, K., Liu, Z., Ng, A., Bracken, W.C., and 
+        Kallenbach, N.R. (2005). Polyproline II propensities from 
+        GGXGG peptides reveal an anticorrelation with beta-sheet scales. 
+        Proc. Natl. Acad. Sci. U. S. A. 102, 17964-17968.
         
         """
         
         # calculate the total PPII sum for the sequence
         total = 0
         for i in xrange(0, self.len):
-            total = total + lkupTab.lookUpPPII(self.seq[i])
+            total = total + lkupTab.lookUpPPII(self.seq[i], mode)
 
         # normalize by the sequence length
         return (total/float(self.len))

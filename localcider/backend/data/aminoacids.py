@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.9                                                         !
+   !    Version 0.1.10                                                        !
    !                                                                          !
    !    Copyright (C) 2014 - 2016                                             !
    !    The localCIDER development team (current and former contributors)     !
@@ -260,7 +260,6 @@ def get_PPII_Hilser():
     Returns an amino acid dictionary with the PPII propensity of
     each residue as calculated by Elam et al [1] (Taken from [2]). 
 
-
     [1] - Elam WA, Schrank TP, Campagnolo AJ, Hilser VJ. Evolutionary 
     conservation of the polyproline II conformation surrounding intrinsically 
     disordered phosphorylation sites. 
@@ -292,6 +291,89 @@ def get_PPII_Hilser():
              'ASN': 0.27,
              'LYS': 0.56,
              'ARG': 0.38}
+
+def get_PPII_Creamer():
+    """
+    Returns an amino acid dictionary with the PPII propensity of
+    each residue as calculated by Rucker et al [1] (Taken from [2]). 
+
+    Note that Trp and Try do not have values reported by Rucker 
+    et al., so we followed the convention uesed by Tomasso et al. 
+    and set both to the mean value (0.58)
+    
+
+    [1] - Rucker, A.L., Pager, C.T., Campbell, M.N., Qualls, J.E., 
+    and Creamer, T.P. (2003). Host-guest scale of left-handed 
+    polyproline II helix formation. Proteins 53, 68-75. 
+
+    [2] - Tomasso, M. E., Tarver, M. J., Devarajan, D. & Whitten, S. T. 
+    Hydrodynamic Radii of Intrinsically Disordered Proteins Determined 
+    from Experimental Polyproline II Propensities. 
+    PLoS Comput. Biol. 12, e1004686 (2016).
+
+    """
+    return  {'ILE': 0.50,
+             'VAL': 0.49,
+             'LEU': 0.58,
+             'PHE': 0.58,
+             'CYS': 0.55,
+             'MET': 0.55,
+             'ALA': 0.61, 
+             'GLY': 0.58,
+             'THR': 0.53,
+             'SER': 0.58,
+             'TRP': 0.58,
+             'TYR': 0.58,
+             'PRO': 0.67,
+             'HIS': 0.55,
+             'GLU': 0.61,
+             'GLN': 0.66,
+             'ASP': 0.63,
+             'ASN': 0.55,
+             'LYS': 0.59,
+             'ARG': 0.61}
+
+
+def get_PPII_Kallenbach():
+    """
+    Returns an amino acid dictionary with the PPII propensity of
+    each residue as calculated by Shi et al [1] (Taken from [2]).
+
+    Note that Gly and Pro do not have values reported by Shi et al.,
+    so we followed the convention uesed by Tomasso et al. and 
+    set Gly = 0.5 and Pro = 1.0.
+
+    [1] - Shi, Z., Chen, K., Liu, Z., Ng, A., Bracken, W.C., and 
+    Kallenbach, N.R. (2005). Polyproline II propensities from 
+    GGXGG peptides reveal an anticorrelation with beta-sheet scales. 
+    Proc. Natl. Acad. Sci. U. S. A. 102, 17964-17968.
+
+    [2] - Tomasso, M. E., Tarver, M. J., Devarajan, D. & Whitten, S. T. 
+    Hydrodynamic Radii of Intrinsically Disordered Proteins Determined 
+    from Experimental Polyproline II Propensities. 
+    PLoS Comput. Biol. 12, e1004686 (2016).
+
+    """
+    return  {'ILE': 0.519,
+             'VAL': 0.743,
+             'LEU': 0.574,
+             'PHE': 0.639,
+             'CYS': 0.557,
+             'MET': 0.498, 
+             'ALA': 0.818,
+             'GLY': 0.500,
+             'THR': 0.553,
+             'SER': 0.774,
+             'TRP': 0.764,
+             'TYR': 0.630,
+             'PRO': 1.000,
+             'HIS': 0.428,
+             'GLU': 0.684,
+             'GLN': 0.654,
+             'ASP': 0.552,
+             'ASN': 0.667,
+             'LYS': 0.581,
+             'ARG': 0.638}
 
     
 
@@ -345,7 +427,9 @@ def build_amino_acids_skeleton():
     # get a dictionary of 3 letter to KD hydrophobicity
     KD_Dict     = get_KD_shifted()
 
-    PPII_Dict   = get_PPII_Hilser()
+    PPII_Dict_Hilser       = get_PPII_Hilser()
+    PPII_Dict_Creamer      = get_PPII_Creamer()
+    PPII_Dict_Kallenbach   = get_PPII_Kallenbach()
     
     # build the initial skeleton of amnino acids 
     skeleton=[["Alanine",        "ALA", "A"],
@@ -380,7 +464,12 @@ def build_amino_acids_skeleton():
         res.append(charge_Dict[res[1]])
         
         # update the residue with the PPII content
-        res.append(PPII_Dict[res[1]])
+        res.append(PPII_Dict_Hilser[res[1]])
+        res.append(PPII_Dict_Creamer[res[1]])
+        res.append(PPII_Dict_Kallenbach[res[1]])
+
+    # each residue is now defined by a list of length 8 which are
+    # [full name, 3 letter, one letter, Hydrophobicity, charge, PPII_Hilser, PPII_Creamer, PPII_Kallenbach]
     
     return skeleton
     

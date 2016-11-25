@@ -25,4 +25,13 @@
 
 
 0.1.9
-* 
+* Local compositional analysis has been added to help identify local regions which are enriched in a particular type of amino acid. Proteins are complex heteropolymers, so plotting the local density of each amino acid with a sliding window is very difficult to visualize and interpret. To overcome this challenge, we take a two-pronged approach: firstly, amino acids are group by physiochemical properties. Secondly, we then fit the local density noisy data to a univariate spline fit to give a smoothed description of the local density along the sequence. Combined, this allows us to generate easy-to-read plots that illustrate the local density of residues at any given location along the sequence
+
+* The Omega patterning parameter (previously kappa_proline) is re-defined as per the manuscript by Martin & Holehouse *et al.*
+
+* A generalized patterning parameter for considering 2 or 3 letter alphabets is provided (kappa_X), allowing users to ask general questions about sequence patterning.
+
+* The figure generation code has been further optimised, as has code documentation
+
+If there are sequence feautures you would like to see added to localCIDER please don't hesitate to get in touch - we're always looking for new features to add and to further grow localCIDER as a general purpose protein analysis framework.
+ 

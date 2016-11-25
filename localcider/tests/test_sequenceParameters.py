@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.9                                                         !
+   !    Version 0.1.10                                                        !
    !                                                                          !
    !    Copyright (C) 2014 - 2016                                             !
    !    The localCIDER development team (current and former contributors)     !
@@ -148,6 +148,19 @@ class TestSequenceParametersFunctions(unittest.TestCase):
     def test_get_NCPR(self):
         NCPR = self.testObj.get_NCPR()
         self.assertEqual(NCPR, -0.06428571428571428)
+
+    def test_get_Omega(self):
+        Omega = self.testObj.get_Omega()
+        self.assertEqual(Omega, 0.2581816109940279)
+
+    def test_get_kappa_X(self):
+        kX = self.testObj.get_kappa_X(['A','C','D','E'])
+        self.assertEqual(kX, 0.1765104835813347)
+
+    def test_get_Omega_seq(self):
+        Omega_seq = self.testObj.get_Omega_sequence()
+        print Omega_seq
+        self.assertTrue(Omega_seq  == "OXOOOXOOOXOXXOOOOOOXXOXOOOOXOOOXOXXOOOOOOOXOXXOOOOOOOOOOXXOXXOOOOOOOOOOOOOOOOOOXOOXOOOOOOOOOOOOXXXOOOXOXXOOXOXOOOXXOXOXXXOXOOXOXOXXOOOXOXXXO")
 
     def test_get_mean_net_charge(self):
         MNC = self.testObj.get_mean_net_charge()
@@ -298,7 +311,6 @@ class TestSequenceParametersFunctions(unittest.TestCase):
         # length 100 and 1000
         seq_list = testTools.generate_random_sequence_list(number=10, minLen=100, maxLen=1000)
             
-
         # some edge cases...
         seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=3,  maxLen=3))
         seq_list.extend(testTools.generate_random_sequence_list(number=1, minLen=4,  maxLen=4))
@@ -326,8 +338,6 @@ class TestSequenceParametersFunctions(unittest.TestCase):
         seq_list.append('EKEKE')
         seq_list.append('GGGGG')
             
-
-
         for i in seq_list:
             print ""
             print "Sequence " + str(pos)
@@ -343,14 +353,21 @@ class TestSequenceParametersFunctions(unittest.TestCase):
             iSEQ.get_fraction_disorder_promoting()
             iSEQ.get_amino_acid_fractions()
             iSEQ.get_kappa()
+
+            iSEQ.get_Omega()
+            iSEQ.get_Omega_sequence()
+            iSEQ.get_kappa_X(['A','K','P','G'])
+            iSEQ.get_kappa_X(['A','K','P','G'],['R','E','F','Y'])
+
             iSEQ.get_mean_net_charge()
             iSEQ.get_phasePlotRegion()
             iSEQ.get_mean_hydropathy()
             iSEQ.get_uversky_hydropathy()
             iSEQ.get_HTMLColorString()
-            iSEQ.get_kappa_proline()
             iSEQ.get_PPII_propensity()
-            iSEQ.get_kappa_proline_sequence()
+            iSEQ.get_PPII_propensity(mode='hilser')
+            iSEQ.get_PPII_propensity(mode='creamer')
+            iSEQ.get_PPII_propensity(mode='kallenbach')
             #iSEQ.
             iSEQ.get_delta()
             iSEQ.get_deltaMax()

@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.9                                                         !
+   !    Version 0.1.10                                                        !
    !--------------------------------------------------------------------------!
 
    File Description:
@@ -30,10 +30,40 @@ class SequenceParameters:
     in localCIDER. From this object a wide array of methods can be called on the
     object to explore a wide range of sequence properties.
 
+    A new SequenceParameter object can be created 
+
+
     """
 
-    def __init__(self, sequence="", sequenceFile=""):
+    def __init__(self, sequence="", sequenceFile="", SeqObj=None):
 
+
+        
+        # ########################################################################
+        # if we passed an existing SequenceObject short circuit everything
+        # else and use this 
+        if SeqObj:
+            
+            # validate that this object is ther right thing - try/except in
+            # case the thing doesn't have a __module__ variable..
+            try:
+                SO_type = SeqObj.__module__ == "localcider.backend.sequence"
+            except:
+                raise SequenceException('')
+
+            # if we get here and SeqObj was the right type assign and finish
+            if SO_type:
+                self.SeqObj=SeqObj
+                return
+
+            # else raise an exception
+            else:
+                raise SequenceException('Passed a SeqObj in but did not match backend.sequence')
+
+        # ########################################################################
+        
+
+        
         # provide the flexibility to submit either a sequence
         # file or an actual sequence as a string
         if sequence == "" and sequenceFile == "":
@@ -49,6 +79,7 @@ class SequenceParameters:
         else:
             parserMachine = SequenceFileParser()
             self.SeqObj = Sequence(parserMachine.parseSeqFile(sequenceFile))
+
 
     # ============================================ #
     # ============= SETTER FUNCTIONS ============= #
@@ -216,12 +247,13 @@ class SequenceParameters:
     def get_Omega(self):
         """
         Get the Omega value associated with a sequence. Omega describes
-        the patterning between charged/proline residues and all other residues
+        the patterning between charged/proline residues and all other residues.  
 
         ********************************************************************************
-        Ref: Martin, E. W., Holehouse A. S.,  Pappu, R.V.  & Mittag, T. (2016). Sequence 
-        determinants of the conformational properties of an intrinsically disordered 
-        protein prior to and upon multi-site phosphorylation (submitted)
+        Ref: Martin, E.W., Holehouse, A.S., Grace, C.R., Hughes, A., Pappu, R.V., and 
+        Mittag, T. (2016). Sequence determinants of the conformational properties 
+        of an intrinsically disordered protein prior to and upon multisite 
+        phosphorylation. J. Am. Chem. Soc. (10.1021/jacs.6b10272)        
         ********************************************************************************
 
         OUTPUT:
@@ -230,7 +262,7 @@ class SequenceParameters:
 
         """
 
-        return self.SeqObj.kappa_proline()
+        return self.SeqObj.Omega()
 
     #...................................................................................#
     def get_Omega_sequence(self):
@@ -240,9 +272,10 @@ class SequenceParameters:
         are O.
 
         ********************************************************************************
-        Ref: Martin, E. W., Holehouse A. S.,  Pappu, R.V.  & Mittag, T. (2016). Sequence 
-        determinants of the conformational properties of an intrinsically disordered 
-        protein prior to and upon multi-site phosphorylation (submitted)
+        Ref: Martin, E.W., Holehouse, A.S., Grace, C.R., Hughes, A., Pappu, R.V., and 
+        Mittag, T. (2016). Sequence determinants of the conformational properties 
+        of an intrinsically disordered protein prior to and upon multisite 
+        phosphorylation. J. Am. Chem. Soc. (10.1021/jacs.6b10272)        
         ********************************************************************************
 
         OUTPUT:
@@ -251,7 +284,7 @@ class SequenceParameters:
 
         """
 
-        return self.SeqObj.kappa_proline_seq()
+        return self.SeqObj.Omega_seq()
 
     #...................................................................................#
     def get_kappa_X(self, grp1, grp2=None):
@@ -577,17 +610,31 @@ class SequenceParameters:
         return self.SeqObj.get_phosphosequence()
 
     #...................................................................................#
-    def get_PPII_propensity(self):
+    def get_PPII_propensity(self, mode='hilser'):
         """
-        Get the overall sequence's PPII propensity as defined by Hilser et al [1] using
-        the values reported in table 1 from [2]
+        Get the overall sequence's PPII propensity as defined by one of three 
+        possible scales - Hilser (Elam et al [1]), Creamer (Rucker et al [2]), or 
+        Kallenbach (Shi et al [3]). 
+
+        The keyword 'mode' should be a string defining which of these three scales
+        to use, and must be one of 'hilser', 'creamer', or 'kallenbach'. The
+        default mode is 'hilser'. All values are taken from table 1 in [4].
 
         [1] - Elam WA, Schrank TP, Campagnolo AJ, Hilser VJ. Evolutionary 
         conservation of the polyproline II conformation surrounding intrinsically 
         disordered phosphorylation sites. 
         Protein Sci. 2013; 22: 405- 417. doi: 10.1002/pro.2217 PMID: 23341186
 
-        [2] - Tomasso, M. E., Tarver, M. J., Devarajan, D. & Whitten, S. T. 
+        [2] - Rucker, A.L., Pager, C.T., Campbell, M.N., Qualls, J.E., 
+        and Creamer, T.P. (2003). Host-guest scale of left-handed 
+        polyproline II helix formation. Proteins 53, 68-75. 
+
+        [3] - Shi, Z., Chen, K., Liu, Z., Ng, A., Bracken, W.C., and 
+        Kallenbach, N.R. (2005). Polyproline II propensities from 
+        GGXGG peptides reveal an anticorrelation with beta-sheet scales. 
+        Proc. Natl. Acad. Sci. U. S. A. 102, 17964-17968.
+        
+        [4] - Tomasso, M. E., Tarver, M. J., Devarajan, D. & Whitten, S. T. 
         Hydrodynamic Radii of Intrinsically Disordered Proteins Determined 
         from Experimental Polyproline II Propensities. 
         PLoS Comput. Biol. 12, e1004686 (2016).
@@ -598,7 +645,17 @@ class SequenceParameters:
 
         """
 
-        return self.SeqObj.FPPII_chain()
+        return self.SeqObj.FPPII_chain(mode)
+
+    #...................................................................................#
+    def get_shuffled_sequence(self, frozen=set()):
+        """
+        Function that returns a SequenceParameter object populated with a shuffled version
+        of the sequence. Frozen allows the user to define a set of residues which are not
+        shuffled, allowing regions to be held fixed while other regions are shuffled
+
+        """        
+        return SequenceParameters(SeqObj=self.SeqObj.full_shuffle(frozen))
 
 
     # =============================================== #

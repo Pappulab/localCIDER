@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.9                                                         !
+   !    Version 0.1.10                                                        !
    !                                                                          !
    !    Copyright (C) 2014 - 2016                                             !
    !    The localCIDER development team (current and former contributors)     !
@@ -75,7 +75,7 @@ class ResTable:
         residue_list = data.aminoacids.buildTable()
 
         for r in residue_list:
-            res = Residue(r[0], r[1], r[2], r[3], r[4], r[5])
+            res = Residue(r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7])
             self.residue_table[res.letterCode3] = res
 
     #...................................................................................#
@@ -125,12 +125,18 @@ class ResTable:
             return res.charge
 
     #...................................................................................#
-    def lookUpPPII(self, resCode):
+    def lookUpPPII(self, resCode, mode='hilser'):
         """
-        Get an amino acid's PPII propensity as defined by Hilser.
+        Get an amino acid's PPII propensity as defined by Hilser, Creamer or Kallenbach. Note
+        the code automatically sets the input to lower case to make the input case insensitive. 
         """
 
+        mode = mode.lower()
+
+        if mode not in ['hilser', 'creamer', 'kallenbach']:
+            raise KeyError('Mode is not one of hilser, creamer or kallenbach')
+            
         res = self.lookForRes(resCode)
-        return res.PPII
+        return res.PPII[mode]
 
         

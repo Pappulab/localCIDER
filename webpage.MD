@@ -1,6 +1,6 @@
 # localCIDER
 
-`v 0.1.9 - October 2016`
+`v 0.1.10 - November 2016`
 
 
 # Introduction
@@ -21,20 +21,19 @@ Moreover, if there's a type of analysis you use frequently and you think other u
 # Installation
 
 ## Introduction
-**localCIDER** version 0.1.9 was submitted to PyPI (the Python Package Index) in October 2016. This should be considered a stable release, however, if you encounter any issues/bugs it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. 
+**localCIDER** version 0.1.10 was submitted to PyPI (the Python Package Index) in November 2016. This should be considered a stable release, however, if you encounter any issues/bugs it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. 
 
 ## New Features
-In 0.1.9 we have added a number of new features, as detailed below:
+In 0.1.10 we have added a number of new features, as detailed below:
 
-* Local compositional analysis has been added to help identify local regions which are enriched in a particular type of amino acid. Proteins are complex heteropolymers, so plotting the local density of each amino acid with a sliding becomes impossible to interpret, as we just generate a series of jagged lines. To overcome this challenge we take a dual approach: firstly, amino acids are group by physiochemical properties. Secondly, we then fit the noisy data to a univariate spline to give a smoothed description of the local density along the sequence. Combined, this allows us to generate easy-to-read plots that illustrate the local density of residues at any given location along the sequence
+* Sequence shuffling is now explicit included as a function, where a shuffled sequence can be generated and specific residues can be 'frozen' and held invariant during shuffling
+* Omega parameter code updated and all reference to kappa_proline removed
+* Two additional PPII scales are included for the analysis PPII propensity (from the Creamer and Kallenbach labs)
+* References were updated 
+* Update to plotting functions, such that line edges dynamically shrink for longer sequences 
+* Font sizes for plots were fixed from previous version, where, for some reason, titles and labels were poorly formatted
+* Update tests
 
-* The Omega patterning parameter (previously kappa_proline) is re-defined as per the manuscript by Martin & Holehouse *et al.*
-
-* A generalized patterning parameter for considering 2 or 3 letter alphabets is released, allowing researchers to, generally, ask questions about sequence patterning
-
-* The figure generation code has been further optimised, as has code documentation
-
-If there are sequence feautures you would like to see added to localCIDER please don't hesitate to get in touch - we're always looking for new features to add and to further grow localCIDER as a general purpose protein analysis framework.
 
 ## Installing on OSX or linux
 We recommend installing using `pip`. `pip` is a command line interface for downloading and installing packages from the Python package index (PyPI). If you don't yet have pip installed [see the documentation here](http://pip.readthedocs.org/en/latest/installing.html).
@@ -120,21 +119,19 @@ Tested on Windows 7 64 bit
  
  
 # Using localCIDER
-Once you have localCIDER installed, fire up Python and `import` the localcider package;
+Once you have localCIDER installed, activate the interactive Python prompt (we recommend using [iPython](https://ipython.org/) and `import` the localcider package;
 
     import localcider
     
-You'll be greeted with a message detailing the current version.
-
 There are two main localcider modules right now;
 
 * `sequenceParameters` which lets you calculate many different parameters, as well as show or save plots relating to a specific sequence - ***this is the main module of interest***
 * `plots` which lets you plot certain parameters independent of sequenceParameters
 
 
-#### Quick-start - calculate kappa of my sequence and plot it on the Das-Pappu diagram of states 
+#### Quick-start - calculate kappa of my sequence and plot it on the Das-Pappu diagram of states.
 
-The following code will print the kappa value of your sequence to the terminal prompt, and then plot your sequence on a Das-Pappu phase plot, saving it in the current directory as `my_snazzy_plot.png`
+The following code will print the kappa value of your sequence to the terminal prompt, and then plot your sequence on a Das-Pappu diagram of states, saving it in the current directory as `my_snazzy_plot.png`
 
     # import the relevant code
     from localcider.sequenceParameters import SequenceParameters
@@ -152,7 +149,7 @@ The following code will print the kappa value of your sequence to the terminal p
     
 #### Interactive help
 
-**localCIDER** contains highly complete interactive help - for any object or function simply type `help(<item>)` for a complete description. For example;
+**localCIDER** contains an extensive set of interactive help information - for any object or function simply type `help(<item>)` for a complete description. For example;
 
     # import the relevant code
     from localcider.sequenceParameters import SequenceParameters
@@ -173,7 +170,7 @@ The approach we recommend for accessing SequenceParameters objects is to use the
     from localcider.sequenceParameters import SequenceParameters
     
     
-By opening your code with this line you now have direct access to the `SequenceParameters` class, which takes either a string of an amino acid sequence or the filename of a file containing an amino acid sequence, which is then read and parsed. As an example;
+By opening your code with this line, you now have direct access to the `SequenceParameters` class, which takes either a string of an amino acid sequence or the filename of a file containing an amino acid sequence, which is then read and parsed. As an example;
 
 
     # as before we import the SequenceParameters class directly
@@ -216,15 +213,17 @@ Function name | Operation
 `get_amino_acid_fractions()` | Get a dictionary of the fractions of each amino acid in the sequence
 `get_fraction_disorder_promoting()` | Get the fraction of residues predicted to be 'disorder promoting' [1]. Note this is NOT a disorder prediction!
 `get_kappa()` | Get the sequence's kappa value [2]
-`get_kappa_Omega()` | Get the sequence's Omega value. Omega defines the patterning between charged/proline residues and all other residues, and is described further in the forthcoming paper by Martin and Holehouse (submitted Sept. 2016).
-`get_kappa_Omega_sequence()` | Returns the reduced-alphabet sequence used to calculate the Omega parameter, where by R/K/D/E/P residues are defined as 'X' and all other residues are 'O'. This provides a clear visual description of the charge/proline patterning.
+`get_Omega()` | Get the sequence's Omega value. Omega defines the patterning between charged/proline residues and all other residues 14].
+`get_Omega_sequence()` | Returns the reduced-alphabet sequence used to calculate the Omega parameter, where by R/K/D/E/P residues are defined as 'X' and all other residues are 'O'. This provides a clear visual description of the charge/proline patterning.
 `get_mean_net_charge()` | Get the absolute mean net charge of your sequence
 `get_phase_plot_region()` | Get the region on the Das-Pappu diagram of states where your sequence falls [2]
 `get_mean_hydropathy()` | Get the mean hydropathy as calculated from a skewed Kyte-Doolittle hydrophobicity scale* [3]
 `get_uversky_hydropathy()` | Get the mean hydropathy as calculated from a normalized Kyte-Doolittle hydrophobicity scale\*\* [3,4]
-`get_PPII_propensity()` | Get the overall sequence's PPII propensity as defined by Hilser et al [6] using the values reported in table 1 from [7]
+`get_PPII_propensity(mode='hilser')` | Get the overall sequence's PPII propensity as defined by one of three PPII propensity scales. By default, the scale by Elam et al.[6] is used, but modes `creamer` and `kallenbach` are also available, which use values from scales by Rucker or Shi, respectively [12,13]. 
 `get_delta()` <br> | Returns the delta value of the sequence, as defined when calculating kapp [2] 
 `get_deltaMax()` <br> | Returns the maximum possible delta value (delta-max) for a sequence of this composition
+`get_shuffle(frozen=None)` <br> | Returns a SequenceParameter object with the primary amino acid sequence shuffled. If residue index positions are past as a list to 'frozen' those residues are considered imutable and are not shuffled. 
+
 
 
 
@@ -233,14 +232,14 @@ Function name | Operation
 \** The normalized Kyte-Doolittle scale converts all values on the scale to fall between 0 and 1
 
 
-### Vectorial sequence analysis functions
-The following functions generate a vector of values which describes some property associated with the sequence as a function of sequence position.
+### Position-specific sequence analysis functions
+The following functions generate an array of values which describes some property associated with the sequence as a function of sequence position.
 
 Function name | Operation 
 :---: | :---: 
-`get_linear_FCR(blobLen=5)`  | Returns a 2D numpy vector of the fraction of charged residues (FCR) as defined by a sliding window. The first dimension of the 2D vector contains the local FCR values and the second contains the associated residue index values along the sequence. the `blobLen` keyword defines the window size used to calculate the sequence-local FCR. A stepsize of 1 is always used.
-`get_linear_NCPR(blobLen=5)`  | Returns a 2D numpy vector of the net charge per residue (NCPR) as defined by a sliding window. The first dimension of the 2D vector contains the local NCPR values and the second contains the associated residue index values along the sequence. The `blobLen` keyword defines the window size used to calculate the sequence-local NCPR. A stepsize of 1 is always used.
-`get_linear_hydropathy(blobLen=5)`  | Returns a 2D numpy vector of the local hydropathy as defined by a sliding window using the Kyte-Doolite hydropathy scale[3]. The first dimension of the 2D vector contains the local hydropathy score and the second contains the associated residue index values along the sequence. The `blobLen` keyword defines the window size used to calculate the sequence-local hydropathy. A stepsize of 1 is always used.
+`get_linear_FCR(blobLen=5)`  | Returns a 2D numpy array of the fraction of charged residues (FCR) as defined by a sliding window. The first dimension of the 2D array contains the local FCR values and the second contains the associated residue index values along the sequence. the `blobLen` keyword defines the window size used to calculate the sequence-local FCR. A stepsize of 1 is always used.
+`get_linear_NCPR(blobLen=5)`  | Returns a 2D numpy array of the net charge per residue (NCPR) as defined by a sliding window. The first dimension of the 2D array contains the local NCPR values and the second contains the associated residue index values along the sequence. The `blobLen` keyword defines the window size used to calculate the sequence-local NCPR. A stepsize of 1 is always used.
+`get_linear_hydropathy(blobLen=5)`  | Returns a 2D numpy array of the local hydropathy as defined by a sliding window using the Kyte-Doolite hydropathy scale[3]. The first dimension of the 2D array contains the local hydropathy score and the second contains the associated residue index values along the sequence. The `blobLen` keyword defines the window size used to calculate the sequence-local hydropathy. A stepsize of 1 is always used.
 `get_linear_complexity(complexityType='WF', alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3)` | Returns the linear sequence complexity as defined by complexityType. Optionally, the sequence complexity of a reduced complexity alphabet can be returned, where that reduced alphabet is defined by either the alphabetSize (which takes advantage of 11 pre-defined simplified alphabets) or via a custom userAlphabet dictionary. <br><br>The `complexityType` Defines the complexity measure being employed. Three different complexity measures are provided by localCIDER, where the measure being used is passed via a string with one of 'WF', 'LC', or 'LZW'. WF is Wooton-Federhen complexity [8], which reports on the sequence's local Shannon entropy, and is the complexity measure used in the SEG algorithm. LC is Linguistic complexity [9], which reports on the number of distinct subsequences over the maximum number of different subsequences given the alphabet size and the word size. Finally, LZW is Lempel-Ziv-Welch [10] complexity, and effectivly asks how efficienctly the sequence can undergo lossless compression using unique subsequences. <br><br>The `alphabetSize` defines the size of the alphabet being used, where pre-defined alphabets are then used based on the specific size. Those pre-defined alphabets are defined below this table for clarity. By default an `alphabetSize` of 20 is used (i.e. no reduction in amino acid complexity). 'userAlphabet' Allows the user to define their own reduced alphabet. The format here is a dictionary where each key-value pair is amino-acid to X. This means you need a dictionary of length 20 where each amino acid is mapped to another amino acid. This is somewhat of tedious, but it helps avoid user-error where specific amino acids are missed. (default=None). <br><br>The `blobLen` is the sliding window size over which complexity is calculated (default=10). The `stepSize` is the size of steps taken as we define a new sliding window. Finally, the `wordSize` keyword is only relevant for the linguistic complexity (LC), ignored for other types, and defines the size of word for the algorithm. Default is 3. We recommend further reading of the associated literature to better understand these complexity measures. 
 `get_linear_sequence_composition(blobLen=5, grps=[])`  | Returns an X by n matrix, where n is the number of amino acids in the sequence and X is the number of distinct groups of amino acids provided. This functions allows the local amino acid composition to be explored using a sliding window that computes the local density of one or more groups of amino acids along the sequence. The `blobLen` keyword defines the window size used to calculate the local sequence composition, and a stepsise of 1 is always used. The `grps` variable defines a list of lists, where each sub-list has elements that are amino acids. If no groups are provided a default grouping of amino acids by their physiochemical properties are used, i.e. `grps = [['E','D'], ['R','K'], ['R','K','E','D'], ['Q','N','S','T','G','H', 'C'], ['A','L','M','I','V'], ['F','Y','W'], ['P']]`, where groupsings are negativly charged, positivly chagred, charged, polar, aliphatic, aromatic, proline.
 
@@ -310,7 +309,7 @@ Function name | Operation
 `save_linearFCR(filename, blobLen=5, saveFormat='png')`| Renders a `matplotlib` plot of the moving average fraction of charged residues (FCR) along the sequence, where the FCR is calculated in overlapping windows of size `blobLen`. Typically 5-7 is used. The plot is saved in the `filename` location. Adding extensions is recommended but not required. The `saveFormat` keyword defines the output format - this parameter is passed to matplotlibs savefig command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.
 `save_linearSigma(filename, blobLen=5, saveFormat='png')`  | Renders a `matplotlib` plot of the moving sigma value, where sigma defines the local charge assymetry and is used in the calculation of kappa. Sigma is calculated over blobs of `blobLen` size, typically with blobs of 5-7 residues. The plot is saved in the `filename` location. Adding extensions is recommended but not required. The `saveFormat` keyword defines the output format - this parameter is passed to matplotlibs savefig command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.
 `save_linearComplexity(filename, complexityType='WF', alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3, saveFormat='png')` | Renders a `matplotlib` plot of the linear sequence complexity. For a discussion of the various options see the `get_linear_complexity` description under the SequenceParameters functions table. The plot is saved in the `filename` location. Adding extensions is recommended but not required. The `saveFormat` keyword defines the output format - this parameter is passed to matplotlibs savefig command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.
-`save_linearCoposition(filename, blobLen=5, saveFormat='png', title='', plot_data=False))` | Renders a `matplotlib` plot of the local, vectorial amino acid composition. In version 0.1.9 the only grouping is the standard physiochemical grouping of amino acids, but in future versions we plan to add customizable groups to the plotting functions (customizable groups are available in the equivalent analysis function `get_linear_sequence_composition`). The local density is initially calculated and the fit to a univariate spline to remove noise and make the local sequence features more easily identifiable. If the `plot_data` variable is set to true the raw data is plotted alongside this spline fit, to ensure the fitting procedure is capturing the relevant sequence features. The plot is saved in the `filename` location. Adding extensions is recommended but not required. The `saveFormat` keyword defines the output format - this parameter is passed to matplotlibs `savefig` command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.
+`save_linearCoposition(filename, blobLen=5, saveFormat='png', title='', plot_data=False))` | Renders a `matplotlib` plot of the local, position-specific amino acid composition. In version 0.1.9 the only grouping is the standard physiochemical grouping of amino acids, but in future versions we plan to add customizable groups to the plotting functions (customizable groups are available in the equivalent analysis function `get_linear_sequence_composition`). The local density is initially calculated and the fit to a univariate spline to remove noise and make the local sequence features more easily identifiable. If the `plot_data` variable is set to true the raw data is plotted alongside this spline fit, to ensure the fitting procedure is capturing the relevant sequence features. The plot is saved in the `filename` location. Adding extensions is recommended but not required. The `saveFormat` keyword defines the output format - this parameter is passed to matplotlibs `savefig` command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.
 
 
 
@@ -487,7 +486,7 @@ Uh oh! One of our sequence files has an amino acid "X" in it - this isn't a cano
 	      continue
 
 
-## Example 3 - plotting two sequence on a single Das-Pappu phase diagram
+## Example 3 - plotting two sequence on a single Das-Pappu diagram of states
 
 	# import the plots module
     from localcider import plots
@@ -559,6 +558,15 @@ We believe scientific software should be held to same (or higher) software stand
 
 **[11]** Murphy, L. R., Wallqvist, A., & Levy, R. M. (2000). Simplified amino acid alphabets for protein fold recognition and implications for folding. Protein Engineering, 13(3), 149-152.
 
+**[12]** Rucker, A.L., Pager, C.T., Campbell, M.N., Qualls, J.E., and Creamer, T.P. (2003). Host-guest scale of left-handed polyproline II helix formation. Proteins 53, 68-75.
+
+**[13]** Shi, Z., Chen, K., Liu, Z., Ng, A., Bracken, W.C., and Kallenbach, N.R. (2005). Polyproline II propensities from GGXGG peptides reveal an anticorrelation with beta-sheet scales. Proc. Natl. Acad. Sci. U. S. A. 102, 17964-17968.
+
+**[14]** Martin, E.W., Holehouse, A.S., Grace, C.R., Hughes, A., Pappu, R.V., and Mittag, T. (2016). Sequence determinants of the conformational properties of an intrinsically disordered protein prior to and upon multisite phosphorylation. J. Am. Chem. Soc.
+        
+        
+        
+
 
 ## Thanks
 Many people have been involved in this project. We'll try and include an up-to-date list here;
@@ -581,7 +589,7 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * **version 0.1.4** - January 16th 2015: Corrected bug in the way KD hydrophobicity was calculated - alanine incorrectly set to 0
 * **version 0.1.7** - February 25th 2015: Bunch of additional updates and code readability improvements, as well as changing how NCPR/FCR plots are made (bar instead of line)
 * **version 0.1.8** - March 28th 2016: Major update with a number of additional features. All figures can now be generated as PDFs, sequence complexity analysis has been added, PPII propensity added, kappa-P added. Pleasantly, no bugs needed fixing, however!
-* **version 0.1.9** - September 31st 2016: Added local amino acid composition, general patterning parameter, and improved on plot formatting. 
+* **version 0.1.9** - September 31st 2016: Added local amino acid composition, general patterning parameter, and improved plot formatting. 
 
 
 ----------

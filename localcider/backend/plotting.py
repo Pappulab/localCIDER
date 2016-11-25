@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.9                                                         !
+   !    Version 0.1.10                                                        !
    !                                                                          !
    !    Copyright (C) 2014 - 2016                                             !
    !    The localCIDER development team (current and former contributors)     !
@@ -645,12 +645,15 @@ def show_linearComplexity(complexityVector, complexityType, seqlen, getFig=False
 
 
     """
+
+    n_bars = len(complexityVector[0,:])
+    LW = __get_bar_edge_width(n_bars)
     
     # first generate the bar-plot and save the list of bars
     barlist = plt.bar(complexityVector[0,:], 
                       complexityVector[1,:],
                       width=1,
-                      linewidth=1.0,
+                      linewidth=LW,
                       edgecolor='k',
                       color='#A8A8A8')
 
@@ -690,7 +693,17 @@ def show_linearComplexity(complexityVector, complexityType, seqlen, getFig=False
 ##
 # Functions below allow construction of the various Linear Sequence Plots - i.e. should 
 # be considered internal to this file
-##
+#
+def __get_bar_edge_width(n_bars):
+    if n_bars < 110:
+        LW = 1.1
+    else:
+        LW = (220 - n_bars)/(220.0)
+        if LW < 0:
+            LW=0
+
+    return LW
+
 
 #...................................................................................#
 def __build_linear_plot(
@@ -711,18 +724,32 @@ def __build_linear_plot(
 
     """
 
+
+
+
+    # define the width of the bar edges - when we're plotting lots of bars the bar
+    # edges can be come overwheliming so the width gets linearly reduced to zero between
+    # 110 and 220 bars (empyrically derived)
+    n_bars = len(data[0,:])
+    LW = __get_bar_edge_width(n_bars)
+
     # plot the data
     barlist = plt.bar( data[0,:], 
                        data[1,:],
                        width=1,
-                       linewidth=1.1,
+                       linewidth=LW,
                        edgecolor='k',
                        color='#A8A8A8')
 
     # this is really inefficient but means we have a consistent
     #
-    if setPositiveNegativeBars:
+    if setPositiveNegativeBars:        
         for bar in xrange(0, len(barlist)):
+            
+            # connects +/- bars *if* the bar edge withd is zero
+            if data[1, bar] == 0 and LW == 0:
+                barlist[bar].set_linewidth(0.2)
+                
             if data[1, bar] < 0:
                 barlist[bar].set_color('r')
                 barlist[bar].set_edgecolor('k')
@@ -736,10 +763,18 @@ def __build_linear_plot(
         plt.plot([0, len(barlist)], [-0.26, -0.26],
                  color='k', linewidth=1.5, linestyle="--")
 
+
     # set Y lims
     plt.ylim(ylimits)
     plt.xlim([1, len(data[0, :])])
 
+    # set general font properties first
+    font = {'family' : 'Bitstream Vera Sans',
+            'weight' : 'normal',
+            'size'   : 14}
+    matplotlib.rc('font', **font)
+
+    # then set of axis labels and title
     axes_pro = FontProperties()
     axes_pro.set_size('large')
     axes_pro.set_weight('bold')
@@ -748,7 +783,7 @@ def __build_linear_plot(
     plt.xlabel(xlabel, fontproperties=axes_pro)
     plt.ylabel(ylabel, fontproperties=axes_pro)
 
-    axes_pro.set_size('x-large')
+    axes_pro.set_size('large')
     plt.title(title, fontproperties=axes_pro)
 
     # return plot object

@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.9                                                         !
+   !    Version 0.1.10                                                        !
    !                                                                          !
    !    Copyright (C) 2014 - 2016                                             !
    !    The localCIDER development team (current and former contributors)     !
@@ -55,7 +55,7 @@ import __init__ as test
 
 
 ## TEST flags
-ALL = True
+ALL = False
 sequenceParameters_test = True
 plots_test = False
 sequence_test = False
