@@ -19,13 +19,13 @@
         <h1 class="header">localCIDER</h1>
         <p class="header">localCIDER lets you compute sequence parameters for disordered proteins</p>
 
-           <ul>
-          <li><a href="https://github.com/Pappulab/localCIDER">View On <strong>GitHub</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu">Go to <strong>Pappu lab</strong></a></li>
-          <li><a href="http://pappulab.wustl.edu/CIDER/">Go to <strong>CIDER</strong> </a></li>
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/Pappulab/localCIDER/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/Pappulab/localCIDER/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/Pappulab/localCIDER">View On GitHub</a></li>
         </ul>
 
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/alexholehouse">Alex Holehouse</a> in the <a class="header name" href="https://github.com/Pappulab">Pappulab</a></p>
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/Pappulab">Pappulab</a></p>
 
 
       </header>
@@ -33,7 +33,7 @@
         <h1>
 <a id="localcider" class="anchor" href="#localcider" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>localCIDER</h1>
 
-<p><code>v 0.1.9 - October 2016</code></p>
+<p><code>v 0.1.10 - November 2016</code></p>
 
 <h1>
 <a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h1>
@@ -61,21 +61,22 @@
 <h2>
 <a id="introduction-1" class="anchor" href="#introduction-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
 
-<p><strong>localCIDER</strong> version 0.1.9 was submitted to PyPI (the Python Package Index) in October 2016. This should be considered a stable release, however, if you encounter any issues/bugs it would be greatly appreciated if you could report any issues to <a href="mailto:alex.holehouse@wustl.edu">alex.holehouse@wustl.edu</a>. </p>
+<p><strong>localCIDER</strong> version 0.1.10 was submitted to PyPI (the Python Package Index) in November 2016. This should be considered a stable release, however, if you encounter any issues/bugs it would be greatly appreciated if you could report any issues to <a href="mailto:alex.holehouse@wustl.edu">alex.holehouse@wustl.edu</a>. </p>
 
 <h2>
 <a id="new-features" class="anchor" href="#new-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>New Features</h2>
 
-<p>In 0.1.9 we have added a number of new features, as detailed below:</p>
+<p>In 0.1.10 we have added a number of new features, as detailed below:</p>
 
 <ul>
-<li><p>Local compositional analysis has been added to help identify local regions which are enriched in a particular type of amino acid. Proteins are complex heteropolymers, so plotting the local density of each amino acid with a sliding becomes impossible to interpret, as we just generate a series of jagged lines. To overcome this challenge we take a dual approach: firstly, amino acids are group by physiochemical properties. Secondly, we then fit the noisy data to a univariate spline to give a smoothed description of the local density along the sequence. Combined, this allows us to generate easy-to-read plots that illustrate the local density of residues at any given location along the sequence</p></li>
-<li><p>The Omega patterning parameter (previously kappa_proline) is re-defined as per the manuscript by Martin &amp; Holehouse <em>et al.</em></p></li>
-<li><p>A generalized patterning parameter for considering 2 or 3 letter alphabets is released, allowing researchers to, generally, ask questions about sequence patterning</p></li>
-<li><p>The figure generation code has been further optimised, as has code documentation</p></li>
+<li>Sequence shuffling is now explicit included as a function, where a shuffled sequence can be generated and specific residues can be 'frozen' and held invariant during shuffling</li>
+<li>Omega parameter code updated and all reference to kappa_proline removed</li>
+<li>Two additional PPII scales are included for the analysis PPII propensity (from the Creamer and Kallenbach labs)</li>
+<li>References were updated </li>
+<li>Update to plotting functions, such that line edges dynamically shrink for longer sequences </li>
+<li>Font sizes for plots were fixed from previous version, where, for some reason, titles and labels were poorly formatted</li>
+<li>Update tests</li>
 </ul>
-
-<p>If there are sequence feautures you would like to see added to localCIDER please don't hesitate to get in touch - we're always looking for new features to add and to further grow localCIDER as a general purpose protein analysis framework.</p>
 
 <h2>
 <a id="installing-on-osx-or-linux" class="anchor" href="#installing-on-osx-or-linux" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installing on OSX or linux</h2>
@@ -89,14 +90,14 @@
 <pre><code>[sudo] pip install localcider 
 </code></pre>
 
-<p>Very simple! <strong>localCIDER</strong> depends on <code>numpy</code>, <code>scipy</code>, and <code>matplotlib</code>, all three of which will be installed via <code>pip</code> if you haven't already installed them.</p>
+<p>Very simple! <strong>localCIDER</strong> depends on the three pillars of scientific Python computing (<code>numpy</code>, <code>scipy</code>, and  <code>matplotlib</code>), all of which will be installed via <code>pip</code> if you haven't already installed them.</p>
 
 <p>If you encounter issues installing please let me know. That said, any issues <em>should</em> be due to problems with Numpy or <code>matplotlib</code> and not <strong>localCIDER</strong>, so investigate the documentation associated with installing those packages first.</p>
 
 <h2>
 <a id="python-2-and-python-3" class="anchor" href="#python-2-and-python-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Python 2 and Python 3</h2>
 
-<p>As of version 0.1.8 localCIDER is supported under both Python 2.x and 3.x. localCIDER has been extensively tested and used with Python 2.7.x, and we recommend this version of Python.</p>
+<p>As of version 0.1.8 localCIDER is supported under both Python 2.x and 3.x. localCIDER has been extensively tested and used with Python 2.7.x, and we recommend this version of Python. If you encounter issues using localCIDER with Python version 3.x please let us knnow! </p>
 
 <h3>
 <a id="known-installation-issues" class="anchor" href="#known-installation-issues" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Known installation issues</h3>
@@ -180,12 +181,10 @@ pip install localcider
 <h1>
 <a id="using-localcider" class="anchor" href="#using-localcider" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using localCIDER</h1>
 
-<p>Once you have localCIDER installed, fire up Python and <code>import</code> the localcider package;</p>
+<p>Once you have localCIDER installed, activate the interactive Python prompt (we recommend using <a href="https://ipython.org/">iPython</a> and <code>import</code> the localcider package;</p>
 
 <pre><code>import localcider
 </code></pre>
-
-<p>You'll be greeted with a message detailing the current version.</p>
 
 <p>There are two main localcider modules right now;</p>
 
@@ -198,9 +197,9 @@ pip install localcider
 </ul>
 
 <h4>
-<a id="quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-das-pappu-diagram-of-states" class="anchor" href="#quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-das-pappu-diagram-of-states" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick-start - calculate kappa of my sequence and plot it on the Das-Pappu diagram of states</h4>
+<a id="quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-das-pappu-diagram-of-states" class="anchor" href="#quick-start---calculate-kappa-of-my-sequence-and-plot-it-on-the-das-pappu-diagram-of-states" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick-start - calculate kappa of my sequence and plot it on the Das-Pappu diagram of states.</h4>
 
-<p>The following code will print the kappa value of your sequence to the terminal prompt, and then plot your sequence on a Das-Pappu phase plot, saving it in the current directory as <code>my_snazzy_plot.png</code></p>
+<p>The following code will print the kappa value of your sequence to the terminal prompt, and then plot your sequence on a Das-Pappu diagram of states, saving it in the current directory as <code>my_snazzy_plot.png</code></p>
 
 <pre><code># import the relevant code
 from localcider.sequenceParameters import SequenceParameters
@@ -219,7 +218,7 @@ SeqOb.save_phaseDiagramPlot('my_snazzy_plot', saveFormat='pdf'))
 <h4>
 <a id="interactive-help" class="anchor" href="#interactive-help" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Interactive help</h4>
 
-<p><strong>localCIDER</strong> contains highly complete interactive help - for any object or function simply type <code>help(&lt;item&gt;)</code> for a complete description. For example;</p>
+<p><strong>localCIDER</strong> contains an extensive set of interactive help information - for any object or function simply type <code>help(&lt;item&gt;)</code> for a complete description. For example;</p>
 
 <pre><code># import the relevant code
 from localcider.sequenceParameters import SequenceParameters
@@ -240,7 +239,7 @@ help(SeqOb.get_kappa())
 <pre><code>from localcider.sequenceParameters import SequenceParameters
 </code></pre>
 
-<p>By opening your code with this line you now have direct access to the <code>SequenceParameters</code> class, which takes either a string of an amino acid sequence or the filename of a file containing an amino acid sequence, which is then read and parsed. As an example;</p>
+<p>By opening your code with this line, you now have direct access to the <code>SequenceParameters</code> class, which takes either a string of an amino acid sequence or the filename of a file containing an amino acid sequence, which is then read and parsed. As an example;</p>
 
 <pre><code># as before we import the SequenceParameters class directly
 from localcider.sequenceParameters import SequenceParameters
@@ -268,7 +267,7 @@ SeqOb = SequenceParameters(sequenceFile="syn.fasta")
 <h3>
 <a id="single-value-sequence-analysis-functions" class="anchor" href="#single-value-sequence-analysis-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Single value sequence analysis functions</h3>
 
-<p>The functions below perform analysis which ge</p>
+<p>The functions below perform various analysis over sequences and return a single value ()</p>
 
 <table>
 <thead>
@@ -327,12 +326,8 @@ SeqOb = SequenceParameters(sequenceFile="syn.fasta")
 <td align="center">Get the sequence's kappa value [2]</td>
 </tr>
 <tr>
-<td align="center"><code>get_kappa_Omega()</code></td>
-<td align="center">Get the sequence's Omega value. Omega defines the patterning between charged/proline residues and all other residues, and is described further in the forthcoming paper by Martin and Holehouse (submitted Sept. 2016).</td>
-</tr>
-<tr>
-<td align="center"><code>get_kappa_Omega_sequence()</code></td>
-<td align="center">Returns the reduced-alphabet sequence used to calculate the Omega parameter, where by R/K/D/E/P residues are defined as 'X' and all other residues are 'O'. This provides a clear visual description of the charge/proline patterning.</td>
+<td align="center"><code>get_Omega()</code></td>
+<td align="center">Get the sequence's Omega value. Omega defines the patterning between charged/proline residues and all other residues 14].</td>
 </tr>
 <tr>
 <td align="center"><code>get_mean_net_charge()</code></td>
@@ -351,8 +346,8 @@ SeqOb = SequenceParameters(sequenceFile="syn.fasta")
 <td align="center">Get the mean hydropathy as calculated from a normalized Kyte-Doolittle hydrophobicity scale** [3,4]</td>
 </tr>
 <tr>
-<td align="center"><code>get_PPII_propensity()</code></td>
-<td align="center">Get the overall sequence's PPII propensity as defined by Hilser et al [6] using the values reported in table 1 from [7]</td>
+<td align="center"><code>get_PPII_propensity(mode='hilser')</code></td>
+<td align="center">Get the overall sequence's PPII propensity as defined by one of three PPII propensity scales. By default, the scale by Elam et al.[6] is used, but modes <code>creamer</code> and <code>kallenbach</code> are also available, which use values from scales by Rucker or Shi, respectively [12,13].</td>
 </tr>
 <tr>
 <td align="center">
@@ -374,9 +369,9 @@ SeqOb = SequenceParameters(sequenceFile="syn.fasta")
 <p>** The normalized Kyte-Doolittle scale converts all values on the scale to fall between 0 and 1</p>
 
 <h3>
-<a id="vectorial-sequence-analysis-functions" class="anchor" href="#vectorial-sequence-analysis-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vectorial sequence analysis functions</h3>
+<a id="position-specific-sequence-analysis-functions" class="anchor" href="#position-specific-sequence-analysis-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Position-specific sequence analysis functions</h3>
 
-<p>The following functions generate a vector of values which describes some property associated with the sequence as a function of sequence position.</p>
+<p>The following functions generate an array of values which describes some property associated with the sequence as a function of sequence position.</p>
 
 <table>
 <thead>
@@ -388,15 +383,15 @@ SeqOb = SequenceParameters(sequenceFile="syn.fasta")
 <tbody>
 <tr>
 <td align="center"><code>get_linear_FCR(blobLen=5)</code></td>
-<td align="center">Returns a 2D numpy vector of the fraction of charged residues (FCR) as defined by a sliding window. The first dimension of the 2D vector contains the local FCR values and the second contains the associated residue index values along the sequence. the <code>blobLen</code> keyword defines the window size used to calculate the sequence-local FCR. A stepsize of 1 is always used.</td>
+<td align="center">Returns a 2D numpy array of the fraction of charged residues (FCR) as defined by a sliding window. The first dimension of the 2D array contains the local FCR values and the second contains the associated residue index values along the sequence. the <code>blobLen</code> keyword defines the window size used to calculate the sequence-local FCR. A stepsize of 1 is always used.</td>
 </tr>
 <tr>
 <td align="center"><code>get_linear_NCPR(blobLen=5)</code></td>
-<td align="center">Returns a 2D numpy vector of the net charge per residue (NCPR) as defined by a sliding window. The first dimension of the 2D vector contains the local NCPR values and the second contains the associated residue index values along the sequence. The <code>blobLen</code> keyword defines the window size used to calculate the sequence-local NCPR. A stepsize of 1 is always used.</td>
+<td align="center">Returns a 2D numpy array of the net charge per residue (NCPR) as defined by a sliding window. The first dimension of the 2D array contains the local NCPR values and the second contains the associated residue index values along the sequence. The <code>blobLen</code> keyword defines the window size used to calculate the sequence-local NCPR. A stepsize of 1 is always used.</td>
 </tr>
 <tr>
 <td align="center"><code>get_linear_hydropathy(blobLen=5)</code></td>
-<td align="center">Returns a 2D numpy vector of the local hydropathy as defined by a sliding window using the Kyte-Doolite hydropathy scale[3]. The first dimension of the 2D vector contains the local hydropathy score and the second contains the associated residue index values along the sequence. The <code>blobLen</code> keyword defines the window size used to calculate the sequence-local hydropathy. A stepsize of 1 is always used.</td>
+<td align="center">Returns a 2D numpy array of the local hydropathy as defined by a sliding window using the Kyte-Doolite hydropathy scale[3]. The first dimension of the 2D array contains the local hydropathy score and the second contains the associated residue index values along the sequence. The <code>blobLen</code> keyword defines the window size used to calculate the sequence-local hydropathy. A stepsize of 1 is always used.</td>
 </tr>
 <tr>
 <td align="center"><code>get_linear_complexity(complexityType='WF', alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3)</code></td>
@@ -405,6 +400,10 @@ SeqOb = SequenceParameters(sequenceFile="syn.fasta")
 <tr>
 <td align="center"><code>get_linear_sequence_composition(blobLen=5, grps=[])</code></td>
 <td align="center">Returns an X by n matrix, where n is the number of amino acids in the sequence and X is the number of distinct groups of amino acids provided. This functions allows the local amino acid composition to be explored using a sliding window that computes the local density of one or more groups of amino acids along the sequence. The <code>blobLen</code> keyword defines the window size used to calculate the local sequence composition, and a stepsise of 1 is always used. The <code>grps</code> variable defines a list of lists, where each sub-list has elements that are amino acids. If no groups are provided a default grouping of amino acids by their physiochemical properties are used, i.e. <code>grps = [['E','D'], ['R','K'], ['R','K','E','D'], ['Q','N','S','T','G','H', 'C'], ['A','L','M','I','V'], ['F','Y','W'], ['P']]</code>, where groupsings are negativly charged, positivly chagred, charged, polar, aliphatic, aromatic, proline.</td>
+</tr>
+<tr>
+<td align="center"><code>get_Omega_sequence()</code></td>
+<td align="center">Returns the reduced-alphabet sequence used to calculate the Omega parameter, where by R/K/D/E/P residues are defined as 'X' and all other residues are 'O'. This provides a clear visual description of the charge/proline patterning.</td>
 </tr>
 </tbody>
 </table>
@@ -501,6 +500,28 @@ twenty   - all twenty!
 </table>
 
 <h3>
+<a id="sequence-permutation-functions" class="anchor" href="#sequence-permutation-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sequence permutation functions</h3>
+
+<p>These functions perform some operation on the sequence, returning a permuted SequenceParameter object populated with a different sequence. The underlying sequence object the function is called on is not altered. </p>
+
+<table>
+<thead>
+<tr>
+<th align="center">Function name</th>
+<th align="center">Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">
+<code>get_shuffle(frozen=None)</code> <br>
+</td>
+<td align="center">Returns a SequenceParameter object with the primary amino acid sequence shuffled. If residue index positions are past as a list to 'frozen' those residues are considered imutable and are not shuffled.</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
 <a id="plotting-functions-on-screen-show-functions" class="anchor" href="#plotting-functions-on-screen-show-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Plotting functions (on-screen 'show' functions)</h3>
 
 <p>The following functions let you plot parameters from your sequence and display the results immediately on screen.</p>
@@ -587,7 +608,7 @@ twenty   - all twenty!
 </tr>
 <tr>
 <td align="center"><code>save_linearCoposition(filename, blobLen=5, saveFormat='png', title='', plot_data=False))</code></td>
-<td align="center">Renders a <code>matplotlib</code> plot of the local, vectorial amino acid composition. In version 0.1.9 the only grouping is the standard physiochemical grouping of amino acids, but in future versions we plan to add customizable groups to the plotting functions (customizable groups are available in the equivalent analysis function <code>get_linear_sequence_composition</code>). The local density is initially calculated and the fit to a univariate spline to remove noise and make the local sequence features more easily identifiable. If the <code>plot_data</code> variable is set to true the raw data is plotted alongside this spline fit, to ensure the fitting procedure is capturing the relevant sequence features. The plot is saved in the <code>filename</code> location. Adding extensions is recommended but not required. The <code>saveFormat</code> keyword defines the output format - this parameter is passed to matplotlibs <code>savefig</code> command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.</td>
+<td align="center">Renders a <code>matplotlib</code> plot of the local, position-specific amino acid composition. In version 0.1.9 the only grouping is the standard physiochemical grouping of amino acids, but in future versions we plan to add customizable groups to the plotting functions (customizable groups are available in the equivalent analysis function <code>get_linear_sequence_composition</code>). The local density is initially calculated and the fit to a univariate spline to remove noise and make the local sequence features more easily identifiable. If the <code>plot_data</code> variable is set to true the raw data is plotted alongside this spline fit, to ensure the fitting procedure is capturing the relevant sequence features. The plot is saved in the <code>filename</code> location. Adding extensions is recommended but not required. The <code>saveFormat</code> keyword defines the output format - this parameter is passed to matplotlibs <code>savefig</code> command which supports the following filetypes: emf, eps, pdf, png, ps, raw, rgba, svg, svgz.</td>
 </tr>
 </tbody>
 </table>
@@ -850,7 +871,7 @@ for file in filelist:
 </code></pre>
 
 <h2>
-<a id="example-3---plotting-two-sequence-on-a-single-das-pappu-phase-diagram" class="anchor" href="#example-3---plotting-two-sequence-on-a-single-das-pappu-phase-diagram" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example 3 - plotting two sequence on a single Das-Pappu phase diagram</h2>
+<a id="example-3---plotting-two-sequence-on-a-single-das-pappu-diagram-of-states" class="anchor" href="#example-3---plotting-two-sequence-on-a-single-das-pappu-diagram-of-states" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example 3 - plotting two sequence on a single Das-Pappu diagram of states</h2>
 
 <pre><code># import the plots module
 from localcider import plots
@@ -933,6 +954,12 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 
 <p><strong>[11]</strong> Murphy, L. R., Wallqvist, A., &amp; Levy, R. M. (2000). Simplified amino acid alphabets for protein fold recognition and implications for folding. Protein Engineering, 13(3), 149-152.</p>
 
+<p><strong>[12]</strong> Rucker, A.L., Pager, C.T., Campbell, M.N., Qualls, J.E., and Creamer, T.P. (2003). Host-guest scale of left-handed polyproline II helix formation. Proteins 53, 68-75.</p>
+
+<p><strong>[13]</strong> Shi, Z., Chen, K., Liu, Z., Ng, A., Bracken, W.C., and Kallenbach, N.R. (2005). Polyproline II propensities from GGXGG peptides reveal an anticorrelation with beta-sheet scales. Proc. Natl. Acad. Sci. U. S. A. 102, 17964-17968.</p>
+
+<p><strong>[14]</strong> Martin, E.W., Holehouse, A.S., Grace, C.R., Hughes, A., Pappu, R.V., and Mittag, T. (2016). Sequence determinants of the conformational properties of an intrinsically disordered protein prior to and upon multisite phosphorylation. J. Am. Chem. Soc.</p>
+
 <h2>
 <a id="thanks" class="anchor" href="#thanks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Thanks</h2>
 
@@ -967,9 +994,12 @@ plots.save_multiple_uverskyPlot2([SynWT, SynMut], 'example', label_list=['WT','M
 <li>
 <strong>version 0.1.8</strong> - March 28th 2016: Major update with a number of additional features. All figures can now be generated as PDFs, sequence complexity analysis has been added, PPII propensity added, kappa-P added. Pleasantly, no bugs needed fixing, however!</li>
 <li>
-<strong>version 0.1.9</strong> - September 31st 2016: Added local amino acid composition, general patterning parameter, and improved on plot formatting. </li>
+<strong>version 0.1.9</strong> - September 31st 2016: Added local amino acid composition, general patterning parameter, and improved plot formatting. </li>
 </ul>
       </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
 		          <script type="text/javascript">
