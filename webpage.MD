@@ -197,7 +197,7 @@ Many of these functions don't take arguments. Optional arguments are prefixed wi
 
 
 ### Single value sequence analysis functions
-The functions below perform analysis which ge
+The functions below perform various analysis over sequences and return a single value ()
 
 Function name | Operation 
 :---: | :---: 
@@ -214,7 +214,6 @@ Function name | Operation
 `get_fraction_disorder_promoting()` | Get the fraction of residues predicted to be 'disorder promoting' [1]. Note this is NOT a disorder prediction!
 `get_kappa()` | Get the sequence's kappa value [2]
 `get_Omega()` | Get the sequence's Omega value. Omega defines the patterning between charged/proline residues and all other residues 14].
-`get_Omega_sequence()` | Returns the reduced-alphabet sequence used to calculate the Omega parameter, where by R/K/D/E/P residues are defined as 'X' and all other residues are 'O'. This provides a clear visual description of the charge/proline patterning.
 `get_mean_net_charge()` | Get the absolute mean net charge of your sequence
 `get_phase_plot_region()` | Get the region on the Das-Pappu diagram of states where your sequence falls [2]
 `get_mean_hydropathy()` | Get the mean hydropathy as calculated from a skewed Kyte-Doolittle hydrophobicity scale* [3]
@@ -222,7 +221,6 @@ Function name | Operation
 `get_PPII_propensity(mode='hilser')` | Get the overall sequence's PPII propensity as defined by one of three PPII propensity scales. By default, the scale by Elam et al.[6] is used, but modes `creamer` and `kallenbach` are also available, which use values from scales by Rucker or Shi, respectively [12,13]. 
 `get_delta()` <br> | Returns the delta value of the sequence, as defined when calculating kapp [2] 
 `get_deltaMax()` <br> | Returns the maximum possible delta value (delta-max) for a sequence of this composition
-`get_shuffle(frozen=None)` <br> | Returns a SequenceParameter object with the primary amino acid sequence shuffled. If residue index positions are past as a list to 'frozen' those residues are considered imutable and are not shuffled. 
 
 
 
@@ -242,6 +240,8 @@ Function name | Operation
 `get_linear_hydropathy(blobLen=5)`  | Returns a 2D numpy array of the local hydropathy as defined by a sliding window using the Kyte-Doolite hydropathy scale[3]. The first dimension of the 2D array contains the local hydropathy score and the second contains the associated residue index values along the sequence. The `blobLen` keyword defines the window size used to calculate the sequence-local hydropathy. A stepsize of 1 is always used.
 `get_linear_complexity(complexityType='WF', alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3)` | Returns the linear sequence complexity as defined by complexityType. Optionally, the sequence complexity of a reduced complexity alphabet can be returned, where that reduced alphabet is defined by either the alphabetSize (which takes advantage of 11 pre-defined simplified alphabets) or via a custom userAlphabet dictionary. <br><br>The `complexityType` Defines the complexity measure being employed. Three different complexity measures are provided by localCIDER, where the measure being used is passed via a string with one of 'WF', 'LC', or 'LZW'. WF is Wooton-Federhen complexity [8], which reports on the sequence's local Shannon entropy, and is the complexity measure used in the SEG algorithm. LC is Linguistic complexity [9], which reports on the number of distinct subsequences over the maximum number of different subsequences given the alphabet size and the word size. Finally, LZW is Lempel-Ziv-Welch [10] complexity, and effectivly asks how efficienctly the sequence can undergo lossless compression using unique subsequences. <br><br>The `alphabetSize` defines the size of the alphabet being used, where pre-defined alphabets are then used based on the specific size. Those pre-defined alphabets are defined below this table for clarity. By default an `alphabetSize` of 20 is used (i.e. no reduction in amino acid complexity). 'userAlphabet' Allows the user to define their own reduced alphabet. The format here is a dictionary where each key-value pair is amino-acid to X. This means you need a dictionary of length 20 where each amino acid is mapped to another amino acid. This is somewhat of tedious, but it helps avoid user-error where specific amino acids are missed. (default=None). <br><br>The `blobLen` is the sliding window size over which complexity is calculated (default=10). The `stepSize` is the size of steps taken as we define a new sliding window. Finally, the `wordSize` keyword is only relevant for the linguistic complexity (LC), ignored for other types, and defines the size of word for the algorithm. Default is 3. We recommend further reading of the associated literature to better understand these complexity measures. 
 `get_linear_sequence_composition(blobLen=5, grps=[])`  | Returns an X by n matrix, where n is the number of amino acids in the sequence and X is the number of distinct groups of amino acids provided. This functions allows the local amino acid composition to be explored using a sliding window that computes the local density of one or more groups of amino acids along the sequence. The `blobLen` keyword defines the window size used to calculate the local sequence composition, and a stepsise of 1 is always used. The `grps` variable defines a list of lists, where each sub-list has elements that are amino acids. If no groups are provided a default grouping of amino acids by their physiochemical properties are used, i.e. `grps = [['E','D'], ['R','K'], ['R','K','E','D'], ['Q','N','S','T','G','H', 'C'], ['A','L','M','I','V'], ['F','Y','W'], ['P']]`, where groupsings are negativly charged, positivly chagred, charged, polar, aliphatic, aromatic, proline.
+`get_Omega_sequence()` | Returns the reduced-alphabet sequence used to calculate the Omega parameter, where by R/K/D/E/P residues are defined as 'X' and all other residues are 'O'. This provides a clear visual description of the charge/proline patterning.
+
 
 #### Reduced alphabets
 Predefined alphabets shown below - all except eleven are based on alphabets defined in the reference below [11].
@@ -282,6 +282,13 @@ Function name | Operation
 :---: | :---: 
 `get_HTMLColorString()` <br> | Returns a fully formated HTML string which can be used to represent your sequence. The coloring used has a default, but can be defined using the `set_HTMLColorResiduePalette` function
 `set_HTMLColorResiduePalette(colorDictionary)` <br> | Allows you to custom define a colour pallete. The colorDictionary must be a dictionary object that maps each of the 20 amino acids to a color. Currently 17 possible colors can be assigned to the 20 amino acids. These are;<br> aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, orange, purple, red, silver, teal, white, and yellow. This set of 17 colors represents the HTML browser compatible set of colors.
+
+### Sequence permutation functions
+These functions perform some operation on the sequence, returning a permuted SequenceParameter object populated with a different sequence. The underlying sequence object the function is called on is not altered. 
+
+Function name | Operation 
+:---: | :---: 
+`get_shuffle(frozen=None)` <br> | Returns a SequenceParameter object with the primary amino acid sequence shuffled. If residue index positions are past as a list to 'frozen' those residues are considered imutable and are not shuffled. 
 
 ### Plotting functions (on-screen 'show' functions)
 The following functions let you plot parameters from your sequence and display the results immediately on screen.
