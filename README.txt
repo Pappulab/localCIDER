@@ -2,7 +2,7 @@
 localCIDER
 ==========
 
-`version 0.1.9 - October 2016`
+`version 0.1.10 - November 2016`
 
 **Introduction**
 
@@ -13,7 +13,7 @@ This project was motivated by the need to rapidly and easily calculate the |kgr|
 .. image :: http://pappulab.wustl.edu/img/phase_diagram_small.png
    :width: 400 px
 
-The original method for calculating |kgr| involved an incredibly computationally expensive Monte Carlo step (used to determine the maximally segregated sequence), whereas localCIDER makes use of a newly developed algorithm that computes |kgr| in O(1) time. More generally, localCIDER provides a wide range of sequence analysis routines for understanding, classifying, and designing disordered proteins.  
+The original method for calculating |kgr| involved an incredibly computationally expensive Monte Carlo step (used to determine the maximally segregated sequence), whereas localCIDER makes use of a newly developed algorithm that computes |kgr| in O(1) time. More generally, localCIDER provides a wide range of sequence analysis routines for understanding, classifying, and designing disordered proteins. Beyond charge-based parameters, a wide range of additional parameters can also be calculated. **localCIDER** represents an ideal tool for the construction of a high-throughput sequence analysis pipelines, and we believe provides a direct route to explore the sequence-to-ensemble relationship of IDPs.
 
 For more information please `see the full documentation <http://pappulab.github.io/localCIDER/>`_ .
 
@@ -25,7 +25,7 @@ To install run
 
     [sudo] pip install localcider
 
-Note that localcider requires `numpy`, `scipy`, and `matplotlib` to run.
+We strongly recommend using `virtualenv`, in which case `sudo` should not be required. Note that localcider requires `numpy`, `scipy`, and `matplotlib` to run.
 
 ------------------------------
 Usage, bugs, and questions
