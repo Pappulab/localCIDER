@@ -662,6 +662,12 @@ def show_linearComplexity(complexityVector, complexityType, seqlen, getFig=False
     plt.xlim([1, seqlen])
 
     # set the font properties
+    # set general font properties first
+    font = {'family' : 'Bitstream Vera Sans',
+            'weight' : 'normal',
+            'size'   : 14}
+    matplotlib.rc('font', **font)
+
     axes_pro = FontProperties()
     axes_pro.set_size('large')
     axes_pro.set_weight('bold')
