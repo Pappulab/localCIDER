@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.10                                                        !
+   !    Version 0.1.11                                                        !
    !                                                                          !
    !    Copyright (C) 2014 - 2016                                             !
    !    The localCIDER development team (current and former contributors)     !
@@ -1635,6 +1635,7 @@ class Sequence:
         s += "FCR        :\t%3.5f\n" % (self.FCR())
         s += "NCPR       :\t%3.5f\n" % (self.NCPR())
         s += "Kappa      :\t%3.5f\n" % (self.kappa())
+        s += "Omega      :\t%3.5f\n" % (self.Omega())
         s += "Sigma      :\t%3.5f\n" % (self.sigma())
         s += "Delta      :\t%3.5f\n" % (self.delta())
         s += "Max Delta  :\t%3.5f\n" % (self.deltaMax())

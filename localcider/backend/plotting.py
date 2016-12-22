@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.10                                                        !
+   !    Version 0.1.11                                                        !
    !                                                                          !
    !    Copyright (C) 2014 - 2016                                             !
    !    The localCIDER development team (current and former contributors)     !
@@ -63,8 +63,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 import numpy as np
-from scipy.interpolate import interp1d
-from scipy.interpolate import UnivariateSpline
+
 
 
 from sequence import Sequence
@@ -934,6 +933,10 @@ def save_local_composition_plot(residue_number, density_vectors, legend_color, l
         
 
     """
+
+    # only import if required, this shifts the dependency to functional rather than the
+    # full localcider package
+    from scipy.interpolate import UnivariateSpline
 
 
     # determine the number of different groups

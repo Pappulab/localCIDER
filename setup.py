@@ -9,7 +9,7 @@ if sys.version_info >= (3, 0):
 
 setup(
     name='localcider',
-    version='0.1.10.post2',
+    version='0.1.11.post3',
     author='Alex Holehouse',
     author_email='alex.holehouse@wustl.edu',
     packages=['localcider', 'localcider.tests', 'localcider.backend', 'localcider.backend.data'],

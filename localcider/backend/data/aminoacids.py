@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.10                                                        !
+   !    Version 0.1.11                                                        !
    !                                                                          !
    !    Copyright (C) 2014 - 2016                                             !
    !    The localCIDER development team (current and former contributors)     !
@@ -96,12 +96,17 @@ ONE_TO_THREE = {'A':'ALA',
 
 TWENTY_AAs = ['R','H','K','D','E','S','T','N','Q','C','G','P','A','I','L','M','F','W','Y','V']
 
+
+# Update on 0.1.11 gly went from black to green
+# Aromatics became orange
+#
+#
 DEFAULT_COLOR_PALETTE = {'A':'black', 
                          'C':'black',
                          'D':'red',
                          'E':'red',
-                         'F':'black',
-                         'G':'black',
+                         'F':'orange',
+                         'G':'green',
                          'H':'green', 
                          'I':'black',
                          'K':'blue',
@@ -114,8 +119,8 @@ DEFAULT_COLOR_PALETTE = {'A':'black',
                          'S':'green',
                          'T':'green',
                          'V':'black',
-                         'W':'black',
-                         'Y':'black'}
+                         'W':'orange',
+                         'Y':'orange'}
 
 
 

@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.10                                                        !
+   !    Version 0.1.11                                                        !
    !                                                                          !
    !    Copyright (C) 2014 - 2016                                             !
    !    The localCIDER development team (current and former contributors)     !
@@ -54,4 +54,4 @@ HUSH_ALL = True
 
 
 # DO NOT CHANGE ANYTHING BELOW THIS LINE
-VERSION = "0.1.10"
+VERSION = "0.1.11"

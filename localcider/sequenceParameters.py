@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.10                                                        !
+   !    Version 0.1.11                                                        !
    !--------------------------------------------------------------------------!
 
    File Description:
@@ -661,6 +661,20 @@ class SequenceParameters:
     # =============================================== #
     # =======  LINEAR SEQUENCE INFORMATION  ========= #
     #...................................................................................#
+    def get_linear_sigma(self, blobLen=5):
+        """
+        Returns a numpy vector of the sigma (charge assymetry) as defined by a 
+        sliding window. The first dimension contains the values and the second the associated
+        index values along the sequence. A stepsize of 1 is always used.
+
+        blobLen     | Sliding window size over which NCPR is calculated (default = 5
+                      to match the default for kappa calculation)
+
+        """
+
+        return(self.SeqObj.linearDistOfSigma(blobLen))
+
+
     def get_linear_NCPR(self, blobLen=5):
         """
         Returns a numpy vector of the net charge per residue (NCPR) as defined by a 
