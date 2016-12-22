@@ -1,0 +1,8 @@
+title: localCIDER
+description: localCIDER lets you compute sequence parameters for disordered proteins
+google_analytics: UA-53151639-1
+show_downloads: true
+theme: jekyll-theme-dinky
+
+gems:
+  - jekyll-mentions
