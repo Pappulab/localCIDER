@@ -1,6 +1,6 @@
 # localCIDER
 
-`v 0.1.10 - November 2016`
+`v 0.1.11 - December 2016`
 
 
 # Introduction
@@ -24,15 +24,10 @@ Moreover, if there's a type of analysis you use frequently and you think other u
 **localCIDER** version 0.1.10 was submitted to PyPI (the Python Package Index) in November 2016. This should be considered a stable release, however, if you encounter any issues/bugs it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. 
 
 ## New Features
-In 0.1.10 we have added a number of new features, as detailed below:
-
-* Sequence shuffling is now explicit included as a function, where a shuffled sequence can be generated and specific residues can be 'frozen' and held invariant during shuffling
-* Omega parameter code updated and all reference to kappa_proline removed
-* Two additional PPII scales are included for the analysis PPII propensity (from the Creamer and Kallenbach labs)
-* References were updated 
-* Update to plotting functions, such that line edges dynamically shrink for longer sequences 
-* Font sizes for plots were fixed from previous version, where, for some reason, titles and labels were poorly formatted
-* Update tests
+In 0.1.11 we have added a number of new features, as detailed below:
+* Update to colors for amino acid output string
+* Added the get_linear_sigma function 
+* Moved the import location for the scipy dependency so it can 
 
 
 ## Installing on OSX or linux
@@ -237,6 +232,7 @@ Function name | Operation
 :---: | :---: 
 `get_linear_FCR(blobLen=5)`  | Returns a 2D numpy array of the fraction of charged residues (FCR) as defined by a sliding window. The first dimension of the 2D array contains the local FCR values and the second contains the associated residue index values along the sequence. the `blobLen` keyword defines the window size used to calculate the sequence-local FCR. A stepsize of 1 is always used.
 `get_linear_NCPR(blobLen=5)`  | Returns a 2D numpy array of the net charge per residue (NCPR) as defined by a sliding window. The first dimension of the 2D array contains the local NCPR values and the second contains the associated residue index values along the sequence. The `blobLen` keyword defines the window size used to calculate the sequence-local NCPR. A stepsize of 1 is always used.
+`get_linear_sigma(blobLen=5)`  | Returns a 2D numpy array of the linear sigma value as defined by a sliding window. The first dimension of the 2D array contains the local sigma values and the second contains the associated residue index values along the sequence. the `blobLen` keyword defines the window size used to calculate the sequence-local sigma value. A stepsize of 1 is always used.
 `get_linear_hydropathy(blobLen=5)`  | Returns a 2D numpy array of the local hydropathy as defined by a sliding window using the Kyte-Doolite hydropathy scale[3]. The first dimension of the 2D array contains the local hydropathy score and the second contains the associated residue index values along the sequence. The `blobLen` keyword defines the window size used to calculate the sequence-local hydropathy. A stepsize of 1 is always used.
 `get_linear_complexity(complexityType='WF', alphabetSize=20, userAlphabet={}, windowSize=10, stepSize=1, wordSize=3)` | Returns the linear sequence complexity as defined by complexityType. Optionally, the sequence complexity of a reduced complexity alphabet can be returned, where that reduced alphabet is defined by either the alphabetSize (which takes advantage of 11 pre-defined simplified alphabets) or via a custom userAlphabet dictionary. <br><br>The `complexityType` Defines the complexity measure being employed. Three different complexity measures are provided by localCIDER, where the measure being used is passed via a string with one of 'WF', 'LC', or 'LZW'. WF is Wooton-Federhen complexity [8], which reports on the sequence's local Shannon entropy, and is the complexity measure used in the SEG algorithm. LC is Linguistic complexity [9], which reports on the number of distinct subsequences over the maximum number of different subsequences given the alphabet size and the word size. Finally, LZW is Lempel-Ziv-Welch [10] complexity, and effectivly asks how efficienctly the sequence can undergo lossless compression using unique subsequences. <br><br>The `alphabetSize` defines the size of the alphabet being used, where pre-defined alphabets are then used based on the specific size. Those pre-defined alphabets are defined below this table for clarity. By default an `alphabetSize` of 20 is used (i.e. no reduction in amino acid complexity). 'userAlphabet' Allows the user to define their own reduced alphabet. The format here is a dictionary where each key-value pair is amino-acid to X. This means you need a dictionary of length 20 where each amino acid is mapped to another amino acid. This is somewhat of tedious, but it helps avoid user-error where specific amino acids are missed. (default=None). <br><br>The `blobLen` is the sliding window size over which complexity is calculated (default=10). The `stepSize` is the size of steps taken as we define a new sliding window. Finally, the `wordSize` keyword is only relevant for the linguistic complexity (LC), ignored for other types, and defines the size of word for the algorithm. Default is 3. We recommend further reading of the associated literature to better understand these complexity measures. 
 `get_linear_sequence_composition(blobLen=5, grps=[])`  | Returns an X by n matrix, where n is the number of amino acids in the sequence and X is the number of distinct groups of amino acids provided. This functions allows the local amino acid composition to be explored using a sliding window that computes the local density of one or more groups of amino acids along the sequence. The `blobLen` keyword defines the window size used to calculate the local sequence composition, and a stepsise of 1 is always used. The `grps` variable defines a list of lists, where each sub-list has elements that are amino acids. If no groups are provided a default grouping of amino acids by their physiochemical properties are used, i.e. `grps = [['E','D'], ['R','K'], ['R','K','E','D'], ['Q','N','S','T','G','H', 'C'], ['A','L','M','I','V'], ['F','Y','W'], ['P']]`, where groupsings are negativly charged, positivly chagred, charged, polar, aliphatic, aromatic, proline.
@@ -569,12 +565,9 @@ We believe scientific software should be held to same (or higher) software stand
 
 **[13]** Shi, Z., Chen, K., Liu, Z., Ng, A., Bracken, W.C., and Kallenbach, N.R. (2005). Polyproline II propensities from GGXGG peptides reveal an anticorrelation with beta-sheet scales. Proc. Natl. Acad. Sci. U. S. A. 102, 17964-17968.
 
-**[14]** Martin, E.W., Holehouse, A.S., Grace, C.R., Hughes, A., Pappu, R.V., and Mittag, T. (2016). Sequence determinants of the conformational properties of an intrinsically disordered protein prior to and upon multisite phosphorylation. J. Am. Chem. Soc.
+**[14]** Martin, E.W., Holehouse, A.S., Grace, C.R., Hughes, A., Pappu, R.V., and Mittag, T. (2016). Sequence determinants of the conformational properties of an intrinsically disordered protein prior to and upon multisite phosphorylation. J. Am. Chem. Soc. 138, 15323-15335.
         
         
-        
-
-
 ## Thanks
 Many people have been involved in this project. We'll try and include an up-to-date list here;
 
@@ -585,6 +578,7 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * Thomas Pranzatelli (Washington University in St. Louis) for testing and bug reports
 * Carlos Hernández (Stanford University) for Python 3 support and PEP8 compliance 
 * Luke Wheeler (University of Oregon) for Python 3 testing
+* Xiaohan Li (Yale University) for corrections to text
  
 
 ## Update schedule
@@ -596,9 +590,7 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * **version 0.1.4** - January 16th 2015: Corrected bug in the way KD hydrophobicity was calculated - alanine incorrectly set to 0
 * **version 0.1.7** - February 25th 2015: Bunch of additional updates and code readability improvements, as well as changing how NCPR/FCR plots are made (bar instead of line)
 * **version 0.1.8** - March 28th 2016: Major update with a number of additional features. All figures can now be generated as PDFs, sequence complexity analysis has been added, PPII propensity added, kappa-P added. Pleasantly, no bugs needed fixing, however!
-* **version 0.1.9** - September 31st 2016: Added local amino acid composition, general patterning parameter, and improved plot formatting. 
-
-
-
+* **version 0.1.9** - September 31st 2016: Added local amino acid composition, general patterning parameter, and improved plot formatting 
+* **version 0.1.10** - Explicit sequence shuffling with residue freezing, Omega code update, additional PPII scales, updated references, updated plotting functions, font sizes fixed, tests updated, (dynamic rescaling of font size and line-widths)
 
 
