@@ -1,6 +1,6 @@
 # localCIDER
 
-`v 0.1.11 - December 2016`
+`v 0.1.12 - February 2017`
 
 
 # Introduction
@@ -24,11 +24,9 @@ Moreover, if there's a type of analysis you use frequently and you think other u
 **localCIDER** version 0.1.10 was submitted to PyPI (the Python Package Index) in November 2016. This should be considered a stable release, however, if you encounter any issues/bugs it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. 
 
 ## New Features
-In 0.1.11 we have added a number of new features, as detailed below:
-* Update to colors for amino acid output string
-* Added the get_linear_sigma function 
-* Moved the import location for the scipy dependency so it can 
+1) Fixed a bug whereby stop-codons '*' in FASTA files were not correctly dealt with.
 
+2) Introduced pH dependence analysis. The function get_isoelectric_point() returns the expected isoelectric point of a sequence, and many of the charge-related analysis (get_FCR(), get_NCPR() etc.) can now include a 'pH' parameter. Model compound pKa values are taken from EMBOSS. 
 
 ## Installing on OSX or linux
 We recommend installing using `pip`. `pip` is a command line interface for downloading and installing packages from the Python package index (PyPI). If you don't yet have pip installed [see the documentation here](http://pip.readthedocs.org/en/latest/installing.html).
@@ -44,7 +42,7 @@ Very simple! **localCIDER** depends on the three pillars of scientific Python co
 If you encounter issues installing please let me know. That said, any issues *should* be due to problems with Numpy or `matplotlib` and not **localCIDER**, so investigate the documentation associated with installing those packages first.
 
 ## Python 2 and Python 3
-As of version 0.1.8 localCIDER is supported under both Python 2.x and 3.x. localCIDER has been extensively tested and used with Python 2.7.x, and we recommend this version of Python. If you encounter issues using localCIDER with Python version 3.x please let us know! 
+As of version 0.1.8 localCIDER is supported under both Python 2.x and 3.x. localCIDER has been extensively tested and used with Python 2.7.x, and we recommend this version of Python. If you encounter issues using localCIDER with Python version 3.x please let us knnow! 
 
 ### Known installation issues
 
@@ -84,7 +82,7 @@ localCIDER does not automatically update, but can be updated using pip. To see t
     
 However, this command will upgrade all the dependencies as well, which may not be a desirable behaviour. To upgrade *just* **localCIDER** use
 
-    [sudo] pip install -U --no-deps lolcacider 
+    [sudo] pip install -U --no-deps localcider
 
 Alternativly, you can update by uninstalling and re-installing `localcider` using
 
@@ -192,24 +190,27 @@ Many of these functions don't take arguments. Optional arguments are prefixed wi
 
 
 ### Single value sequence analysis functions
-The functions below perform various analysis over sequences and return a single value ()
+The functions below perform various analysis over sequences and return a single value. NOTE: Where pH values can be provided, if left blank we assume a neutral pH where only R/K/D/E are charged. If a pH value is provided, then R/K/D/E/C/Y/H are all considered titratable residues using EMBOSS pKa values, listed below:
+'C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0, 'R': 12.5
+
 
 Function name | Operation 
 :---: | :---: 
 `get_length()`  | Get the sequence length
-`get_FCR()`  | Get the fraction of charged residues in the sequence [4]
-`get_NCPR()` | Get the net charge per residue of the sequence [5]
+`get_FCR(pH=None)`  | Get the fraction of charged residues in the sequence [4] (pH keyword allows for a pH specific value)
+`get_NCPR(pH=None)` | Get the net charge per residue of the sequence [5]
+`get_isoelectric_point()` | Get the isoelectric point of the sequence
 `get_countNeg()` | Get the number of negatively charged residues in the sequence (D/E)
 `get_countPos()` | Get the number of positively charged residues in the sequence (R/K)
 `get_countNeut()` | Get the number of neutral amino acids
 `get_fraction_negative()` | Get the fraction of residues which are negatively charged (F-)
 `get_fraction_positive()` | Get the fraction of residues which are positively charged (F+)
-`get_fraction_expanding()` | Get the fraction of residues which are predicted to contribute to chain expansion (E/D/R/K/P)
+`get_fraction_expanding(pH=None)` | Get the fraction of residues which are predicted to contribute to chain expansion (E/D/R/K/P)
 `get_amino_acid_fractions()` | Get a dictionary of the fractions of each amino acid in the sequence
 `get_fraction_disorder_promoting()` | Get the fraction of residues predicted to be 'disorder promoting' [1]. Note this is NOT a disorder prediction!
 `get_kappa()` | Get the sequence's kappa value [2]
 `get_Omega()` | Get the sequence's Omega value. Omega defines the patterning between charged/proline residues and all other residues 14].
-`get_mean_net_charge()` | Get the absolute mean net charge of your sequence
+`get_mean_net_charge(pH=None)` | Get the absolute mean net charge of your sequence
 `get_phase_plot_region()` | Get the region on the Das-Pappu diagram of states where your sequence falls [2]
 `get_mean_hydropathy()` | Get the mean hydropathy as calculated from a skewed Kyte-Doolittle hydrophobicity scale* [3]
 `get_uversky_hydropathy()` | Get the mean hydropathy as calculated from a normalized Kyte-Doolittle hydrophobicity scale\*\* [3,4]
@@ -579,6 +580,8 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * Carlos Hernández (Stanford University) for Python 3 support and PEP8 compliance 
 * Luke Wheeler (University of Oregon) for Python 3 testing
 * Xiaohan Li (Yale University) for corrections to text
+* Sean Cascarina (Colorado State University) for finding a bug where stop-codons are not dealt with correctly in FASTA files
+* David Sanders and Anastasia Repouliou (Princeton University) for the suggestion of introducing pH dependent charge analysis
  
 
 ## Update schedule
@@ -592,5 +595,5 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * **version 0.1.8** - March 28th 2016: Major update with a number of additional features. All figures can now be generated as PDFs, sequence complexity analysis has been added, PPII propensity added, kappa-P added. Pleasantly, no bugs needed fixing, however!
 * **version 0.1.9** - September 31st 2016: Added local amino acid composition, general patterning parameter, and improved plot formatting 
 * **version 0.1.10** - Explicit sequence shuffling with residue freezing, Omega code update, additional PPII scales, updated references, updated plotting functions, font sizes fixed, tests updated, (dynamic rescaling of font size and line-widths)
-
+* **version 0.1.11** - Update to colors for amino acid output string, added the get_linear_sigma function, moved the import location for the scipy dependency so it can 
 
