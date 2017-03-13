@@ -2,7 +2,7 @@
 localCIDER
 ==========
 
-`version 0.1.11 - December 2016`
+`version 0.1.12 - February 2017`
 
 **Introduction**
 
@@ -37,9 +37,11 @@ Please see the `see the full documentation <http://pappulab.github.io/localCIDER
 About
 ----------
 
-**localCIDER** was written by Alex Holehouse and James Ahad in the `Pappu Lab <http://pappulab.wustl.edu>`_ . A manuscript is currently in press, but until that time please cite localCIDER as;
+**localCIDER** was written by Alex Holehouse and James Ahad in the `Pappu Lab <http://pappulab.wustl.edu>`_ . Please cite localCIDER (and CIDER) as:
 
-Holehouse, A. S., Ahad, J., Das, R. K. & Pappu, R. V. CIDER: Classification of Intrinsically Disordered Ensemble Regions. Biophys. J. 108, 228a (2015).
+A.S. Holehouse, R.K. Das, J.N. Ahad, M.O.G. Richardson, R.V. Pappu (2017) CIDER: Resources to analyze sequence-ensemble relationships of intrinsically disordered proteins. Biophysical Journal, 112: 16-21
+
+Also, make sure to cite the various studies used if you use analyses that make use of other datasets (e.g. PPII propensity, charge patterning, proline patterning, hydrophobicity etc.).
 
 --------------
 References 

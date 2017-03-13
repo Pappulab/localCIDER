@@ -4,9 +4,9 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.11                                                        !
+   !    Version 0.1.13                                                        !
    !                                                                          !
-   !    Copyright (C) 2014 - 2016                                             !
+   !    Copyright (C) 2014 - 2017                                             !
    !    The localCIDER development team (current and former contributors)     !
    !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
@@ -380,7 +380,52 @@ def get_PPII_Kallenbach():
              'LYS': 0.581,
              'ARG': 0.638}
 
+
+def get_pKa():
+    """
+    Return pKa values for titratable residues. Values taken here correspond to values from
+    EMBOSS, but in reality pKa values are pretty context-dependent so these are 'model'
+    values, but the true value in the context of a protein is likely to be pretty seriously
+    different.
+
+    """
+    return {'C': 8.5,
+            'Y': 10.1,
+            'H': 6.5,
+            'E': 4.1,
+            'D': 3.9,
+            'K': 10.0,
+            'R': 12.5}
     
+
+def get_molecular_weight_Da():
+    """
+    Returns a lookup table with the molecular weights of each
+    amino acid in Da
+
+    """
+    return  {'I': 131.2,
+             'V': 117.1,
+             'L': 131.2,
+             'F': 165.2,
+             'C': 121.2,
+             'M': 149.2,
+             'A': 89.1,
+             'G': 75.1,
+             'T': 119.1,
+             'S': 105.1,
+             'W': 204.2,
+             'Y': 181.2,
+             'P': 115.1,
+             'H': 155.2,
+             'E': 147.1,
+             'Q': 146.2,
+             'D': 133.1,
+             'N': 132.1,
+             'K': 146.2,
+             'R': 174.2,
+             }
+
 
 
 """"

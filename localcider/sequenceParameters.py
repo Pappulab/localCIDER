@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.11                                                        !
+   !    Version 0.1.13                                                        !
    !--------------------------------------------------------------------------!
 
    File Description:
@@ -400,9 +400,17 @@ class SequenceParameters:
         return self.SeqObj.Fminus()
 
     #...................................................................................#
-    def get_FCR(self):
+    def get_FCR(self, pH=None):
         """
-        Get the fraction of charged residues in the sequence
+        Get the fraction of charged residues in the sequence.
+
+        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are 
+                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H 
+                 are all considered titratable residues using EMBOSS pKa values 
+
+                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0, 
+                 'R': 12.5]
+
 
         OUTPUT:
         --------------------------------------------------------------------------------
@@ -410,13 +418,24 @@ class SequenceParameters:
 
         """
 
-        return self.SeqObj.FCR()
+        if pH is not None:
+            self.__verify_pH(pH)
+
+        return self.SeqObj.FCR(pH)
 
     #...................................................................................#
-    def get_fraction_expanding(self):
+    def get_fraction_expanding(self, pH=None):
         """
         Get the fraction of expanding residues in the sequence. We define 'expanding'
         residues as D/E/R/K/P. This will be the same as the FCR+fraction of proline
+
+        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are 
+                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H 
+                 are all considered titratable residues using EMBOSS pKa values 
+
+                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0, 
+                 'R': 12.5]
+
 
         OUTPUT:
         --------------------------------------------------------------------------------
@@ -424,33 +443,85 @@ class SequenceParameters:
 
         """
 
-        return self.SeqObj.FER()
+        if pH is not None:
+            self.__verify_pH(pH)
+
+        return self.SeqObj.FER(pH)
 
     #...................................................................................#
-    def get_NCPR(self):
+    def get_NCPR(self, pH=None):
         """
-        Get the net charge per residue of the sequence
+        Get the net charge per residue of the sequence.
+
+        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are 
+                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H 
+                 are all considered titratable residues using EMBOSS pKa values 
+
+                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0, 
+                 'R': 12.5]
+
 
         OUTPUT:
         --------------------------------------------------------------------------------
         Float with the sequence's net charge per residue
 
         """
+        if pH is not None:
+            self.__verify_pH(pH)
 
-        return self.SeqObj.NCPR()
+        return self.SeqObj.NCPR(pH)
 
     #...................................................................................#
-    def get_mean_net_charge(self):
+    def get_mean_net_charge(self, pH=None):
         """
         Get the absolute magnitude of the mean net charge
 
-        OUTOUT:
+        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are 
+                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H 
+                 are all considered titratable residues using EMBOSS pKa values 
+
+                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0, 
+                 'R': 12.5]
+
+        OUTPUT:
         --------------------------------------------------------------------------------
         Float equal to the [absolute magnitude] of the mean net charge of the sequence
 
         """
+        if pH is not None:
+            self.__verify_pH(pH)
 
-        return self.SeqObj.mean_net_charge()
+        return self.SeqObj.mean_net_charge(pH)
+
+
+    #...................................................................................#
+    def get_isoelectric_point(self):
+        """
+        Get the absolute magnitude of the mean net charge
+
+        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are 
+                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H 
+                 are all considered titratable residues using EMBOSS pKa values 
+
+                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0, 
+                 'R': 12.5]
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Float equal to the [absolute magnitude] of the mean net charge of the sequence
+
+        """
+        return self.SeqObj.isoelectric_point()
+
+
+    #...................................................................................#
+    def get_molecular_weight(self):
+        """
+        Returns the molecular weight of the protein in Da
+
+        """
+        return self.SeqObj.molecular_weight()
+
 
     #...................................................................................#
     def get_phasePlotRegion(self):
@@ -929,6 +1000,16 @@ class SequenceParameters:
         if complexityType == "LC":
             return self.SeqObj.get_linear_LC_complexity(
                 alphabetSize, userAlphabet, blobLen, stepSize, wordSize)
+
+    def __verify_pH(self, pH):
+        """
+        Internal validation of passed pH value
+
+        """
+        if pH < 0.0:
+            raise SequenceException('pH value provided less than 0 [%2.3f] - may indicate an issue, please set to 0 for values < 0'%pH)
+        if pH > 14.0:
+            raise SequenceException('pH value provided is greater than 14 [%2.3f] - may indicate an issue, please set to 0 for values < 0'%pH)
 
 
     #...................................................................................#

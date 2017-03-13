@@ -4,9 +4,9 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.11                                                        !
+   !    Version 0.1.13                                                        !
    !                                                                          !
-   !    Copyright (C) 2014 - 2016                                             !
+   !    Copyright (C) 2014 - 2017                                             !
    !    The localCIDER development team (current and former contributors)     !
    !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
@@ -121,6 +121,7 @@ class SequenceFileParser:
                 line = self.__validSeq(line)
                 seq = seq + line
 
+        seq = self.__final_validation(seq)
         if not silent:
             status_message(
                 "Parsed sequence [" + str(len(seq)) + " residues]:\n" + seq)
@@ -146,6 +147,11 @@ class SequenceFileParser:
                 if i == " ":
                     # skip spaces
                     continue
+
+                elif i == "*":
+                    # Add * for now but then validate at the end (* can be a stop codon)
+                    parsed_seq = parsed_seq + i                    
+                    continue
                 elif i in "1234567890":
                     warning_message(
                         "Found '" + i + "' in sequence, stripping out and ignoring...")
@@ -163,3 +169,25 @@ class SequenceFileParser:
             else:
                 parsed_seq = parsed_seq + i
         return parsed_seq
+
+
+    def __final_validation(self, seq):
+        """
+        Function that scans over the sequence to ensure any '*' characters are reserved for 
+        stop codons
+
+        """
+
+        number_of_asterisk = seq.count('*')
+
+        if number_of_asterisk == 0:
+            return seq
+
+        if number_of_asterisk > 1:
+            raise SequenceFileParserException("\n\nERROR: Invalid sequence file, multiple instances of '*' in sequence")
+
+        if seq[-1] == "*":
+            return seq[0:-1]
+            
+        raise SequenceFileParserException("\n\nERROR: Invalid sequence file, found a non-terminal instance of '*' in sequence")
+        

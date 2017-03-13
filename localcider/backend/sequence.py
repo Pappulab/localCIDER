@@ -4,9 +4,9 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.11                                                        !
+   !    Version 0.1.13                                                        !
    !                                                                          !
-   !    Copyright (C) 2014 - 2016                                             !
+   !    Copyright (C) 2014 - 2017                                             !
    !    The localCIDER development team (current and former contributors)     !
    !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
@@ -259,25 +259,98 @@ class Sequence:
         return self.countNeg() / (self.len + 0.0)
 
     #...................................................................................#
-    def FCR(self):
+    def FCR(self, pH=None): 
         """ Get the fraction of charged residues in the sequence """
-        return (self.countPos() + self.countNeg()) / (self.len + 0.0)
+
+        if pH is not None:
+            return self.charge_at_pH(pH, mode='TOTAL') / (self.len + 0.0)
+        else:
+            return (self.countPos() + self.countNeg()) / (self.len + 0.0)
+        
+    #...................................................................................#
+    def FER(self, pH=None):
+        """ Get the fraction of charged residues in the sequence """
+
+        if pH is not None:
+            return (self.charge_at_pH(pH, mode='TOTAL') + self.seq.count('P')) / (self.len + 0.0)
+        else:
+            return (self.countPos() + self.countNeg() + self.seq.count('P')) / (self.len + 0.0)
 
     #...................................................................................#
-    def FER(self):
-        """ Get the fraction of charged residues in the sequence """
-        return (self.countPos() + self.countNeg() + self.seq.count('P')) / (self.len + 0.0)
-
-    #...................................................................................#
-    def NCPR(self):
+    def NCPR(self, pH=None):
         """ Get the net charge per residue of the sequence """
-        return (self.countPos() - self.countNeg()) / (self.len + 0.0)
+        if pH is not None:
+            return self.charge_at_pH(pH) / (self.len + 0.0)
+        else:
+            return (self.countPos() - self.countNeg()) / (self.len + 0.0)
 
     #...................................................................................#
-    def mean_net_charge(self):
+    def mean_net_charge(self, pH=None):
         """ Get the absolute magnitude of the mean net charge """
-        return abs(self.NCPR())
+        return abs(self.NCPR(pH))
 
+    #...................................................................................#
+    def charge_at_pH(self, pH=7.4, mode=''):
+        """ Get the protein charge at a given pH. If mode is set to 'TOTAL' then the
+        result is the TOTAL charge, ELSE the result in the net charge. In both cases
+        this is the actual charge, not normalized by length.
+        """
+        
+        if mode == 'TOTAL':
+            negative_numerator=1.0
+        else:
+            negative_numerator=-1.0
+            
+        pKa_lookup = data.aminoacids.get_pKa()
+
+        total=0.0
+        for res in self.seq:
+            if res in ['K','R','H']:
+                total = total+(1 / (1+np.power(10, (pH - pKa_lookup[res]))))
+            if res in ['E', 'D']:
+                total = total+(negative_numerator / (1+np.power(10, (pKa_lookup[res] - pH))))
+        return total
+
+
+    #...................................................................................#
+    def isoelectric_point(self):
+        """
+        Lovely binary search approach stolen shamelessly from 
+        http://www.petercollingridge.co.uk/python-bioinformatics-tools/predicting-pi
+
+        """
+        
+        min_pH = 1.0
+        max_pH = 13.0
+        threshold=0.02
+
+        while True:
+            mid_pH = 0.5 * (max_pH + min_pH)
+            protein_charge = self.charge_at_pH(mid_pH)
+        
+            if protein_charge > threshold:
+                min_pH = mid_pH
+            elif protein_charge < -threshold:
+                max_pH = mid_pH
+            else:
+                return mid_pH
+
+    #...................................................................................#
+    def molecular_weight(self):
+        """
+        Returns the molecular weight of the protein based on standard molecular weight
+        values
+
+        """
+            
+        MWTable = aminoacids.get_molecular_weight_Da()
+
+        total = 0.0
+        for r in self.seq:
+            total = total + MWTable[r]
+
+        return total
+        
     #...................................................................................#
     def kappa(self):
         """
@@ -305,7 +378,6 @@ class Sequence:
                 return 1.0
             else:
                 return kappaVal
-
 
     #...................................................................................#
     def Omega(self):
@@ -512,8 +584,8 @@ class Sequence:
         it won't break the Uversky plots
         """
 
-        normalizedKD = data.aminoacids.get_KD_uversky()
-        translate = data.aminoacids.ONE_TO_THREE
+        normalizedKD  = data.aminoacids.get_KD_uversky()
+        translate     = data.aminoacids.ONE_TO_THREE
 
         ans = 0
         for idx in xrange(0, self.len):
