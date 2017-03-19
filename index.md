@@ -1,6 +1,6 @@
 # localCIDER
 
-`v 0.1.12 - February 2017`
+`v 0.1.13 - March 2017`
 
 
 # Introduction
@@ -24,9 +24,10 @@ Moreover, if there's a type of analysis you use frequently and you think other u
 **localCIDER** version 0.1.10 was submitted to PyPI (the Python Package Index) in November 2016. This should be considered a stable release, however, if you encounter any issues/bugs it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. 
 
 ## New Features
-1) Fixed a bug whereby stop-codons '*' in FASTA files were not correctly dealt with.
+1) Added `get_molecular_weight()` function to return the sequence-specific molecular weight (excludes caps, if presengt)
 
-2) Introduced pH dependence analysis. The function get_isoelectric_point() returns the expected isoelectric point of a sequence, and many of the charge-related analysis (get_FCR(), get_NCPR() etc.) can now include a 'pH' parameter. Model compound pKa values are taken from EMBOSS. 
+2) Fixed a bug with very low or very high charge sequences that would cause an infinite loop when determining isoelectric point. Now max/min pH used on binary search will dynamically update if necessary and a fail-safe escape exists if things go really wrong.
+
 
 ## Installing on OSX or linux
 We recommend installing using `pip`. `pip` is a command line interface for downloading and installing packages from the Python package index (PyPI). If you don't yet have pip installed [see the documentation here](http://pip.readthedocs.org/en/latest/installing.html).
@@ -200,6 +201,7 @@ Function name | Operation
 `get_FCR(pH=None)`  | Get the fraction of charged residues in the sequence [4] (pH keyword allows for a pH specific value)
 `get_NCPR(pH=None)` | Get the net charge per residue of the sequence [5]
 `get_isoelectric_point()` | Get the isoelectric point of the sequence
+`get_molecular_weight()` | Get the molecular weight of the protein associated with a given amino acid sequence 
 `get_countNeg()` | Get the number of negatively charged residues in the sequence (D/E)
 `get_countPos()` | Get the number of positively charged residues in the sequence (R/K)
 `get_countNeut()` | Get the number of neutral amino acids
@@ -581,7 +583,7 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * Luke Wheeler (University of Oregon) for Python 3 testing
 * Xiaohan Li (Yale University) for corrections to text
 * Sean Cascarina (Colorado State University) for finding a bug where stop-codons are not dealt with correctly in FASTA files
-* David Sanders and Anastasia Repouliou (Princeton University) for the suggestion of introducing pH dependent charge analysis
+* David Sanders and Anastasia Repouliou (Princeton University) for the suggestion of introducing pH dependent charge analysis and bug reports
  
 
 ## Update schedule
@@ -596,4 +598,5 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * **version 0.1.9** - September 31st 2016: Added local amino acid composition, general patterning parameter, and improved plot formatting 
 * **version 0.1.10** - Explicit sequence shuffling with residue freezing, Omega code update, additional PPII scales, updated references, updated plotting functions, font sizes fixed, tests updated, (dynamic rescaling of font size and line-widths)
 * **version 0.1.11** - Update to colors for amino acid output string, added the get_linear_sigma function, moved the import location for the scipy dependency so it can 
+* **version 0.1.12** - Deal with stop codons when reading fasta files. Introduced pH dependence analysis. 
 
