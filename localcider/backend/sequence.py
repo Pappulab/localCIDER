@@ -320,11 +320,27 @@ class Sequence:
 
         """
         
-        min_pH = 1.0
-        max_pH = 13.0
+        min_pH = 0.0
+        max_pH = 14.0
         threshold=0.02
 
-        while True:
+        breakcount=0
+        errorcount=0
+        while True: 
+            breakcount=breakcount+1
+
+            # escape clause to fix big high charged and 
+            if breakcount == 20:
+                if errorcount == 10:
+                    raise SequenceException('Error in isoelectric_point function for sequence [ %s ] - PLEASE report this error!' % (self.seq))
+                errorcount=errorcount+1
+                breakcount=0
+                if protein_charge > 0:
+                    max_pH=max_pH+1
+                else:
+                    min_pH=min_pH - 1
+
+
             mid_pH = 0.5 * (max_pH + min_pH)
             protein_charge = self.charge_at_pH(mid_pH)
         

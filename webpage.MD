@@ -24,7 +24,8 @@ Moreover, if there's a type of analysis you use frequently and you think other u
 **localCIDER** version 0.1.10 was submitted to PyPI (the Python Package Index) in November 2016. This should be considered a stable release, however, if you encounter any issues/bugs it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. 
 
 ## New Features
-1) Added molecular weight 
+1) Added get_molecular_weight() function to return the sequence-specific molecular weight (excludes caps, if presengt)
+2) Fixed a bug with very low or very high charge sequences that would cause an infinite loop when determining isoelectric point. Now max/min pH used on binary search will dynamically update if necessary and a fail-safe escape exists if things go really wrong.
 
 
 ## Installing on OSX or linux
