@@ -4,8 +4,6 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.12                                                        !
-   !                                                                          !
    !    Copyright (C) 2014 - 2017                                             !
    !    The localCIDER development team (current and former contributors)     !
    !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
@@ -90,6 +88,11 @@ class TestSequenceParametersFunctions(unittest.TestCase):
         FD = self.testObj.get_fraction_disorder_promoting()
         self.assertEqual(FD, 0.7285714285714285)
 
+    def test_get_isoelectric_point(self):
+        FD = self.testObj.get_isoelectric_point()
+        self.assertEqual(FD, 4.375)
+
+
     def test_get_amino_acid_fractions(self):
         AADict = self.testObj.get_amino_acid_fractions()
 
@@ -141,13 +144,33 @@ class TestSequenceParametersFunctions(unittest.TestCase):
         FNeg = self.testObj.get_fraction_negative()
         self.assertEqual(FNeg, 0.17142857142857143)
 
+    def test_get_fraction_expanding(self):
+        FEXP = self.testObj.get_fraction_negative()
+        self.assertEqual(FEXP, 0.3142857142857143)
+
+    def test_get_fraction_expanding(self):
+        MW = self.testObj.get_molecular_weight()
+        self.assertEqual(MW, 14461.800000000028)
+
     def test_get_FCR(self):
         FCR = self.testObj.get_FCR()
         self.assertEqual(FCR, 0.2785714285714286)
 
+        FCR = self.testObj.get_FCR(pH=2.0)
+        self.assertEqual(FCR, 0.1158315498630651)
+
+        FCR = self.testObj.get_FCR(pH=12.0)
+        self.assertEqual(FCR, 0.20070561998906264)
+
     def test_get_NCPR(self):
         NCPR = self.testObj.get_NCPR()
         self.assertEqual(NCPR, -0.06428571428571428)
+
+        NCPR = self.testObj.get_NCPR(pH=2.0)
+        self.assertEqual(NCPR, 0.11273942482584025)
+
+        NCPR = self.testObj.get_NCPR(pH=12.0)
+        self.assertEqual(NCPR, -0.19858393407830829)
 
     def test_get_Omega(self):
         Omega = self.testObj.get_Omega()
@@ -345,12 +368,24 @@ class TestSequenceParametersFunctions(unittest.TestCase):
             iSEQ = sequenceParameters.SequenceParameters(i)
 
             iSEQ.get_FCR()
+            iSEQ.get_FCR(pH=2.0)
+            iSEQ.get_FCR(pH=13.0)
             iSEQ.get_NCPR()
+            iSEQ.get_NCPR(pH=2.0)
+            iSEQ.get_NCPR(pH=13.0)
+            iSEQ.get_isoelectric_point()
+            
+
             iSEQ.get_countNeg()
             iSEQ.get_countPos()
             iSEQ.get_fraction_positive()
             iSEQ.get_fraction_negative()
+            iSEQ.get_fraction_positive()
+            iSEQ.get_fraction_negative()
             iSEQ.get_fraction_disorder_promoting()
+            iSEQ.get_fraction_expanding()
+            iSEQ.get_fraction_expanding(pH=2.0)
+            iSEQ.get_fraction_expanding(pH=14.0)
             iSEQ.get_amino_acid_fractions()
             iSEQ.get_kappa()
 
@@ -360,6 +395,8 @@ class TestSequenceParametersFunctions(unittest.TestCase):
             iSEQ.get_kappa_X(['A','K','P','G'],['R','E','F','Y'])
 
             iSEQ.get_mean_net_charge()
+            iSEQ.get_mean_net_charge(pH=2.0)
+            iSEQ.get_mean_net_charge(pH=14.0)
             iSEQ.get_phasePlotRegion()
             iSEQ.get_mean_hydropathy()
             iSEQ.get_uversky_hydropathy()

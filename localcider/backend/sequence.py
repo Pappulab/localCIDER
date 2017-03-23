@@ -4,9 +4,6 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Version 0.1.13                                                        !
-   !                                                                          !
-   !    Copyright (C) 2014 - 2017                                             !
    !    The localCIDER development team (current and former contributors)     !
    !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
@@ -290,10 +287,10 @@ class Sequence:
         return abs(self.NCPR(pH))
 
     #...................................................................................#
-    def charge_at_pH(self, pH=7.4, mode=''):
+    def charge_at_pH(self, pH=7.4, mode='', normalize=False):
         """ Get the protein charge at a given pH. If mode is set to 'TOTAL' then the
         result is the TOTAL charge, ELSE the result in the net charge. In both cases
-        this is the actual charge, not normalized by length.
+        this is the mean of the titratable groups in the sequence.
         """
         
         if mode == 'TOTAL':
@@ -304,11 +301,28 @@ class Sequence:
         pKa_lookup = data.aminoacids.get_pKa()
 
         total=0.0
+
+        countable_residues=0
+
+        # to be clear - this is not the most efficient way we could do this, but also
+        # in the grand scheme of things its a single loop over the sequence but does
+        # help keep the code clean (clarity is key!)
         for res in self.seq:
-            if res in ['K','R','H']:
+
+            if res in ['K','R','H']:                
                 total = total+(1 / (1+np.power(10, (pH - pKa_lookup[res]))))
-            if res in ['E', 'D']:
+                countable_residues=countable_residues+1
+
+            if res in ['E', 'D', 'Y', 'C']:
                 total = total+(negative_numerator / (1+np.power(10, (pKa_lookup[res] - pH))))
+                countable_residues=countable_residues+1
+                
+
+        if normalize:
+            if countable_residues == 0:
+                total = 0
+            else:
+                total = float(total)/countable_residues
         return total
 
 
@@ -322,11 +336,12 @@ class Sequence:
         
         min_pH = 0.0
         max_pH = 14.0
-        threshold=0.02
+        threshold=0.02 # error threshold is +/- 0.02 (i.e. 2%)
 
         breakcount=0
         errorcount=0
         while True: 
+
             breakcount=breakcount+1
 
             # escape clause to fix big high charged and 
@@ -336,13 +351,16 @@ class Sequence:
                 errorcount=errorcount+1
                 breakcount=0
                 if protein_charge > 0:
-                    max_pH=max_pH+1
+                    max_pH=max_pH + 1
                 else:
                     min_pH=min_pH - 1
 
 
             mid_pH = 0.5 * (max_pH + min_pH)
-            protein_charge = self.charge_at_pH(mid_pH)
+
+            # normalize means 
+            protein_charge = self.charge_at_pH(mid_pH, normalize=True)
+
         
             if protein_charge > threshold:
                 min_pH = mid_pH
@@ -364,6 +382,9 @@ class Sequence:
         total = 0.0
         for r in self.seq:
             total = total + MWTable[r]
+
+        # finally correct for peptide bond formation (one H2O per bond, and nres-1 bonds)
+        total = total - (18.0 * ( len(self.seq)-1 ))
 
         return total
         

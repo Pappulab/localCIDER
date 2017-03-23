@@ -67,3 +67,9 @@ local_scripts/
 old_README.txt
 output.html
 tst*
+
+# this doesnt work yet :-(
+localcider/tests/runtests_py3.py
+UPDATE_LOCALLY.sh
+code/
+	

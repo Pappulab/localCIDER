@@ -1,7 +1,6 @@
 # localCIDER
 
-`v 0.1.13 - *** 2017`
-
+`Version 0.1.14 - March 2017`
 
 # Introduction
 
@@ -24,9 +23,11 @@ Moreover, if there's a type of analysis you use frequently and you think other u
 **localCIDER** version 0.1.10 was submitted to PyPI (the Python Package Index) in November 2016. This should be considered a stable release, however, if you encounter any issues/bugs it would be greatly appreciated if you could report any issues to alex.holehouse@wustl.edu. 
 
 ## New Features
-1) Added get_molecular_weight() function to return the sequence-specific molecular weight (excludes caps, if presengt)
-2) Fixed a bug with very low or very high charge sequences that would cause an infinite loop when determining isoelectric point. Now max/min pH used on binary search will dynamically update if necessary and a fail-safe escape exists if things go really wrong.
+1) Updated the way get_isoelectric_point() works such that the threshold for declaring a sequence as 'uncharged' (when searching for the pI) is based on FCR instead of absolute charge as was done previously (had the unfortunate effect of creating a small length dependence on the pI because the numerical precision depended on the sequence length).
 
+2) Fixed a bug in the get_molecular_weight() function that failed to account for the loss of H2O in a peptide bond
+
+3) Added C and Y as titratable residues (pKa = 8.5 and 10.1)	     
 
 ## Installing on OSX or linux
 We recommend installing using `pip`. `pip` is a command line interface for downloading and installing packages from the Python package index (PyPI). If you don't yet have pip installed [see the documentation here](http://pip.readthedocs.org/en/latest/installing.html).
@@ -42,7 +43,7 @@ Very simple! **localCIDER** depends on the three pillars of scientific Python co
 If you encounter issues installing please let me know. That said, any issues *should* be due to problems with Numpy or `matplotlib` and not **localCIDER**, so investigate the documentation associated with installing those packages first.
 
 ## Python 2 and Python 3
-As of version 0.1.8 localCIDER is supported under both Python 2.x and 3.x. localCIDER has been extensively tested and used with Python 2.7.x, and we recommend this version of Python. If you encounter issues using localCIDER with Python version 3.x please let us knnow! 
+As of version 0.1.8 localCIDER is supported under both Python 2.x and 3.x. localCIDER has been extensively tested and used with Python 2.7.x, and we recommend this version of Python. If you encounter issues using localCIDER with Python version 3.x please let us know! 
 
 ### Known installation issues
 
@@ -598,6 +599,9 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * **version 0.1.10** - Explicit sequence shuffling with residue freezing, Omega code update, additional PPII scales, updated references, updated plotting functions, font sizes fixed, tests updated, (dynamic rescaling of font size and line-widths)
 * **version 0.1.11** - Update to colors for amino acid output string, added the get_linear_sigma function, moved the import location for the scipy dependency so it can 
 * **version 0.1.12** - Deal with stop codons when reading fasta files. Introduced pH dependence analysis. 
+* **version 0.1.13** - Added get_molecular_weight() function, fixed a bug for low or high charge sequences with get_isoelectric_point()
+
+
 
 
 
