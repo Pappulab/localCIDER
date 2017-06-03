@@ -1597,7 +1597,7 @@ class SequenceParameters:
 
 
     #...................................................................................#
-    def save_linearComposition(self, filename, blobLen=5, saveFormat='png', title='', plot_data=False):
+    def save_linearComposition(self, filename, blobLen=5, saveFormat='png', title='', plot_data=False, line_thickness=[2.5, 2.5, 3.5, 3.5, 3.5, 3.5, 3.5]):
         """
         Generates a plot that for the standard grouping of amino acids plots the local
         linear density of those groups along the sequence. Density is calculated using a
@@ -1634,7 +1634,10 @@ class SequenceParameters:
 
         colors = ['red',  'blue', 'brown', 'green',  'black',  'orange', 'purple']
         names  = ['E/D.', 'R/K',  'E/D/R/K',  'Q/N/S/T/G/H',  'I/L/V/M', 'F/Y/W.' ,  'P']
-        line_thickness = [2.5, 2.5, 3.5, 3.5, 3.5, 3.5, 3.5]
+
+        if len(line_thickness) != 7:
+            raise SequenceException('Line thickness defines must be a 7-position list of line thicknesses for E/D, R/K, E/D/R/K, Q/N/S/T/G/H, I/L/V/M, F/Y/W, P')
+
 
         plotting.save_local_composition_plot(residues, density, colors, names, filename, saveFormat, line_thickness=line_thickness, title=title, plot_data=plot_data)
 

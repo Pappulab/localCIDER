@@ -1197,7 +1197,7 @@ class Sequence:
                     if not len(setupSequence) == self.len:
                         raise SequenceException(
                             "Error in DeltaMax calculation")
-
+                        
                     nseq = Sequence(setupSequence)
 
                     # update self.dmax if relevant
