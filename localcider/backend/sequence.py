@@ -951,7 +951,7 @@ class Sequence:
             grps.append(['E','D'])                        # acidic
             grps.append(['R','K'])                        # basic
             grps.append(['R','K','E','D'])                # charged
-            grps.append(['Q','N','S','T','G','H', 'C'])   # polar
+            grps.append(['Q','N','S','T','G','H','C'])   # polar
             grps.append(['A','L','M','I','V'])            # hydrophobic
             grps.append(['F','Y','W'])                    # aromatic
             grps.append(['P'])                            # proline

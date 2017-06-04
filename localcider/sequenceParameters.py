@@ -1633,7 +1633,7 @@ class SequenceParameters:
         density  = out_tuple[1]
 
         colors = ['red',  'blue', 'brown', 'green',  'black',  'orange', 'purple']
-        names  = ['E/D.', 'R/K',  'E/D/R/K',  'Q/N/S/T/G/H',  'I/L/V/M', 'F/Y/W.' ,  'P']
+        names  = ['E/D.', 'R/K',  'E/D/R/K',  'Q/N/S/T/G/H/C',  'I/L/V/M/A', 'F/Y/W.' ,  'P']
 
         if len(line_thickness) != 7:
             raise SequenceException('Line thickness defines must be a 7-position list of line thicknesses for E/D, R/K, E/D/R/K, Q/N/S/T/G/H, I/L/V/M, F/Y/W, P')
