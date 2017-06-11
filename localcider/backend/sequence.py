@@ -388,6 +388,24 @@ class Sequence:
 
         return total
         
+    def sequence_charge_decoration(self):
+        """
+        Returns the Sequence Charge Definition (SCD) parameter, as defined by Sawle & Ghosh [1]. 
+
+        [1] Sawle, L., and Ghosh, K. (2015). A theoretical method to compute sequence 
+           dependent configurational properties in charged polymers and proteins. 
+           J. Chem. Phys. 143, 085101.
+
+        """
+        total=0
+        for m in xrange(2,self.len+1):
+            for n in xrange(1,m-1):
+                total = total + float(self.chargePattern[m-1])*float(self.chargePattern[n-1])*np.power((m-n),0.5)
+                
+        return total/self.len
+        
+
+
     #...................................................................................#
     def kappa(self):
         """

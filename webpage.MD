@@ -583,7 +583,7 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * Luke Wheeler (University of Oregon) for Python 3 testing
 * Xiaohan Li (Yale University) for corrections to text
 * Sean Cascarina (Colorado State University) for finding a bug where stop-codons are not dealt with correctly in FASTA files
-* David Sanders and Anastasia Repouliou (Princeton University) for the suggestion of introducing pH dependent charge analysis
+* David Sanders and Anastasia Repouliou (Princeton University) for the suggestion of introducing pH dependent charge analysis and bug reports 
  
 
 ## Update schedule

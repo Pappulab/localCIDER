@@ -223,6 +223,26 @@ class SequenceParameters:
 
         return self.SeqObj.amino_acid_fraction()
 
+
+    #...................................................................................#
+    def get_SCD(self):
+        """
+        Get the sequence charge decoration (SCD) value associated with a sequence.
+
+        ********************************************************************************
+        Ref: Sawle, L., and Ghosh, K. (2015). A theoretical method to compute sequence 
+        dependent configurational properties in charged polymers and proteins. J. Chem. 
+        Phys. 143, 085101.
+        ********************************************************************************
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Float with the sequence's SCD value
+
+        """
+
+        return self.SeqObj.sequence_charge_decoration()
+
     #...................................................................................#
     def get_kappa(self):
         """
