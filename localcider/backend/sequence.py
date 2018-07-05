@@ -399,7 +399,7 @@ class Sequence:
         """
         total=0
         for m in xrange(2,self.len+1):
-            for n in xrange(1,m-1):
+            for n in xrange(1,m):
                 total = total + float(self.chargePattern[m-1])*float(self.chargePattern[n-1])*np.power((m-n),0.5)
                 
         return total/self.len
