@@ -176,7 +176,7 @@ class WangLandauMachine:
 
         # print the sequence in a sensible way...
         if len(self.seq.seq) > 30:
-            print 'Sequence                  : ' + str(self.seq.seq[0:10]) + "..." + str(self.seq[-10:len(self.seq.seq)])
+            print 'Sequence                  : ' + str(self.seq.seq[0:10]) + "..." + str(self.seq.seq[-10:len(self.seq.seq)])
         else:
             print 'Sequence                  : ' + str(self.seq.seq)
 
