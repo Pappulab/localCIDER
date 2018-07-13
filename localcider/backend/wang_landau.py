@@ -175,10 +175,10 @@ class WangLandauMachine:
         self.setDotFreq()
 
         # print the sequence in a sensible way...
-        if len(self.seq) > 30:
-            print 'Sequence                  : ' + str(self.seq[0:10]) + "..." + str(self.seq[-10:len(self.seq)])
+        if len(self.seq.seq) > 30:
+            print 'Sequence                  : ' + str(self.seq.seq[0:10]) + "..." + str(self.seq[-10:len(self.seq.seq)])
         else:
-            print 'Sequence                  : ' + str(self.seq)
+            print 'Sequence                  : ' + str(self.seq.seq)
 
         if len(self.frozen) == 0:
             print 'Frozen Residues           : [NONE]'
