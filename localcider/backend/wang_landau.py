@@ -592,7 +592,7 @@ class WangLandauMachine:
             # - Random swapping of two residues which changes the kappa (80%)
             # - Complete unbiased shuffle of sequence (20%)
 
-            if rand.random() > 0.8:
+            if rand.random() < 0.8:
                 nseq = oseq.swapRandChargeRes(self.frozen)
             else:
                 nseq = oseq.full_shuffle(self.frozen)
