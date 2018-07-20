@@ -329,7 +329,7 @@ class SequenceParameters:
         return self.SeqObj.kappa_X(grp1, grp2)
 
     #...................................................................................#
-    def get_deltaMax(self):
+    def get_deltaMax(self, returnSeqDeltaMax=False):
         """
         Get the maximum delta value for a sequence of this composition. Note kappa is
         delta/deltaMax.
@@ -340,7 +340,7 @@ class SequenceParameters:
 
         """
 
-        return self.SeqObj.deltaMax()
+        return self.SeqObj.deltaMax(returnSeqDeltaMax)
 
     #...................................................................................#
     def get_delta(self):
