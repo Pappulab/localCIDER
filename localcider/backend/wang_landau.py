@@ -175,10 +175,10 @@ class WangLandauMachine:
         self.setDotFreq()
 
         # print the sequence in a sensible way...
-        if len(self.seq) > 30:
-            print 'Sequence                  : ' + str(self.seq[0:10]) + "..." + str(self.seq[-10:len(self.seq)])
+        if len(self.seq.seq) > 30:
+            print 'Sequence                  : ' + str(self.seq.seq[0:10]) + "..." + str(self.seq.seq[-10:len(self.seq.seq)])
         else:
-            print 'Sequence                  : ' + str(self.seq)
+            print 'Sequence                  : ' + str(self.seq.seq)
 
         if len(self.frozen) == 0:
             print 'Frozen Residues           : [NONE]'
@@ -385,7 +385,7 @@ class WangLandauMachine:
                 # - Random swapping of two residues which changes the kappa (80%)
                 # - Complete unbiased shuffle of sequence (20%)
 
-                if rand.random() > 0.8:
+                if rand.random() < 0.8:
                     nseq = oseq.swapRandChargeRes(self.frozen)
                 else:
                     nseq = oseq.full_shuffle(self.frozen)
@@ -571,7 +571,9 @@ class WangLandauMachine:
                     1]))
 
         # initial starting conditions
-        oseq = self.seq
+
+        oseqDmax, oseqPermut = self.seq.deltaMax(returnSeqDeltaMax=True)
+        oseq = Sequence(seq=oseqPermut)
         kold = oseq.kappa()
 
         # get histogram bin index of original (old) sequence kappa
@@ -587,15 +589,28 @@ class WangLandauMachine:
             if nstep % self.dotdotfreq == 0:
                 running_dotdotdot()
 
-            # There are two possible Monte Carlo moves, which we alternate
-            # between at a 70:30 split
-            # - Random swapping of two residues which changes the kappa (80%)
-            # - Complete unbiased shuffle of sequence (20%)
+            # There are four possible Monte Carlo moves, choose in proportion to the autocorrelation time
+            # of a Markov chain where only that move is used
+            # - Full shuffle - tau = 1
+            # - Swap charged residues - tau = 41.5
+            # - Swap random blocks - tau = 69.3
+            # - Make a random charged block - tau = 78.2
 
-            if rand.random() > 0.8:
-                nseq = oseq.swapRandChargeRes(self.frozen)
-            else:
+            #Move probablilities
+            p_full_shuffle = 1 / (1+41.5+69.3+78.2)
+            p_swap_charges = 41.5 / (1+41.5+69.3+78.2)
+            p_swap_blocks = 69.3 / (1+41.5+69.3+78.2)
+            p_cluster_charges = 78.2 / (1+41.5+69.3+78.2)
+
+            r = rand.random()
+            if r < p_full_shuffle:
                 nseq = oseq.full_shuffle(self.frozen)
+            elif r < (p_swap_charges+p_full_shuffle):
+                nseq = oseq.swapRandChargeRes(self.frozen)
+            elif r < (p_swap_blocks+p_swap_charges+p_full_shuffle):
+                nseq = oseq.permute_block_swap(self.frozen)
+            else:
+                nseq = oseq.permute_cluster_charges(self.frozen)
 
             # calculate the kappa of that new sequence
             knew = nseq.kappa()

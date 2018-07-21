@@ -63,6 +63,7 @@ import time
 import copy as cp
 import os
 import itertools
+from math import ceil, floor
 from backendtools import return_absolute_datafile_path, warning_message, verifyType, status_message, warning_message
 from restable import ResTable
 from data import aminoacids
@@ -117,6 +118,7 @@ class Sequence:
             self.chargePattern = chargePattern
         # initializing to prevent extra computational time
         self.dmax = dmax
+        self.seqDeltaMax = None
 
         # set phosphosites as empty
         self.phosphosites = []
@@ -399,7 +401,7 @@ class Sequence:
         """
         total=0
         for m in xrange(2,self.len+1):
-            for n in xrange(1,m-1):
+            for n in xrange(1,m):
                 total = total + float(self.chargePattern[m-1])*float(self.chargePattern[n-1])*np.power((m-n),0.5)
                 
         return total/self.len
@@ -1131,14 +1133,21 @@ class Sequence:
         return (self.deltaForm(5) + self.deltaForm(6)) / 2
 
     #...................................................................................#
-    def deltaMax(self):
+    def deltaMax(self, returnSeqDeltaMax = False):
         """
-        Return the maximum possible delta value for the sequence
+        Return the maximum possible delta value for the sequence and optionally a
+        permutant of self.seq with delta = deltaMax. Updates self.dmax an optionally
+        self.seqDeltaMax. Returns dmax as a float. If returnSeqDeltaMax == True,
+        returns a tuple of (dmax, seqDeltaMax)
         """
 
         # If this has been computed already, then return it
-        if(self.dmax != -1):
-            return self.dmax
+        if self.dmax != -1 and not returnSeqDeltaMax:
+          return self.dmax
+        #If dmax has been computed and we want seqDeltaMax and we have seqDeltaMax
+        elif self.dmax != -1 and returnSeqDeltaMax and self.seqDeltaMax is not None:
+          return (self.dmax, self.seqDeltaMax)
+        #If there are no charged residues
         elif(self.FCR() == 0):
             self.dmax = 0
 
@@ -1178,7 +1187,11 @@ class Sequence:
                     nseq = Sequence(setupSequence)
 
                     # update self.dmax if relevant
-                    self.dmax = max([nseq.delta(), self.dmax])
+                    if self.dmax < nseq.delta():
+                      self.dmax = nseq.delta()
+                      if returnSeqDeltaMax:
+                        self.seqDeltaMax = nseq.__permutant_from_reduced_seq(parentSeqObj=self)
+            
             # if the neutral block is shorter
             else:
 
@@ -1194,7 +1207,10 @@ class Sequence:
                     nseq = Sequence(setupSequence)
 
                     # update self.dmax if relevant
-                    self.dmax = max([nseq.delta(), self.dmax])
+                    if self.dmax < nseq.delta():
+                      self.dmax = nseq.delta()
+                      if returnSeqDeltaMax:
+                        self.seqDeltaMax = nseq.__permutant_from_reduced_seq(parentSeqObj=self)
 
         #################################################################
         # Second computational trick (Maximum Charge Separation)
@@ -1219,7 +1235,10 @@ class Sequence:
                     nseq = Sequence(setupSequence)
 
                     # update self.dmax if relevant
-                    self.dmax = max([nseq.delta(), self.dmax])
+                    if self.dmax < nseq.delta():
+                      self.dmax = nseq.delta()
+                      if returnSeqDeltaMax:
+                        self.seqDeltaMax = nseq.__permutant_from_reduced_seq(parentSeqObj=self)
             else:
                 for position in xrange(0, (self.len - nPos) + 1):
                     setupSequence = position * "-" + \
@@ -1232,7 +1251,10 @@ class Sequence:
                     nseq = Sequence(setupSequence)
 
                     # update self.dmax if relevant
-                    self.dmax = max([nseq.delta(), self.dmax])
+                    if self.dmax < nseq.delta():
+                      self.dmax = nseq.delta()
+                      if returnSeqDeltaMax:
+                        self.seqDeltaMax = nseq.__permutant_from_reduced_seq(parentSeqObj=self)
 
         #################################################################
         # Third computational trick (Maximization of # of Charged Blobs)
@@ -1270,7 +1292,10 @@ class Sequence:
                     nseq = Sequence(setupSequence)
 
                     # update self.dmax if relevant
-                    self.dmax = max([nseq.delta(), self.dmax])
+                    if self.dmax < nseq.delta():
+                      self.dmax = nseq.delta()
+                      if returnSeqDeltaMax:
+                        self.seqDeltaMax = nseq.__permutant_from_reduced_seq(parentSeqObj=self)
 
         #################################################################
         # Fourth computational trick (Search through set of sequences that fit
@@ -1305,9 +1330,15 @@ class Sequence:
                     nseq = Sequence(setupSequence)
 
                     # update self.dmax if relevant
-                    self.dmax = max([nseq.delta(), self.dmax])
+                    if self.dmax < nseq.delta():
+                      self.dmax = nseq.delta()
+                      if returnSeqDeltaMax:
+                        self.seqDeltaMax = nseq.__permutant_from_reduced_seq(parentSeqObj=self)
 
-        return self.dmax
+        if returnSeqDeltaMax:
+          return (self.dmax, self.seqDeltaMax)
+        else:
+          return self.dmax
 
     #...................................................................................#
     def swapRes(self, index1, index2):
@@ -1435,7 +1466,131 @@ class Sequence:
 
         return Sequence("".join(new_seq), self.dmax)
 
-    # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+    #...................................................................................#
+    def permute_cluster_charges(self, frozen=set()):
+      """
+          Function that chooses a random position in a and swaps a block of randomly chosen size
+          around that residue with randomly chosen charged residues so that
+          a positively or negatively charged block is created. Function only returns
+          sequences with a different delta than the parent sequence.
+      """
+      #Check that sequence is appropriate
+      if self.countPos() < 2 and self.countNeg() < 2:
+        raise SequenceException("Not enough charged residues")
+      
+      #Initialize rng
+      rand = rng.Random()
+      rand.seed(time.time())
+
+      #Permutations won't necessarily change delta, so run inside a while loop to make sure
+      old_delta = self.delta()
+      new_delta = old_delta
+
+      while new_delta == old_delta:
+        #Choose cluster charge
+        if self.countNeg() < 2:
+            charge = ("K", "R", "+")
+            n_charge = self.countPos()
+        elif self.countPos() < 2:
+            charge = ("D", "E", "+")
+            n_charge = self.countNeg()
+        elif rand.random() < 0.5:
+            charge = ("K", "R", "+")
+            n_charge = self.countPos()
+        else:
+            charge = ("D", "E", "+")
+            n_charge = self.countNeg()
+
+        #Number of charged residues outside the cluster positions in the original sequence must be >= than within the original cluster positions
+        excess_swappable = -1
+        while excess_swappable < 0:
+            #Choose a cluster size
+            cluster_size = rand.randint(2, n_charge)
+            #Choose cluster positions taking into account boundaries
+            cluster_center_idx = rand.randint(floor(cluster_size/2), len(self.seq)-ceil(cluster_size/2))
+            cluster_idxs = range(cluster_center_idx-floor(cluster_size/2), cluster_center_idx+ceil(cluster_size/2))
+            #Get indices of residues with chosen charge
+            swap_idxs = [idx for idx, res in enumerate(self.seq) if res in charge and idx not in cluster_idxs]
+            #Update excess_swappable
+            excess_swappable = len(swap_idxs) - cluster_size
+        
+        #Take a random sample of swap_idxs of same size as cluster
+        swap_idxs = rand.sample(swap_idxs, cluster_size)
+        
+        #Get the residues in the current cluster and the new cluster
+        cluster_res = [res for idx, res in enumerate(self.seq) if idx in cluster_idxs]
+        swap_res = [res for idx, res, in enumerate(self.seq) if idx in swap_idxs]
+        newseq = ""
+        for idx, res in enumerate(self.seq):
+            if idx in swap_idxs:
+                newseq += cluster_res.pop(0)
+            elif idx in cluster_idxs:
+                newseq += swap_res.pop(0)
+            else:
+                newseq += res
+        assert len(newseq) == len(self.seq)
+
+        #Make a Sequence object from newseq
+        outseq = Sequence(newseq, self.dmax)
+        assert outseq.countNeut() == self.countNeut()
+        new_delta = outseq.delta()
+
+      return outseq
+
+    #...................................................................................#
+    def permute_block_swap(self, frozen=set()):
+      """
+      Function that chooses a random block of residues and swaps it for a random block
+      of residues of the same size elswhere in the sequence. Function only returns
+      sequences with different delta than the parent sequence.
+      """
+      #Initialize rng
+      rand = rng.Random()
+      rand.seed(time.time())
+
+      #Permutations won't necessarily change delta, so run inside a while loop to make sure
+      old_delta = self.delta()
+      new_delta = old_delta
+
+      #Get indices in sequence
+      seq_idxs = range(0, self.len)
+
+      #Make a list from the parent sequence
+      old_seq_list = list(self.seq)
+
+      it = 0
+      while (new_delta == old_delta) & (it < 100):
+        #Choose block size
+        max_block_size = floor(self.len/2)
+        min_block_size = 2
+        block_size = rand.randint(min_block_size, max_block_size)
+  
+        #Choose blocks for swapping
+        #From this stackoverflow answer https://stackoverflow.com/a/18641853
+        possible_start_idxs = range(self.len - (block_size - 1) * 2)
+        blocks_to_swap = []
+        offset = 0
+        for i in sorted(rand.sample(possible_start_idxs, 2)):
+          i += offset
+          blocks_to_swap.append(seq_idxs[i:i+block_size])
+          offset += block_size - 1
+
+        #Convert blocks to swap list to slice object
+
+        newseq = list(self.seq)
+        newseq[min(blocks_to_swap[0]):max(blocks_to_swap[0])] = old_seq_list[min(blocks_to_swap[1]):max(blocks_to_swap[1])]
+        newseq[min(blocks_to_swap[1]):max(blocks_to_swap[1])] = old_seq_list[min(blocks_to_swap[0]):max(blocks_to_swap[0])]
+
+        outseq = Sequence("".join(newseq), self.dmax)
+        new_delta = outseq.delta()
+        it += 1
+
+      if it == 99:
+        raise SequenceException("Error in permute_block_swap: no change in delta after 100 tries.")
+      else:
+        return(outseq)
+
+    # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>`
     #
     #                         PHOSPHORYLATION RELATED FUNCTIONS
     #
@@ -1799,3 +1954,35 @@ class Sequence:
 
         return localgrp
 
+    #...................................................................................#            
+    def __permutant_from_reduced_seq(self, parentSeqObj):
+      """
+      Given a reduced sequence (only +, -, or 0) as determined in self.deltaMax(), return 
+      a permuted sequence as a string of the same composition as the parent sequence 
+      corresponding to the reduced sequence.
+      """
+      # Make lists of residues in each category from parentSeqObj
+      posRes = [res for res in parentSeqObj.seq if res in ("R", "K")]
+      negRes = [res for res in parentSeqObj.seq if res in ("D", "E")]
+      neutRes = [res for res in parentSeqObj.seq if res not in ("D", "E", "R", "K")]
+
+
+      # Sanity check
+      if sum([len(posRes), len(negRes), len(neutRes)]) != len(parentSeqObj.seq):
+        raise SequenceException("Error in __permutant_from_reduced_seq.")
+
+      outSeq = ""
+      pos_counter = 0
+      neg_counter = 0
+      neut_counter = 0
+      for res in self.seq:
+        if res == "+":
+          outSeq += str(posRes[pos_counter])
+          pos_counter += 1
+        elif res == "-":
+          outSeq += str(negRes[neg_counter])
+          neg_counter += 1
+        else:
+          outSeq += str(neutRes[neut_counter])
+          neut_counter += 1
+      return outSeq
