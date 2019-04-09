@@ -1620,7 +1620,7 @@ class Sequence:
         if isinstance(listOfPsites, int):
             tmp = listOfPsites
             listOfPsites = []
-            listOfPsites.appned(tmp)
+            listOfPsites.append(tmp)
 
         # evaluate proposed phosphosites
         for site in listOfPsites:
