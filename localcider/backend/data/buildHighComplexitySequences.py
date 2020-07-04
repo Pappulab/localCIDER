@@ -100,7 +100,7 @@ for i in range(0,0):
     #print(maxCompDict.keys())
 
     if CONVERGENCE_TARGET in list(maxCompDict.keys()):
-        print("Found max after %i" % maxCompDict[CONVERGENCE_TARGET])
+        print(("Found max after %i" % maxCompDict[CONVERGENCE_TARGET]))
 
         
         with open("convergenceDist.dat","a") as fh:
@@ -118,7 +118,7 @@ maxComplexity = {}
 # 5 and MAX_LENGTH
 for length in range(5,MAX_LENGTH):
 
-    print("On sequences of length %i " % length)
+    print(("On sequences of length %i " % length))
 
     # intialize 
     maxComplexity[length] = -1

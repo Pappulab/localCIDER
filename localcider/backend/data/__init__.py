@@ -41,5 +41,5 @@
    import for data...
 
 """
-import aminoacids
-import highComplexitySequences
+from . import aminoacids
+from . import highComplexitySequences
