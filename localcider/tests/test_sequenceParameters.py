@@ -50,7 +50,7 @@ import random
 import numpy as np
 
 from localcider import sequenceParameters, plots
-from . import testTools
+import testTools
 
 
 class TestSequenceParametersFunctions(unittest.TestCase):
