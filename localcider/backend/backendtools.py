@@ -53,14 +53,14 @@
 """
 import sys
 import os
-from config import HUSH_WARNINGS, HUSH_STATUS, HUSH_ALL
+from .config import HUSH_WARNINGS, HUSH_STATUS, HUSH_ALL
 
 #...................................................................................#
 
 
 def warning_message(message):
     if not HUSH_WARNINGS and not HUSH_ALL:
-        print "WARNING: " + message
+        print("WARNING: " + message)
 
 
 #...................................................................................#
@@ -70,7 +70,7 @@ def status_message(message):
     this function prints $message to STDOUT
     """
     if not HUSH_STATUS and not HUSH_ALL:
-        print message
+        print(message)
 
 
 #...................................................................................#
@@ -113,7 +113,7 @@ def return_absolute_datafile_path(filename):
     absolute_path = os.path.realpath('__file__')
     splitted = os.path.split(absolute_path)
 
-    print absolute_path
+    print(absolute_path)
 
     # cut off the first two path
     for i in range(0, 2):

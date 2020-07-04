@@ -50,11 +50,11 @@
 import csv
 import numpy as np
 
-from residue import Residue
-import data
-from data.aminoacids import THREE_TO_ONE, ONE_TO_THREE
+from .residue import Residue
+from . import data
+from .data.aminoacids import THREE_TO_ONE, ONE_TO_THREE
 
-from localciderExceptions import ResTableException
+from .localciderExceptions import ResTableException
 
 
 class ResTable:
@@ -84,12 +84,12 @@ class ResTable:
 
         # if we're using a three letter code
         if len(resCode) == 1:
-            if resCode in ONE_TO_THREE.keys():
+            if resCode in list(ONE_TO_THREE.keys()):
                 return self.residue_table[ONE_TO_THREE[resCode]]
 
         # if we're usin a one letter code
         elif len(resCode) == 3:
-            if resCode in THREE_TO_ONE.keys():
+            if resCode in list(THREE_TO_ONE.keys()):
                 return self.residue_table[resCode]
 
         # if we got here we had an invalid AA code

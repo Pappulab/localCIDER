@@ -47,7 +47,7 @@
 
 """
 
-from backend import plotting
+from .backend import plotting
 
 
 #...................................................................................#

@@ -37,12 +37,12 @@ class SequencePermutantException(Exception):
 
 import numpy as np
 
-from sequenceParameters import SequenceParameters
-from backend.sequence import Sequence
-from backend.seqfileparser import SequenceFileParser
-from backend.backendtools import status_message, warn_notReadyYet
+from .sequenceParameters import SequenceParameters
+from .backend.sequence import Sequence
+from .backend.seqfileparser import SequenceFileParser
+from .backend.backendtools import status_message, warn_notReadyYet
 
-from backend import wang_landau
+from .backend import wang_landau
 
 
 class SequencePermutants:

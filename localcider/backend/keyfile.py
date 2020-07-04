@@ -54,10 +54,10 @@
 
 import os
 import numpy as np
-from backendtools import warning_message, status_message
-from seqfileparser import SequenceFileParser
+from .backendtools import warning_message, status_message
+from .seqfileparser import SequenceFileParser
 
-from localciderExceptions import KeyFileException
+from .localciderExceptions import KeyFileException
 
 #=======================================================
 # Default values for non-crucial keyfile parameters
@@ -234,11 +234,11 @@ class KeyFile():
                         try:
                             os.makedirs(value)
                         except OSError as e:
-                            print "----------------------------"
-                            print ""
-                            print "ERROR Creating output directory - do you have permission to create the directory [" + str(value) + "]"
-                            print ""
-                            print "----------------------------"
+                            print("----------------------------")
+                            print("")
+                            print(("ERROR Creating output directory - do you have permission to create the directory [" + str(value) + "]"))
+                            print("")
+                            print("----------------------------")
                             raise e
                     # if it does exist raise a quick warning
                     else:

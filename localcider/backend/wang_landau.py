@@ -61,10 +61,10 @@ import time as t
 import time
 import os
 
-from backendtools import running_dotdotdot
-from sequence import Sequence
+from .backendtools import running_dotdotdot
+from .sequence import Sequence
 
-from localciderExceptions import WLException
+from .localciderExceptions import WLException
 
 
 class WangLandauMachine:
@@ -176,20 +176,20 @@ class WangLandauMachine:
 
         # print the sequence in a sensible way...
         if len(self.seq.seq) > 30:
-            print 'Sequence                  : ' + str(self.seq.seq[0:10]) + "..." + str(self.seq.seq[-10:len(self.seq.seq)])
+            print('Sequence                  : ' + str(self.seq.seq[0:10]) + "..." + str(self.seq.seq[-10:len(self.seq.seq)]))
         else:
-            print 'Sequence                  : ' + str(self.seq.seq)
+            print('Sequence                  : ' + str(self.seq.seq))
 
         if len(self.frozen) == 0:
-            print 'Frozen Residues           : [NONE]'
+            print('Frozen Residues           : [NONE]')
         else:
-            print 'Frozen Residues           : ' + str(self.frozen)
-        print 'initial nbins             : ' + str(self.nbins_actual)
-        print 'bins range in kappa space : ' + str(self.binmin) + " to " + str(self.binmax)
-        print 'Writing output to         : ' + str(os.path.abspath(self.writeDir))
-        print "+-------------------------------------------------+"
-        print '|   WANG-LANDAU MACHINE INITIALIZED SUCCESFULLY   |'
-        print "+-------------------------------------------------+"
+            print('Frozen Residues           : ' + str(self.frozen))
+        print('initial nbins             : ' + str(self.nbins_actual))
+        print('bins range in kappa space : ' + str(self.binmin) + " to " + str(self.binmax))
+        print('Writing output to         : ' + str(os.path.abspath(self.writeDir)))
+        print("+-------------------------------------------------+")
+        print('|   WANG-LANDAU MACHINE INITIALIZED SUCCESFULLY   |')
+        print("+-------------------------------------------------+")
 
     #...................................................................................#
     def parseFreezeFile(self, frzfile):
@@ -462,12 +462,12 @@ class WangLandauMachine:
                 # if we're at a flatcheck
                 if(nstep == self.nflatchk):
 
-                    print ""
-                    print "Interest indicies = " + str(self.relevant_min) + " and " + str(self.relevant_max)
+                    print("")
+                    print("Interest indicies = " + str(self.relevant_min) + " and " + str(self.relevant_max))
 
                     Hlocal = H[self.relevant_min:self.relevant_max + 1]
 
-                    print "On flatcheck number:  " + str(flatcount)
+                    print("On flatcheck number:  " + str(flatcount))
                     flatcount += 1
                     self.writeLog(hlog, str(flatcount) + "\t" +
                                   self.fprintHVector(Hlocal) + "\n")
@@ -477,8 +477,8 @@ class WangLandauMachine:
 
                     # to timing stats for this set of cycles
                     endTime = t.time()
-                    print("Time for this flat-check cycle: " +
-                          str(endTime - startTime))
+                    print(("Time for this flat-check cycle: " +
+                          str(endTime - startTime)))
                     startTime = t.time()
 
                 # if this is the 20th flatcheck and we've not had a single succesfull iteration
@@ -515,7 +515,7 @@ class WangLandauMachine:
 
         globalEndTime = t.time()
         print("Total Run Time in Seconds")
-        print(globalEndTime - globalStartTime)
+        print((globalEndTime - globalStartTime))
         return np.vstack((bincts, g))
 
     #...................................................................................#
@@ -696,15 +696,15 @@ class WangLandauMachine:
             # TODO add some kind of 'this is taking WAY TOO LONG' check
             if(nstep % self.nflatchk == 0):
 
-                print ""
-                print "Interest indicies = " + str(self.relevant_min) + " and " + str(self.relevant_max)
+                print("")
+                print("Interest indicies = " + str(self.relevant_min) + " and " + str(self.relevant_max))
 
-                print "Rejected [outside histogram] = " + str(reject / float(self.nflatchk) * 100) + "%"
+                print("Rejected [outside histogram] = " + str(reject / float(self.nflatchk) * 100) + "%")
                 reject = 0
 
                 Hlocal = H[self.relevant_min:self.relevant_max + 1]
 
-                print "On flatcheck number:  " + str(flatcount)
+                print("On flatcheck number:  " + str(flatcount))
                 flatcount += 1
                 self.writeLog(
                     hlog,
@@ -717,8 +717,8 @@ class WangLandauMachine:
                     H, Hlocal, niter, f, hlog, glog, g)
                 # to timing stats for this set of cycles
                 endTime = t.time()
-                print("Time for this flat-check cycle: " +
-                      str(endTime - startTime))
+                print(("Time for this flat-check cycle: " +
+                      str(endTime - startTime)))
                 startTime = t.time()
 
         # Finalize and clean up
@@ -735,7 +735,7 @@ class WangLandauMachine:
 
         globalEndTime = t.time()
         print("Total Run Time in Seconds")
-        print(globalEndTime - globalStartTime)
+        print((globalEndTime - globalStartTime))
         return np.vstack((bincts, g))
         # close while loop
 
@@ -761,7 +761,7 @@ class WangLandauMachine:
         # construct an empty list of lists, which we'll populate with $numberOfSequences sequences at
         # each bin position
         sequence_vector = []
-        for i in xrange(0, self.nbins_actual):
+        for i in range(0, self.nbins_actual):
             sequence_vector.append([])
 
         # sequence vector is now a list of empty lists equal to the full kappa
@@ -873,7 +873,7 @@ class WangLandauMachine:
             if nstep % 1000 == 0:
 
                 # print number rejected outside region of interest
-                print "Rejected [outside histogram] = " + str(float(reject) / float(1000)) + "%"
+                print("Rejected [outside histogram] = " + str(float(reject) / float(1000)) + "%")
                 reject = 0
 
                 # calculate the total number of sequences we have
@@ -892,11 +892,11 @@ class WangLandauMachine:
         Function which analyzes the local histogram region of interest to evaluate flatness.
         """
 
-        print "H local     = " + str(Hlocal)
-        print "bin regions = [" + str(self.getBinCenters()[self.relevant_min]) + "] to [" + str(self.getBinCenters()[self.relevant_max]) + "]"
+        print("H local     = " + str(Hlocal))
+        print("bin regions = [" + str(self.getBinCenters()[self.relevant_min]) + "] to [" + str(self.getBinCenters()[self.relevant_max]) + "]")
 
-        print "Full Kappa histo: " + str(H)
-        print "Full DOS        : " + str(g)
+        print("Full Kappa histo: " + str(H))
+        print("Full DOS        : " + str(g))
 
         # If everything is flat (i.e. all bins are equally full then
         # each bin in H (the vector of the number of sequences in each bin)
@@ -911,17 +911,17 @@ class WangLandauMachine:
                 Hlocal /
                 np.mean(Hlocal) >= self.flatcrit)[0])
 
-        print(
+        print((
             "Number of histograms which meet flat check criterion: " +
-            str(flatness_number))
+            str(flatness_number)))
 
         if flatness_number == self.nbins_target:
             # If bins are all flat!
-            print ""
-            print "+========================================================+"
-            print "| Flatcheck criterion was met - resetting the histograms |"
-            print "+========================================================+"
-            print ""
+            print("")
+            print("+========================================================+")
+            print("| Flatcheck criterion was met - resetting the histograms |")
+            print("+========================================================+")
+            print("")
 
             # update the convergence criterion
             f = f**0.5
@@ -931,11 +931,11 @@ class WangLandauMachine:
 
             # incremenet the iteration counter and print
             niter = niter + 1
-            print("Now on iteration " + str(niter))
-            print("f = " +
+            print(("Now on iteration " + str(niter)))
+            print(("f = " +
                   str(f) +
                   " convergence set at " +
-                  str(self.convergence))
+                  str(self.convergence)))
             self.writeLog(
                 glog,
                 str(niter) +
@@ -1029,7 +1029,7 @@ class WangLandauMachine:
         newzoom = self.__check_local_skew(zoomcount, H)
 
         if newzoom == zoomcount:
-            print "Shifting region of interest in histogram"
+            print("Shifting region of interest in histogram")
             return zoomcount
 
         high = max(Hlocal)
@@ -1064,9 +1064,9 @@ class WangLandauMachine:
         new_start, pushing_min = self.__get_new_Hlocal_start(bad_indices)
         new_end, pushing_max = self.__get_new_Hlocal_end(bad_indices)
 
-        print ">> bad indicies = " + str(bad_indices)
-        print ">> New start    = " + str(new_start)
-        print ">> New end      = " + str(new_end)
+        print(">> bad indicies = " + str(bad_indices))
+        print(">> New start    = " + str(new_start))
+        print(">> New end      = " + str(new_end))
 
         # new_start and new_end are relevant for the local histogram. Next
         # lets move out of the local histogram into the full histogram
@@ -1098,11 +1098,11 @@ class WangLandauMachine:
             (new_min_kappa - old_start_kappa) / 2) + old_start_kappa
         new_end_kappa = old_end_kappa - ((old_end_kappa - new_max_kappa) / 2)
 
-        print ">> old start kappa  = " + str(old_start_kappa)
-        print ">> old end kappa    = " + str(old_end_kappa)
-        print "---------------------------------------"
-        print ">> new start kappa  = " + str(new_start_kappa)
-        print ">> new end kappa    = " + str(new_end_kappa)
+        print(">> old start kappa  = " + str(old_start_kappa))
+        print(">> old end kappa    = " + str(old_end_kappa))
+        print("---------------------------------------")
+        print(">> new start kappa  = " + str(new_start_kappa))
+        print(">> new end kappa    = " + str(new_end_kappa))
 
         # how big is this new region of interest in kappa space?
         kappa_distance = new_end_kappa - new_start_kappa
@@ -1115,15 +1115,15 @@ class WangLandauMachine:
         self.nbins_actual = int(1.0 / new_binWidth)
         bin_centers = self.getBinCenters()
 
-        print "new bin centers" + str(bin_centers)
+        print("new bin centers" + str(bin_centers))
 
         # finally determine the index values for the relevant regions based on the
         # new_start_kappa2 and new_end_kappa2 values
         self.relevant_min = np.argmin(abs(bin_centers - new_start_kappa))
         self.relevant_max = np.argmin(abs(bin_centers - new_end_kappa))
 
-        print "Index for min = " + str(self.relevant_min)
-        print "Index for max = " + str(self.relevant_max)
+        print("Index for min = " + str(self.relevant_min))
+        print("Index for max = " + str(self.relevant_max))
 
         while (
                 not len(
@@ -1139,7 +1139,7 @@ class WangLandauMachine:
                 pushing_max,
                 bin_centers)
 
-        print "After bin index update bin indices are: " + str(self.relevant_min) + " and " + str(self.relevant_max)
+        print("After bin index update bin indices are: " + str(self.relevant_min) + " and " + str(self.relevant_max))
         return zoomcount
 
     #...................................................................................#
@@ -1153,7 +1153,7 @@ class WangLandauMachine:
         # numerica errors can be introduced when determining the number of bins and whatnot
         # So we use this loop to ensure the HLocal is always the correct number
         # of bins
-        print "Before bin index update bin indices are: " + str(self.relevant_min) + " and " + str(self.relevant_max)
+        print("Before bin index update bin indices are: " + str(self.relevant_min) + " and " + str(self.relevant_max))
 
         lowerDeviation = bin_centers[self.relevant_min] - new_start_kappa
         upperDeviation = bin_centers[self.relevant_max] - new_end_kappa

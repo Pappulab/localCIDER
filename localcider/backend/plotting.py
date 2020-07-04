@@ -64,9 +64,9 @@ import numpy as np
 
 
 
-from sequence import Sequence
-from backendtools import verifyType
-from localciderExceptions import PlottingException
+from .sequence import Sequence
+from .backendtools import verifyType
+from .localciderExceptions import PlottingException
 
 #...................................................................................#
 
@@ -404,7 +404,7 @@ def multiple_plot(x_list, y_list, label_list, fontSize):
     if len(label_list) == 0:
         # construct an empty label list
         label_list = []
-        for i in xrange(0, len(x_list)):
+        for i in range(0, len(x_list)):
             label_list.append("")
 
     # check that the three lists are the same length
@@ -747,7 +747,7 @@ def __build_linear_plot(
     # this is really inefficient but means we have a consistent
     #
     if setPositiveNegativeBars:        
-        for bar in xrange(0, len(barlist)):
+        for bar in range(0, len(barlist)):
             
             # connects +/- bars *if* the bar edge withd is zero
             if data[1, bar] == 0 and LW == 0:
@@ -970,7 +970,7 @@ def save_local_composition_plot(residue_number, density_vectors, legend_color, l
         fs1    = 22
         fs2    = 28
         if len(line_thickness) == 0:
-            for i in xrange(0, n_groups):
+            for i in range(0, n_groups):
                 line_thickness.append(1.5)
 
     # if we're working with a sequence > 250 points
@@ -980,7 +980,7 @@ def save_local_composition_plot(residue_number, density_vectors, legend_color, l
         fs1    = 0.08*len(residue_number)
         fs2    = 0.10*len(residue_number)
         if len(line_thickness) == 0:
-            for i in xrange(0, n_groups):
+            for i in range(0, n_groups):
                 line_thickness.append(3.0)
         
     num_res = len(residue_number)
@@ -996,7 +996,7 @@ def save_local_composition_plot(residue_number, density_vectors, legend_color, l
     matplotlib.rc('font', **font)
 
     
-    for i in xrange(0, n_groups):
+    for i in range(0, n_groups):
         
         # fit the density associated with group
         fx = UnivariateSpline(residue_number, density_vectors[i], s=1)

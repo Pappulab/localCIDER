@@ -51,9 +51,9 @@
 
 """
 
-from backendtools import warning_message, status_message
-from data.aminoacids import ONE_TO_THREE
-from localciderExceptions import SequenceFileParserException
+from .backendtools import warning_message, status_message
+from .data.aminoacids import ONE_TO_THREE
+from .localciderExceptions import SequenceFileParserException
 
 
 class SequenceFileParser:
@@ -141,7 +141,7 @@ class SequenceFileParser:
         for i in sequence:
 
             # if the residue is not in the three letter code
-            if i not in ONE_TO_THREE.keys():
+            if i not in list(ONE_TO_THREE.keys()):
                 if i == " ":
                     # skip spaces
                     continue

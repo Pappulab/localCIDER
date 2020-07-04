@@ -56,7 +56,7 @@ def generate_random_sequence(minLen=1, maxLen=100):
     random.seed()
     end = random.randint(minLen, maxLen)    
     S1 = ""
-    for i in xrange(0, end):
+    for i in range(0, end):
         S1 = S1 + random.choice(AAs)
 
     return S1
@@ -65,7 +65,7 @@ def generate_random_sequence(minLen=1, maxLen=100):
 def generate_random_sequence_list(number=10, minLen=1, maxLen=100):
 
     seqlist = []
-    for i in xrange(0, number):
+    for i in range(0, number):
         seqlist.append(generate_random_sequence(minLen, maxLen))
 
     return seqlist

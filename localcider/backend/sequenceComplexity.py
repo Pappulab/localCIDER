@@ -46,10 +46,10 @@
 import zlib
 import numpy as np
 import math
-from data.highComplexitySequences import maxComplexity
+from .data.highComplexitySequences import maxComplexity
 
-from localciderExceptions import SequenceException, SequenceComplexityException
-from data.aminoacids import TWENTY_AAs
+from .localciderExceptions import SequenceException, SequenceComplexityException
+from .data.aminoacids import TWENTY_AAs
 
 
 class SequenceComplexity:

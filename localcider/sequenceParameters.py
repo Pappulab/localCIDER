@@ -16,12 +16,12 @@
 
 """
 
-from backend.sequence import Sequence
-from backend.seqfileparser import SequenceFileParser
-from backend.backendtools import status_message
-from backend import plotting
-from backend.localciderExceptions import SequenceException
-from backend.localciderExceptions import SequenceComplexityException
+from .backend.sequence import Sequence
+from .backend.seqfileparser import SequenceFileParser
+from .backend.backendtools import status_message
+from .backend import plotting
+from .backend.localciderExceptions import SequenceException
+from .backend.localciderExceptions import SequenceComplexityException
 
 class SequenceParameters:
     """
@@ -994,14 +994,14 @@ class SequenceParameters:
 
         if complexityType == "WF":
             if not wordSize == 3:
-                print "WARNING: Ignoring wordSize argument for Wooton-Federhen complexity"
+                print("WARNING: Ignoring wordSize argument for Wooton-Federhen complexity")
 
             return self.SeqObj.get_linear_WF_complexity(
                 alphabetSize, userAlphabet, blobLen, stepSize)
 
         if complexityType == "LZW":
             if not wordSize == 3:
-                print "WARNING: Ignoring wordSize argument for LZW complexity"
+                print("WARNING: Ignoring wordSize argument for LZW complexity")
 
             return self.SeqObj.get_linear_LZW_complexity(
                 alphabetSize, userAlphabet, blobLen, stepSize)

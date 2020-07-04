@@ -50,7 +50,7 @@ import random
 import numpy as np
 
 from localcider import sequenceParameters, plots
-import testTools
+from . import testTools
 
 
 class TestSequenceParametersFunctions(unittest.TestCase):
@@ -182,7 +182,7 @@ class TestSequenceParametersFunctions(unittest.TestCase):
 
     def test_get_Omega_seq(self):
         Omega_seq = self.testObj.get_Omega_sequence()
-        print Omega_seq
+        print(Omega_seq)
         self.assertTrue(Omega_seq  == "OXOOOXOOOXOXXOOOOOOXXOXOOOOXOOOXOXXOOOOOOOXOXXOOOOOOOOOOXXOXXOOOOOOOOOOOOOOOOOOXOOXOOOOOOOOOOOOXXXOOOXOXXOOXOXOOOXXOXOXXXOXOOXOXOXXOOOXOXXXO")
 
     def test_get_mean_net_charge(self):
@@ -293,10 +293,10 @@ class TestSequenceParametersFunctions(unittest.TestCase):
 
         self.testObj.clear_phosphosites()
 
-        print ""
-        print "###### WE EXPECT A WARNING ON THE LINE BELOW ######"
+        print("")
+        print("###### WE EXPECT A WARNING ON THE LINE BELOW ######")
         self.testObj.set_phosphosites([33, 39, 42, 43])
-        print "###################################################"
+        print("###################################################")
         self.assertEqual(self.testObj.get_phosphosites(), [33, 39, 42])
 
     def test_save_phaseDiagramPlot(self):
@@ -318,17 +318,17 @@ class TestSequenceParametersFunctions(unittest.TestCase):
         random.seed()
 
         seq_list = []
-        for i in xrange(0, 10):
+        for i in range(0, 10):
             L1 = random.randrange(200, 1000)
 
             S1 = ""
-            for i in xrange(0, L1):
+            for i in range(0, L1):
                 S1 = S1 + random.choice(AAs)
 
             seq_list.append(S1)
 
         pos = 0
-        print ""
+        print("")
         
         # generate a list of 10 random sequences between
         # length 100 and 1000
@@ -362,9 +362,9 @@ class TestSequenceParametersFunctions(unittest.TestCase):
         seq_list.append('GGGGG')
             
         for i in seq_list:
-            print ""
-            print "Sequence " + str(pos)
-            print i
+            print("")
+            print("Sequence " + str(pos))
+            print(i)
             iSEQ = sequenceParameters.SequenceParameters(i)
 
             iSEQ.get_FCR()
@@ -441,13 +441,13 @@ class TestSequenceParametersFunctions(unittest.TestCase):
 
             
             psites = iSEQ.get_all_phosphorylatable_sites()
-            print "psites"
-            print psites
+            print("psites")
+            print(psites)
             if len(psites) > 0:
 
                 # grab 3 sites randomly
                 sites = []
-                for i in xrange(0, 2):
+                for i in range(0, 2):
                     sites.append(random.choice(psites))
                 iSEQ.set_phosphosites(sites)
                 iSEQ.get_kappa_after_phosphorylation()

@@ -64,12 +64,12 @@ import copy as cp
 import os
 import itertools
 from math import ceil, floor
-from backendtools import return_absolute_datafile_path, warning_message, verifyType, status_message, warning_message
-from restable import ResTable
-from data import aminoacids
-import data
-from localciderExceptions import SequenceException
-from sequenceComplexity import SequenceComplexity
+from .backendtools import return_absolute_datafile_path, warning_message, verifyType, status_message, warning_message
+from .restable import ResTable
+from .data import aminoacids
+from . import data
+from .localciderExceptions import SequenceException
+from .sequenceComplexity import SequenceComplexity
 
 
 ######################
@@ -144,7 +144,7 @@ class Sequence:
 
         processed = ""
 
-        AAs = data.aminoacids.ONE_TO_THREE.keys()
+        AAs = list(data.aminoacids.ONE_TO_THREE.keys())
         pos = 0
         messageWarned = False
 
@@ -400,8 +400,8 @@ class Sequence:
 
         """
         total=0
-        for m in xrange(2,self.len+1):
-            for n in xrange(1,m):
+        for m in range(2,self.len+1):
+            for n in range(1,m):
                 total = total + float(self.chargePattern[m-1])*float(self.chargePattern[n-1])*np.power((m-n),0.5)
                 
         return total/self.len
@@ -627,7 +627,7 @@ class Sequence:
         """ Return the mean hydropathy value for the sequence
         """
         ans = 0
-        for i in xrange(0, self.len):
+        for i in range(0, self.len):
             ans += lkupTab.lookUpHydropathy(self.seq[i]) / self.len
         return ans
 
@@ -645,7 +645,7 @@ class Sequence:
         translate     = data.aminoacids.ONE_TO_THREE
 
         ans = 0
-        for idx in xrange(0, self.len):
+        for idx in range(0, self.len):
             ans += normalizedKD[translate[self.seq[idx]]] / self.len
 
         return ans
@@ -659,7 +659,7 @@ class Sequence:
         This allows you to examine how hydropathy changes through the sequence
         """
         ans = [lkupTab.lookUpHydropathy(self.seq[0])]
-        for i in xrange(1, self.len):
+        for i in range(1, self.len):
             ans.append(ans[i - 1] + lkupTab.lookUpHydropathy(self.seq[i]))
         ans /= (np.arange(0, self.len) + 1)
         return ans
@@ -691,7 +691,7 @@ class Sequence:
         
         # calculate the total PPII sum for the sequence
         total = 0
-        for i in xrange(0, self.len):
+        for i in range(0, self.len):
             total = total + lkupTab.lookUpPPII(self.seq[i], mode)
 
         # normalize by the sequence length
@@ -1096,7 +1096,7 @@ class Sequence:
         nblobs = self.len - bloblen + 1
         ans = 0
 
-        for i in xrange(0, nblobs):
+        for i in range(0, nblobs):
 
             # get the blob charge pattern list
             blob = self.chargePattern[i:(i + bloblen)]
@@ -1175,7 +1175,7 @@ class Sequence:
             # if the charge block is shorter than the neutral block
             if len(neutralBlock) > len(chargedBlock):
 
-                for position in xrange(0, (self.len - ncharge) + 1):
+                for position in range(0, (self.len - ncharge) + 1):
 
                     setupSequence = position * "0" + \
                         chargedBlock + "0" * (nneuts - position)
@@ -1195,7 +1195,7 @@ class Sequence:
             # if the neutral block is shorter
             else:
 
-                for position in xrange(0, (self.len - nneuts) + 1):
+                for position in range(0, (self.len - nneuts) + 1):
 
                     setupSequence = position * chargeV + \
                         neutralBlock + chargeV * (ncharge - position)
@@ -1224,7 +1224,7 @@ class Sequence:
             negBlock = "-" * nNeg
 
             if len(posBlock) > len(negBlock):
-                for position in xrange(0, (self.len - nNeg) + 1):
+                for position in range(0, (self.len - nNeg) + 1):
                     setupSequence = position * "+" + \
                         negBlock + "+" * (nPos - position)
 
@@ -1240,7 +1240,7 @@ class Sequence:
                       if returnSeqDeltaMax:
                         self.seqDeltaMax = nseq.__permutant_from_reduced_seq(parentSeqObj=self)
             else:
-                for position in xrange(0, (self.len - nPos) + 1):
+                for position in range(0, (self.len - nPos) + 1):
                     setupSequence = position * "-" + \
                         posBlock + "-" * (nNeg - position)
 
@@ -1273,8 +1273,8 @@ class Sequence:
             # of neutral residues at those locations. Importantly, this depends
             # on a blob length of 5-6!
 
-            for startNeuts in xrange(0, 7):
-                for endNeuts in xrange(0, 7):
+            for startNeuts in range(0, 7):
+                for endNeuts in range(0, 7):
                     setupSequence = ''
                     midBlock = ''
                     endBlock = ''
@@ -1311,10 +1311,10 @@ class Sequence:
 
             # iterate through different permutations where
             #  the size of the middle number of neutral residues varies
-            for midNeuts in xrange(0, nneuts + 1):
+            for midNeuts in range(0, nneuts + 1):
                 midBlock = '0' * midNeuts
 
-                for startNeuts in xrange(0, nneuts - midNeuts + 1):
+                for startNeuts in range(0, nneuts - midNeuts + 1):
                     setupSequence = ''
 
                     # construct some permutation of the sequence
@@ -1458,7 +1458,7 @@ class Sequence:
 
         new_seq = []
 
-        for i in xrange(0, self.len):
+        for i in range(0, self.len):
             if i in frozen:
                 new_seq.append(lookup[i])
             else:
@@ -1508,7 +1508,7 @@ class Sequence:
             cluster_size = rand.randint(2, n_charge)
             #Choose cluster positions taking into account boundaries
             cluster_center_idx = rand.randint(floor(cluster_size/2), len(self.seq)-ceil(cluster_size/2))
-            cluster_idxs = range(cluster_center_idx-floor(cluster_size/2), cluster_center_idx+ceil(cluster_size/2))
+            cluster_idxs = list(range(cluster_center_idx-floor(cluster_size/2), cluster_center_idx+ceil(cluster_size/2)))
             #Get indices of residues with chosen charge
             swap_idxs = [idx for idx, res in enumerate(self.seq) if res in charge and idx not in cluster_idxs]
             #Update excess_swappable
@@ -1553,7 +1553,7 @@ class Sequence:
       new_delta = old_delta
 
       #Get indices in sequence
-      seq_idxs = range(0, self.len)
+      seq_idxs = list(range(0, self.len))
 
       #Make a list from the parent sequence
       old_seq_list = list(self.seq)
@@ -1567,7 +1567,7 @@ class Sequence:
   
         #Choose blocks for swapping
         #From this stackoverflow answer https://stackoverflow.com/a/18641853
-        possible_start_idxs = range(self.len - (block_size - 1) * 2)
+        possible_start_idxs = list(range(self.len - (block_size - 1) * 2))
         blocks_to_swap = []
         offset = 0
         for i in sorted(rand.sample(possible_start_idxs, 2)):

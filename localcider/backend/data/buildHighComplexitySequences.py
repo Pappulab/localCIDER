@@ -74,39 +74,39 @@ maxComp=-1
 maxCompDict={}
 CONVERGENCE_TARGET=600
 # convergence test
-for i in xrange(0,0):
+for i in range(0,0):
     maxComp=-1
     maxCompDict={}
 
     # seed the random number generator!
     random.seed()
 
-    for convergenceIteration in xrange(1,200000):
+    for convergenceIteration in range(1,200000):
         length=MAX_LENGTH
 
         # build random sequence
         seq=""
-        for pos in xrange(0,length):
+        for pos in range(0,length):
             seq=seq+random.choice(LETTERS)
         
         compressed = len(zlib.compress(seq))
         
         # update
         if maxComp < compressed:
-            #print "Updatding at iter %i with %i" % (convergenceIteration,compressed)
+            #print("Updatding at iter %i with %i" % (convergenceIteration,compressed))
             maxCompDict[compressed] = convergenceIteration
             maxComp = compressed
 
-    #print maxCompDict.keys()
+    #print(maxCompDict.keys())
 
-    if CONVERGENCE_TARGET in maxCompDict.keys():
-        print "Found max after %i" % maxCompDict[CONVERGENCE_TARGET]
+    if CONVERGENCE_TARGET in list(maxCompDict.keys()):
+        print("Found max after %i" % maxCompDict[CONVERGENCE_TARGET])
 
         
         with open("convergenceDist.dat","a") as fh:
             fh.write("%i \n" % maxCompDict[CONVERGENCE_TARGET])
     else:
-        print "Did not find max"
+        print("Did not find max")
         with open("convergenceDist.dat","a") as fh:
             fh.write("-1\n")
 
@@ -116,18 +116,18 @@ maxComplexity = {}
 
 # for each sequence of some length between
 # 5 and MAX_LENGTH
-for length in xrange(5,MAX_LENGTH):
+for length in range(5,MAX_LENGTH):
 
-    print "On sequences of length %i " % length
+    print("On sequences of length %i " % length)
 
     # intialize 
     maxComplexity[length] = -1
 
-    for iteration in xrange(0, NUM_ITERATIONS):
+    for iteration in range(0, NUM_ITERATIONS):
         
         # bulild flat, random string
         seq=""
-        for pos in xrange(0,length):
+        for pos in range(0,length):
             seq=seq+random.choice(LETTERS)
         
         # determine sequence complexity as the length of the
@@ -143,10 +143,10 @@ for length in xrange(5,MAX_LENGTH):
 
 with open("sequence_complexity.dat", "w") as fh:
     # write each max complexity to file!
-    for length in xrange(5, MAX_LENGTH):
+    for length in range(5, MAX_LENGTH):
         fh.write("%i \t %i\n" % (length, maxComplexity[length]))
         
-print "Complexity done for sequences between 5 and %i (using %i iterations per sequence)" % (MAX_LENGTH, NUM_ITERATIONS)
+print(("Complexity done for sequences between 5 and %i (using %i iterations per sequence)" % (MAX_LENGTH, NUM_ITERATIONS)))
 
 
     

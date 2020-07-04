@@ -49,7 +49,7 @@ import time
 import unittest
 import random
 from localcider.sequenceParameters import SequenceParameters
-import testTools
+from . import testTools
 
 
 class TestComplexityFunctions(unittest.TestCase):
@@ -209,9 +209,9 @@ class TestComplexityFunctions(unittest.TestCase):
                             0.625,  0.5  ,  0.5  ,  0.5  ,  0.5  ,  0.5  ,  0.625,  0.75 ,
                             0.625,  0.75 ,  0.625])
         
-        self.assertEquals((self.SP_60.get_linear_complexity('WF',  alphabetSize=4)[1]  - out['WF'] < 0.00001).all(), True)
-        self.assertEquals((self.SP_60.get_linear_complexity('LZW', alphabetSize=4)[1] - out['LZW'] < 0.00001).all(), True)
-        self.assertEquals((self.SP_60.get_linear_complexity('LC',  alphabetSize=2)[1]  - out['LC'] < 0.00001).all(), True)
+        self.assertEqual((self.SP_60.get_linear_complexity('WF',  alphabetSize=4)[1]  - out['WF'] < 0.00001).all(), True)
+        self.assertEqual((self.SP_60.get_linear_complexity('LZW', alphabetSize=4)[1] - out['LZW'] < 0.00001).all(), True)
+        self.assertEqual((self.SP_60.get_linear_complexity('LC',  alphabetSize=2)[1]  - out['LC'] < 0.00001).all(), True)
 
 
                                                               
