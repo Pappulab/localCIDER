@@ -8,7 +8,7 @@ localCIDER
 
 **localCIDER** is a Python package developed by the lab of `Rohit Pappu at Washington University in St. Louis <http://pappulab.wustl.edu>`_ for calculating and plotting parameters associated with intrinsically disordered proteins (IDPs) and disodered regions (IDRs). **localCIDER** is the Python backend for `CIDER <http://pappulab.wustl.edu/CIDER.html>`_, ( **C**\lassification of **I**\ntrinsically **D**\isordered **E**\nsemble **R**\egions) - a webserver for the calculation of many of those same properties. Essentially, localCIDER lets you run CIDER's calculations locally, allowing you to create custom analysis pipelines which do not rely on the webserver. It also allows you to take advantage of your own local computing hardware, rather than competing with everyone else for a common set of hardware provided by the Pappu lab.
 
-This project was motivated by the need to rapidly and easily calculate the |kgr| (kappa) parameter, as defined in the 2013 Das & Pappu PNAS paper [1], as well as provide a tool to easily plot a sequence on the Das-Pappu diagram-of-states;
+This project was motivated by the need to rapidly and easily calculate the |kgr| (kappa) parameter, as defined in the 2013 Das & Pappu PNAS paper [1], as well as provide a tool to easily plot a sequence on the diagram-of-states;
 
 .. image :: http://pappulab.wustl.edu/img/phase_diagram_small.png
    :width: 400 px
