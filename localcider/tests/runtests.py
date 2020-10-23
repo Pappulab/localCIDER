@@ -49,7 +49,7 @@
 """
 
 import unittest
-import main_test as test
+from . import __init__ as test
 
 
 ## TEST flags

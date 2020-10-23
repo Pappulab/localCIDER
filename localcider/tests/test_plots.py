@@ -49,7 +49,7 @@ import time
 import unittest
 import random
 from localcider import plots, sequenceParameters
-import testTools
+from . import testTools
 
 
 class TestPlotsFunctions(unittest.TestCase):
