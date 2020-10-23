@@ -89,7 +89,7 @@ for i in range(0,0):
         for pos in range(0,length):
             seq=seq+random.choice(LETTERS)
         
-        compressed = len(zlib.compress(seq))
+        compressed = len(zlib.compress(seq.encode('ascii')))
         
         # update
         if maxComp < compressed:
@@ -124,7 +124,7 @@ for length in range(5,MAX_LENGTH):
     maxComplexity[length] = -1
 
     for iteration in range(0, NUM_ITERATIONS):
-        
+
         # bulild flat, random string
         seq=""
         for pos in range(0,length):
@@ -132,7 +132,7 @@ for length in range(5,MAX_LENGTH):
         
         # determine sequence complexity as the length of the
         # compressed string
-        compressed = len(zlib.compress(seq))
+        compressed = len(zlib.compress(seq.encode('ascii')))
         
         # update
         if maxComplexity[length] < compressed:

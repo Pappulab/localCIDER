@@ -48,9 +48,13 @@
 
 """
 
+import sys
+import os
 import unittest
-import main_test as test
 
+# Add the parent directory (which holds the localcider package)
+sys.path.insert(0, os.path.abspath(__file__ + "/../../../"))
+import localcider.tests as test
 
 ## TEST flags
 ALL = False

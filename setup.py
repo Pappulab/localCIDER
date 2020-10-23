@@ -20,5 +20,6 @@ setup(
     long_description=open('README.txt').read(),
     install_requires=[
         "numpy","matplotlib","scipy"],
+    test_suite='localcider.tests.suite',
     **extras
 )

@@ -43,3 +43,19 @@
 
 
 """
+
+import unittest
+
+import test_sequenceParameters
+import test_plots
+import test_sequence
+import test_complexity
+
+def suite():
+    return unittest.TestSuite([
+        unittest.TestLoader().loadTestsFromTestCase(test_sequenceParameters.TestSequenceParametersFunctions),
+        unittest.TestLoader().loadTestsFromTestCase(test_plots.TestPlotsFunctions),
+        unittest.TestLoader().loadTestsFromTestCase(test_sequence.TestSequenceFunctions),
+        unittest.TestLoader().loadTestsFromTestCase(test_complexity.TestComplexityFunctions)
+        ])
+
