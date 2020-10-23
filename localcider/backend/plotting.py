@@ -82,7 +82,7 @@ def show_single_phasePlot(
         fontSize=10,
         getFig=False):
     """
-    Display a single-sequence Das-Pappu phase diagram plot on the screen
+    Display a single-sequence diagram-of-states plot on the screen
     """
 
     phaseplot_validate(fp, fn)
@@ -112,7 +112,7 @@ def save_single_phasePlot(
         fontSize=10,
         saveFormat='pdf'):
     """
-    Save a single-sequence Das-Pappu phase diagram to file
+    Save a single-sequence diagram-of-states to file
     """
 
     phaseplot_validate(fp, fn)
@@ -149,7 +149,7 @@ def show_multiple_phasePlot(
         fontSize=10,
         getFig=False):
     """
-    Display multiple-sequences on a Das-Pappu phase diagram plot on the screen
+    Display multiple-sequences on a diagram-of-states plot on the screen
     """
 
     # validate the various points
@@ -181,7 +181,7 @@ def save_multiple_phasePlot(
         fontSize=10,
         saveFormat='png'):
     """
-    Save multiple-sequences on a Das-Pappu phase diagram to file
+    Save multiple-sequences on a diagram-of-states to file
     """
 
     # validate the various points
