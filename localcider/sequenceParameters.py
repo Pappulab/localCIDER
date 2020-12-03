@@ -1819,7 +1819,7 @@ class SequenceParameters:
         """
 
         # compute the amino acid fraction of the sequence
-        AADICT = self.get_amino_acid_fractions(self)
+        AADICT = self.get_amino_acid_fractions()
 
         # get the AA 1-letter codes and sort 
         aa_names = list(AADICT.keys())
@@ -1830,7 +1830,7 @@ class SequenceParameters:
             AADICT[residue] = str(round(AADICT[residue], 2))+"%"
         
         # write to disk
-        with open(compFileName,'w') as fh:
+        with open(compfile_name,'w') as fh:
             fh.write("Residue\tSequence\n")
             for residue in aa_names:
                 fh.write(residue + "\t" + AADICT[residue] + "\n")
