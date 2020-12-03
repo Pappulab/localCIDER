@@ -1800,6 +1800,42 @@ class SequenceParameters:
         """
         return self.SeqObj.get_HTMLColorString()
 
+
+    #...................................................................................#
+    def write_compfile(self, compfile_name='compfile'):
+        """
+        Function that writes a composition file to the current working directory. File
+        has the format:
+        Residue
+        
+        INPUT:
+        --------------------------------------------------------------------------------
+        compfile_name | filename for the compfile name
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Nothing, but a compfile is written to disk
+        
+        """
+
+        # compute the amino acid fraction of the sequence
+        AADICT = self.get_amino_acid_fractions(self)
+
+        # get the AA 1-letter codes and sort 
+        aa_names = list(AADICT.keys())
+        aa_names.sort()
+
+        # format nicely
+        for residue in aa_names:
+            AADICT[residue] = str(round(AADICT[residue], 2))+"%"
+        
+        # write to disk
+        with open(compFileName,'w') as fh:
+            fh.write("Residue\tSequence\n")
+            for residue in aa_names:
+                fh.write(residue + "\t" + AADICT[residue] + "\n")
+
+
     # ============================================ #
     # ============ IMPLICIT FUNCTIONS ============ #
 
