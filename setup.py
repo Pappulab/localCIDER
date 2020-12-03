@@ -13,5 +13,6 @@ setup(
     description='Tools for calculating sequence properties of disordered proteins [from the Pappu Lab at Washington University in St. Louis]',
     long_description=open('README.txt').read(),
     install_requires=[
-        "numpy","matplotlib","scipy"]
-)
+        "numpy","matplotlib","scipy"],
+    test_suite='localcider.tests.suite',
+    **extras)

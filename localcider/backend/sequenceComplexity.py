@@ -79,7 +79,7 @@ class SequenceComplexity:
             raise SequenceException(
                 "Currently only sequences less than 1000 residues are subject to sequence complexity analysis - also, this feature is actually not officially out yet!")
 
-        return float(len(zlib.compress(sequence))) / \
+        return float(len(zlib.compress(sequence.encode('ascii')))) / \
             maxComplexity[len(sequence)]
 
 
@@ -638,25 +638,25 @@ class SequenceComplexity:
         # an even distribution of points across the sequence (this is always going
         # to be the correct representation of the vector)
         complexity_vector_len = len(complexity_vector)
-        spacing = seq_len/complexity_vector_len
+        spacing = seq_len//complexity_vector_len
 
         # based on the spacing calculate the necessary remainder (i.e. what's left
         # over..)
         remainder = (seq_len - (spacing*complexity_vector_len))
 
         if remainder % 2 == 0:
-            flank_start = remainder/2
-            flank_end = remainder/2
+            flank_start = remainder//2
+            flank_end = remainder//2
         else:
-            flank_start = (remainder-1)/2
-            flank_end = (remainder+1)/2
+            flank_start = (remainder-1)//2
+            flank_end = (remainder+1)//2
 
         # finally set the start and end positions as half-way through the spacing
         # unit + the appropriate flanking sequence offset from either the first
         # or last residue
 
-        index_start = (flank_start+1) + spacing/2
-        index_end   = ((seq_len + 1)-flank_end) + spacing/2
+        index_start = (flank_start+1) + spacing//2
+        index_end   = ((seq_len + 1)-flank_end) + spacing//2
         indices = np.arange(index_start, index_end, spacing, dtype=int)
 
         return np.vstack((indices, complexity_vector))

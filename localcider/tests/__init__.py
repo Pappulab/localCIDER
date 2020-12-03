@@ -46,11 +46,20 @@
 
 import sys
 import os
+import unittest
 # Add the parent directory (which holds the localcider package)
-sys.path.insert(0, os.path.abspath(__file__ + "/../../../"))
+# sys.path.insert(0, os.path.abspath(__file__ + "/../../../"))
 
 
 from . import test_sequenceParameters
 from . import test_plots
 from . import test_sequence
 from . import test_complexity
+
+def suite():
+    return unittest.TestSuite([
+        unittest.TestLoader().loadTestsFromTestCase(test_sequenceParameters.TestSequenceParametersFunctions),
+        unittest.TestLoader().loadTestsFromTestCase(test_plots.TestPlotsFunctions),
+        unittest.TestLoader().loadTestsFromTestCase(test_sequence.TestSequenceFunctions),
+        unittest.TestLoader().loadTestsFromTestCase(test_complexity.TestComplexityFunctions)
+        ])
