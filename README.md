@@ -1,11 +1,17 @@
 localCIDER
 ==========
 
-localCIDER is the Python backend for CIDER
+localCIDER is the Python backend for CIDER developed by the Pappu lab at Washington University in St. Louis.
 
 For more information please 
 [see the documentation](http://pappulab.github.io/localCIDER/).
 
 localCIDER was written by Alex Holehouse and James Ahad in the [Pappu Lab](http://pappulab.wustl.edu/).
 
-Please address all questions to [Alex](http://pappulab.wustl.edu/people.html#grads). 
+While Alex has since left the Pappu lab, he continues to maintain localCIDER - for now, please address all questions [to him](http://www.holehouse.wustl.edu). 
+
+## Running tests
+Before committing changes please run tests as
+
+	cd localcider/tests
+	pytest -vv
