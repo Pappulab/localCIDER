@@ -88,7 +88,7 @@ class Sequence:
     """
 
     #...................................................................................#
-    def __init__(self, seq, dmax=-1, chargePattern=[], validateSeq=False):
+    def __init__(self, seq, dmax=-1, chargePattern=[], validateSeq=False, compFileName='compfile'):
         """
         seq = amino acid sequence as a string
 
@@ -129,13 +129,14 @@ class Sequence:
         # build a complexity object (just code encapsulation - no state)
         self.ComplexityObject = SequenceComplexity()
 
-	#build an object to store the filename of the compositional statistics file
-	self.compFileName = compFileName
+        #build an object to store the filename of the compositional statistics file
+        self.compFileName = compFileName
 
-	#automatically create a text file containing compositional statistics in user's current directory
+        #automatically create a text file containing compositional statistics in user's current directory
         AADICT = {'A': 0,'C': 0,'D': 0,'E': 0,'F': 0,'G': 0,'H': 0,'I': 0, 'K': 0, 'L': 0,'M': 0,'N': 0,'P': 0,'Q': 0,'R': 0,'S': 0,'T': 0,'V': 0,'W': 0,'Y': 0}
         for i in self.seq:
-            AADICT[i] += 1
+            if i in AADICT:
+                AADICT[i] += 1
         for i in AADICT:
             AADICT[i] = float(AADICT[i]) / float(len(self.seq))
         for residue in list(AADICT.keys()):
