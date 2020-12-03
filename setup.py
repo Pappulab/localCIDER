@@ -1,12 +1,6 @@
 from setuptools import setup
 import sys
 
-extras = {}
-if sys.version_info >= (3, 0):
-    extras.update(
-            use_2to3=True,
-    )
-
 setup(
     name='localcider',
     version='0.1.16',
@@ -19,6 +13,5 @@ setup(
     description='Tools for calculating sequence properties of disordered proteins [from the Pappu Lab at Washington University in St. Louis]',
     long_description=open('README.txt').read(),
     install_requires=[
-        "numpy","matplotlib","scipy"],
-    **extras
+        "numpy","matplotlib","scipy"]
 )

@@ -43,3 +43,14 @@
 
 
 """
+
+import sys
+import os
+# Add the parent directory (which holds the localcider package)
+sys.path.insert(0, os.path.abspath(__file__ + "/../../../"))
+
+
+from . import test_sequenceParameters
+from . import test_plots
+from . import test_sequence
+from . import test_complexity
