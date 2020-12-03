@@ -49,7 +49,7 @@ import time
 import unittest
 import random
 from localcider.sequenceParameters import SequenceParameters
-import testTools
+from . import testTools
 
 
 class TestComplexityFunctions(unittest.TestCase):

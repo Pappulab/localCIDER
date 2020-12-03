@@ -49,7 +49,7 @@ import time
 import unittest
 import random
 from localcider.backend import sequence
-import testTools
+from . import testTools
 
 
 def roundflt(num):

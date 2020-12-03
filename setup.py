@@ -1,12 +1,6 @@
 from setuptools import setup
 import sys
 
-extras = {}
-if sys.version_info >= (3, 0):
-    extras.update(
-            use_2to3=True,
-    )
-
 setup(
     name='localcider',
     version='0.1.16',
@@ -21,5 +15,4 @@ setup(
     install_requires=[
         "numpy","matplotlib","scipy"],
     test_suite='localcider.tests.suite',
-    **extras
-)
+    **extras)
