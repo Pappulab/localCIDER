@@ -1,6 +1,6 @@
 # localCIDER
 
-`Version 0.1.14 - March 2017`
+`Version 0.1.18 - December 2020`
 
 # Introduction
 
@@ -43,7 +43,7 @@ Very simple! **localCIDER** depends on the three pillars of scientific Python co
 If you encounter issues installing please let me know. That said, any issues *should* be due to problems with Numpy or `matplotlib` and not **localCIDER**, so investigate the documentation associated with installing those packages first.
 
 ## Python 2 and Python 3
-As of version 0.1.8 localCIDER is supported under both Python 2.x and 3.x. localCIDER has been extensively tested and used with Python 2.7.x, and we recommend this version of Python. If you encounter issues using localCIDER with Python version 3.x please let us know! 
+Python2 is now a deprecated language and full-time localCIDER development is exclusively focussed on maintaining the Python 3 version. Please do not use Python2!
 
 ### Known installation issues
 
@@ -584,6 +584,8 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * Xiaohan Li (Yale University) for corrections to text
 * Sean Cascarina (Colorado State University) for finding a bug where stop-codons are not dealt with correctly in FASTA files
 * David Sanders and Anastasia Repouliou (Princeton University) for the suggestion of introducing pH dependent charge analysis and bug reports 
+* Alex Keely for various updates
+* John Bollinger for major updates to Python3 compatibility, bug fixes, error correction.
  
 
 ## Update schedule
@@ -600,6 +602,11 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * **version 0.1.11** - Update to colors for amino acid output string, added the get_linear_sigma function, moved the import location for the scipy dependency so it can 
 * **version 0.1.12** - Deal with stop codons when reading fasta files. Introduced pH dependence analysis. 
 * **version 0.1.13** - Added get_molecular_weight() function, fixed a bug for low or high charge sequences with get_isoelectric_point()
+* **version 0.1.14** - Updates by Andrew Lyon to Wang Landau sampling algorithm
+* **version 0.1.16** - Updated by Alex Keely to fix a few issues
+* **version 0.1.17** - Lots of error fixes and full conversion to Python3 by 
+John Bollinger
+* **version 0.1.18** – Minor updates
 
 
 
