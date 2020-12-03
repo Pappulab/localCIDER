@@ -17,3 +17,9 @@ Before committing changes please run tests as
 	python runtests.py
 	
 Note that subsets of tests can be run by editing `runtests.py` as needed.
+
+Alternatively one can run
+
+	pytest -vv
+	
+To run all tests
