@@ -1,6 +1,6 @@
 # localCIDER
 
-`Version 0.1.14 - March 2017`
+`Version 0.1.18 - December 2020`
 
 # Introduction
 
