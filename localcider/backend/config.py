@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Copyright (C) 2014 - 2017                                             !
+   !    Copyright (C) 2014 - 2021                                             !
    !    The localCIDER development team (current and former contributors)     !
    !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
@@ -52,4 +52,4 @@ HUSH_ALL = True
 
 
 # DO NOT CHANGE ANYTHING BELOW THIS LINE
-VERSION = "0.1.14"
+VERSION = "0.1.18"

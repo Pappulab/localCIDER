@@ -4,7 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
-   !    Copyright (C) 2014 - 2017                                             !
+   !    Copyright (C) 2014 - 2021                                             !
    !    The localCIDER development team (current and former contributors)     !
    !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
@@ -51,7 +51,7 @@
 import sys
 import os
 import unittest
-from . import __init__ as test
+#from . import __init__ as test
 
 
 # Add the parent directory (which holds the localcider package)
@@ -59,7 +59,7 @@ sys.path.insert(0, os.path.abspath(__file__ + "/../../../"))
 import localcider.tests as test
 
 ## TEST flags
-ALL = False
+ALL = True
 sequenceParameters_test = True
 plots_test = False
 sequence_test = False

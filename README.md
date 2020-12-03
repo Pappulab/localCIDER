@@ -14,4 +14,6 @@ While Alex has since left the Pappu lab, he continues to maintain localCIDER - f
 Before committing changes please run tests as
 
 	cd localcider/tests
-	pytest -vv
+	python runtests.py
+	
+Note that subsets of tests can be run by editing `runtests.py` as needed.

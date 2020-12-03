@@ -4,6 +4,7 @@
    !--------------------------------------------------------------------------!
    !    This file is part of localCIDER.                                      !
    !                                                                          !
+   !    Copyright (C) 2014 - 2021                                             !
    !    The localCIDER development team (current and former contributors)     !
    !    Alex Holehouse, James Ahad, Rahul K. Das.                             !
    !                                                                          !
