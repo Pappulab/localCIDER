@@ -579,11 +579,13 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * Katra Kolsek (Heidelberger Institut fur Theoretische Studien) for bug reports and code development to improve plotting customization
 * Alex Chin (Johns Hopkins University) for a crucial bug report
 * Thomas Pranzatelli (Washington University in St. Louis) for testing and bug reports
-* Carlos Hernández (Stanford University) for Python 3 support and PEP8 compliance
+* Carlos Hernández (Stanford University) for Python 3 support and PEP8 compliance 
 * Luke Wheeler (University of Oregon) for Python 3 testing
 * Xiaohan Li (Yale University) for corrections to text
 * Sean Cascarina (Colorado State University) for finding a bug where stop-codons are not dealt with correctly in FASTA files
-* David Sanders and Anastasia Repouliou (Princeton University) for the suggestion of introducing pH dependent charge analysis and bug reports
+* David Sanders and Anastasia Repouliou (Princeton University) for the suggestion of introducing pH dependent charge analysis and bug reports 
+* Alex Keely for various updates
+* John Bollinger for major updates to Python3 compatibility, bug fixes, error correction.
  
 
 ## Update schedule
@@ -600,3 +602,10 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * **version 0.1.11** - Update to colors for amino acid output string, added the get_linear_sigma function, moved the import location for the scipy dependency so it can 
 * **version 0.1.12** - Deal with stop codons when reading fasta files. Introduced pH dependence analysis. 
 * **version 0.1.13** - Added get_molecular_weight() function, fixed a bug for low or high charge sequences with get_isoelectric_point()
+* **version 0.1.14** - Updates by Andrew Lyon to Wang Landau sampling algorithm
+* **version 0.1.16** - Updated by Alex Keely to fix a few issues
+* **version 0.1.17** - Lots of error fixes and full conversion to Python3 by 
+John Bollinger
+* **version 0.1.18** – Minor updates
+
+
