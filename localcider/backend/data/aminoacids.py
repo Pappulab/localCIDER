@@ -257,6 +257,29 @@ def get_KD_uversky():
 
     return uversky 
 
+def get_WW_original():
+    """ Function which returns the original Wimley and White hydropathy lookup table
+    """
+    return {'ILE':  0.31,
+            'VAL': -0.07,
+            'LEU':  0.56,
+            'PHE':  1.13,
+            'CYS':  0.24,
+            'MET':  0.23,
+            'ALA': -0.17,
+            'GLY': -0.01,
+            'THR': -0.14,
+            'SER': -0.13,
+            'TRP':  1.85,
+            'TYR':  0.94,
+            'PRO': -0.45,
+            'HIS': -0.96,
+            'GLU': -2.02,
+            'GLN': -0.58,
+            'ASP': -1.23,
+            'ASN': -0.42,
+            'LYS': -0.99,
+            'ARG': -0.81}
            
 def get_PPII_Hilser():
     """

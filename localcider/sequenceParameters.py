@@ -185,6 +185,25 @@ class SequenceParameters:
         """
 
         return self.SeqObj.uverskyHydropathy()
+    
+    #...................................................................................#
+    def get_WW_hydropathy(self):
+        """
+        Get a protein's mean hydropathy. This is based on the Wimley-White scale
+        
+        ********************************************************************************
+        Ref: Wimley, W.C., and White, S.H. (1996). Experimentally determined 
+        hydrophobicity scale for proteins at membrane interfaces. Nat. Struct. 
+        Biol. 3, 842–848.
+        ********************************************************************************
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Float with the sequence's mean Wimley-White hydropathy
+
+        """
+        
+        return self.SeqObj.meanWWHydropathy()
 
     #...................................................................................#
     def get_fraction_disorder_promoting(self):

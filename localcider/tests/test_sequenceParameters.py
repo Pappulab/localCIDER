@@ -84,6 +84,10 @@ class TestSequenceParametersFunctions(unittest.TestCase):
         MUH = self.testObj.get_uversky_hydropathy()
         self.assertEqual(MUH, 0.4552380952380952)
 
+    def test_get_WW_hydropathy(self):
+        MH = self.testObj.get_WW_hydropathy()
+        self.assertEqual(MH, -0.45285714285714296)
+
     def test_get_fraction_disorder_promoting(self):
         FD = self.testObj.get_fraction_disorder_promoting()
         self.assertEqual(FD, 0.7285714285714285)
