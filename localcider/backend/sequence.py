@@ -652,6 +652,20 @@ class Sequence:
             ans += normalizedKD[translate[self.seq[idx]]] / self.len
 
         return ans
+    
+    #...................................................................................#
+    def meanWWHydropathy(self):
+        """ Return the mean hydropathy value for the sequence using the WW
+        hydropathy table
+        """
+        ww = data.aminoacids.get_WW_original()
+        translate = data.aminoacids.ONE_TO_THREE
+
+        ans = 0
+        for idx in range(0, self.len):
+            ans += ww[translate[self.seq[idx]]] / self.len
+
+        return ans
 
     #...................................................................................#
     def cumMeanHydropathy(self):
