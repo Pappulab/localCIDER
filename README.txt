@@ -2,7 +2,7 @@
 localCIDER
 ==========
 
-`version 0.1.18 - December 3rd 2020`
+`version 0.1.19 - May 5th 2021`
 
 **Introduction**
 
@@ -23,9 +23,9 @@ Installation
 
 To install run
 
-    [sudo] pip install localcider
+    pip install localcider
 
-We strongly recommend using `virtualenv`, in which case `sudo` should not be required. Note that localcider requires `numpy`, `scipy`, and `matplotlib` to run.
+We strongly recommend using a `conda` environment (or a `virtualenv`) to install localcider. Note that localcider requires `numpy`, `scipy`, and `matplotlib` to run. 
 
 ------------------------------
 Usage, bugs, and questions

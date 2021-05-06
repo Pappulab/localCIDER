@@ -31,7 +31,12 @@
 
 * A generalized patterning parameter for considering 2 or 3 letter alphabets is provided (kappa_X), allowing users to ask general questions about sequence patterning.
 
-* The figure generation code has been further optimised, as has code documentation
+* The figure generation code has been further optimized, as has code documentation
 
-If there are sequence feautures you would like to see added to localCIDER please don't hesitate to get in touch - we're always looking for new features to add and to further grow localCIDER as a general purpose protein analysis framework.
+If there are sequence features you would like to see added to localCIDER please don't hesitate to get in touch - we're always looking for new features to add and to further grow localCIDER as a general purpose protein analysis framework.
+
+
+0.1.19
+* Added the Wimley-White hydrophobicity scale (thanks to Matthew Murray from Ross Sozzani's lab at NC State)!
+
  
