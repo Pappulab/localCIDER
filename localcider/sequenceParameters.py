@@ -1864,7 +1864,7 @@ class SequenceParameters:
     # ============================================ #
     # ============ NARDINI FUNCTIONS ============ #
 
-    def nardini_zscore_and_plot(self, num_scrambles=100000, random_seed=None):
+    def save_zscoresAndPlots(self, num_scrambles=100000, random_seed=None):
         """
         A function that takes an input sequence, scrambles it a defined number of times
         to find a similar sequence derived from a statistical analysis of the amino acid
