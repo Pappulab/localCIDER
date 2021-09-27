@@ -24,7 +24,8 @@ from .backend.localciderExceptions import SequenceException
 from .backend.localciderExceptions import SequenceComplexityException
 from Bio import SeqIO
 from io import StringIO
-from nardini.score_and_plot import calculate_and_plot
+from nardini.score_and_plot import calculate_zscore_and_plot, calculate_zscore
+from nardini.plotting import plot_zscore_matrix
 from nardini.core import typeall
 from datetime import datetime
 
@@ -1894,7 +1895,73 @@ class SequenceParameters:
         else:
             seed = random_seed
             print(f'Using user-supplied random seed: {seed}\n')
-        calculate_and_plot(records, typeall, num_scrambles, seed)
+        calculate_zscore_and_plot(records, typeall, num_scrambles, seed)
+
+
+    def calculate_zscore(self, num_scrambles=100000, random_seed=None):
+        """
+        A function that takes an input sequence, scrambles it a defined number of times
+        to find a similar sequence derived from a statistical analysis of the amino acid
+        compositions relative to the input sequence.
+
+        Matrices of the amino acid compositions are saved to disk as well as a zip file
+        containing the Nardini analysis, accompanying plots, and text representations
+        of the plots.
+
+        INPUT:
+        --------------------------------------------------------------------------------
+        num_scrambles | The number of times random sequences should be generated (DEFAULT = 100000).
+        random_seed   | The random seed to use for reproducibility. If not defined, one will be
+        generated (DEFAULT = None).
+
+        RETURN:
+        --------------------------------------------------------------------------------
+        A dictionary whose keys are the name of the sequence with the following associated
+        values:
+
+            1. Original_sequence.
+            2. Scrambled_sequence.
+            3. The sequence number (used for book-keeping for many sequences).
+            4. The `reshaped_zvecdb` corresponding to the original sequence.
+            5. The `reshaped_zvecdbscr` corresponding to the scrambled sequences.
+
+        Note that if the sequence is non-BioPython, a fake record will be created with the
+        sequence name: "seq1".
+        """
+        fasta = f'>seq1\n%s' % self.SeqObj.seq
+        fake_record = SeqIO.read(StringIO(fasta), 'fasta')
+        records = [fake_record]
+        seed = None
+        if random_seed is None:
+            seed = int(datetime.now().timestamp())
+            print(f'No random seed specified. Using generated random seed: {seed}\n')
+        else:
+            seed = random_seed
+            print(f'Using user-supplied random seed: {seed}\n')
+        calculations = calculate_zscore(records, typeall, num_scrambles, seed)
+        return calculations
+
+
+    def plot_nardini_zscores(seq_name, zvec_db, typeall, index, savename, is_scrambled):
+        """
+        This function is a wrapper that provides easy access for the isolated plotting of
+        the z-score matrices that can be performed independently of `calculate_zscore`
+        and `calculate_zscore_and_plot`.
+
+        INPUT:
+        --------------------------------------------------------------------------------
+        seq_name | The name of the sequence
+        zvec_db | The numpy array corresponding to the zscore-vector used for calculations.
+        typeall | The amino acid types used for the analysis contained within `zvec_db`.
+        index | The index of `seq_name` in the `zvec_db`.
+        savename | The name under which to save the plots.
+        is_scrambled | A boolean that indicates whether or not the matrix corresponds to the scrambled sequence analysis.
+
+        RETURN:
+        --------------------------------------------------------------------------------
+        Nothing, but plots (PNGs) and a ZIP file is generated.
+        """
+        plot_zscore_matrix(seq_name, zvec_db, typeall, index, savename, is_scrambled)
 
 
     # ============================================ #
