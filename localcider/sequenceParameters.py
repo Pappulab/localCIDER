@@ -22,14 +22,21 @@ from .backend.backendtools import status_message
 from .backend import plotting
 from .backend.localciderExceptions import SequenceException
 from .backend.localciderExceptions import SequenceComplexityException
+from Bio import SeqIO
+from io import StringIO
+from nardini.score_and_plot import calculate_zscore_and_plot, calculate_zscore
+from nardini.plotting import plot_zscore_matrix
+from nardini.core import typeall
+from datetime import datetime
+
 
 class SequenceParameters:
     """
-    A SequenceParameters object is the main object for examining sequence properties 
+    A SequenceParameters object is the main object for examining sequence properties
     in localCIDER. From this object a wide array of methods can be called on the
     object to explore a wide range of sequence properties.
 
-    A new SequenceParameter object can be created 
+    A new SequenceParameter object can be created
 
 
     """
@@ -37,12 +44,12 @@ class SequenceParameters:
     def __init__(self, sequence="", sequenceFile="", SeqObj=None):
 
 
-        
+
         # ########################################################################
         # if we passed an existing SequenceObject short circuit everything
-        # else and use this 
+        # else and use this
         if SeqObj:
-            
+
             # validate that this object is ther right thing - try/except in
             # case the thing doesn't have a __module__ variable..
             try:
@@ -60,9 +67,9 @@ class SequenceParameters:
                 raise SequenceException('Passed a SeqObj in but did not match backend.sequence')
 
         # ########################################################################
-        
 
-        
+
+
         # provide the flexibility to submit either a sequence
         # file or an actual sequence as a string
         if sequence == "" and sequenceFile == "":
@@ -185,15 +192,15 @@ class SequenceParameters:
         """
 
         return self.SeqObj.uverskyHydropathy()
-    
+
     #...................................................................................#
     def get_WW_hydropathy(self):
         """
         Get a protein's mean hydropathy. This is based on the Wimley-White scale
-        
+
         ********************************************************************************
-        Ref: Wimley, W.C., and White, S.H. (1996). Experimentally determined 
-        hydrophobicity scale for proteins at membrane interfaces. Nat. Struct. 
+        Ref: Wimley, W.C., and White, S.H. (1996). Experimentally determined
+        hydrophobicity scale for proteins at membrane interfaces. Nat. Struct.
         Biol. 3, 842–848.
         ********************************************************************************
 
@@ -202,7 +209,7 @@ class SequenceParameters:
         Float with the sequence's mean Wimley-White hydropathy
 
         """
-        
+
         return self.SeqObj.meanWWHydropathy()
 
     #...................................................................................#
@@ -249,8 +256,8 @@ class SequenceParameters:
         Get the sequence charge decoration (SCD) value associated with a sequence.
 
         ********************************************************************************
-        Ref: Sawle, L., and Ghosh, K. (2015). A theoretical method to compute sequence 
-        dependent configurational properties in charged polymers and proteins. J. Chem. 
+        Ref: Sawle, L., and Ghosh, K. (2015). A theoretical method to compute sequence
+        dependent configurational properties in charged polymers and proteins. J. Chem.
         Phys. 143, 085101.
         ********************************************************************************
 
@@ -285,13 +292,13 @@ class SequenceParameters:
     def get_Omega(self):
         """
         Get the Omega value associated with a sequence. Omega describes
-        the patterning between charged/proline residues and all other residues.  
+        the patterning between charged/proline residues and all other residues.
 
         ********************************************************************************
-        Ref: Martin, E.W., Holehouse, A.S., Grace, C.R., Hughes, A., Pappu, R.V., and 
-        Mittag, T. (2016). Sequence determinants of the conformational properties 
-        of an intrinsically disordered protein prior to and upon multisite 
-        phosphorylation. J. Am. Chem. Soc. (10.1021/jacs.6b10272)        
+        Ref: Martin, E.W., Holehouse, A.S., Grace, C.R., Hughes, A., Pappu, R.V., and
+        Mittag, T. (2016). Sequence determinants of the conformational properties
+        of an intrinsically disordered protein prior to and upon multisite
+        phosphorylation. J. Am. Chem. Soc. (10.1021/jacs.6b10272)
         ********************************************************************************
 
         OUTPUT:
@@ -310,10 +317,10 @@ class SequenceParameters:
         are O.
 
         ********************************************************************************
-        Ref: Martin, E.W., Holehouse, A.S., Grace, C.R., Hughes, A., Pappu, R.V., and 
-        Mittag, T. (2016). Sequence determinants of the conformational properties 
-        of an intrinsically disordered protein prior to and upon multisite 
-        phosphorylation. J. Am. Chem. Soc. (10.1021/jacs.6b10272)        
+        Ref: Martin, E.W., Holehouse, A.S., Grace, C.R., Hughes, A., Pappu, R.V., and
+        Mittag, T. (2016). Sequence determinants of the conformational properties
+        of an intrinsically disordered protein prior to and upon multisite
+        phosphorylation. J. Am. Chem. Soc. (10.1021/jacs.6b10272)
         ********************************************************************************
 
         OUTPUT:
@@ -338,7 +345,7 @@ class SequenceParameters:
         While for Omgega definition the grouping would be
         grp1 = ['P','E','D','K','R']
         (note grp2 is left =None)
-                
+
         OUTPUT:
         --------------------------------------------------------------------------------
         Float with the user-defined patterning parameter
@@ -442,11 +449,11 @@ class SequenceParameters:
         """
         Get the fraction of charged residues in the sequence.
 
-        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are 
-                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H 
-                 are all considered titratable residues using EMBOSS pKa values 
+        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are
+                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H
+                 are all considered titratable residues using EMBOSS pKa values
 
-                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0, 
+                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0,
                  'R': 12.5]
 
 
@@ -467,11 +474,11 @@ class SequenceParameters:
         Get the fraction of expanding residues in the sequence. We define 'expanding'
         residues as D/E/R/K/P. This will be the same as the FCR+fraction of proline
 
-        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are 
-                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H 
-                 are all considered titratable residues using EMBOSS pKa values 
+        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are
+                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H
+                 are all considered titratable residues using EMBOSS pKa values
 
-                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0, 
+                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0,
                  'R': 12.5]
 
 
@@ -491,11 +498,11 @@ class SequenceParameters:
         """
         Get the net charge per residue of the sequence.
 
-        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are 
-                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H 
-                 are all considered titratable residues using EMBOSS pKa values 
+        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are
+                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H
+                 are all considered titratable residues using EMBOSS pKa values
 
-                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0, 
+                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0,
                  'R': 12.5]
 
 
@@ -514,11 +521,11 @@ class SequenceParameters:
         """
         Get the absolute magnitude of the mean net charge
 
-        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are 
-                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H 
-                 are all considered titratable residues using EMBOSS pKa values 
+        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are
+                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H
+                 are all considered titratable residues using EMBOSS pKa values
 
-                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0, 
+                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0,
                  'R': 12.5]
 
         OUTPUT:
@@ -537,11 +544,11 @@ class SequenceParameters:
         """
         Get the absolute magnitude of the mean net charge
 
-        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are 
-                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H 
-                 are all considered titratable residues using EMBOSS pKa values 
+        pH     | pH of interest. If not provided assumed neutral, and only R/K/D/E are
+                 considered titratable residues. If pH is provided then R/K/D/E/C/Y/H
+                 are all considered titratable residues using EMBOSS pKa values
 
-                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0, 
+                 ['C': 8.5, 'Y': 10.1, 'H': 6.5, 'E': 4.1, 'D': 3.9, 'K': 10.0,
                  'R': 12.5]
 
         OUTPUT:
@@ -721,31 +728,31 @@ class SequenceParameters:
     #...................................................................................#
     def get_PPII_propensity(self, mode='hilser'):
         """
-        Get the overall sequence's PPII propensity as defined by one of three 
-        possible scales - Hilser (Elam et al [1]), Creamer (Rucker et al [2]), or 
-        Kallenbach (Shi et al [3]). 
+        Get the overall sequence's PPII propensity as defined by one of three
+        possible scales - Hilser (Elam et al [1]), Creamer (Rucker et al [2]), or
+        Kallenbach (Shi et al [3]).
 
         The keyword 'mode' should be a string defining which of these three scales
         to use, and must be one of 'hilser', 'creamer', or 'kallenbach'. The
         default mode is 'hilser'. All values are taken from table 1 in [4].
 
-        [1] - Elam WA, Schrank TP, Campagnolo AJ, Hilser VJ. Evolutionary 
-        conservation of the polyproline II conformation surrounding intrinsically 
-        disordered phosphorylation sites. 
+        [1] - Elam WA, Schrank TP, Campagnolo AJ, Hilser VJ. Evolutionary
+        conservation of the polyproline II conformation surrounding intrinsically
+        disordered phosphorylation sites.
         Protein Sci. 2013; 22: 405- 417. doi: 10.1002/pro.2217 PMID: 23341186
 
-        [2] - Rucker, A.L., Pager, C.T., Campbell, M.N., Qualls, J.E., 
-        and Creamer, T.P. (2003). Host-guest scale of left-handed 
-        polyproline II helix formation. Proteins 53, 68-75. 
+        [2] - Rucker, A.L., Pager, C.T., Campbell, M.N., Qualls, J.E.,
+        and Creamer, T.P. (2003). Host-guest scale of left-handed
+        polyproline II helix formation. Proteins 53, 68-75.
 
-        [3] - Shi, Z., Chen, K., Liu, Z., Ng, A., Bracken, W.C., and 
-        Kallenbach, N.R. (2005). Polyproline II propensities from 
-        GGXGG peptides reveal an anticorrelation with beta-sheet scales. 
+        [3] - Shi, Z., Chen, K., Liu, Z., Ng, A., Bracken, W.C., and
+        Kallenbach, N.R. (2005). Polyproline II propensities from
+        GGXGG peptides reveal an anticorrelation with beta-sheet scales.
         Proc. Natl. Acad. Sci. U. S. A. 102, 17964-17968.
-        
-        [4] - Tomasso, M. E., Tarver, M. J., Devarajan, D. & Whitten, S. T. 
-        Hydrodynamic Radii of Intrinsically Disordered Proteins Determined 
-        from Experimental Polyproline II Propensities. 
+
+        [4] - Tomasso, M. E., Tarver, M. J., Devarajan, D. & Whitten, S. T.
+        Hydrodynamic Radii of Intrinsically Disordered Proteins Determined
+        from Experimental Polyproline II Propensities.
         PLoS Comput. Biol. 12, e1004686 (2016).
 
         OUTPUT:
@@ -763,7 +770,7 @@ class SequenceParameters:
         of the sequence. Frozen allows the user to define a set of residues which are not
         shuffled, allowing regions to be held fixed while other regions are shuffled
 
-        """        
+        """
         return SequenceParameters(SeqObj=self.SeqObj.full_shuffle(frozen))
 
 
@@ -772,7 +779,7 @@ class SequenceParameters:
     #...................................................................................#
     def get_linear_sigma(self, blobLen=5):
         """
-        Returns a numpy vector of the sigma (charge assymetry) as defined by a 
+        Returns a numpy vector of the sigma (charge assymetry) as defined by a
         sliding window. The first dimension contains the values and the second the associated
         index values along the sequence. A stepsize of 1 is always used.
 
@@ -786,7 +793,7 @@ class SequenceParameters:
 
     def get_linear_NCPR(self, blobLen=5):
         """
-        Returns a numpy vector of the net charge per residue (NCPR) as defined by a 
+        Returns a numpy vector of the net charge per residue (NCPR) as defined by a
         sliding window. The first dimension contains the values and the second the associated
         index values along the sequence. A stepsize of 1 is always used.
 
@@ -801,10 +808,10 @@ class SequenceParameters:
     #...................................................................................#
     def get_linear_FCR(self, blobLen=5):
         """
-        Returns a 2D numpy vector of the fraction of charged residues (FCR) as defined by a 
+        Returns a 2D numpy vector of the fraction of charged residues (FCR) as defined by a
         sliding window. The first dimension contains the values and the second the associated
         index values along the sequence. A stepsize of 1 is always used.
-       
+
         blobLen     | Sliding window size over which FCR is calculated (default = 5
                       to match the default for kappa calculation)
 
@@ -842,7 +849,7 @@ class SequenceParameters:
         polar     (Q, N, S, T, G, C, and H)
         aliphatic (A, L, M, I, and V)
         aromatic  (F, Y, and W)
-        proline   (P)       
+        proline   (P)
 
 
         blobLen     | Sliding window size over which the local density is calculated (default = 5
@@ -850,13 +857,13 @@ class SequenceParameters:
 
         grps        | List of lists, where the sublists define groups of amino acids. i.e. to pass
                       in the default values described above, grps would be set to
-                      [['E','D'], ['R','K'], ['R','K','E','D'], ['Q','N','S','T','G','H', 'C'], 
-                       ['A','L','M','I','V'], ['F','Y','W'], ['P']]        
+                      [['E','D'], ['R','K'], ['R','K','E','D'], ['Q','N','S','T','G','H', 'C'],
+                       ['A','L','M','I','V'], ['F','Y','W'], ['P']]
 
         """
 
         return(self.SeqObj.linearCompositions(blobLen, grps))
-        
+
 
     # =============================================== #
     # ======= SEQUENCE COMPLEXITY FUNCTIONS ========= #
@@ -1060,7 +1067,7 @@ class SequenceParameters:
             stepSize=1,
             wordSize=3,
             getFig=False):
-        
+
         """
         Returns the linear sequence complexity as defined by complexityType. Optionally,
         the sequence complexity of a reduced complexity alphabet can be returned, where
@@ -1140,12 +1147,12 @@ class SequenceParameters:
 
         [4] Murphy, L. R., Wallqvist, A., & Levy, R. M. (2000). Simplified amino acid alphabets for
         protein fold recognition and implications for folding. Protein Engineering, 13(3), 149-152.
-        
+
         """
 
         # first get the complexity info
         linear_complexity_vector = self.get_linear_complexity(
-            complexityType, 
+            complexityType,
             alphabetSize,
             userAlphabet,
             blobLen,
@@ -1154,14 +1161,14 @@ class SequenceParameters:
 
         # now generate the figure and either return the figure object or just show it
         if getFig:
-            return plotting.show_linearComplexity(linear_complexity_vector, 
-                                                  complexityType, 
-                                                  len(self.SeqObj.seq), 
+            return plotting.show_linearComplexity(linear_complexity_vector,
+                                                  complexityType,
+                                                  len(self.SeqObj.seq),
                                                   getFig)
         else:
-            plotting.show_linearComplexity(linear_complexity_vector, 
-                                           complexityType, 
-                                           len(self.SeqObj.seq), 
+            plotting.show_linearComplexity(linear_complexity_vector,
+                                           complexityType,
+                                           len(self.SeqObj.seq),
                                            getFig)
 
     #...................................................................................#
@@ -1216,8 +1223,8 @@ class SequenceParameters:
                          is 3
 
         saveFormat     | Defines the file formal to save plots as. This parameter
-                         is passed to matplotlibs savefig command which supports 
-                         the following filetypes: emf, eps, pdf, png, ps, raw, 
+                         is passed to matplotlibs savefig command which supports
+                         the following filetypes: emf, eps, pdf, png, ps, raw,
                          rgba, svg, svgz. (DEFAULT = png)
 
         OUTPUT:
@@ -1263,10 +1270,10 @@ class SequenceParameters:
         """
 
 
-            
+
         # first get the complexity info and build the correct vector
         linear_complexity_vector = self.get_linear_complexity(
-            complexityType, 
+            complexityType,
             alphabetSize,
             userAlphabet,
             blobLen,
@@ -1274,17 +1281,17 @@ class SequenceParameters:
             wordSize)
 
         # now generate and save the relevant figure
-        plotting.save_linearComplexity(linear_complexity_vector, 
-                                       complexityType, 
-                                       len(self.SeqObj.seq), 
+        plotting.save_linearComplexity(linear_complexity_vector,
+                                       complexityType,
+                                       len(self.SeqObj.seq),
                                        filename,
                                        saveFormat)
 
 
-        
 
-        
-        
+
+
+
     # ============================================ #
     # ======= PLOTTING DIAGRAM FUNCTIONS ========= #
     #...................................................................................#
@@ -1369,8 +1376,8 @@ class SequenceParameters:
         yLim       | Max value for the y axis (fract. negative charge) (DEFAULT = 1)
         fontSize   | Size of font for label (DEFAULT = 10)
         saveFormat | Defines the file formal to save plots as. This parameter
-                     is passed to matplotlibs savefig command which supports 
-                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     is passed to matplotlibs savefig command which supports
+                     the following filetypes: emf, eps, pdf, png, ps, raw,
                      rgba, svg, svgz. (DEFAULT = png)
 
 
@@ -1461,7 +1468,7 @@ class SequenceParameters:
             yLim=1,
             fontSize=10,
             saveFormat='png'):
-        
+
         """
         Generates the Uversky phase diagram (hydropathy vs NCPR), places
         this sequence on that plot, and saves it at the <filename> location
@@ -1477,8 +1484,8 @@ class SequenceParameters:
         yLim       | Max value for the y axis (hydropathy) (DEFAULT = 1)
         fontSize   | Size of font for label (DEFAULT = 10)
         saveFormat | Defines the file formal to save plots as. This parameter
-                     is passed to matplotlibs savefig command which supports 
-                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     is passed to matplotlibs savefig command which supports
+                     the following filetypes: emf, eps, pdf, png, ps, raw,
                      rgba, svg, svgz. (DEFAULT = png)
 
 
@@ -1515,8 +1522,8 @@ class SequenceParameters:
         filename   | Name of the file to write
         bloblen    | Set the windowsize (DEFAULT = 5)
         saveFormat | Defines the file formal to save plots as. This parameter
-                     is passed to matplotlibs savefig command which supports 
-                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     is passed to matplotlibs savefig command which supports
+                     the following filetypes: emf, eps, pdf, png, ps, raw,
                      rgba, svg, svgz. (DEFAULT = png)
 
 
@@ -1546,8 +1553,8 @@ class SequenceParameters:
         filename   | Name of the file to write
         bloblen    | Set the windowsize (DEFAULT = 5)
         saveFormat | Defines the file formal to save plots as. This parameter
-                     is passed to matplotlibs savefig command which supports 
-                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     is passed to matplotlibs savefig command which supports
+                     the following filetypes: emf, eps, pdf, png, ps, raw,
                      rgba, svg, svgz. (DEFAULT = png)
 
 
@@ -1582,10 +1589,10 @@ class SequenceParameters:
         filename   | Name of the file to write
         bloblen    | Set the windowsize (DEFAULT = 5)
         saveFormat | Defines the file formal to save plots as. This parameter
-                     is passed to matplotlibs savefig command which supports 
-                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     is passed to matplotlibs savefig command which supports
+                     the following filetypes: emf, eps, pdf, png, ps, raw,
                      rgba, svg, svgz. (DEFAULT = png)
-        
+
 
         OUTPUT:
         --------------------------------------------------------------------------------
@@ -1615,8 +1622,8 @@ class SequenceParameters:
         filename   | Name of the file to write
         bloblen    | Set the windowsize (DEFAULT = 5)
         saveFormat | Defines the file formal to save plots as. This parameter
-                     is passed to matplotlibs savefig command which supports 
-                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     is passed to matplotlibs savefig command which supports
+                     the following filetypes: emf, eps, pdf, png, ps, raw,
                      rgba, svg, svgz. (DEFAULT = png)
 
 
@@ -1648,16 +1655,16 @@ class SequenceParameters:
         filename   | Name of the file to write
         blobLen    | Set the windowsize (DEFAULT = 5)
         saveFormat | Defines the file formal to save plots as. This parameter
-                     is passed to matplotlibs savefig command which supports 
-                     the following filetypes: emf, eps, pdf, png, ps, raw, 
+                     is passed to matplotlibs savefig command which supports
+                     the following filetypes: emf, eps, pdf, png, ps, raw,
                      rgba, svg, svgz. (DEFAULT = png)
         title      | Set the title for the figure (useful when generating many
                      profiles for different proteins
-        plot_data  | [DEFAULT = False] will overlay the raw data on top of the 
-                     cubic spline interpolation. This can be useful to check that 
-                     the blobLen selected is actually capturing the relevant 
+        plot_data  | [DEFAULT = False] will overlay the raw data on top of the
+                     cubic spline interpolation. This can be useful to check that
+                     the blobLen selected is actually capturing the relevant
                      features in the underlying data.
-        
+
 
 
 
@@ -1826,7 +1833,7 @@ class SequenceParameters:
         Function that writes a composition file to the current working directory. File
         has the format:
         Residue
-        
+
         INPUT:
         --------------------------------------------------------------------------------
         compfile_name | filename for the compfile name
@@ -1834,25 +1841,127 @@ class SequenceParameters:
         OUTPUT:
         --------------------------------------------------------------------------------
         Nothing, but a compfile is written to disk
-        
+
         """
 
         # compute the amino acid fraction of the sequence
         AADICT = self.get_amino_acid_fractions()
 
-        # get the AA 1-letter codes and sort 
+        # get the AA 1-letter codes and sort
         aa_names = list(AADICT.keys())
         aa_names.sort()
 
         # format nicely
         for residue in aa_names:
             AADICT[residue] = str(round(AADICT[residue], 2))+"%"
-        
+
         # write to disk
         with open(compfile_name,'w') as fh:
             fh.write("Residue\tSequence\n")
             for residue in aa_names:
                 fh.write(residue + "\t" + AADICT[residue] + "\n")
+
+
+    # ============================================ #
+    # ============ NARDINI FUNCTIONS ============ #
+
+    def save_zscoresAndPlots(self, num_scrambles=100000, random_seed=None):
+        """
+        A function that takes an input sequence, scrambles it a defined number of times
+        to find a similar sequence derived from a statistical analysis of the amino acid
+        compositions relative to the input sequence.
+
+        Matrices of the amino acid compositions are saved to disk as well as a zip file
+        containing the Nardini analysis, accompanying plots, and text representations
+        of the plots.
+
+        INPUT:
+        --------------------------------------------------------------------------------
+        num_scrambles | The number of times random sequences should be generated (DEFAULT = 100000).
+        random_seed   | The random seed to use for reproducibility. If not defined, one will be generated (DEFAULT = None).
+
+        OUTPUT:
+        --------------------------------------------------------------------------------
+        Nothing, but plots (PNGs) and a ZIP file is generated.
+
+        """
+        fasta = f'>seq1\n%s' % self.SeqObj.seq
+        fake_record = SeqIO.read(StringIO(fasta), 'fasta')
+        records = [fake_record]
+        seed = None
+        if random_seed is None:
+            seed = int(datetime.now().timestamp())
+            print(f'No random seed specified. Using generated random seed: {seed}\n')
+        else:
+            seed = random_seed
+            print(f'Using user-supplied random seed: {seed}\n')
+        calculate_zscore_and_plot(records, typeall, num_scrambles, seed)
+
+
+    def calculate_zscore(self, num_scrambles=100000, random_seed=None):
+        """
+        A function that takes an input sequence, scrambles it a defined number of times
+        to find a similar sequence derived from a statistical analysis of the amino acid
+        compositions relative to the input sequence.
+
+        Matrices of the amino acid compositions are saved to disk as well as a zip file
+        containing the Nardini analysis, accompanying plots, and text representations
+        of the plots.
+
+        INPUT:
+        --------------------------------------------------------------------------------
+        num_scrambles | The number of times random sequences should be generated (DEFAULT = 100000).
+        random_seed   | The random seed to use for reproducibility. If not defined, one will be
+        generated (DEFAULT = None).
+
+        RETURN:
+        --------------------------------------------------------------------------------
+        A dictionary whose keys are the name of the sequence with the following associated
+        values:
+
+            1. Original_sequence.
+            2. Scrambled_sequence.
+            3. The sequence number (used for book-keeping for many sequences).
+            4. The `reshaped_zvecdb` corresponding to the original sequence.
+            5. The `reshaped_zvecdbscr` corresponding to the scrambled sequences.
+
+        Note that if the sequence is non-BioPython, a fake record will be created with the
+        sequence name: "seq1".
+        """
+        fasta = f'>seq1\n%s' % self.SeqObj.seq
+        fake_record = SeqIO.read(StringIO(fasta), 'fasta')
+        records = [fake_record]
+        seed = None
+        if random_seed is None:
+            seed = int(datetime.now().timestamp())
+            print(f'No random seed specified. Using generated random seed: {seed}\n')
+        else:
+            seed = random_seed
+            print(f'Using user-supplied random seed: {seed}\n')
+        calculations = calculate_zscore(records, typeall, num_scrambles, seed)
+        return calculations
+
+
+    def plot_nardini_zscores(seq_name, zvec_db, typeall, index, savename, is_scrambled):
+        """
+        This function is a wrapper that provides easy access for the isolated plotting of
+        the z-score matrices that can be performed independently of `calculate_zscore`
+        and `calculate_zscore_and_plot`.
+
+        INPUT:
+        --------------------------------------------------------------------------------
+        seq_name | The name of the sequence
+        zvec_db | The numpy array corresponding to the zscore-vector used for calculations.
+        typeall | The amino acid types used for the analysis contained within `zvec_db`.
+        index | The index of `seq_name` in the `zvec_db`.
+        savename | The name under which to save the plots.
+        is_scrambled | A boolean that indicates whether or not the matrix corresponds to the scrambled sequence analysis.
+
+        RETURN:
+        --------------------------------------------------------------------------------
+        Nothing, but plots (PNGs) and a ZIP file is generated.
+        """
+        plot_zscore_matrix(seq_name, zvec_db, typeall, index, savename, is_scrambled)
 
 
     # ============================================ #
