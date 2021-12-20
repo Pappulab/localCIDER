@@ -29,7 +29,9 @@ SeqObj = SequenceParameters('YOURSEQUENCEHERE')
 SeqObj.save_zscoresAndPlots(num_scrambles=100000, random_seed=None)
 ```
 
-An interface for setting a random seed is provided for reproducibility. As analysis proceeds, a report will be printed to the user in the command-line or Jupyter notebook. Upon completion, the generated plots (PNGs) as well as a zip file containing TSVs of the parameters as well as matrix representations of the plots will be exported. The function `save_zscoresAndPlots` encapsulates several methods from the [Nardini package](https://github.com/mshinn23/nardini) into a user-friendly entry point for subsequent analysis. A complementary shell-interface (`nardini`) is also made available when the Nardini package is installed which can be paired with this method. To learn more, run `nardini -h` from the command-line or visit the Github repository for Nardini for more details.
+An interface for setting a random seed is provided for reproducibility. If no random seed is provided, one will be chosen and reported to the user. As analysis proceeds, the progress will be printed to the user in the command-line or Jupyter notebook. Upon completion, the generated plots (PNGs) as well as a zip file containing TSVs of the parameters as well as matrix representations of the plots will be exported.
+
+The function `save_zscoresAndPlots` encapsulates several methods from the [Nardini package](https://github.com/mshinn23/nardini) into a user-friendly entry point for subsequent analysis. A complementary shell-interface (`nardini`) is also made available when the Nardini package is installed which can be paired with this method. To learn more, run `nardini -h` from the command-line or visit the Github repository for [Nardini](https://github.com/mshinn23/nardini#command-line-usage) for more details.
 
 In addition to `save_zscoresAndPlots`, LocalCIDER also integrates a couple other [Nardini-based](https://github.com/mshinn23/nardini) methods. All three methods are detailed below:
 
@@ -41,7 +43,7 @@ In addition to `save_zscoresAndPlots`, LocalCIDER also integrates a couple other
 
 It should be noted that:
 
-1. `save_zscoreAndPlots` is a convenience function which performs and exports the Nardini analysis in a single step.
+1. `save_zscoreAndPlots` is a convenience function which performs and exports the Nardini analysis in a single step. This method call produces a ZIP file that will contain the file `sequences.tsv` (the sequences analyzed). For every sequence within the input file, 4 files additional will also be included in the ZIP file: `regular-<seq_name>.png` (the plot of the Nardini matrix of the original sequence); `scrambled-<seq_name>.png` (the plot of the Nardini matrix of the closest matching scrambled sequence); `zscore-original-sequence-<seq_name>.tsv` (the text file corresponding to the z-score matrix of the original sequence); and `zscore-scrambled-sequence-<seq_name>.tsv` (the text file corresponding to the z-score matrix of the scrambled sequence).
 2. `calculate_zscore` is meant for performing the Nardini analysis for further programmatic analysisas a dictionary corresponding to the analysis is returned.  No plots are generated.
 3. `plot_nardini_zscores` is meant for plotting and saving images of the Nardini analysis (i.e. matrices).
 
