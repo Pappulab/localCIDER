@@ -26,7 +26,7 @@ from Bio import SeqIO
 from io import StringIO
 from nardini.score_and_plot import calculate_zscore_and_plot, calculate_zscore
 from nardini.plotting import plot_zscore_matrix
-from nardini.core import typeall
+from nardini.constants import TYPEALL
 from datetime import datetime
 
 
@@ -1895,7 +1895,7 @@ class SequenceParameters:
         else:
             seed = random_seed
             print(f'Using user-supplied random seed: {seed}\n')
-        calculate_zscore_and_plot(records, typeall, num_scrambles, seed)
+        calculate_zscore_and_plot(records, TYPEALL, num_scrambles, seed)
 
 
     def calculate_zscore(self, num_scrambles=100000, random_seed=None):
@@ -1938,7 +1938,7 @@ class SequenceParameters:
         else:
             seed = random_seed
             print(f'Using user-supplied random seed: {seed}\n')
-        calculations = calculate_zscore(records, typeall, num_scrambles, seed)
+        calculations = calculate_zscore(records, TYPEALL, num_scrambles, seed)
         return calculations
 
 
