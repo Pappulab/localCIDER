@@ -1,6 +1,6 @@
 # localCIDER
 
-`Version 0.1.18 - December 2020`
+`Version 0.1.20 - May 2023`
 
 # Introduction
 
@@ -586,6 +586,8 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * David Sanders and Anastasia Repouliou (Princeton University) for the suggestion of introducing pH dependent charge analysis and bug reports 
 * Alex Keely for various updates
 * John Bollinger for major updates to Python3 compatibility, bug fixes, error correction.
+* Matthew Murray for adding Wimley–White hydrophobicity table
+
  
 
 ## Update schedule
@@ -604,8 +606,10 @@ Many people have been involved in this project. We'll try and include an up-to-d
 * **version 0.1.13** - Added get_molecular_weight() function, fixed a bug for low or high charge sequences with get_isoelectric_point()
 * **version 0.1.14** - Updates by Andrew Lyon to Wang Landau sampling algorithm
 * **version 0.1.16** - Updated by Alex Keely to fix a few issues
-* **version 0.1.17** - Lots of error fixes and full conversion to Python3 by 
-John Bollinger
+* **version 0.1.17** - Lots of error fixes and full conversion to Python3 by John Bollinger
 * **version 0.1.18** – Minor updates
+* **version 0.1.18** – Minor updates
+* **version 0.1.20** – (May 2023) Fix for nardini import so SequenceParameters does not fail on import!
+
 
 
