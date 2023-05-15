@@ -14,6 +14,13 @@ While Alex has since left the Pappu lab, he continues to maintain localCIDER - f
 Nardini
 =======
 
+### NB: Nardini installation required
+To use nardini analysis described below, one must install nardini 'manually' - i.e. as of version 0.1.21 localCIDER does not enforce a hard dependency of nardini during installation. Nardini can be installed by running:
+
+	pip install nardini 
+	
+### Nardini analysis
+
 To perform Nardini-related analysis via a localCIDER SequenceParameter object, the following example is illustrative:
 
 ```
