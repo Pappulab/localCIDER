@@ -24,9 +24,6 @@ from .backend.localciderExceptions import SequenceException
 from .backend.localciderExceptions import SequenceComplexityException
 from Bio import SeqIO
 from io import StringIO
-from nardini.score_and_plot import calculate_zscore_and_plot, calculate_zscore
-from nardini.plotting import plot_zscore_matrix
-from nardini.constants import TYPEALL
 from datetime import datetime
 
 
@@ -1885,6 +1882,16 @@ class SequenceParameters:
         Nothing, but plots (PNGs) and a ZIP file is generated.
 
         """
+
+        try:
+            from nardini.score_and_plot import calculate_zscore_and_plot, calculate_zscore
+            from nardini.constants import TYPEALL
+            from nardini.plotting import plot_zscore_matrix
+        except ModuleNotFoundError:
+            print('To use nardini functions make sure nardini is installed (pip install nardini).\nNote Nardini requires scipy < 1.6.3 so this may require a new conda environment with this specific scipy version [hence why nardini is a soft dependency].')
+            return None
+        
+        
         fasta = f'>seq1\n%s' % self.SeqObj.seq
         fake_record = SeqIO.read(StringIO(fasta), 'fasta')
         records = [fake_record]
@@ -1928,6 +1935,15 @@ class SequenceParameters:
         Note that if the sequence is non-BioPython, a fake record will be created with the
         sequence name: "seq1".
         """
+        
+        try:
+            from nardini.score_and_plot import calculate_zscore_and_plot, calculate_zscore
+            from nardini.constants import TYPEALL
+            from nardini.plotting import plot_zscore_matrix
+        except ModuleNotFoundError:
+            print('To use nardini functions make sure nardini is installed (pip install nardini).\nNote Nardini requires scipy < 1.6.3 so this may require a new conda environment with this specific scipy version [hence why nardini is a soft dependency].')
+            return None
+
         fasta = f'>seq1\n%s' % self.SeqObj.seq
         fake_record = SeqIO.read(StringIO(fasta), 'fasta')
         records = [fake_record]
@@ -1961,6 +1977,12 @@ class SequenceParameters:
         --------------------------------------------------------------------------------
         Nothing, but plots (PNGs) and a ZIP file is generated.
         """
+        try:
+            from nardini.plotting import plot_zscore_matrix
+        except ModuleNotFoundError:
+            print('To use nardini functions make sure nardini is installed (pip install nardini).\nNote Nardini requires scipy < 1.6.3 so this may require a new conda environment with this specific scipy version [hence why nardini is a soft dependency].')
+            return None
+
         plot_zscore_matrix(seq_name, zvec_db, typeall, index, savename, is_scrambled)
 
 

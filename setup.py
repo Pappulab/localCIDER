@@ -3,7 +3,7 @@ import sys
 
 setup(
     name='localcider',
-    version='0.1.20',
+    version='0.1.21',
     author='Alex Holehouse',
     author_email='alex.holehouse@wustl.edu',
     packages=['localcider', 'localcider.tests', 'localcider.backend', 'localcider.backend.data'],
@@ -17,7 +17,8 @@ setup(
         "matplotlib",
         "scipy",
         "BioPython",
-        "nardini @ git+https://github.com/mshinn23/nardini.git"
     ],
+    
+    #         "nardini" removed while we fix scipy issue
     test_suite='localcider.tests.suite')
 #    **extras)
